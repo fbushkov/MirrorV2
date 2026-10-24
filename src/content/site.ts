@@ -11,7 +11,8 @@ export type NavLink = { title: string; href: string }
 
 export const NAV: NavLink[] = [
   { title: "Как это работает", href: "/#how" },
-  { title: "Индекс культуры", href: "/culture-index" },
+  { title: "Пульс культуры", href: "/pulse" },
+  { title: "Методика", href: "/culture-index" },
   { title: "Пример отчёта", href: "/example" },
   { title: "Цены", href: "/pricing" },
   { title: "О нас", href: "/about" },
@@ -22,7 +23,8 @@ export const FOOTER_COLUMNS: { title: string; items: NavLink[] }[] = [
     title: "Сервис",
     items: [
       { title: "Как это работает", href: "/#how" },
-      { title: "Индекс культуры", href: "/culture-index" },
+      { title: "Пульс культуры", href: "/pulse" },
+      { title: "Методика", href: "/culture-index" },
       { title: "Пример отчёта", href: "/example" },
       { title: "Цены", href: "/pricing" },
     ],

@@ -10,11 +10,13 @@ import { CultureMatrixChart, IndexGauge } from "@/components/charts/brand-charts
 import { BlindSpots } from "@/components/metrics/blind-spots"
 import { IndustryTracks } from "@/components/metrics/industry-tracks"
 import { MATRIX_ZONES } from "@/content/demo"
+import { NOT_IN_METRICS, PULSE_METRICS } from "@/content/pulse"
+import { LevelBadge } from "@/components/pulse/parts"
 import { cn } from "@/lib/utils"
 import { FAQ_CULTURE } from "@/content/faq"
 
 export const metadata: Metadata = {
-  title: "Индекс культуры",
+  title: "Методика",
   description: "Что измеряет индекс культуры Mirror, зачем он нужен и как мы его считаем. Открытая методика и пример расчёта.",
 }
 
@@ -52,7 +54,7 @@ export default function CultureIndexPage() {
   return (
     <>
       <PageHero
-        eyebrow="Индекс культуры"
+        eyebrow="Методика"
         title="Насколько ваши слова совпадают с делами"
         description="Индекс культуры — доля обещаний работодателя, которые подтверждает опыт людей. Рядом с ним — слепые зоны и место в отрасли: вместе они показывают и честность бренда, и его силу."
       />
@@ -154,6 +156,61 @@ export default function CultureIndexPage() {
             </li>
           ))}
         </ol>
+      </Section>
+
+      <Section id="pulse-method" className="bg-card">
+        <SectionHeader
+          eyebrow="Пульс культуры"
+          title="Как считаем изнутри"
+          description="Переживаемую культуру меряем по 10 метрикам. У каждой — свои источники. Баллом становятся только опросы и тексты; остальное подтверждает или опровергает сигнал."
+        />
+        <div className="surface overflow-hidden bg-background">
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-[760px] text-left text-sm">
+              <thead>
+                <tr className="text-xs text-muted-foreground">
+                  <th scope="col" className="px-4 py-3 font-normal">Метрика</th>
+                  <th scope="col" className="px-4 py-3 font-normal">О · опросы</th>
+                  <th scope="col" className="px-4 py-3 font-normal">Т · тексты</th>
+                  <th scope="col" className="px-4 py-3 font-normal">П · поведение и HR-события в агрегате</th>
+                </tr>
+              </thead>
+              <tbody>
+                {PULSE_METRICS.map((m) => (
+                  <tr key={m.id} className="border-t border-border align-top">
+                    <th scope="row" className="px-4 py-3 font-medium">{m.name}</th>
+                    <td className="px-4 py-3 text-muted-foreground">{m.sources.o}</td>
+                    <td className="px-4 py-3 text-muted-foreground">{m.sources.t}</td>
+                    <td className="px-4 py-3 text-muted-foreground">{m.sources.p}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div className="mt-3 grid gap-3 md:grid-cols-2 lg:grid-cols-4">
+          <div className="surface bg-background p-5">
+            <p className="mb-2 font-semibold">Зоны балла</p>
+            <ul className="flex flex-col gap-2 text-sm">
+              <li className="flex items-center justify-between gap-2"><LevelBadge score={70} /> от 65</li>
+              <li className="flex items-center justify-between gap-2"><LevelBadge score={55} /> 50–64</li>
+              <li className="flex items-center justify-between gap-2"><LevelBadge score={40} /> до 50</li>
+            </ul>
+          </div>
+          <div className="surface bg-background p-5">
+            <p className="mb-2 font-semibold">Уверенность данных</p>
+            <p className="text-sm text-muted-foreground">У каждого балла: высокая, средняя или низкая. Зависит от числа ответов и согласия источников между собой.</p>
+          </div>
+          <div className="surface bg-background p-5">
+            <p className="mb-2 font-semibold">Что влияет</p>
+            <p className="text-sm text-muted-foreground">Каждая причина помечена уровнем доказанности: гипотеза → коррелирует → подтверждено пилотом.</p>
+          </div>
+          <div className="surface bg-background p-5">
+            <p className="mb-2 font-semibold">Подтверждающие сигналы</p>
+            <p className="text-sm text-muted-foreground">Текучесть новичков, отказы от офферов, абсентеизм, доля закрытых петель обратной связи. Баллом не становятся.</p>
+          </div>
+        </div>
+        <p className="mt-6 text-sm text-muted-foreground">{NOT_IN_METRICS} Разрыв считаем по нормам культурного кода: каждая норма привязана к одной или нескольким метрикам.</p>
       </Section>
 
       <Section className="bg-card">

@@ -15,7 +15,7 @@ import { cn } from "@/lib/utils"
 const TOPICS = [
   { id: "scan", label: "Бесплатный срез" },
   { id: "diagnostics", label: "Диагностика" },
-  { id: "support", label: "Сопровождение" },
+  { id: "pulse", label: "Пульс культуры" },
   { id: "other", label: "Другой вопрос" },
 ] as const
 type Topic = (typeof TOPICS)[number]["id"]

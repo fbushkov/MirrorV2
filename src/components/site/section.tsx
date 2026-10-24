@@ -12,7 +12,7 @@ export function Section({
   children: React.ReactNode
 }) {
   return (
-    <section id={id} className={cn("relative scroll-mt-24 py-16 md:py-28", className)}>
+    <section id={id} className={cn("relative scroll-mt-36 py-16 md:py-28", className)}>
       <div className={cn("mx-auto w-full max-w-6xl px-4 md:px-6", containerClassName)}>{children}</div>
     </section>
   )

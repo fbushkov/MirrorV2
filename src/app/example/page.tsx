@@ -3,6 +3,7 @@ import { ArrowDownRight, ArrowUpRight } from "lucide-react"
 import { PageHero } from "@/components/site/page-hero"
 import { Section } from "@/components/site/section"
 import { CtaBand } from "@/components/site/cta-band"
+import { ReportSwitch } from "@/components/site/report-switch"
 import { StatusPill } from "@/components/site/status"
 import { BrandDynamicsChart, CultureMatrixChart, GapDivergingChart, SourcesHeatmap } from "@/components/charts/brand-charts"
 import { BlindSpots } from "@/components/metrics/blind-spots"
@@ -59,12 +60,13 @@ export default function ExamplePage() {
       <PageHero
         eyebrow="Данные условные"
         title="Так выглядит отчёт"
-        description={`Пример по условному «${BANK_N.name}», ${BANK_N.size}. Внешняя часть есть уже в бесплатном срезе, внутренняя появляется после диагностики.`}
+        description={`Пример по условному «${BANK_N.name}», ${BANK_N.size}. Внешний срез есть уже в бесплатной версии. Пульс культуры появляется после диагностики.`}
       />
       <Section className="pt-0 md:pt-0">
+        <ReportSwitch active="external" />
         <div className="grid grid-cols-2 gap-3 lg:grid-cols-5 [&>*:last-child]:col-span-2 lg:[&>*:last-child]:col-span-1">
           <Kpi label="Индекс снаружи" value={String(ext)} delta={2} tone="text-chart-1" />
-          <Kpi label="Индекс изнутри" value={String(int)} delta={5} tone="text-chart-2" />
+          <Kpi label="Индекс изнутри · Пульс" value={String(int)} delta={5} tone="text-chart-2" />
           <Kpi label="Подтверждено обещаний" value={`${confirmed} из ${PROMISES.length}`} />
           <Kpi label="Слепые зоны" value={`${BLIND_SPOTS.length} темы`} />
           <Kpi label="Место в отрасли" value={`${INDUSTRY.overall}`} />

@@ -10,6 +10,8 @@ import { TwoSides } from "@/components/home/two-sides"
 import { ThreeMetrics } from "@/components/home/three-metrics"
 import { StartForm } from "@/components/start/start-form"
 import { FAQ_HOME } from "@/content/faq"
+import { GROUPS, PULSE_METRICS, type MetricGroup } from "@/content/pulse"
+import { LevelIcon } from "@/components/pulse/parts"
 import { cn } from "@/lib/utils"
 
 export default function HomePage() {
@@ -23,8 +25,8 @@ export default function HomePage() {
             <Eyebrow>Две стороны бренда</Eyebrow>
             <h2 className="text-3xl font-semibold md:text-[2.75rem] md:leading-[1.1]">Снаружи и изнутри — два разных зеркала</h2>
             <p className="text-muted-foreground md:text-lg">
-              Опрос показывает, что думают сотрудники. Отзывы — что видят кандидаты. Mirror ставит обе картины рядом и
-              проверяет одни и те же обещания с двух сторон.
+              Снаружи смотрит внешний срез: что видят кандидаты и рынок. Изнутри — Пульс культуры: что переживают
+              сотрудники. Mirror ставит обе картины рядом и проверяет одни и те же обещания с двух сторон.
             </p>
             <p className="text-muted-foreground">Переключите вид, чтобы увидеть разницу.</p>
           </div>
@@ -32,6 +34,7 @@ export default function HomePage() {
         </div>
       </Section>
       <IndexBlock />
+      <PulseTeaser />
       <Journey />
       <Situations />
       <DataSafety />
@@ -143,6 +146,51 @@ function IndexBlock() {
   )
 }
 
+function PulseTeaser() {
+  return (
+    <Section className="bg-card">
+      <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
+        <div className="flex flex-col items-start gap-5">
+          <Eyebrow>Пульс культуры</Eyebrow>
+          <h2 className="text-3xl font-semibold md:text-[2.75rem] md:leading-[1.1]">Как в компании живут и работают на самом деле</h2>
+          <p className="text-muted-foreground md:text-lg">
+            Внутренний контур Mirror. 10 метрик переживаемой культуры и разрыв с вашим культурным кодом — на одном дашборде
+            для команды культуры, руководителей и топ-менеджмента.
+          </p>
+          <ul className="flex flex-wrap gap-2 text-sm">
+            {["не слежка", "не оценка людей", "группы от 5 человек"].map((x) => (
+              <li key={x} className="rounded-full border border-border bg-background px-3 py-1 text-muted-foreground">
+                {x}
+              </li>
+            ))}
+          </ul>
+          <Button asChild variant="soft" size="xl">
+            <Link href="/pulse">
+              О Пульсе культуры <ArrowRight data-icon="inline-end" />
+            </Link>
+          </Button>
+        </div>
+        <div className="grid gap-3 sm:grid-cols-3">
+          {(Object.keys(GROUPS) as MetricGroup[]).map((g) => (
+            <div key={g} className="surface flex flex-col gap-3 bg-background p-4">
+              <p className="text-xs font-medium text-muted-foreground">{GROUPS[g]}</p>
+              <ul className="flex flex-col gap-2">
+                {PULSE_METRICS.filter((m) => m.group === g).map((m) => (
+                  <li key={m.id} className="flex items-center justify-between gap-2 text-sm">
+                    <span>{m.name}</span>
+                    <LevelIcon score={m.score} className="shrink-0" />
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+          <p className="text-xs text-muted-foreground sm:col-span-3">Пример на демо-данных: балл и зона метрики — в норме, внимание или риск.</p>
+        </div>
+      </div>
+    </Section>
+  )
+}
+
 const STEPS = [
   {
     title: "Внешний срез",
@@ -164,16 +212,17 @@ const STEPS = [
   {
     title: "Диагностика",
     meta: "С экспертом · около 4 недель",
-    we: "Проверяем те же обещания изнутри: документы, данные компании, анонимные интервью.",
-    you: "Документы по списку и письмо сотрудникам. Шаблон даём.",
-    result: "Внутренний индекс, карта разрывов, план на 90 дней.",
+    we: "Описываем культурный код и делаем первый замер Пульса: опросы, анонимная обратная связь, интервью.",
+    you: "Культурный код или документы о ценностях. Письмо сотрудникам — шаблон даём.",
+    result: "10 метрик, разрыв с кодом, план на 90 дней.",
   },
   {
-    title: "Изменения и мониторинг",
-    meta: "По подписке",
-    we: "Эксперт помогает внести изменения. Раз в квартал повторяем замер и сообщаем о просадках.",
-    you: "Встреча раз в две недели.",
-    result: "Индекс в динамике: видно, что сработало.",
+    title: "Пульс культуры",
+    meta: "Кампания на 3 месяца",
+    we: "Три волны замеров, дашборд для команды культуры, руководителей и топов. Эксперт помогает с решениями.",
+    you: "Встреча с руководителями раз в 2 недели.",
+    result: "Динамика метрик и страница «Вы сказали — мы сделали» для сотрудников.",
+    link: { href: "/pulse", label: "О Пульсе культуры" },
   },
 ]
 
@@ -245,7 +294,7 @@ function DataSafety() {
   const items = [
     { icon: Globe, t: "Для среза — только открытые данные", d: "Доступ к вашим системам не нужен. Имена авторов отзывов в отчёт не попадают." },
     { icon: FileLock2, t: "Документы — под NDA", d: "Вы сами выбираете, что передать. Доступ только у эксперта проекта." },
-    { icon: EyeOff, t: "Сотрудники анонимны", d: <>Компания видит темы и обезличенные цитаты. Данные хранятся на серверах в России <Ph>[провайдер]</Ph>.</> },
+    { icon: EyeOff, t: "Мы смотрим на группы, а не на людей", d: <>Показываем группы от 5 человек, авторов не ищем, цитаты обезличены. Серверы в России <Ph>[провайдер]</Ph>.</> },
   ]
   return (
     <Section className="pt-0 md:pt-0">
@@ -265,8 +314,8 @@ function DataSafety() {
 function PricingTeaser() {
   const plans = [
     { t: "Срез", p: "0 ₽", d: "Внешняя картина и разбор с экспертом.", free: true },
-    { t: "Диагностика", p: "от 180 000 ₽", d: "Снаружи и изнутри, план на 90 дней.", hl: true },
-    { t: "Сопровождение", p: "от 120 000 ₽ / мес", d: "Изменения и замер раз в квартал." },
+    { t: "Диагностика", p: "от 180 000 ₽", d: "Культурный код и первый замер Пульса." },
+    { t: "Пульс культуры", p: "от 490 000 ₽", d: "Кампания на 3 месяца: 10 метрик, дашборд, эксперт.", priced: true, hl: true },
   ]
   return (
     <Section className="bg-card">
@@ -281,7 +330,7 @@ function PricingTeaser() {
             )}
           >
             <p className={cn("text-sm", x.hl ? "text-white/80" : "text-muted-foreground")}>{x.t}</p>
-            <p className="text-2xl font-semibold">{x.free ? x.p : <Ph>{x.p}</Ph>}</p>
+            <p className="text-2xl font-semibold">{x.free || x.priced ? x.p : <Ph>{x.p}</Ph>}</p>
             <p className={cn("text-sm", x.hl ? "text-white/85" : "text-muted-foreground")}>{x.d}</p>
           </div>
         ))}
