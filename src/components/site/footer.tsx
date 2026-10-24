@@ -7,7 +7,7 @@ import { PhToggle } from "./ph-toggle"
 export function Footer() {
   return (
     <footer className="border-t border-border bg-card">
-      <div className="mx-auto grid w-full max-w-6xl gap-10 px-4 py-14 md:grid-cols-[1.4fr_1fr_1fr_1.2fr] md:px-6">
+      <div className="mx-auto grid w-full max-w-6xl gap-10 px-4 py-14 sm:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1fr_0.8fr_1.1fr] md:px-6">
         <div className="flex flex-col gap-4">
           <Logo />
           <p className="max-w-xs text-sm text-muted-foreground">

@@ -18,7 +18,7 @@ export function Section({
   )
 }
 
-export function Eyebrow({ children, className }: { children: React.ReactNode; className?: string }) {
+export function Eyebrow({ children, className, tone }: { children: React.ReactNode; className?: string; tone?: "health" }) {
   return (
     <span
       className={cn(
@@ -26,7 +26,7 @@ export function Eyebrow({ children, className }: { children: React.ReactNode; cl
         className,
       )}
     >
-      <span className="size-1.5 rounded-full bg-primary" />
+      <span className={cn("size-1.5 rounded-full", tone === "health" ? "bg-health-500" : "bg-primary")} />
       {children}
     </span>
   )

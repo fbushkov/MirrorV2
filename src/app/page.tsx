@@ -8,6 +8,8 @@ import { Ph } from "@/components/site/ph"
 import { MirrorCard } from "@/components/home/mirror-card"
 import { TwoSides } from "@/components/home/two-sides"
 import { ThreeMetrics } from "@/components/home/three-metrics"
+import { Directions } from "@/components/home/directions"
+import { DIRECTION_NAMES } from "@/content/site"
 import { StartForm } from "@/components/start/start-form"
 import { FAQ_HOME } from "@/content/faq"
 import { GROUPS, PULSE_METRICS, type MetricGroup } from "@/content/pulse"
@@ -19,22 +21,30 @@ export default function HomePage() {
     <>
       <Hero />
       <Gap />
-      <Section id="sides" className="bg-card">
+      <Section id="directions" className="bg-card">
+        <SectionHeader
+          eyebrow="Два направления"
+          title="Снаружи и изнутри — два разных зеркала"
+          description="Можно начать с любого. Внешняя оценка показывает, что видят кандидаты и рынок. Внутренний дашборд — что переживают сотрудники."
+        />
+        <Directions />
+      </Section>
+      <BrandSection />
+      <HealthSection />
+      <Section id="together" className="bg-card">
         <div className="grid items-center gap-10 lg:grid-cols-[0.85fr_1.15fr]">
           <div className="flex flex-col items-start gap-5">
-            <Eyebrow>Две стороны бренда</Eyebrow>
-            <h2 className="text-3xl font-semibold md:text-[2.75rem] md:leading-[1.1]">Снаружи и изнутри — два разных зеркала</h2>
+            <Eyebrow>Вместе</Eyebrow>
+            <h2 className="text-3xl font-semibold md:text-[2.75rem] md:leading-[1.1]">Когда оба зеркала рядом</h2>
             <p className="text-muted-foreground md:text-lg">
-              Снаружи смотрит внешний срез: что видят кандидаты и рынок. Изнутри — Пульс культуры: что переживают
-              сотрудники. Mirror ставит обе картины рядом и проверяет одни и те же обещания с двух сторон.
+              Одни и те же обещания можно проверить с двух сторон. Так видно, где репутация опережает реальность, а где вы
+              недорассказываете о сильных сторонах.
             </p>
             <p className="text-muted-foreground">Переключите вид, чтобы увидеть разницу.</p>
           </div>
           <TwoSides />
         </div>
       </Section>
-      <IndexBlock />
-      <PulseTeaser />
       <Journey />
       <Situations />
       <DataSafety />
@@ -81,7 +91,7 @@ function Hero() {
               </Link>
             </Button>
             <Button asChild variant="ghost" size="xl">
-              <Link href="#how">Как это работает</Link>
+              <Link href="#directions">Два направления</Link>
             </Button>
           </div>
           <p className="text-sm text-muted-foreground">3 рабочих дня · без доступа к вашим системам</p>
@@ -133,29 +143,39 @@ function Gap() {
   )
 }
 
-function IndexBlock() {
+function BrandSection() {
   return (
-    <Section id="metrics">
+    <Section id="hr-brand">
       <SectionHeader
-        eyebrow="Три показателя"
-        title="Три вопроса, на которые отвечает отчёт"
-        description="Честность, слепые зоны и место на рынке. У каждого показателя своя точка отсчёта, поэтому мы не смешиваем их в одну цифру."
+        eyebrow="Направление 1 · Снаружи"
+        title={DIRECTION_NAMES.brand}
+        description="Три вопроса, на которые отвечает отчёт: честность, слепые зоны и место на рынке. У каждого показателя своя точка отсчёта, поэтому мы не смешиваем их в одну цифру."
       />
       <ThreeMetrics />
+      <div className="mt-8 flex flex-wrap justify-center gap-3">
+        <Button asChild variant="soft" size="xl">
+          <Link href="/hr-brand">
+            Подробнее о направлении <ArrowRight data-icon="inline-end" />
+          </Link>
+        </Button>
+        <Button asChild variant="ghost" size="xl">
+          <Link href="/hr-brand/demo">Демо-отчёт</Link>
+        </Button>
+      </div>
     </Section>
   )
 }
 
-function PulseTeaser() {
+function HealthSection() {
   return (
-    <Section className="bg-card">
+    <Section id="culture-health" className="bg-health-50/50">
       <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
         <div className="flex flex-col items-start gap-5">
-          <Eyebrow>Пульс культуры</Eyebrow>
-          <h2 className="text-3xl font-semibold md:text-[2.75rem] md:leading-[1.1]">Как в компании живут и работают на самом деле</h2>
+          <Eyebrow tone="health">Направление 2 · Изнутри</Eyebrow>
+          <h2 className="text-3xl font-semibold md:text-[2.75rem] md:leading-[1.1]">{DIRECTION_NAMES.health}</h2>
           <p className="text-muted-foreground md:text-lg">
-            Внутренний контур Mirror. 10 метрик переживаемой культуры и разрыв с вашим культурным кодом — на одном дашборде
-            для команды культуры, руководителей и топ-менеджмента.
+            Как в компании живут и работают на самом деле. 10 метрик переживаемой культуры и разрыв с вашим культурным
+            кодом — на одном дашборде для команды культуры, руководителей и топ-менеджмента.
           </p>
           <ul className="flex flex-wrap gap-2 text-sm">
             {["не слежка", "не оценка людей", "группы от 5 человек"].map((x) => (
@@ -164,15 +184,20 @@ function PulseTeaser() {
               </li>
             ))}
           </ul>
-          <Button asChild variant="soft" size="xl">
-            <Link href="/pulse">
-              О Пульсе культуры <ArrowRight data-icon="inline-end" />
-            </Link>
-          </Button>
+          <div className="flex flex-wrap gap-3">
+            <Button asChild size="xl" className="bg-health-500 text-white hover:bg-health-700">
+              <Link href="/culture-health">
+                Подробнее о направлении <ArrowRight data-icon="inline-end" />
+              </Link>
+            </Button>
+            <Button asChild variant="ghost" size="xl">
+              <Link href="/culture-health/demo">Демо-дашборд</Link>
+            </Button>
+          </div>
         </div>
         <div className="grid gap-3 sm:grid-cols-3">
           {(Object.keys(GROUPS) as MetricGroup[]).map((g) => (
-            <div key={g} className="surface flex flex-col gap-3 bg-background p-4">
+            <div key={g} className="surface flex flex-col gap-3 p-4">
               <p className="text-xs font-medium text-muted-foreground">{GROUPS[g]}</p>
               <ul className="flex flex-col gap-2">
                 {PULSE_METRICS.filter((m) => m.group === g).map((m) => (
@@ -194,15 +219,17 @@ function PulseTeaser() {
 const STEPS = [
   {
     title: "Внешний срез",
+    dir: "brand",
     meta: "Бесплатно · 3 рабочих дня",
     free: true,
     we: "Собираем обещания из вакансий и соцсетей, проверяем их по отзывам, медиа и ответам нейросетей. Сравниваем с 2–3 конкурентами.",
     you: "Название компании и ссылка на hh.ru.",
     result: "Внешний индекс, карта обещаний, три первых шага.",
-    link: { href: "/example", label: "Пример отчёта" },
+    link: { href: "/hr-brand/demo", label: "Демо-отчёт" },
   },
   {
     title: "Разбор с экспертом",
+    dir: "brand",
     meta: "Бесплатно · 30 минут",
     free: true,
     we: "Объясняем цифры и отвечаем на вопросы. Вместе решаем, нужна ли проверка изнутри.",
@@ -211,30 +238,36 @@ const STEPS = [
   },
   {
     title: "Диагностика",
+    dir: "health",
     meta: "С экспертом · около 4 недель",
-    we: "Описываем культурный код и делаем первый замер Пульса: опросы, анонимная обратная связь, интервью.",
+    we: "Описываем культурный код и делаем первый замер: опросы, анонимная обратная связь, интервью.",
     you: "Культурный код или документы о ценностях. Письмо сотрудникам — шаблон даём.",
     result: "10 метрик, разрыв с кодом, план на 90 дней.",
   },
   {
-    title: "Пульс культуры",
+    title: "Дашборд здоровья культуры",
+    dir: "health",
     meta: "Кампания на 3 месяца",
     we: "Три волны замеров, дашборд для команды культуры, руководителей и топов. Эксперт помогает с решениями.",
     you: "Встреча с руководителями раз в 2 недели.",
     result: "Динамика метрик и страница «Вы сказали — мы сделали» для сотрудников.",
-    link: { href: "/pulse", label: "О Пульсе культуры" },
+    link: { href: "/culture-health", label: "О направлении" },
   },
 ]
 
 function Journey() {
   return (
     <Section id="how" className="bg-card">
-      <SectionHeader eyebrow="Как это работает" title="От бесплатного среза до изменений" description="Первые два шага ничего не стоят. Дальше — только если увидите в этом смысл." />
+      <SectionHeader eyebrow="Как это работает" title="От бесплатного среза до изменений" description="Первые два шага — внешняя оценка, они ничего не стоят. Взгляд изнутри — только если увидите в этом смысл." />
       <ol className="mx-auto flex max-w-4xl flex-col gap-3">
         {STEPS.map((s, i) => (
           <li key={s.title} className={cn("surface grid gap-5 p-6 md:grid-cols-[220px_1fr] md:p-7", s.free && i === 0 && "border-brand-200 bg-brand-50/60")}>
             <div className="flex flex-col items-start gap-2">
-              <span className="text-sm font-medium text-muted-foreground tabular-nums">Шаг {i + 1}</span>
+              <span className="flex items-center gap-2 text-sm font-medium text-muted-foreground tabular-nums">
+                Шаг {i + 1}
+                <span className={cn("size-1.5 rounded-full", s.dir === "brand" ? "bg-brand-500" : "bg-health-500")} aria-hidden />
+                <span className="text-xs font-normal">{s.dir === "brand" ? "снаружи" : "изнутри"}</span>
+              </span>
               <h3 className="text-xl font-semibold">{s.title}</h3>
               <span className={cn("rounded-full px-2.5 py-0.5 text-xs font-medium", s.free ? "bg-status-ok/10 text-status-ok" : "bg-secondary text-secondary-foreground")}>
                 {s.meta}
@@ -312,26 +345,43 @@ function DataSafety() {
 }
 
 function PricingTeaser() {
-  const plans = [
-    { t: "Срез", p: "0 ₽", d: "Внешняя картина и разбор с экспертом.", free: true },
-    { t: "Диагностика", p: "от 180 000 ₽", d: "Культурный код и первый замер Пульса." },
-    { t: "Пульс культуры", p: "от 490 000 ₽", d: "Кампания на 3 месяца: 10 метрик, дашборд, эксперт.", priced: true, hl: true },
+  const groups = [
+    {
+      id: "brand",
+      name: DIRECTION_NAMES.brand,
+      plans: [
+        { t: "Внешний срез", p: "0 ₽", d: "Индекс, слепые зоны, место в отрасли и разбор с экспертом.", fixed: true },
+        { t: "Мониторинг", p: "от 30 000 ₽ в месяц", d: "Ежемесячное обновление индекса и конкурентов." },
+      ],
+    },
+    {
+      id: "health",
+      name: DIRECTION_NAMES.health,
+      plans: [
+        { t: "Диагностика", p: "от 180 000 ₽", d: "Культурный код и первый замер 10 метрик." },
+        { t: "Кампания на 3 месяца", p: "от 490 000 ₽", d: "Три волны замеров, дашборд, эксперт.", fixed: true },
+      ],
+    },
   ]
   return (
     <Section className="bg-card">
       <SectionHeader eyebrow="Цены" title="Начните бесплатно. Платите, когда нужна глубина" />
-      <div className="grid gap-3 md:grid-cols-3">
-        {plans.map((x) => (
-          <div
-            key={x.t}
-            className={cn(
-              "flex flex-col gap-2 rounded-[1.25rem] border p-6",
-              x.hl ? "border-transparent bg-primary text-primary-foreground shadow-[0_20px_40px_-20px_rgb(168_71_184/0.7)]" : "border-border bg-background",
-            )}
-          >
-            <p className={cn("text-sm", x.hl ? "text-white/80" : "text-muted-foreground")}>{x.t}</p>
-            <p className="text-2xl font-semibold">{x.free || x.priced ? x.p : <Ph>{x.p}</Ph>}</p>
-            <p className={cn("text-sm", x.hl ? "text-white/85" : "text-muted-foreground")}>{x.d}</p>
+      <div className="grid gap-4 lg:grid-cols-2">
+        {groups.map((g) => (
+          <div key={g.id} className={cn("flex flex-col gap-3 rounded-3xl border p-4 md:p-5", g.id === "brand" ? "border-brand-100 bg-brand-50/50" : "border-health-100 bg-health-50/60")}>
+            <p className="flex items-center gap-2 px-1 text-sm font-medium">
+              <span className={cn("size-1.5 rounded-full", g.id === "brand" ? "bg-brand-500" : "bg-health-500")} aria-hidden />
+              {g.name}
+            </p>
+            <div className="grid gap-3 sm:grid-cols-2">
+              {g.plans.map((x) => (
+                <div key={x.t} className="flex flex-col gap-2 rounded-[1.25rem] border border-border bg-card p-5">
+                  <p className="text-sm text-muted-foreground">{x.t}</p>
+                  <p className="text-xl font-semibold">{x.fixed ? x.p : <Ph>{x.p}</Ph>}</p>
+                  <p className="text-sm text-muted-foreground">{x.d}</p>
+                </div>
+              ))}
+            </div>
           </div>
         ))}
       </div>

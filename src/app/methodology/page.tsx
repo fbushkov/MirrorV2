@@ -1,4 +1,6 @@
 import type { Metadata } from "next"
+import { ArrowDown } from "lucide-react"
+import { DIRECTION_NAMES } from "@/content/site"
 import { PageHero } from "@/components/site/page-hero"
 import { Section, SectionHeader } from "@/components/site/section"
 import { FaqSection } from "@/components/site/faq-list"
@@ -6,10 +8,10 @@ import { CtaBand } from "@/components/site/cta-band"
 import { StatusPill } from "@/components/site/status"
 import { Ph } from "@/components/site/ph"
 import { IndexCalculator } from "@/components/methodology/index-calculator"
-import { CultureMatrixChart, IndexGauge } from "@/components/charts/brand-charts"
+import { IndexGauge } from "@/components/charts/brand-charts"
 import { BlindSpots } from "@/components/metrics/blind-spots"
 import { IndustryTracks } from "@/components/metrics/industry-tracks"
-import { MATRIX_ZONES } from "@/content/demo"
+import { MatrixBlock } from "@/components/metrics/matrix-block"
 import { NOT_IN_METRICS, PULSE_METRICS } from "@/content/pulse"
 import { LevelBadge } from "@/components/pulse/parts"
 import { cn } from "@/lib/utils"
@@ -17,14 +19,33 @@ import { FAQ_CULTURE } from "@/content/faq"
 
 export const metadata: Metadata = {
   title: "Методика",
-  description: "Что измеряет индекс культуры Mirror, зачем он нужен и как мы его считаем. Открытая методика и пример расчёта.",
+  description: "Как Mirror считает оценку HR-бренда и индекс культуры снаружи и здоровье корпоративной культуры изнутри. Открытая методика и пример расчёта.",
 }
 
-const ZONE_TONE: Record<string, string> = {
-  strong: "border-l-4 border-l-status-ok",
-  honest: "border-l-4 border-l-status-warn",
-  wrong: "border-l-4 border-l-chart-5",
-  over: "border-l-4 border-l-status-bad",
+function DirLabel({ n }: { n: 1 | 2 }) {
+  return <>Направление {n} · {n === 1 ? "HR-бренд и индекс культуры" : "здоровье корпоративной культуры"}</>
+}
+
+function DirNav() {
+  const items = [
+    { href: "#metrics", n: 1, name: DIRECTION_NAMES.brand, text: "Индекс, слепые зоны, место в отрасли, матрица, расчёт", dot: "bg-brand-500", card: "border-brand-100 bg-brand-50/60" },
+    { href: "#health-method", n: 2, name: DIRECTION_NAMES.health, text: "10 метрик, источники, зоны балла, уверенность данных", dot: "bg-health-500", card: "border-health-100 bg-health-50/70" },
+  ]
+  return (
+    <div className="grid gap-3 md:grid-cols-2">
+      {items.map((i) => (
+        <a key={i.href} href={i.href} className={cn("flex flex-col gap-1.5 rounded-3xl border p-6 transition-colors hover:border-foreground/20", i.card)}>
+          <span className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
+            <span className={cn("size-1.5 rounded-full", i.dot)} aria-hidden />
+            Направление {i.n}
+          </span>
+          <span className="text-lg font-semibold">{i.name}</span>
+          <span className="text-sm text-muted-foreground">{i.text}</span>
+          <span className="mt-1 inline-flex items-center gap-1 text-sm font-medium text-primary">Перейти <ArrowDown className="size-4" /></span>
+        </a>
+      ))}
+    </div>
+  )
 }
 
 function MetricCard({ name, base, question, text, children }: { name: string; base: string; question: string; text: React.ReactNode; children: React.ReactNode }) {
@@ -50,16 +71,20 @@ const STEPS = [
   ["Привязываем к действию", "У каждого спорного обещания — ответственный, срок и показатель, по которому видно результат."],
 ] as const
 
-export default function CultureIndexPage() {
+export default function MethodologyPage() {
   return (
     <>
       <PageHero
         eyebrow="Методика"
-        title="Насколько ваши слова совпадают с делами"
-        description="Индекс культуры — доля обещаний работодателя, которые подтверждает опыт людей. Рядом с ним — слепые зоны и место в отрасли: вместе они показывают и честность бренда, и его силу."
+        title="Как мы считаем"
+        description="Открытая методика двух направлений. Снаружи — насколько ваши обещания совпадают с тем, что видят люди. Изнутри — как сотрудники переживают культуру."
       />
 
-      <Section className="pt-0 md:pt-4">
+      <Section className="pt-0 md:pt-0">
+        <DirNav />
+      </Section>
+
+      <Section className="pt-0 md:pt-0">
         <div className="grid gap-3 md:grid-cols-3">
           {[
             ["Бренд", "Люди верят людям. Когда сотрудники подтверждают ваши слова, коммуникации работают сильнее и дешевле."],
@@ -76,7 +101,7 @@ export default function CultureIndexPage() {
 
       <Section id="metrics" className="bg-card">
         <SectionHeader
-          eyebrow="Три показателя"
+          eyebrow={<DirLabel n={1} />}
           title="У каждого показателя своя точка отсчёта"
           description="Индекс культуры меряет честность. Но честно можно обещать и мало. Поэтому рядом — ещё два показателя. В одну цифру мы их не смешиваем."
         />
@@ -114,25 +139,12 @@ export default function CultureIndexPage() {
           title="Честность и условия — на одном поле"
           description="По вертикали — индекс культуры, по горизонтали — место в отрасли. Где вы стоите, подсказывает, что делать дальше."
         />
-        <div className="grid gap-4 lg:grid-cols-[1.25fr_0.75fr]">
-          <div className="surface-raised p-4 md:p-6">
-            <CultureMatrixChart />
-            <p className="mt-2 text-xs text-muted-foreground">Пример на условных данных: Банк N и два конкурента</p>
-          </div>
-          <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
-            {MATRIX_ZONES.map((z) => (
-              <li key={z.id} className={cn("surface p-5", ZONE_TONE[z.id])}>
-                <p className="font-semibold">{z.title}</p>
-                <p className="mt-1 text-sm text-muted-foreground">{z.text}</p>
-              </li>
-            ))}
-          </ul>
-        </div>
+        <MatrixBlock />
       </Section>
 
-      <Section id="method">
+      <Section id="brand-method">
         <SectionHeader
-          eyebrow={<>Методика · версия <Ph>1.0</Ph></>}
+          eyebrow={<>Направление 1 · методика, версия <Ph>1.0</Ph></>}
           title="Как мы считаем"
           description="Методика открыта: любой результат можно проверить по таблице. Веса следуют из ваших же текстов, а не из мнения эксперта."
         />
@@ -156,61 +168,6 @@ export default function CultureIndexPage() {
             </li>
           ))}
         </ol>
-      </Section>
-
-      <Section id="pulse-method" className="bg-card">
-        <SectionHeader
-          eyebrow="Пульс культуры"
-          title="Как считаем изнутри"
-          description="Переживаемую культуру меряем по 10 метрикам. У каждой — свои источники. Баллом становятся только опросы и тексты; остальное подтверждает или опровергает сигнал."
-        />
-        <div className="surface overflow-hidden bg-background">
-          <div className="overflow-x-auto">
-            <table className="w-full min-w-[760px] text-left text-sm">
-              <thead>
-                <tr className="text-xs text-muted-foreground">
-                  <th scope="col" className="px-4 py-3 font-normal">Метрика</th>
-                  <th scope="col" className="px-4 py-3 font-normal">О · опросы</th>
-                  <th scope="col" className="px-4 py-3 font-normal">Т · тексты</th>
-                  <th scope="col" className="px-4 py-3 font-normal">П · поведение и HR-события в агрегате</th>
-                </tr>
-              </thead>
-              <tbody>
-                {PULSE_METRICS.map((m) => (
-                  <tr key={m.id} className="border-t border-border align-top">
-                    <th scope="row" className="px-4 py-3 font-medium">{m.name}</th>
-                    <td className="px-4 py-3 text-muted-foreground">{m.sources.o}</td>
-                    <td className="px-4 py-3 text-muted-foreground">{m.sources.t}</td>
-                    <td className="px-4 py-3 text-muted-foreground">{m.sources.p}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div className="mt-3 grid gap-3 md:grid-cols-2 lg:grid-cols-4">
-          <div className="surface bg-background p-5">
-            <p className="mb-2 font-semibold">Зоны балла</p>
-            <ul className="flex flex-col gap-2 text-sm">
-              <li className="flex items-center justify-between gap-2"><LevelBadge score={70} /> от 65</li>
-              <li className="flex items-center justify-between gap-2"><LevelBadge score={55} /> 50–64</li>
-              <li className="flex items-center justify-between gap-2"><LevelBadge score={40} /> до 50</li>
-            </ul>
-          </div>
-          <div className="surface bg-background p-5">
-            <p className="mb-2 font-semibold">Уверенность данных</p>
-            <p className="text-sm text-muted-foreground">У каждого балла: высокая, средняя или низкая. Зависит от числа ответов и согласия источников между собой.</p>
-          </div>
-          <div className="surface bg-background p-5">
-            <p className="mb-2 font-semibold">Что влияет</p>
-            <p className="text-sm text-muted-foreground">Каждая причина помечена уровнем доказанности: гипотеза → коррелирует → подтверждено пилотом.</p>
-          </div>
-          <div className="surface bg-background p-5">
-            <p className="mb-2 font-semibold">Подтверждающие сигналы</p>
-            <p className="text-sm text-muted-foreground">Текучесть новичков, отказы от офферов, абсентеизм, доля закрытых петель обратной связи. Баллом не становятся.</p>
-          </div>
-        </div>
-        <p className="mt-6 text-sm text-muted-foreground">{NOT_IN_METRICS} Разрыв считаем по нормам культурного кода: каждая норма привязана к одной или нескольким метрикам.</p>
       </Section>
 
       <Section className="bg-card">
@@ -239,10 +196,65 @@ export default function CultureIndexPage() {
         </div>
       </Section>
 
-      <Section className="pt-0 md:pt-0">
+      <Section id="health-method" className="bg-health-50/50">
+        <SectionHeader
+          eyebrow={<DirLabel n={2} />}
+          title="Как считаем изнутри"
+          description="Переживаемую культуру меряем по 10 метрикам. У каждой — свои источники. Баллом становятся только опросы и тексты; остальное подтверждает или опровергает сигнал."
+        />
+        <div className="surface overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-[760px] text-left text-sm">
+              <thead>
+                <tr className="text-xs text-muted-foreground">
+                  <th scope="col" className="px-4 py-3 font-normal">Метрика</th>
+                  <th scope="col" className="px-4 py-3 font-normal">О · опросы</th>
+                  <th scope="col" className="px-4 py-3 font-normal">Т · тексты</th>
+                  <th scope="col" className="px-4 py-3 font-normal">П · поведение и HR-события в агрегате</th>
+                </tr>
+              </thead>
+              <tbody>
+                {PULSE_METRICS.map((m) => (
+                  <tr key={m.id} className="border-t border-border align-top">
+                    <th scope="row" className="px-4 py-3 font-medium">{m.name}</th>
+                    <td className="px-4 py-3 text-muted-foreground">{m.sources.o}</td>
+                    <td className="px-4 py-3 text-muted-foreground">{m.sources.t}</td>
+                    <td className="px-4 py-3 text-muted-foreground">{m.sources.p}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div className="mt-3 grid gap-3 md:grid-cols-2 lg:grid-cols-4">
+          <div className="surface p-5">
+            <p className="mb-2 font-semibold">Зоны балла</p>
+            <ul className="flex flex-col gap-2 text-sm">
+              <li className="flex items-center justify-between gap-2"><LevelBadge score={70} /> от 65</li>
+              <li className="flex items-center justify-between gap-2"><LevelBadge score={55} /> 50–64</li>
+              <li className="flex items-center justify-between gap-2"><LevelBadge score={40} /> до 50</li>
+            </ul>
+          </div>
+          <div className="surface p-5">
+            <p className="mb-2 font-semibold">Уверенность данных</p>
+            <p className="text-sm text-muted-foreground">У каждого балла: высокая, средняя или низкая. Зависит от числа ответов и согласия источников между собой.</p>
+          </div>
+          <div className="surface p-5">
+            <p className="mb-2 font-semibold">Что влияет</p>
+            <p className="text-sm text-muted-foreground">Каждая причина помечена уровнем доказанности: гипотеза → коррелирует → подтверждено пилотом.</p>
+          </div>
+          <div className="surface p-5">
+            <p className="mb-2 font-semibold">Подтверждающие сигналы</p>
+            <p className="text-sm text-muted-foreground">Текучесть новичков, отказы от офферов, абсентеизм, доля закрытых петель обратной связи. Баллом не становятся.</p>
+          </div>
+        </div>
+        <p className="mt-6 text-sm text-muted-foreground">{NOT_IN_METRICS} Разрыв считаем по нормам культурного кода: каждая норма привязана к одной или нескольким метрикам.</p>
+      </Section>
+
+      <Section>
         <FaqSection items={FAQ_CULTURE} title="Вопросы об индексе" />
       </Section>
-      <CtaBand title="Узнайте свой индекс" />
+      <CtaBand title="Узнайте свой индекс культуры" />
     </>
   )
 }

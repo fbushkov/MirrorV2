@@ -3,7 +3,7 @@ import { ArrowDownRight, ArrowUpRight } from "lucide-react"
 import { PageHero } from "@/components/site/page-hero"
 import { Section } from "@/components/site/section"
 import { CtaBand } from "@/components/site/cta-band"
-import { ReportSwitch } from "@/components/site/report-switch"
+import { DemoSwitch } from "@/components/site/demo-switch"
 import { StatusPill } from "@/components/site/status"
 import { BrandDynamicsChart, CultureMatrixChart, GapDivergingChart, SourcesHeatmap } from "@/components/charts/brand-charts"
 import { BlindSpots } from "@/components/metrics/blind-spots"
@@ -12,8 +12,8 @@ import { BANK_N, BLIND_SPOTS, COMPETITORS, EVENTS, INDUSTRY, PROMISES, cultureIn
 import { cn } from "@/lib/utils"
 
 export const metadata: Metadata = {
-  title: "Пример отчёта",
-  description: "Как выглядит отчёт Mirror: индекс снаружи и изнутри, слепые зоны, место в отрасли, просадки и подъёмы, сравнение с конкурентами.",
+  title: "Демо-отчёт · Оценка HR-бренда и индекс культуры",
+  description: "Как выглядит отчёт по HR-бренду: индекс культуры, слепые зоны, место в отрасли, просадки и подъёмы, сравнение с конкурентами.",
 }
 
 function Panel({ title, hint, children, className }: { title: string; hint?: string; children: React.ReactNode; className?: string }) {
@@ -50,30 +50,28 @@ const ACTIONS = [
   ["Описать правила гибридной работы", "Директор по персоналу", "1 месяц"],
 ]
 
-export default function ExamplePage() {
+export default function BrandDemoPage() {
   const ext = Math.round(cultureIndex(PROMISES, "external"))
-  const int = Math.round(cultureIndex(PROMISES, "internal"))
   const confirmed = PROMISES.filter((p) => statusOf(p.external) === "ok").length
 
   return (
     <>
       <PageHero
-        eyebrow="Данные условные"
-        title="Так выглядит отчёт"
-        description={`Пример по условному «${BANK_N.name}», ${BANK_N.size}. Внешний срез есть уже в бесплатной версии. Пульс культуры появляется после диагностики.`}
+        eyebrow="Демо · данные условные"
+        title="Оценка HR-бренда и индекс культуры"
+        description={`Так выглядит отчёт по условному «${BANK_N.name}», ${BANK_N.size}. Индекс, слепые зоны и место в отрасли есть уже в бесплатном срезе.`}
       />
       <Section className="pt-0 md:pt-0">
-        <ReportSwitch active="external" />
-        <div className="grid grid-cols-2 gap-3 lg:grid-cols-5 [&>*:last-child]:col-span-2 lg:[&>*:last-child]:col-span-1">
-          <Kpi label="Индекс снаружи" value={String(ext)} delta={2} tone="text-chart-1" />
-          <Kpi label="Индекс изнутри · Пульс" value={String(int)} delta={5} tone="text-chart-2" />
+        <DemoSwitch active="brand" />
+        <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+          <Kpi label="Индекс культуры" value={String(ext)} delta={2} tone="text-chart-1" />
           <Kpi label="Подтверждено обещаний" value={`${confirmed} из ${PROMISES.length}`} />
           <Kpi label="Слепые зоны" value={`${BLIND_SPOTS.length} темы`} />
           <Kpi label="Место в отрасли" value={`${INDUSTRY.overall}`} />
         </div>
 
         <Panel title="Просадки и подъёмы" hint="Индекс по месяцам. Выделена просадка, метки — события, которые на неё повлияли." className="mt-3">
-          <BrandDynamicsChart />
+          <BrandDynamicsChart externalOnly />
           <ul className="mt-3 flex flex-col gap-1 text-sm text-muted-foreground">
             {EVENTS.map((e) => (
               <li key={e.month}>
@@ -82,25 +80,6 @@ export default function ExamplePage() {
             ))}
           </ul>
         </Panel>
-
-        <div className="mt-3 grid gap-3 lg:grid-cols-2">
-          <Panel title="Где слова расходятся с делом" hint="Изнутри минус снаружи. Красное — переобещаете, бирюзовое — недорассказываете.">
-            <GapDivergingChart />
-          </Panel>
-          <Panel title="Обещания" hint="Статус снаружи и изнутри">
-            <ul className="flex flex-col divide-y divide-border">
-              {PROMISES.map((p) => (
-                <li key={p.id} className="flex flex-wrap items-center justify-between gap-2 py-2.5">
-                  <span className="text-sm">{p.title}</span>
-                  <span className="flex gap-1.5">
-                    <StatusPill status={statusOf(p.external, p.mentions)} />
-                    <StatusPill status={statusOf(p.internal)} className="opacity-75" />
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </Panel>
-        </div>
 
         <Panel title="Откуда подтверждения" hint="Доля упоминаний, где опыт совпадает с обещанием, по источникам" className="mt-3">
           <SourcesHeatmap />
@@ -162,6 +141,39 @@ export default function ExamplePage() {
             </div>
           </Panel>
         </div>
+
+        <div className="mt-14 flex flex-col items-start gap-2 border-t border-border pt-10">
+          <span className="inline-flex items-center gap-2 rounded-full bg-health-100 px-3 py-1 text-xs font-medium text-health-700">
+            <span className="size-1.5 rounded-full bg-health-500" aria-hidden />
+            Если подключён дашборд здоровья культуры
+          </span>
+          <p className="text-xl font-semibold">Снаружи и изнутри вместе</p>
+          <p className="max-w-2xl text-sm text-muted-foreground">
+            Внутренние данные появляются после диагностики. Тогда те же обещания видны с двух сторон.
+          </p>
+        </div>
+        <Panel title="Две линии" hint="Внешний и внутренний бренд по месяцам" className="mt-6">
+          <BrandDynamicsChart />
+        </Panel>
+        <div className="mt-3 grid gap-3 lg:grid-cols-2">
+          <Panel title="Где слова расходятся с делом" hint="Изнутри минус снаружи. Красное — переобещаете, бирюзовое — недорассказываете.">
+            <GapDivergingChart />
+          </Panel>
+          <Panel title="Обещания" hint="Статус снаружи и изнутри (светлее)">
+            <ul className="flex flex-col divide-y divide-border">
+              {PROMISES.map((p) => (
+                <li key={p.id} className="flex flex-wrap items-center justify-between gap-2 py-2.5">
+                  <span className="text-sm">{p.title}</span>
+                  <span className="flex gap-1.5">
+                    <StatusPill status={statusOf(p.external, p.mentions)} />
+                    <StatusPill status={statusOf(p.internal)} className="opacity-75" />
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </Panel>
+        </div>
+
       </Section>
       <CtaBand title="Получите такой срез по своей компании" />
     </>

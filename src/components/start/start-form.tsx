@@ -13,14 +13,30 @@ import { Ph } from "@/components/site/ph"
 import { cn } from "@/lib/utils"
 
 const TOPICS = [
-  { id: "scan", label: "Бесплатный срез" },
-  { id: "diagnostics", label: "Диагностика" },
-  { id: "pulse", label: "Пульс культуры" },
-  { id: "other", label: "Другой вопрос" },
+  { id: "scan", label: "Бесплатный срез", group: "HR-бренд и индекс культуры" },
+  { id: "monitoring", label: "Мониторинг", group: "HR-бренд и индекс культуры" },
+  { id: "diagnostics", label: "Диагностика", group: "Здоровье корпоративной культуры" },
+  { id: "health", label: "Кампания на 3 месяца", group: "Здоровье корпоративной культуры" },
+  { id: "other", label: "Другой вопрос", group: "Другое" },
 ] as const
+const TOPIC_GROUPS = [...new Set(TOPICS.map((t) => t.group))]
 type Topic = (typeof TOPICS)[number]["id"]
 
-function Field({ id, label, hint, error, children, className }: { id: string; label: string; hint?: string; error?: string; children: React.ReactNode; className?: string }) {
+function Field({
+  id,
+  label,
+  hint,
+  error,
+  children,
+  className,
+}: {
+  id: string
+  label: string
+  hint?: string
+  error?: string
+  children: React.ReactNode
+  className?: string
+}) {
   return (
     <div className={cn("flex flex-col gap-2", className)}>
       <Label htmlFor={id}>
@@ -90,20 +106,27 @@ export function StartForm({ variant = "full" }: { variant?: "compact" | "full" }
       {variant === "full" && (
         <fieldset className="sm:col-span-2">
           <legend className="mb-2 text-sm font-medium">Что нужно</legend>
-          <div className="flex flex-wrap gap-2">
-            {TOPICS.map((t) => (
-              <button
-                key={t.id}
-                type="button"
-                aria-pressed={topic === t.id}
-                onClick={() => setTopic(t.id)}
-                className={cn(
-                  "rounded-full border px-3.5 py-1.5 text-sm transition-colors",
-                  topic === t.id ? "border-primary bg-secondary text-secondary-foreground" : "border-border hover:border-brand-200",
-                )}
-              >
-                {t.label}
-              </button>
+          <div className="flex flex-col gap-3">
+            {TOPIC_GROUPS.map((g) => (
+              <div key={g} className="flex flex-col gap-1.5">
+                <span className="text-xs text-muted-foreground">{g}</span>
+                <div className="flex flex-wrap gap-2">
+                  {TOPICS.filter((t) => t.group === g).map((t) => (
+                    <button
+                      key={t.id}
+                      type="button"
+                      aria-pressed={topic === t.id}
+                      onClick={() => setTopic(t.id)}
+                      className={cn(
+                        "rounded-full border px-3.5 py-1.5 text-sm transition-colors",
+                        topic === t.id ? "border-primary bg-secondary text-secondary-foreground" : "border-border hover:border-brand-200",
+                      )}
+                    >
+                      {t.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
             ))}
           </div>
         </fieldset>

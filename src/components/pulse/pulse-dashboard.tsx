@@ -53,7 +53,7 @@ const TONE = {
 }
 const TONE_LABEL = { negative: "негатив", positive: "позитив", neutral: "нейтрально" }
 
-/** Демо-макет дашборда «Пульс культуры» на вымышленных данных */
+/** Демо-макет дашборда здоровья корпоративной культуры на вымышленных данных */
 export function PulseDashboard() {
   const [period, setPeriod] = useState("30")
   const [deptId, setDeptId] = useState("all")
@@ -95,7 +95,7 @@ export function PulseDashboard() {
       {/* Шапка с фильтрами */}
       <div className="flex flex-col gap-4 border-b border-border bg-muted/40 p-4 md:flex-row md:items-end md:justify-between md:p-5">
         <div>
-          <p className="font-semibold">Пульс культуры</p>
+          <p className="font-semibold">Здоровье корпоративной культуры</p>
           <p className="text-xs text-muted-foreground">Демо-данные · компания на {DEPARTMENTS[0].size} человек</p>
         </div>
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">

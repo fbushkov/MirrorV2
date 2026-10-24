@@ -5,7 +5,7 @@ import { PULSE_MONTHS } from "@/content/pulse"
 import { EChart } from "./echart"
 import { C } from "./theme"
 
-/** Динамика метрики Пульса за 12 месяцев с границами зон «риск» (50) и «в норме» (65) */
+/** Динамика метрики здоровья культуры за 12 месяцев с границами зон «риск» (50) и «в норме» (65) */
 export function PulseTrendChart({ values, name, className }: { values: number[]; name: string; className?: string }) {
   const option = useMemo(
     () => ({

@@ -33,16 +33,23 @@ const lineArea = (color: string) => ({
   ],
 })
 
-/** Динамика внешнего и внутреннего индекса с отмеченными просадками и подъёмами */
-export function BrandDynamicsChart({ compact = false, className }: { compact?: boolean; className?: string }) {
+/** Динамика внешнего и внутреннего индекса с отмеченными просадками и подъёмами. externalOnly — только внешний контур. */
+export function BrandDynamicsChart({ compact = false, externalOnly = false, className }: { compact?: boolean; externalOnly?: boolean; className?: string }) {
   const option = useMemo(() => {
     const eventPoints = EVENTS.map((e) => {
       const i = MONTHS.indexOf(e.month)
       return { coord: [e.month, EXTERNAL_SERIES[i]], value: e.text }
     })
+    const dip = compact
+      ? undefined
+      : {
+          itemStyle: { color: "rgba(229,72,77,0.07)" },
+          label: { color: C.rose, fontSize: 11, position: "insideTop" },
+          data: [[{ name: "просадка", xAxis: "Фев" }, { xAxis: "Апр" }]],
+        }
     return {
       grid: compact ? { left: 8, right: 8, top: 16, bottom: 8, containLabel: true } : { left: 8, right: 16, top: 48, bottom: 8, containLabel: true },
-      legend: compact ? { show: false } : { top: 0, left: 0, data: ["Внешний бренд", "Внутренний бренд"] },
+      legend: compact ? { show: false } : { top: 0, left: 0, data: externalOnly ? ["Внешний бренд"] : ["Внешний бренд", "Внутренний бренд"] },
       tooltip: { trigger: "axis" },
       xAxis: { type: "category", data: MONTHS, boundaryGap: false, },
       yAxis: { type: "value", min: 40, max: 75, splitNumber: 3, axisLabel: { show: !compact } },
@@ -53,6 +60,7 @@ export function BrandDynamicsChart({ compact = false, className }: { compact?: b
           data: EXTERNAL_SERIES,
           color: C.external,
           areaStyle: { color: lineArea(C.external) },
+          markArea: externalOnly ? dip : undefined,
           markPoint: compact
             ? undefined
             : {
@@ -64,29 +72,27 @@ export function BrandDynamicsChart({ compact = false, className }: { compact?: b
                 tooltip: { formatter: (p: { value: string }) => p.value },
               },
         },
-        {
-          name: "Внутренний бренд",
-          type: "line",
-          data: INTERNAL_SERIES,
-          color: C.internal,
-          areaStyle: { color: lineArea(C.internal) },
-          markArea: compact
-            ? undefined
-            : {
-                itemStyle: { color: "rgba(229,72,77,0.07)" },
-                label: { color: C.rose, fontSize: 11, position: "insideTop" },
-                data: [[{ name: "просадка", xAxis: "Фев" }, { xAxis: "Апр" }]],
+        ...(externalOnly
+          ? []
+          : [
+              {
+                name: "Внутренний бренд",
+                type: "line",
+                data: INTERNAL_SERIES,
+                color: C.internal,
+                areaStyle: { color: lineArea(C.internal) },
+                markArea: dip,
               },
-        },
+            ]),
       ],
     }
-  }, [compact])
+  }, [compact, externalOnly])
 
   return (
     <EChart
       option={option}
       className={className ?? (compact ? "h-44" : "h-80")}
-      ariaLabel="График индекса внешнего и внутреннего бренда по месяцам"
+      ariaLabel={externalOnly ? "График индекса внешнего бренда по месяцам" : "График индекса внешнего и внутреннего бренда по месяцам"}
     />
   )
 }

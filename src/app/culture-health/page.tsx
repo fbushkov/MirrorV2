@@ -28,8 +28,8 @@ import {
 } from "@/content/pulse"
 
 export const metadata: Metadata = {
-  title: "Пульс культуры",
-  description: "Пульс переживаемой культуры и её разрыв с заявленной. 10 метрик, приватность по умолчанию, дашборд для руководителей и команды культуры.",
+  title: "Дашборд здоровья корпоративной культуры",
+  description: "Переживаемая культура и её разрыв с заявленной. 10 метрик, приватность по умолчанию, дашборд для руководителей и команды культуры.",
 }
 
 const NAV = [
@@ -45,7 +45,7 @@ const NAV = [
   { id: "faq", label: "Вопросы" },
 ]
 
-export default function PulsePage() {
+export default function CultureHealthPage() {
   return (
     <>
       {/* 1. Первый экран */}
@@ -53,13 +53,13 @@ export default function PulsePage() {
         <div className="hero-glow pointer-events-none absolute inset-0 -z-10" />
         <div className="grid-bg pointer-events-none absolute inset-0 -z-10" />
         <div className="mx-auto flex w-full max-w-3xl flex-col items-center gap-5 px-4 text-center md:px-6">
-          <Eyebrow>Пульс культуры · внутренний контур Mirror</Eyebrow>
+          <Eyebrow tone="health">Направление 2 · Изнутри</Eyebrow>
           <h1 className="text-4xl font-semibold md:text-6xl md:leading-[1.05]">
-            Как в компании живут и работают <span className="text-gradient">на самом деле</span>
+            Дашборд здоровья <span className="text-gradient">корпоративной культуры</span>
           </h1>
           <p className="max-w-2xl text-lg text-pretty text-muted-foreground">
-            Пульс культуры показывает, где заявленные ценности совпадают с опытом людей, а где расходятся. Пульс переживаемой
-            культуры и её разрыв с заявленной.
+            Как в компании живут и работают на самом деле. Дашборд показывает, где заявленные ценности совпадают с опытом
+            людей, а где расходятся.
           </p>
           <div className="flex flex-wrap justify-center gap-3">
             <Button asChild variant="glow" size="xl">
@@ -68,7 +68,10 @@ export default function PulsePage() {
               </a>
             </Button>
             <Button asChild variant="soft" size="xl">
-              <a href="#privacy">Приватность и анонимность</a>
+              <Link href="/culture-health/demo">Демо-дашборд</Link>
+            </Button>
+            <Button asChild variant="ghost" size="xl">
+              <a href="#privacy">Приватность</a>
             </Button>
           </div>
         </div>
@@ -297,11 +300,11 @@ export default function PulsePage() {
 
       {/* 14. Вопросы */}
       <Section id="faq">
-        <FaqSection items={PULSE_FAQ} title="Частые вопросы сотрудников" note="Эти ответы можно использовать в рассылке перед запуском Пульса." />
+        <FaqSection items={PULSE_FAQ} title="Частые вопросы сотрудников" note="Эти ответы можно использовать в рассылке перед запуском дашборда." />
       </Section>
 
       {/* 15. Заявка */}
-      <CtaBand title="Запустите Пульс в своей компании" text="Начнём с диагностики и первого замера. Расскажите о компании — предложим план кампании." cta="Обсудить Пульс культуры" href="/start?type=pulse" />
+      <CtaBand title="Запустите дашборд в своей компании" text="Начнём с диагностики и первого замера. Расскажите о компании — предложим план кампании." cta="Обсудить кампанию" href="/start?type=health" />
       <div className="-mt-10 pb-12 text-center text-sm text-muted-foreground">
         <Link href="/docs/privacy-policy" className="underline underline-offset-4 hover:text-foreground">
           Политика обработки данных
