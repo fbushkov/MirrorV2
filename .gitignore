@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# claude code: локальные логи, снапшоты и личные настройки
+/.claude/logs/
+/.claude/memory/snapshots/
+/.claude/settings.local.json
+/.preview/
