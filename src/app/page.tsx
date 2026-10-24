@@ -139,11 +139,13 @@ function Hero() {
                 </p>
               </div>
             </div>
-          </div>
-          <div className="glass absolute -top-12 -left-4 hidden max-w-[260px] rounded-2xl p-4 shadow-xl shadow-black/40 sm:block md:-left-10">
-            <p className="text-[11px] text-muted-foreground">Отзыв · Dreamjob</p>
-            <p className="mt-1 text-sm">«Коллектив отличный, но зарплата ниже рынка»</p>
-            <StatusPill status="bad" className="mt-2" />
+            <div className="mt-2 flex items-center justify-between gap-3 rounded-2xl bg-white/[0.04] p-3">
+              <div>
+                <p className="text-xs text-muted-foreground">Отзыв · Dreamjob</p>
+                <p className="mt-0.5 text-sm">«Коллектив отличный, но зарплата ниже рынка»</p>
+              </div>
+              <StatusPill status="bad" />
+            </div>
           </div>
         </div>
       </div>
