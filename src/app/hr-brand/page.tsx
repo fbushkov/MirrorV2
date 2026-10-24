@@ -117,7 +117,7 @@ export default function HrBrandPage() {
           <div className="surface-raised min-w-0 p-4 md:p-6">
             <p className="font-semibold">Просадки и подъёмы</p>
             <p className="mt-1 text-sm text-muted-foreground">Индекс культуры по месяцам, метки — события, которые на него повлияли</p>
-            <BrandDynamicsChart externalOnly className="mt-4 h-72" />
+            <BrandDynamicsChart className="mt-4 h-72" />
           </div>
         </div>
       </Section>

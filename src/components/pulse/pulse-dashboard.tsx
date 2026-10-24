@@ -18,6 +18,7 @@ import {
   type MetricGroup,
   type PulseMetric,
 } from "@/content/pulse"
+import { BANK_N } from "@/content/demo"
 import { cn } from "@/lib/utils"
 import { MetricDialog } from "./metric-dialog"
 import { Delta, LevelBadge, MetricIcon, Sparkline } from "./parts"
@@ -96,7 +97,7 @@ export function PulseDashboard() {
       <div className="flex flex-col gap-4 border-b border-border bg-muted/40 p-4 md:flex-row md:items-end md:justify-between md:p-5">
         <div>
           <p className="font-semibold">Здоровье корпоративной культуры</p>
-          <p className="text-xs text-muted-foreground">Демо-данные · компания на {DEPARTMENTS[0].size} человек</p>
+          <p className="text-xs text-muted-foreground">Демо-данные · «{BANK_N.name}», {DEPARTMENTS[0].size} сотрудников</p>
         </div>
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
           <Filter id="f-period" label="Период" value={period} onChange={setPeriod} options={PERIODS} />

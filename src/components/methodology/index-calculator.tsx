@@ -4,38 +4,23 @@ import { useMemo, useState } from "react"
 import { Checkbox } from "@/components/ui/checkbox"
 import { StatusPill } from "@/components/site/status"
 import { IndexGauge } from "@/components/charts/brand-charts"
-import { C } from "@/components/charts/theme"
 import { PROMISES, cultureIndex, statusOf } from "@/content/demo"
 import { cn } from "@/lib/utils"
 
 /** Пример расчёта: снимите галочку, чтобы увидеть индекс без этого обещания */
 export function IndexCalculator() {
   const [enabled, setEnabled] = useState<Record<string, boolean>>(() => Object.fromEntries(PROMISES.map((p) => [p.id, true])))
-  const [side, setSide] = useState<"external" | "internal">("external")
 
   const active = useMemo(() => PROMISES.filter((p) => enabled[p.id]), [enabled])
   const total = active.reduce((s, p) => s + p.weight, 0)
-  const index = Math.round(cultureIndex(active, side))
-  const confirmed = active.filter((p) => statusOf(p[side], p.mentions) === "ok").length
+  const index = Math.round(cultureIndex(active))
+  const confirmed = active.filter((p) => statusOf(p.external, p.mentions) === "ok").length
 
   return (
     <div className="grid gap-4 lg:grid-cols-[1fr_280px]">
       <div className="surface overflow-hidden">
         <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border p-4">
-          <div role="tablist" aria-label="Сторона бренда" className="inline-flex rounded-xl bg-muted p-1">
-            {(["external", "internal"] as const).map((s) => (
-              <button
-                key={s}
-                type="button"
-                role="tab"
-                aria-selected={side === s}
-                onClick={() => setSide(s)}
-                className={cn("rounded-lg px-3 py-1.5 text-sm", side === s ? "bg-card font-medium shadow-sm" : "text-muted-foreground")}
-              >
-                {s === "external" ? "Снаружи" : "Изнутри"}
-              </button>
-            ))}
-          </div>
+          <p className="text-sm font-medium">Обещания «Банка N»</p>
           <p className="text-xs text-muted-foreground">Снимите галочку, чтобы убрать обещание</p>
         </div>
         <div className="overflow-x-auto">
@@ -62,11 +47,11 @@ export function IndexCalculator() {
                       </label>
                     </td>
                     <td className="py-3 text-right tabular-nums">{on ? Math.round(w * 100) + "%" : "—"}</td>
-                    <td className="py-3 text-right tabular-nums">{p[side]}%</td>
+                    <td className="py-3 text-right tabular-nums">{p.external}%</td>
                     <td className="py-3 pl-4">
-                      <StatusPill status={statusOf(p[side], p.mentions)} />
+                      <StatusPill status={statusOf(p.external, p.mentions)} />
                     </td>
-                    <td className="py-3 pr-4 text-right tabular-nums">{on ? (w * p[side]).toFixed(1) : "—"}</td>
+                    <td className="py-3 pr-4 text-right tabular-nums">{on ? (w * p.external).toFixed(1) : "—"}</td>
                   </tr>
                 )
               })}
@@ -75,7 +60,7 @@ export function IndexCalculator() {
         </div>
       </div>
       <div className="surface flex flex-col items-center gap-1 p-5 lg:sticky lg:top-24 lg:self-start">
-        <IndexGauge value={index} label={side === "external" ? "снаружи" : "изнутри"} color={side === "external" ? C.external : C.internal} className="h-48 w-full" />
+        <IndexGauge value={index} label="индекс культуры" className="h-48 w-full" />
         <p className="text-sm text-muted-foreground">
           Подтверждено {confirmed} из {active.length}
         </p>

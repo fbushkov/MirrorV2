@@ -6,7 +6,7 @@ import { Eyebrow, Section, SectionHeader } from "@/components/site/section"
 import { FaqSection } from "@/components/site/faq-list"
 import { Ph } from "@/components/site/ph"
 import { MirrorCard } from "@/components/home/mirror-card"
-import { TwoSides } from "@/components/home/two-sides"
+import { CrossChecks } from "@/components/metrics/cross-checks"
 import { ThreeMetrics } from "@/components/home/three-metrics"
 import { Directions } from "@/components/home/directions"
 import { DIRECTION_NAMES } from "@/content/site"
@@ -32,18 +32,13 @@ export default function HomePage() {
       <BrandSection />
       <HealthSection />
       <Section id="together" className="bg-card">
-        <div className="grid items-center gap-10 lg:grid-cols-[0.85fr_1.15fr]">
-          <div className="flex flex-col items-start gap-5">
-            <Eyebrow>Вместе</Eyebrow>
-            <h2 className="text-3xl font-semibold md:text-[2.75rem] md:leading-[1.1]">Когда оба зеркала рядом</h2>
-            <p className="text-muted-foreground md:text-lg">
-              Одни и те же обещания можно проверить с двух сторон. Так видно, где репутация опережает реальность, а где вы
-              недорассказываете о сильных сторонах.
-            </p>
-            <p className="text-muted-foreground">Переключите вид, чтобы увидеть разницу.</p>
-          </div>
-          <TwoSides />
-        </div>
+        <SectionHeader
+          eyebrow="Вместе"
+          title="Когда оба зеркала рядом"
+          description="Показатели направлений не смешиваем. Но если подключены оба, сверяем общие темы: что подтверждается с двух сторон, а что пока видно только изнутри."
+        />
+        <CrossChecks />
+        <p className="mt-3 text-xs text-muted-foreground">Пример на условных данных «Банка N»</p>
       </Section>
       <Journey />
       <Situations />

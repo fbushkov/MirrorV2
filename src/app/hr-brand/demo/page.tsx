@@ -1,11 +1,13 @@
 import type { Metadata } from "next"
-import { ArrowDownRight, ArrowUpRight } from "lucide-react"
+import Link from "next/link"
+import { ArrowDownRight, ArrowRight, ArrowUpRight } from "lucide-react"
 import { PageHero } from "@/components/site/page-hero"
 import { Section } from "@/components/site/section"
 import { CtaBand } from "@/components/site/cta-band"
 import { DemoSwitch } from "@/components/site/demo-switch"
 import { StatusPill } from "@/components/site/status"
-import { BrandDynamicsChart, CultureMatrixChart, GapDivergingChart, SourcesHeatmap } from "@/components/charts/brand-charts"
+import { BrandDynamicsChart, CultureMatrixChart, SourcesHeatmap } from "@/components/charts/brand-charts"
+import { CrossChecks } from "@/components/metrics/cross-checks"
 import { BlindSpots } from "@/components/metrics/blind-spots"
 import { IndustryTracks } from "@/components/metrics/industry-tracks"
 import { BANK_N, BLIND_SPOTS, COMPETITORS, EVENTS, INDUSTRY, PROMISES, cultureIndex, statusOf } from "@/content/demo"
@@ -51,7 +53,7 @@ const ACTIONS = [
 ]
 
 export default function BrandDemoPage() {
-  const ext = Math.round(cultureIndex(PROMISES, "external"))
+  const ext = Math.round(cultureIndex(PROMISES))
   const confirmed = PROMISES.filter((p) => statusOf(p.external) === "ok").length
 
   return (
@@ -71,11 +73,25 @@ export default function BrandDemoPage() {
         </div>
 
         <Panel title="Просадки и подъёмы" hint="Индекс по месяцам. Выделена просадка, метки — события, которые на неё повлияли." className="mt-3">
-          <BrandDynamicsChart externalOnly />
+          <BrandDynamicsChart />
           <ul className="mt-3 flex flex-col gap-1 text-sm text-muted-foreground">
             {EVENTS.map((e) => (
               <li key={e.month}>
                 <span className="text-foreground">{e.month}:</span> {e.text}
+              </li>
+            ))}
+          </ul>
+        </Panel>
+
+        <Panel title="Обещания" hint="Статус каждого обещания снаружи" className="mt-3">
+          <ul className="grid gap-x-8 sm:grid-cols-2">
+            {PROMISES.map((p) => (
+              <li key={p.id} className="flex flex-wrap items-center justify-between gap-2 border-b border-border py-2.5">
+                <span className="text-sm">{p.title}</span>
+                <span className="flex items-center gap-2 text-sm text-muted-foreground tabular-nums">
+                  {p.external}%
+                  <StatusPill status={statusOf(p.external, p.mentions)} />
+                </span>
               </li>
             ))}
           </ul>
@@ -149,31 +165,16 @@ export default function BrandDemoPage() {
           </span>
           <p className="text-xl font-semibold">Снаружи и изнутри вместе</p>
           <p className="max-w-2xl text-sm text-muted-foreground">
-            Внутренние данные появляются после диагностики. Тогда те же обещания видны с двух сторон.
+            Показатели направлений не смешиваем: у каждого своя шкала. Сверяем только темы — так видно, что подтверждается с двух
+            сторон, а что пока заметно только изнутри.
           </p>
         </div>
-        <Panel title="Две линии" hint="Внешний и внутренний бренд по месяцам" className="mt-6">
-          <BrandDynamicsChart />
-        </Panel>
-        <div className="mt-3 grid gap-3 lg:grid-cols-2">
-          <Panel title="Где слова расходятся с делом" hint="Изнутри минус снаружи. Красное — переобещаете, бирюзовое — недорассказываете.">
-            <GapDivergingChart />
-          </Panel>
-          <Panel title="Обещания" hint="Статус снаружи и изнутри (светлее)">
-            <ul className="flex flex-col divide-y divide-border">
-              {PROMISES.map((p) => (
-                <li key={p.id} className="flex flex-wrap items-center justify-between gap-2 py-2.5">
-                  <span className="text-sm">{p.title}</span>
-                  <span className="flex gap-1.5">
-                    <StatusPill status={statusOf(p.external, p.mentions)} />
-                    <StatusPill status={statusOf(p.internal)} className="opacity-75" />
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </Panel>
+        <div className="mt-6">
+          <CrossChecks />
         </div>
-
+        <Link href="/culture-health/demo" className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-health-700 hover:underline">
+          Открыть демо-дашборд здоровья культуры <ArrowRight className="size-4" />
+        </Link>
       </Section>
       <CtaBand title="Получите такой срез по своей компании" />
     </>
