@@ -30,7 +30,7 @@ export function PhToggle() {
     <label className="inline-flex cursor-pointer items-center gap-2 text-xs text-muted-foreground">
       <Switch checked={on} onCheckedChange={toggle} />
       <span>
-        Подсветка условных текстов <span className="ph px-1">вот так</span>
+        Подсветить <span className="ph px-1">условные тексты</span>
       </span>
     </label>
   )

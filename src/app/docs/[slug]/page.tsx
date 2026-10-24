@@ -39,7 +39,7 @@ export default async function DocPage({ params }: PageProps<"/docs/[slug]">) {
           <a
             key={l.href}
             href={l.href}
-            className={l.href.endsWith(slug) ? "rounded-full bg-brand-accent/20 px-3 py-1" : "rounded-full px-3 py-1 text-muted-foreground hover:text-foreground"}
+            className={l.href.endsWith(slug) ? "rounded-full bg-secondary px-3 py-1 text-secondary-foreground" : "rounded-full px-3 py-1 text-muted-foreground hover:text-foreground"}
           >
             {l.title}
           </a>

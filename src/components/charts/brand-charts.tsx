@@ -26,7 +26,7 @@ const lineArea = (color: string) => ({
   x2: 0,
   y2: 1,
   colorStops: [
-    { offset: 0, color: color + "55" },
+    { offset: 0, color: color + "2e" },
     { offset: 1, color: color + "00" },
   ],
 })
@@ -71,7 +71,7 @@ export function BrandDynamicsChart({ compact = false, className }: { compact?: b
           markArea: compact
             ? undefined
             : {
-                itemStyle: { color: "rgba(242,114,127,0.08)" },
+                itemStyle: { color: "rgba(229,72,77,0.07)" },
                 label: { color: C.rose, fontSize: 11, position: "insideTop" },
                 data: [[{ name: "просадка", xAxis: "Фев" }, { xAxis: "Апр" }]],
               },
@@ -257,8 +257,8 @@ export function SourcesHeatmap({ className }: { className?: string }) {
         {
           type: "heatmap",
           data,
-          label: { show: true, color: "#1e101e", fontSize: 11, fontWeight: 600, formatter: (p: { value: [number, number, number | "-"] }) => (p.value[2] === "-" ? "" : p.value[2]) },
-          itemStyle: { borderColor: "#0e0710", borderWidth: 3, borderRadius: 6 },
+          label: { show: true, color: "#ffffff", fontSize: 11, fontWeight: 600, formatter: (p: { value: [number, number, number | "-"] }) => (p.value[2] === "-" ? "" : p.value[2]) },
+          itemStyle: { borderColor: "#ffffff", borderWidth: 3, borderRadius: 6 },
           emphasis: { itemStyle: { borderColor: C.text } },
         },
       ],
@@ -279,7 +279,7 @@ export function TonalityChart({ className }: { className?: string }) {
       yAxis: { type: "category", data: [...SOURCES].reverse() },
       series: [
         { ...common, name: "Позитив", data: [...TONALITY.positive].reverse(), color: C.ok, itemStyle: { borderRadius: [6, 0, 0, 6] } },
-        { ...common, name: "Нейтрально", data: [...TONALITY.neutral].reverse(), color: "#6f5c74", itemStyle: { borderRadius: 0 } },
+        { ...common, name: "Нейтрально", data: [...TONALITY.neutral].reverse(), color: "#d8d0dc", itemStyle: { borderRadius: 0 } },
         { ...common, name: "Негатив", data: [...TONALITY.negative].reverse(), color: C.bad, itemStyle: { borderRadius: [0, 6, 6, 0] } },
       ],
     }
@@ -300,7 +300,7 @@ export function IndexGauge({ value, label, color = C.external, className }: { va
           max: 100,
           radius: "92%",
           progress: { show: true, width: 12, roundCap: true, itemStyle: { color } },
-          axisLine: { roundCap: true, lineStyle: { width: 12, color: [[1, "rgba(234,223,238,0.08)"]] } },
+          axisLine: { roundCap: true, lineStyle: { width: 12, color: [[1, C.track]] } },
           axisTick: { show: false },
           splitLine: { show: false },
           axisLabel: { show: false },

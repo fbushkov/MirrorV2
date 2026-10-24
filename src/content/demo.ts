@@ -94,3 +94,43 @@ export const COMPETITORS = [
   { title: "Дружный коллектив", values: ["ok", "bad", "warn"] },
   { title: "Гибкий формат", values: ["bad", "ok", "ok"] },
 ] as const satisfies { title: string; values: readonly PromiseStatus[] }[]
+
+/** Примеры для «зеркала» на первом экране: обещание из вакансии против того, что пишут люди */
+export const MIRROR_EXAMPLES: {
+  promise: string
+  vacancy: string
+  quotes: { source: string; text: string }[]
+  status: PromiseStatus
+  value: number
+}[] = [
+  {
+    promise: "Гибкий формат",
+    vacancy: "Гибридный формат: часть недели можно работать из дома.",
+    quotes: [
+      { source: "Dreamjob", text: "Удалёнку обещали на собеседовании. По факту — офис пять дней в неделю." },
+      { source: "VK", text: "Гибрид есть только у руководителей." },
+    ],
+    status: "bad",
+    value: 22,
+  },
+  {
+    promise: "Дружный коллектив",
+    vacancy: "Сильная команда, которая помогает новичкам освоиться.",
+    quotes: [
+      { source: "Dreamjob", text: "Коллектив — лучшее, что есть в компании." },
+      { source: "hh.ru", text: "Руководитель всегда объяснит и поможет." },
+    ],
+    status: "ok",
+    value: 91,
+  },
+  {
+    promise: "Ежегодная индексация",
+    vacancy: "Индексация зарплаты каждый год.",
+    quotes: [
+      { source: "Dreamjob", text: "Индексация есть, но меньше инфляции." },
+      { source: "GigaChat", text: "Сотрудники пишут, что индексацию иногда задерживают." },
+    ],
+    status: "warn",
+    value: 48,
+  },
+]

@@ -12,7 +12,7 @@ export function Section({
   children: React.ReactNode
 }) {
   return (
-    <section id={id} className={cn("relative py-16 md:py-24", className)}>
+    <section id={id} className={cn("relative scroll-mt-24 py-16 md:py-28", className)}>
       <div className={cn("mx-auto w-full max-w-6xl px-4 md:px-6", containerClassName)}>{children}</div>
     </section>
   )
@@ -22,11 +22,11 @@ export function Eyebrow({ children, className }: { children: React.ReactNode; cl
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-2 rounded-full border border-border bg-white/[0.04] px-3 py-1 text-xs font-medium tracking-wide text-brand-50/90",
+        "inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 text-xs font-medium text-muted-foreground shadow-[0_1px_2px_rgb(26_19_32/0.04)]",
         className,
       )}
     >
-      <span className="size-1.5 rounded-full bg-brand-accent shadow-[0_0_10px_2px_rgb(168_71_184/0.7)]" />
+      <span className="size-1.5 rounded-full bg-primary" />
       {children}
     </span>
   )
@@ -49,12 +49,12 @@ export function SectionHeader({
     <div
       className={cn(
         "mb-10 flex flex-col gap-4 md:mb-14",
-        align === "center" ? "mx-auto max-w-3xl items-center text-center" : "max-w-3xl items-start",
+        align === "center" ? "mx-auto max-w-2xl items-center text-center" : "max-w-2xl items-start",
         className,
       )}
     >
       {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
-      <h2 className="text-3xl font-semibold tracking-tight text-balance md:text-[2.6rem] md:leading-[1.1]">{title}</h2>
+      <h2 className="text-3xl font-semibold md:text-[2.75rem] md:leading-[1.1]">{title}</h2>
       {description && <p className="text-base text-pretty text-muted-foreground md:text-lg">{description}</p>}
     </div>
   )

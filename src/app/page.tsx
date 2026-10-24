@@ -1,432 +1,289 @@
+import { Suspense } from "react"
 import Link from "next/link"
-import {
-  ArrowRight,
-  BarChart3,
-  Bot,
-  Briefcase,
-  Building2,
-  FileLock2,
-  FileText,
-  Globe,
-  Landmark,
-  Layers,
-  ListChecks,
-  Megaphone,
-  MessageSquareText,
-  Search,
-  ServerCog,
-  ShieldCheck,
-  Sparkles,
-  UserRoundSearch,
-  Users,
-  EyeOff,
-} from "lucide-react"
+import { ArrowRight, FileLock2, EyeOff, Globe, Users, LineChart, Layers } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Section, SectionHeader, Eyebrow } from "@/components/site/section"
-import { StatusPill } from "@/components/site/status"
-import { FaqList } from "@/components/site/faq-list"
-import { CtaBand } from "@/components/site/cta-band"
+import { Eyebrow, Section, SectionHeader } from "@/components/site/section"
+import { FaqSection } from "@/components/site/faq-list"
 import { Ph } from "@/components/site/ph"
-import { BrandDynamicsChart, TopicGapChart } from "@/components/charts/brand-charts"
-import { HowItWorks } from "@/components/home/how-it-works"
-import { FAQ_GENERAL } from "@/content/faq"
-import { CONTACTS, SOURCES_EXTERNAL, SOURCES_INTERNAL } from "@/content/site"
+import { IndexGauge } from "@/components/charts/brand-charts"
+import { MirrorCard } from "@/components/home/mirror-card"
+import { TwoSides } from "@/components/home/two-sides"
+import { StartForm } from "@/components/start/start-form"
+import { FAQ_HOME } from "@/content/faq"
+import { cn } from "@/lib/utils"
 
 export default function HomePage() {
   return (
     <>
       <Hero />
-      <Sources />
-      <Problems />
-      <TwoSides />
-      <Section id="how">
-        <SectionHeader
-          eyebrow="Как устроен Mirror"
-          title="От бесплатного среза до изменений, которые видно в цифрах"
-          description="Первый шаг — внешний срез через сервис Mirror, бесплатно. Дальше, если нужно, подключается эксперт и внутренняя проверка."
-        />
-        <HowItWorks />
-      </Section>
-      <ReportContents />
-      <Stats />
-      <Audience />
-      <IndexTeaser />
-      <PricingTeaser />
-      <Security />
-      <Section>
-        <SectionHeader eyebrow="Вопрос-ответ" title="Что обычно спрашивают" description="по вашим возможным вопросам" />
-        <div className="mx-auto max-w-3xl">
-          <FaqList items={FAQ_GENERAL.slice(0, 7)} />
-          <div className="mt-6 text-center">
-            <Button asChild variant="ghost">
-              <Link href="/faq">
-                Все вопросы <ArrowRight data-icon="inline-end" />
-              </Link>
-            </Button>
+      <Gap />
+      <Section id="sides" className="bg-card">
+        <div className="grid items-center gap-10 lg:grid-cols-[0.85fr_1.15fr]">
+          <div className="flex flex-col items-start gap-5">
+            <Eyebrow>Две стороны бренда</Eyebrow>
+            <h2 className="text-3xl font-semibold md:text-[2.75rem] md:leading-[1.1]">Снаружи и изнутри — два разных зеркала</h2>
+            <p className="text-muted-foreground md:text-lg">
+              Опрос показывает, что думают сотрудники. Отзывы — что видят кандидаты. Mirror ставит обе картины рядом и
+              проверяет одни и те же обещания с двух сторон.
+            </p>
+            <p className="text-muted-foreground">Переключите вид, чтобы увидеть разницу.</p>
           </div>
+          <TwoSides />
         </div>
       </Section>
-      <CtaBand />
+      <IndexBlock />
+      <Journey />
+      <Situations />
+      <DataSafety />
+      <PricingTeaser />
+      <Section>
+        <FaqSection
+          items={FAQ_HOME}
+          note={
+            <>
+              Не нашли ответ? Напишите нам —{" "}
+              <Link href="/about#contacts" className="text-primary underline underline-offset-4">
+                контакты
+              </Link>
+              .
+            </>
+          }
+        />
+      </Section>
+      <Start />
     </>
   )
 }
 
 function Hero() {
   return (
-    <section className="relative overflow-hidden pt-28 pb-16 md:pt-40 md:pb-24">
-      <div className="glow-bg pointer-events-none absolute inset-0 -z-10" />
+    <section className="relative overflow-hidden pt-32 pb-16 md:pt-40 md:pb-24">
+      <div className="hero-glow pointer-events-none absolute inset-0 -z-10" />
       <div className="grid-bg pointer-events-none absolute inset-0 -z-10" />
-      <div className="mx-auto grid w-full max-w-6xl items-center gap-12 px-4 md:px-6 lg:grid-cols-[1.05fr_1fr]">
+      <div className="mx-auto grid w-full max-w-6xl items-center gap-12 px-4 md:px-6 lg:grid-cols-[1fr_1.05fr]">
         <div className="flex flex-col items-start gap-6">
-          <Eyebrow>Новое: внешний и внутренний бренд в одном отчёте</Eyebrow>
-          <p className="-mb-2 text-sm font-medium tracking-wide text-brand-200">mirror — зеркало вашей корпоративной культуры</p>
-          <h1 className="text-4xl font-semibold tracking-tight text-balance sm:text-5xl lg:text-[3.25rem] lg:leading-[1.07]">
-            Диагностика <span className="text-gradient">HR-бренда</span> и независимый индекс культуры компании
+          <Eyebrow>Первый срез — бесплатно</Eyebrow>
+          <h1 className="text-4xl font-semibold sm:text-5xl lg:text-[3.5rem] lg:leading-[1.05]">
+            Совпадают ли ваши обещания с тем, что <span className="text-gradient">видят люди?</span>
           </h1>
-          <p className="max-w-xl text-lg text-pretty text-brand-50/80">
-            Mirror сравнивает внешний и внутренний бренд работодателя: что вы обещаете, что о вас пишут на hh.ru,
-            Dreamjob, VK и в медиа и что говорят сами сотрудники. Показываем на графиках, где бренд проседает, а где
-            растёт, — и помогаем закрыть разрывы.
+          <p className="max-w-lg text-lg text-pretty text-muted-foreground">
+            Mirror сверяет то, что компания обещает сотрудникам и кандидатам, с отзывами, соцсетями, ответами нейросетей
+            и опытом самих сотрудников.
           </p>
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap items-center gap-3">
             <Button asChild variant="glow" size="xl">
-              <Link href="/request?type=scan">
+              <Link href="/start">
                 Получить бесплатный срез
                 <ArrowRight data-icon="inline-end" />
               </Link>
             </Button>
-            <Button asChild variant="outline" size="xl" className="rounded-xl">
-              <Link href="/dashboard">Посмотреть пример дашборда</Link>
+            <Button asChild variant="ghost" size="xl">
+              <Link href="#how">Как это работает</Link>
             </Button>
           </div>
-          <p className="text-sm text-muted-foreground">
-            Внешний срез бесплатно · 3 рабочих дня · без доступа к вашим системам
-          </p>
+          <p className="text-sm text-muted-foreground">3 рабочих дня · без доступа к вашим системам</p>
         </div>
-
-        <div className="relative">
-          <div className="absolute -inset-6 -z-10 rounded-[2rem] bg-brand-accent/20 blur-3xl" />
-          <div className="glass rounded-3xl p-5 shadow-2xl shadow-black/40 md:p-6">
-            <div className="flex items-start justify-between gap-4">
-              <div>
-                <p className="text-xs text-muted-foreground">Индекс культуры · Банк N</p>
-                <div className="mt-1 flex items-baseline gap-2">
-                  <span className="text-5xl font-semibold">65</span>
-                  <span className="text-muted-foreground">/ 100</span>
-                  <span className="ml-1 rounded-full bg-status-ok/15 px-2 py-0.5 text-xs text-status-ok">+7 за полгода</span>
-                </div>
-              </div>
-              <span className="rounded-full border border-border px-2 py-0.5 text-[11px] text-muted-foreground">пример</span>
-            </div>
-            <div className="mt-3 flex gap-4 text-xs text-muted-foreground">
-              <span className="flex items-center gap-1.5">
-                <span className="size-2 rounded-full bg-chart-1" /> Внешний бренд
-              </span>
-              <span className="flex items-center gap-1.5">
-                <span className="size-2 rounded-full bg-chart-2" /> Внутренний бренд
-              </span>
-            </div>
-            <BrandDynamicsChart compact className="mt-2 h-44" />
-            <div className="mt-4 grid gap-2 sm:grid-cols-2">
-              <div className="rounded-2xl bg-white/[0.04] p-3">
-                <p className="text-xs text-muted-foreground">Подтверждено</p>
-                <p className="mt-0.5 text-lg font-semibold">5 из 8 обещаний</p>
-              </div>
-              <div className="rounded-2xl bg-white/[0.04] p-3">
-                <p className="text-xs text-muted-foreground">Главный разрыв</p>
-                <p className="mt-0.5 text-lg font-semibold">
-                  Карьерный рост <span className="text-status-bad">−22</span>
-                </p>
-              </div>
-            </div>
-            <div className="mt-2 flex items-center justify-between gap-3 rounded-2xl bg-white/[0.04] p-3">
-              <div>
-                <p className="text-xs text-muted-foreground">Отзыв · Dreamjob</p>
-                <p className="mt-0.5 text-sm">«Коллектив отличный, но зарплата ниже рынка»</p>
-              </div>
-              <StatusPill status="bad" />
-            </div>
-          </div>
-        </div>
+        <MirrorCard />
       </div>
     </section>
   )
 }
 
-function Sources() {
-  return (
-    <section className="border-y border-border bg-white/[0.015] py-8">
-      <div className="mx-auto flex w-full max-w-6xl flex-col gap-5 px-4 md:px-6">
-        <p className="text-center text-sm text-muted-foreground">
-          Собираем и сверяем данные снаружи и изнутри компании
-        </p>
-        <div className="flex flex-wrap items-center justify-center gap-2.5">
-          {SOURCES_EXTERNAL.map((s) => (
-            <span key={s} className="rounded-full border border-chart-1/25 bg-chart-1/[0.06] px-4 py-1.5 text-sm text-brand-50">
-              {s}
-            </span>
-          ))}
-          <span className="mx-1 hidden h-6 w-px bg-border sm:block" />
-          {SOURCES_INTERNAL.map((s) => (
-            <span key={s} className="rounded-full border border-chart-2/25 bg-chart-2/[0.06] px-4 py-1.5 text-sm text-brand-50">
-              {s}
-            </span>
-          ))}
-        </div>
-      </div>
-    </section>
-  )
-}
-
-const PROBLEMS = [
-  {
-    icon: Globe,
-    title: "Репутация формируется снаружи",
-    text: "Сегодня на ваш образ влияет не только карьерный сайт, но и отзывы, соцсети, медиа — вся поисковая выдача и ответы нейросетей. Mirror собирает все внешние сигналы и показывает реальную картину.",
-  },
-  {
-    icon: Layers,
-    title: "Разрыв между EVP и реальностью",
-    text: "ИИ сравнивает компанию саму с собой: сопоставляет ваши обещания с тем, что говорят сотрудники и кандидаты. Показывает, где переобещали, где недоговорили и какие сильные стороны нужно масштабировать.",
-  },
-  {
-    icon: Building2,
-    title: "Внутренний бренд — вторая половина картины",
-    text: "То, что сотрудники переживают внутри, рано или поздно становится внешним. Сверяем документы, опросы и интервью с тем, что видно снаружи, — до того как разрыв попадёт в отзывы.",
-  },
-  {
-    icon: BarChart3,
-    title: "Экономия времени на аналитику",
-    text: "Вместо длительного ручного мониторинга сервис быстро формирует единый отчёт и дашборд, который можно отслеживать в динамике: индекс культуры, карта разрывов и приоритеты.",
-  },
-]
-
-function Problems() {
+function Gap() {
+  const chain = [
+    { icon: Layers, title: "Вы обещаете", text: "в вакансиях, на карьерном сайте, в соцсетях" },
+    { icon: Users, title: "Люди проверяют", text: "по отзывам, постам знакомых и ответам нейросетей" },
+    { icon: LineChart, title: "Доверие растёт или падает", text: "и это видно раньше, чем вы успеете ответить" },
+  ]
   return (
     <Section>
       <SectionHeader
-        align="left"
-        eyebrow="решаем задачи бизнеса"
-        title="Вы знаете, что о вас говорят как о работодателе — и что думают сотрудники?"
+        eyebrow="Разрыв"
+        title="Образ работодателя складывается без вас"
+        description="Люди верят тому, что пишут другие люди. Если обещание не подтверждается, перестают верить и остальному."
       />
-      <ul className="grid gap-5 md:grid-cols-2">
-        {PROBLEMS.map((p) => (
-          <li key={p.title} className="glass group rounded-3xl p-7 transition-colors hover:border-brand-accent/40">
-            <span className="mb-6 inline-flex size-11 items-center justify-center rounded-2xl bg-brand-accent/15 text-brand-50">
-              <p.icon className="size-5" />
+      <ol className="grid gap-3 md:grid-cols-3">
+        {chain.map((c, i) => (
+          <li key={c.title} className="surface relative flex flex-col gap-3 p-6">
+            <span className="inline-flex size-10 items-center justify-center rounded-xl bg-secondary text-primary">
+              <c.icon className="size-5" />
             </span>
-            <h3 className="mb-3 text-xl font-semibold">{p.title}</h3>
-            <p className="text-muted-foreground">{p.text}</p>
+            <p className="text-lg font-semibold">{c.title}</p>
+            <p className="text-muted-foreground">{c.text}</p>
+            {i < chain.length - 1 && (
+              <ArrowRight className="absolute top-1/2 -right-3 z-10 hidden size-6 -translate-y-1/2 rounded-full border border-border bg-card p-1 text-muted-foreground md:block" />
+            )}
           </li>
         ))}
-      </ul>
-    </Section>
-  )
-}
-
-function TwoSides() {
-  return (
-    <Section className="overflow-hidden">
-      <div className="grid items-center gap-10 lg:grid-cols-[0.9fr_1.1fr]">
-        <div className="flex flex-col items-start gap-5">
-          <Eyebrow>внешний и внутренний бренд</Eyebrow>
-          <h2 className="text-3xl font-semibold tracking-tight text-balance md:text-[2.6rem] md:leading-[1.1]">
-            Две стороны одного бренда — на одном графике
-          </h2>
-          <p className="text-muted-foreground md:text-lg">
-            <b className="font-medium text-chart-1">Внешний бренд</b> — то, что видят кандидаты и рынок: вакансии,
-            отзывы, соцсети, медиа, ответы нейросетей. <b className="font-medium text-chart-2">Внутренний</b> — то, что
-            переживают сотрудники: документы, опросы, интервью. Mirror считает индекс для каждой стороны и показывает,
-            где они расходятся.
-          </p>
-          <div className="grid w-full gap-3 sm:grid-cols-2">
-            <div className="rounded-2xl border border-status-bad/25 bg-status-bad/[0.07] p-4">
-              <p className="text-sm font-medium text-status-bad">Снаружи выше, чем внутри</p>
-              <p className="mt-1 text-sm text-muted-foreground">
-                Репутация опережает реальность — скоро это покажут новые отзывы.
-              </p>
-            </div>
-            <div className="rounded-2xl border border-chart-2/25 bg-chart-2/[0.07] p-4">
-              <p className="text-sm font-medium text-chart-2">Внутри выше, чем снаружи</p>
-              <p className="mt-1 text-sm text-muted-foreground">
-                Вы недорассказываете: сильные стороны, о которых стоит говорить громче.
-              </p>
-            </div>
-          </div>
-          <Button asChild variant="outline" size="xl" className="rounded-xl">
-            <Link href="/dashboard">
-              Открыть пример дашборда <ArrowRight data-icon="inline-end" />
-            </Link>
-          </Button>
+      </ol>
+      <div className="mt-3 grid gap-3 md:grid-cols-2">
+        <div className="surface flex items-center gap-5 p-6">
+          <p className="text-gradient text-4xl font-semibold whitespace-nowrap">60–80%</p>
+          <p className="text-muted-foreground">соискателей читают отзывы о работодателе, прежде чем откликнуться</p>
         </div>
-        <div className="glass rounded-3xl p-5 md:p-6">
-          <div className="mb-2 flex items-center justify-between">
-            <p className="text-sm font-medium">Подтверждение обещаний, % · Банк N</p>
-            <span className="rounded-full border border-border px-2 py-0.5 text-[11px] text-muted-foreground">пример</span>
-          </div>
-          <TopicGapChart />
+        <div className="surface flex items-center gap-5 p-6">
+          <p className="text-gradient text-4xl font-semibold whitespace-nowrap">~60%</p>
+          <p className="text-muted-foreground">людей готовы отказаться от компании, если её ценности расходятся с делами</p>
         </div>
       </div>
     </Section>
   )
 }
 
-const REPORT_EXTERNAL = [
-  { icon: Briefcase, title: "HR-бренд", text: "Анализ позиционирования на рынке труда." },
-  { icon: MessageSquareText, title: "Отзывы сотрудников", text: "Тональность и ключевые темы с hh.ru, Dreamjob и VK." },
-  { icon: Layers, title: "EVP vs. реальность", text: "Карта обещаний: что подтверждено, частично, оспорено." },
-  { icon: Megaphone, title: "Медиа-присутствие", text: "Упоминания в Яндексе, Дзене, VK и медиа: поводы и риски." },
-  { icon: UserRoundSearch, title: "Конкуренты", text: "Сравнение с 2–3 конкурентами по ключевым темам и тону." },
-  { icon: Bot, title: "Нейросети", text: "Что Алиса и GigaChat отвечают кандидатам о вас." },
-]
-
-const REPORT_INTERNAL = [
-  { icon: FileText, title: "Документы и данные", text: "EVP, политики, внутренние коммуникации, результаты опросов." },
-  { icon: Users, title: "Анонимные интервью", text: "С сотрудниками разных подразделений и уровней." },
-  { icon: BarChart3, title: "Внутренний индекс", text: "Те же обещания, проверенные изнутри, рядом с внешним индексом." },
-  { icon: Search, title: "Карта разрывов", text: "Где репутация опережает реальность, а где отстаёт от неё." },
-  { icon: ListChecks, title: "Рекомендации", text: "Ближайшие приоритеты, быстрая гигиена, стоп‑лист обещаний." },
-  { icon: Sparkles, title: "План на 90 дней", text: "Что меняем, что перестаём обещать, кто отвечает." },
-]
-
-function ReportContents() {
+function IndexBlock() {
   return (
     <Section>
-      <SectionHeader
-        eyebrow="Что входит в отчёт"
-        title="В каждом отчёте — расчёт индекса культуры"
-        description="Внешняя часть — в бесплатном срезе. Внутренняя добавляется в диагностике вместе с экспертом."
-      />
-      <div className="grid gap-6 lg:grid-cols-2">
-        {[
-          { title: "Снаружи", badge: "бесплатный срез", items: REPORT_EXTERNAL, tone: "text-chart-1 bg-chart-1/10" },
-          { title: "Изнутри", badge: "диагностика", items: REPORT_INTERNAL, tone: "text-chart-2 bg-chart-2/10" },
-        ].map((col) => (
-          <div key={col.title} className="glass rounded-3xl p-6 md:p-8">
-            <div className="mb-6 flex items-center justify-between">
-              <h3 className="text-2xl font-semibold">{col.title}</h3>
-              <span className={`rounded-full px-3 py-1 text-xs font-medium ${col.tone}`}>{col.badge}</span>
-            </div>
-            <ul className="grid gap-5 sm:grid-cols-2">
-              {col.items.map((it) => (
-                <li key={it.title} className="flex gap-3">
-                  <it.icon className={`mt-0.5 size-5 shrink-0 ${col.tone.split(" ")[0]}`} />
-                  <div>
-                    <p className="font-medium">{it.title}</p>
-                    <p className="text-sm text-muted-foreground">{it.text}</p>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
-      </div>
-    </Section>
-  )
-}
-
-function Stats() {
-  const stats = [
-    { value: "0 ₽", label: "стоит внешний срез" },
-    { value: "3 дня", label: "от заявки до среза" },
-    { value: "10", label: "источников снаружи и изнутри" },
-    { value: "2 индекса", label: "внешний и внутренний" },
-  ]
-  return (
-    <section className="py-8">
-      <div className="mx-auto w-full max-w-6xl px-4 md:px-6">
-        <dl className="glass grid grid-cols-2 gap-6 rounded-3xl p-8 md:grid-cols-4 md:p-10">
-          {stats.map((s) => (
-            <div key={s.label} className="flex flex-col gap-1">
-              <dt className="order-2 text-sm text-muted-foreground">{s.label}</dt>
-              <dd className="text-gradient order-1 text-3xl font-semibold md:text-4xl">{s.value}</dd>
-            </div>
-          ))}
-        </dl>
-      </div>
-    </section>
-  )
-}
-
-function Audience() {
-  const items = [
-    { icon: Landmark, title: "Первому лицу", text: "Одна страница: главный разрыв между словами и делами и три решения с ответственными." },
-    { icon: Briefcase, title: "HR-директору", text: "Цифры вместо ощущений для разговора с руководством и план изменений на 90 дней." },
-    { icon: Megaphone, title: "HR-бренду и внутренним коммуникациям", text: "Карта обещаний: что можно говорить уверенно, а что пока нет. Темы для историй из реального опыта сотрудников." },
-    { icon: Globe, title: "Маркетингу и PR", text: "Единая картина репутации компании как работодателя: медиа, соцсети, ответы нейросетей." },
-  ]
-  return (
-    <Section>
-      <SectionHeader eyebrow="Кому помогает Mirror" title="Каждый видит свою часть картины" />
-      <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-        {items.map((it) => (
-          <li key={it.title} className="glass flex flex-col gap-3 rounded-3xl p-6">
-            <it.icon className="size-6 text-brand-200" />
-            <h3 className="text-lg font-semibold">{it.title}</h3>
-            <p className="text-sm text-muted-foreground">{it.text}</p>
-          </li>
-        ))}
-      </ul>
-    </Section>
-  )
-}
-
-function IndexTeaser() {
-  const steps = [
-    { n: "01", title: "Ваши слова", text: "Берём обещания из ваших вакансий и коммуникаций. Чем громче обещаете, тем больше весит обещание." },
-    { n: "02", title: "Опыт людей", text: "Проверяем каждое обещание снаружи — отзывами и упоминаниями, и изнутри — документами и интервью." },
-    { n: "03", title: "Действие", text: "У каждого оспоренного обещания есть ответственный, срок и метрика, по которой видно результат." },
-  ]
-  return (
-    <Section>
-      <div className="grid gap-10 lg:grid-cols-[1fr_1.1fr]">
+      <div className="grid items-center gap-10 lg:grid-cols-2">
+        <div className="surface-raised flex flex-col items-center gap-2 p-8 lg:order-2">
+          <IndexGauge value={65} label="индекс культуры" className="h-56 w-full max-w-xs" />
+          <p className="text-sm text-muted-foreground">Подтверждено 5 из 8 обещаний · пример</p>
+        </div>
         <div className="flex flex-col items-start gap-5">
           <Eyebrow>Индекс культуры</Eyebrow>
-          <h2 className="text-3xl font-semibold tracking-tight md:text-[2.6rem] md:leading-[1.1]">
-            Индекс культуры как метрика доверия к бренду
-          </h2>
+          <h2 className="text-3xl font-semibold md:text-[2.75rem] md:leading-[1.1]">Одна цифра, с которой трудно спорить</h2>
           <p className="text-muted-foreground md:text-lg">
-            Индекс культуры — оценка того, насколько обещания работодателя совпадают с реальностью внутри. И если слова
-            и дела расходятся, это всё чаще воспринимается как показная забота, как маркетинговая манипуляция.
+            Индекс показывает, какая доля ваших обещаний подтверждается опытом людей. От 0 до 100, отдельно снаружи и
+            изнутри.
           </p>
-          <div className="flex flex-wrap gap-3">
-            <Button asChild variant="outline" size="xl" className="rounded-xl">
-              <Link href="/culture-index">Об индексе культуры</Link>
-            </Button>
-            <Button asChild variant="ghost" size="xl">
-              <Link href="/methodology">
-                Открытая методика <ArrowRight data-icon="inline-end" />
-              </Link>
-            </Button>
-          </div>
-          <figure className="glass mt-4 w-full rounded-3xl p-6">
-            <blockquote className="text-lg">
-              «<Ph>Культура — это не ценности на стене, а то, что происходит с сотрудником каждый день. Мы помогаем руководителю увидеть компанию его глазами.</Ph>»
-            </blockquote>
-            <figcaption className="mt-4 flex items-center gap-3 text-sm">
-              <span className="inline-flex size-10 items-center justify-center rounded-full bg-brand-accent/25 font-medium">ЭК</span>
-              <span>
-                <Ph>Имя Фамилия</Ph>
-                <span className="block text-muted-foreground">Эксперт по корпоративной культуре, ведёт проекты Mirror</span>
-              </span>
-            </figcaption>
-          </figure>
+          <ol className="flex flex-col gap-3">
+            {[
+              ["Берём ваши слова", "Обещания из вакансий и коммуникаций. Чем чаще обещаете, тем больше вес."],
+              ["Проверяем опытом людей", "Каждое обещание — по отзывам, упоминаниям, интервью."],
+              ["Сводим в индекс", "И показываем, какие обещания тянут его вниз."],
+            ].map(([t, d], i) => (
+              <li key={t} className="flex gap-4">
+                <span className="inline-flex size-7 shrink-0 items-center justify-center rounded-full bg-secondary text-sm font-semibold text-primary">
+                  {i + 1}
+                </span>
+                <p>
+                  <span className="font-medium">{t}.</span> <span className="text-muted-foreground">{d}</span>
+                </p>
+              </li>
+            ))}
+          </ol>
+          <Link href="/culture-index" className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline">
+            Как мы считаем <ArrowRight className="size-4" />
+          </Link>
         </div>
-        <ol className="flex flex-col gap-4">
-          {steps.map((s) => (
-            <li key={s.n} className="glass flex gap-5 rounded-3xl p-6 md:p-7">
-              <span className="text-gradient text-3xl font-semibold">{s.n}</span>
+      </div>
+    </Section>
+  )
+}
+
+const STEPS = [
+  {
+    title: "Внешний срез",
+    meta: "Бесплатно · 3 рабочих дня",
+    free: true,
+    we: "Собираем обещания из вакансий и соцсетей, проверяем их по отзывам, медиа и ответам нейросетей. Сравниваем с 2–3 конкурентами.",
+    you: "Название компании и ссылка на hh.ru.",
+    result: "Внешний индекс, карта обещаний, три первых шага.",
+    link: { href: "/example", label: "Пример отчёта" },
+  },
+  {
+    title: "Разбор с экспертом",
+    meta: "Бесплатно · 30 минут",
+    free: true,
+    we: "Объясняем цифры и отвечаем на вопросы. Вместе решаем, нужна ли проверка изнутри.",
+    you: "30 минут на звонок.",
+    result: "Понятно, что делать дальше.",
+  },
+  {
+    title: "Диагностика",
+    meta: "С экспертом · около 4 недель",
+    we: "Проверяем те же обещания изнутри: документы, данные компании, анонимные интервью.",
+    you: "Документы по списку и письмо сотрудникам. Шаблон даём.",
+    result: "Внутренний индекс, карта разрывов, план на 90 дней.",
+  },
+  {
+    title: "Изменения и мониторинг",
+    meta: "По подписке",
+    we: "Эксперт помогает внести изменения. Раз в квартал повторяем замер и сообщаем о просадках.",
+    you: "Встреча раз в две недели.",
+    result: "Индекс в динамике: видно, что сработало.",
+  },
+]
+
+function Journey() {
+  return (
+    <Section id="how" className="bg-card">
+      <SectionHeader eyebrow="Как это работает" title="От бесплатного среза до изменений" description="Первые два шага ничего не стоят. Дальше — только если увидите в этом смысл." />
+      <ol className="mx-auto flex max-w-4xl flex-col gap-3">
+        {STEPS.map((s, i) => (
+          <li key={s.title} className={cn("surface grid gap-5 p-6 md:grid-cols-[220px_1fr] md:p-7", s.free && i === 0 && "border-brand-200 bg-brand-50/60")}>
+            <div className="flex flex-col items-start gap-2">
+              <span className="text-sm font-medium text-muted-foreground tabular-nums">Шаг {i + 1}</span>
+              <h3 className="text-xl font-semibold">{s.title}</h3>
+              <span className={cn("rounded-full px-2.5 py-0.5 text-xs font-medium", s.free ? "bg-status-ok/10 text-status-ok" : "bg-secondary text-secondary-foreground")}>
+                {s.meta}
+              </span>
+            </div>
+            <dl className="grid gap-4 text-[15px] sm:grid-cols-3">
               <div>
-                <h3 className="mb-2 text-xl font-semibold">{s.title}</h3>
-                <p className="text-muted-foreground">{s.text}</p>
+                <dt className="mb-1 text-xs text-muted-foreground">Что делаем</dt>
+                <dd>{s.we}</dd>
               </div>
-            </li>
-          ))}
-          <li className="rounded-3xl border border-dashed border-border p-6 text-muted-foreground">
-            Раньше компании придумывали яркое EVP и красиво его упаковывали. Теперь порядок обратный:{" "}
-            <span className="text-foreground">сначала проверяем реальность, потом обещаем.</span>
+              <div>
+                <dt className="mb-1 text-xs text-muted-foreground">Что нужно от вас</dt>
+                <dd>{s.you}</dd>
+              </div>
+              <div>
+                <dt className="mb-1 text-xs text-muted-foreground">Результат</dt>
+                <dd>
+                  {s.result}
+                  {s.link && (
+                    <Link href={s.link.href} className="mt-2 flex items-center gap-1 text-sm font-medium text-primary hover:underline">
+                      {s.link.label} <ArrowRight className="size-4" />
+                    </Link>
+                  )}
+                </dd>
+              </div>
+            </dl>
           </li>
-        </ol>
+        ))}
+      </ol>
+    </Section>
+  )
+}
+
+function Situations() {
+  const items = [
+    ["Обновляете EVP или карьерный сайт", "Проверьте, какие обещания выдержат отзывы, до того как их публиковать."],
+    ["Опросы и отзывы показывают разное", "Поймёте, где правда и почему картины не совпадают."],
+    ["Руководству нужны цифры", "Индекс и карта обещаний вместо пересказа отзывов."],
+    ["Компания меняется", "Слияние, новый собственник, быстрый рост. Увидите, какие обещания перестали работать."],
+  ]
+  return (
+    <Section>
+      <SectionHeader eyebrow="Когда приходят к нам" title="Узнаёте свою ситуацию?" />
+      <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        {items.map(([t, d]) => (
+          <li key={t} className="surface flex flex-col gap-2 p-6">
+            <p className="font-semibold">{t}</p>
+            <p className="text-sm text-muted-foreground">{d}</p>
+          </li>
+        ))}
+      </ul>
+    </Section>
+  )
+}
+
+function DataSafety() {
+  const items = [
+    { icon: Globe, t: "Для среза — только открытые данные", d: "Доступ к вашим системам не нужен. Имена авторов отзывов в отчёт не попадают." },
+    { icon: FileLock2, t: "Документы — под NDA", d: "Вы сами выбираете, что передать. Доступ только у эксперта проекта." },
+    { icon: EyeOff, t: "Сотрудники анонимны", d: <>Компания видит темы и обезличенные цитаты. Данные хранятся на серверах в России <Ph>[провайдер]</Ph>.</> },
+  ]
+  return (
+    <Section className="pt-0 md:pt-0">
+      <div className="surface grid gap-8 p-6 md:grid-cols-3 md:p-10">
+        {items.map((x) => (
+          <div key={x.t} className="flex flex-col gap-3">
+            <x.icon className="size-6 text-chart-2" />
+            <p className="font-semibold">{x.t}</p>
+            <p className="text-sm text-muted-foreground">{x.d}</p>
+          </div>
+        ))}
       </div>
     </Section>
   )
@@ -434,70 +291,61 @@ function IndexTeaser() {
 
 function PricingTeaser() {
   const plans = [
-    { title: "Срез", price: "0 ₽", note: "внешний бренд · 3 рабочих дня", href: "/scan", free: true },
-    { title: "Диагностика", price: "от 180 000 ₽", note: "внешний и внутренний бренд · эксперт", href: "/diagnostics" },
-    { title: "Сопровождение", price: "от 120 000 ₽ / мес", note: "3–6 месяцев изменений", href: "/support" },
-    { title: "Мониторинг", price: "от 35 000 ₽ / мес", note: "замер индекса каждый квартал", href: "/support#monitoring" },
+    { t: "Срез", p: "0 ₽", d: "Внешняя картина и разбор с экспертом.", free: true },
+    { t: "Диагностика", p: "от 180 000 ₽", d: "Снаружи и изнутри, план на 90 дней.", hl: true },
+    { t: "Сопровождение", p: "от 120 000 ₽ / мес", d: "Изменения и замер раз в квартал." },
   ]
   return (
-    <Section>
-      <SectionHeader
-        eyebrow="Форматы и цены"
-        title="Первый шаг — бесплатно"
-        description="Внешний срез через сервис Mirror бесплатен для каждой компании, которая хочет с нами сотрудничать. Платной становится работа эксперта и внутренняя проверка."
-      />
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {plans.map((p) => (
-          <Link
-            key={p.title}
-            href={p.href}
-            className={`group flex flex-col gap-3 rounded-3xl p-6 transition-colors ${p.free ? "border border-brand-accent/50 bg-brand-accent/15" : "glass hover:border-brand-accent/40"}`}
+    <Section className="bg-card">
+      <SectionHeader eyebrow="Цены" title="Начните бесплатно. Платите, когда нужна глубина" />
+      <div className="grid gap-3 md:grid-cols-3">
+        {plans.map((x) => (
+          <div
+            key={x.t}
+            className={cn(
+              "flex flex-col gap-2 rounded-[1.25rem] border p-6",
+              x.hl ? "border-transparent bg-primary text-primary-foreground shadow-[0_20px_40px_-20px_rgb(168_71_184/0.7)]" : "border-border bg-background",
+            )}
           >
-            <p className="text-sm text-muted-foreground">{p.title}</p>
-            <p className="text-2xl font-semibold">{p.free ? p.price : <Ph>{p.price}</Ph>}</p>
-            <p className="text-sm text-muted-foreground">{p.note}</p>
-            <span className="mt-auto inline-flex items-center gap-1 pt-2 text-sm text-brand-200 group-hover:text-foreground">
-              Подробнее <ArrowRight className="size-4" />
-            </span>
-          </Link>
+            <p className={cn("text-sm", x.hl ? "text-white/80" : "text-muted-foreground")}>{x.t}</p>
+            <p className="text-2xl font-semibold">{x.free ? x.p : <Ph>{x.p}</Ph>}</p>
+            <p className={cn("text-sm", x.hl ? "text-white/85" : "text-muted-foreground")}>{x.d}</p>
+          </div>
         ))}
       </div>
-      <p className="mt-8 text-center text-muted-foreground">
-        Если остались вопросы, пишите нам на почту{" "}
-        <a href={`mailto:${CONTACTS.email}`} className="text-brand-200 underline underline-offset-4">
-          {CONTACTS.email}
-        </a>{" "}
-        — обсудим формат индивидуально.
-      </p>
+      <div className="mt-6 text-center">
+        <Link href="/pricing" className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline">
+          Все условия <ArrowRight className="size-4" />
+        </Link>
+      </div>
     </Section>
   )
 }
 
-function Security() {
-  const items = [
-    { icon: ServerCog, title: "Серверы в России", text: "Хранение и обработка данных по 152-ФЗ." },
-    { icon: EyeOff, title: "Анонимно", text: "Компания видит только темы и обезличенные цитаты сотрудников." },
-    { icon: FileLock2, title: "Документы под NDA", text: "Внутренние документы — только по соглашению о конфиденциальности, доступ у эксперта проекта." },
-    { icon: ShieldCheck, title: "Без доступа к системам", text: "Для среза нужны только название компании и публичные ссылки." },
-  ]
+function Start() {
   return (
-    <Section>
-      <SectionHeader eyebrow="Безопасность" title="Данные компании и сотрудников под защитой" />
-      <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-        {items.map((it) => (
-          <li key={it.title} className="glass flex flex-col gap-3 rounded-3xl p-6">
-            <it.icon className="size-6 text-chart-2" />
-            <h3 className="font-semibold">{it.title}</h3>
-            <p className="text-sm text-muted-foreground">{it.text}</p>
-          </li>
-        ))}
-      </ul>
-      <div className="mt-6 text-center">
-        <Button asChild variant="ghost">
-          <Link href="/security">
-            Данные и 152-ФЗ подробно <ArrowRight data-icon="inline-end" />
-          </Link>
-        </Button>
+    <Section id="start">
+      <div className="grid gap-10 rounded-3xl border border-brand-100 bg-gradient-to-br from-brand-50 via-card to-card p-6 md:p-12 lg:grid-cols-[0.9fr_1.1fr]">
+        <div className="flex flex-col items-start gap-5">
+          <Eyebrow>Начать</Eyebrow>
+          <h2 className="text-3xl font-semibold md:text-[2.75rem] md:leading-[1.1]">Начните с бесплатного среза</h2>
+          <p className="text-muted-foreground md:text-lg">Оставьте компанию и контакт. Остальное уточним сами.</p>
+          <ol className="mt-2 flex flex-col gap-3 text-[15px]">
+            {["Ответим в течение рабочего дня", "Уточним конкурентов для сравнения", "Через 3 рабочих дня пришлём срез и созвонимся"].map((t, i) => (
+              <li key={t} className="flex items-center gap-3">
+                <span className="inline-flex size-6 shrink-0 items-center justify-center rounded-full bg-card text-xs font-semibold text-primary shadow-sm">
+                  {i + 1}
+                </span>
+                {t}
+              </li>
+            ))}
+          </ol>
+        </div>
+        <div className="surface p-5 md:p-7">
+          <Suspense>
+            <StartForm variant="compact" />
+          </Suspense>
+        </div>
       </div>
     </Section>
   )

@@ -7,63 +7,31 @@ export const CONTACTS = {
   telegramLabel: "@mirror_diary",
 }
 
-export type NavLink = { title: string; href: string; description?: string }
-export type NavGroup = { title: string; items: NavLink[] }
+export type NavLink = { title: string; href: string }
 
-export const NAV: (NavLink | NavGroup)[] = [
-  {
-    title: "Услуги",
-    items: [
-      { title: "Бесплатный срез", href: "/scan", description: "Внешний бренд работодателя за 3 рабочих дня" },
-      { title: "Диагностика", href: "/diagnostics", description: "Внешний и внутренний бренд вместе с экспертом" },
-      { title: "Сопровождение и мониторинг", href: "/support", description: "Изменения и регулярный замер индекса" },
-      { title: "Агентствам", href: "/agencies", description: "Внешний аудит HR-бренда под вашим брендом" },
-      { title: "Цены", href: "/pricing", description: "Все форматы работы и их стоимость" },
-    ],
-  },
-  {
-    title: "Индекс культуры",
-    items: [
-      { title: "Индекс культуры", href: "/culture-index", description: "Метрика доверия к бренду работодателя" },
-      { title: "Методика", href: "/methodology", description: "Открытая формула и пример расчёта" },
-      { title: "Пример среза", href: "/example", description: "Как выглядит бесплатный отчёт" },
-      { title: "Пример дашборда", href: "/dashboard", description: "Просадки и подъёмы бренда на графиках" },
-    ],
-  },
-  { title: "Нейросети о вас", href: "/ai" },
-  { title: "Исследования", href: "/research" },
+export const NAV: NavLink[] = [
+  { title: "Как это работает", href: "/#how" },
+  { title: "Индекс культуры", href: "/culture-index" },
+  { title: "Пример отчёта", href: "/example" },
+  { title: "Цены", href: "/pricing" },
   { title: "О нас", href: "/about" },
-  { title: "FAQ", href: "/faq" },
 ]
 
-export const FOOTER_COLUMNS: NavGroup[] = [
+export const FOOTER_COLUMNS: { title: string; items: NavLink[] }[] = [
   {
-    title: "Услуги",
+    title: "Сервис",
     items: [
-      { title: "Бесплатный срез", href: "/scan" },
-      { title: "Диагностика", href: "/diagnostics" },
-      { title: "Сопровождение и мониторинг", href: "/support" },
-      { title: "Агентствам", href: "/agencies" },
-      { title: "Цены", href: "/pricing" },
-    ],
-  },
-  {
-    title: "Индекс",
-    items: [
+      { title: "Как это работает", href: "/#how" },
       { title: "Индекс культуры", href: "/culture-index" },
-      { title: "Методика", href: "/methodology" },
-      { title: "Пример среза", href: "/example" },
-      { title: "Пример дашборда", href: "/dashboard" },
-      { title: "Нейросети о вас", href: "/ai" },
+      { title: "Пример отчёта", href: "/example" },
+      { title: "Цены", href: "/pricing" },
     ],
   },
   {
     title: "Компания",
     items: [
       { title: "О нас", href: "/about" },
-      { title: "Исследования", href: "/research" },
-      { title: "Вопрос-ответ", href: "/faq" },
-      { title: "Данные и 152-ФЗ", href: "/security" },
+      { title: "Заявка на срез", href: "/start" },
     ],
   },
 ]
@@ -71,8 +39,5 @@ export const FOOTER_COLUMNS: NavGroup[] = [
 export const LEGAL_LINKS: NavLink[] = [
   { title: "Политика конфиденциальности", href: "/docs/privacy-policy" },
   { title: "Пользовательское соглашение", href: "/docs/terms-of-use" },
-  { title: "Согласие на обработку персональных данных", href: "/docs/data-processing-consent" },
+  { title: "Согласие на обработку данных", href: "/docs/data-processing-consent" },
 ]
-
-export const SOURCES_EXTERNAL = ["hh.ru", "Dreamjob", "VK", "Дзен", "Яндекс", "Алиса", "GigaChat"]
-export const SOURCES_INTERNAL = ["Документы компании", "Опросы сотрудников", "Анонимные интервью"]

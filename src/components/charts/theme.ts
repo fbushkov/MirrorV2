@@ -1,18 +1,19 @@
-// Тема ECharts в цветах бренда Mirror. Цвета совпадают с токенами из globals.css.
+// Тема ECharts для светлого сайта Mirror. Цвета совпадают с токенами из globals.css.
 export const C = {
-  external: "#d27be6",
-  internal: "#5ee0c8",
-  amber: "#f5b850",
-  rose: "#f2727f",
-  violet: "#8c7bff",
-  ok: "#5ed39a",
-  warn: "#f5b850",
-  bad: "#f2727f",
-  text: "#f4e5f3",
-  muted: "#b4a0b8",
-  grid: "rgba(234,223,238,0.08)",
-  axis: "rgba(234,223,238,0.18)",
-  tooltipBg: "#1e101e",
+  external: "#a847b8",
+  internal: "#12a594",
+  amber: "#d97706",
+  rose: "#e5484d",
+  violet: "#6e56cf",
+  ok: "#16a34a",
+  warn: "#d97706",
+  bad: "#e5484d",
+  text: "#1a1320",
+  muted: "#6c6273",
+  grid: "rgba(26,19,32,0.07)",
+  axis: "rgba(26,19,32,0.14)",
+  track: "#f0eaf3",
+  surface: "#ffffff",
 }
 
 export const MIRROR_THEME = {
@@ -21,10 +22,10 @@ export const MIRROR_THEME = {
   textStyle: { color: C.muted },
   legend: { textStyle: { color: C.muted }, icon: "roundRect", itemWidth: 12, itemHeight: 8 },
   tooltip: {
-    backgroundColor: C.tooltipBg,
-    borderColor: "rgba(234,223,238,0.14)",
+    backgroundColor: C.surface,
+    borderColor: "rgba(26,19,32,0.1)",
     textStyle: { color: C.text, fontSize: 12 },
-    extraCssText: "border-radius:10px;box-shadow:0 10px 30px -10px rgba(0,0,0,.6);",
+    extraCssText: "border-radius:10px;box-shadow:0 12px 32px -12px rgba(26,19,32,.25);",
   },
   categoryAxis: {
     axisLine: { lineStyle: { color: C.axis } },

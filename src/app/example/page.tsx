@@ -1,163 +1,151 @@
 import type { Metadata } from "next"
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { ArrowDownRight, ArrowUpRight } from "lucide-react"
 import { PageHero } from "@/components/site/page-hero"
 import { Section } from "@/components/site/section"
 import { CtaBand } from "@/components/site/cta-band"
 import { StatusPill } from "@/components/site/status"
-import { CheckList } from "@/components/site/check-list"
-import { BrandDynamicsChart } from "@/components/charts/brand-charts"
-import { BANK_N, COMPETITORS } from "@/content/demo"
+import { BrandDynamicsChart, GapDivergingChart, SourcesHeatmap } from "@/components/charts/brand-charts"
+import { BANK_N, COMPETITORS, EVENTS, PROMISES, cultureIndex, statusOf } from "@/content/demo"
+import { cn } from "@/lib/utils"
 
 export const metadata: Metadata = {
-  title: "Пример среза",
-  description: "Как выглядит бесплатный срез Mirror: внешний индекс, карта обещаний, конкуренты и первые действия.",
+  title: "Пример отчёта",
+  description: "Как выглядит отчёт Mirror: индекс снаружи и изнутри, просадки и подъёмы, разрыв по обещаниям, сравнение с конкурентами.",
 }
 
-function PageCard({ n, title, children }: { n: string; title: string; children: React.ReactNode }) {
+function Panel({ title, hint, children, className }: { title: string; hint?: string; children: React.ReactNode; className?: string }) {
   return (
-    <article className="glass rounded-3xl p-6 md:p-10">
-      <div className="mb-6 flex items-center justify-between gap-3 text-xs text-muted-foreground">
-        <span>{n}</span>
-        <span className="rounded-full border border-border px-2 py-0.5">пример</span>
-      </div>
-      <h2 className="mb-6 text-2xl font-semibold tracking-tight md:text-3xl">{title}</h2>
-      {children}
-    </article>
+    <div className={cn("surface min-w-0 p-5 md:p-6", className)}>
+      <p className="font-semibold">{title}</p>
+      {hint && <p className="mt-1 text-sm text-muted-foreground">{hint}</p>}
+      <div className="mt-4">{children}</div>
+    </div>
   )
 }
 
+function Kpi({ label, value, delta, tone }: { label: string; value: string; delta?: number; tone?: string }) {
+  return (
+    <div className="surface p-5">
+      <p className="text-sm text-muted-foreground">{label}</p>
+      <div className="mt-2 flex items-baseline gap-2">
+        <span className={cn("text-3xl font-semibold tabular-nums", tone)}>{value}</span>
+        {delta !== undefined && (
+          <span className={cn("inline-flex items-center text-xs", delta >= 0 ? "text-status-ok" : "text-status-bad")}>
+            {delta >= 0 ? <ArrowUpRight className="size-3.5" /> : <ArrowDownRight className="size-3.5" />}
+            {delta > 0 ? "+" : ""}
+            {delta} за квартал
+          </span>
+        )}
+      </div>
+    </div>
+  )
+}
+
+const ACTIONS = [
+  ["Указать зарплатные вилки во всех вакансиях", "Руководитель подбора", "2 недели"],
+  ["Убрать «справедливую зарплату» из текстов до пересмотра окладов", "HR-бренд", "2 недели"],
+  ["Описать правила гибридной работы", "Директор по персоналу", "1 месяц"],
+]
+
 export default function ExamplePage() {
+  const ext = Math.round(cultureIndex(PROMISES, "external"))
+  const int = Math.round(cultureIndex(PROMISES, "internal"))
+  const confirmed = PROMISES.filter((p) => statusOf(p.external) === "ok").length
+
   return (
     <>
       <PageHero
-        crumbs={[{ title: "Пример среза" }]}
-        eyebrow="Пример бесплатного среза"
-        title="Так выглядит срез, который вы получите"
-        description="Основан на реальном отчёте по региональному банку. Название и детали изменены, цифры округлены."
+        eyebrow="Данные условные"
+        title="Так выглядит отчёт"
+        description={`Пример по условному «${BANK_N.name}», ${BANK_N.size}. Внешняя часть есть уже в бесплатном срезе, внутренняя появляется после диагностики.`}
       />
-      <Section className="pt-0 md:pt-0" containerClassName="flex max-w-5xl flex-col gap-6">
-        <PageCard n={`Страница 1 · главное · ${BANK_N.name} · ${BANK_N.size} · ${BANK_N.period}`} title="Вы теряете доверие IT и аналитиков: обещаете справедливую зарплату, а это самая частая жалоба">
-          <p className="mb-6 text-muted-foreground">
-            Коллектив, карьерный рост и официальное оформление сотрудники подтверждают. Зарплата и гибкий формат
-            оспорены, и именно на них приходится основной недобор индекса.
-          </p>
-          <div className="mb-8 grid gap-3 sm:grid-cols-3">
-            {[
-              ["Внешний индекс", "65", "надёжность высокая"],
-              ["Обещания", "5 из 8", "подтверждены"],
-              ["Вакансии без зарплаты", "8 из 28", "в том числе все IT-роли"],
-            ].map(([l, v, n]) => (
-              <div key={l} className="rounded-2xl bg-white/[0.04] p-4">
-                <p className="text-xs text-muted-foreground">{l}</p>
-                <p className="mt-1 text-3xl font-semibold">{v}</p>
-                <p className="text-xs text-muted-foreground">{n}</p>
-              </div>
-            ))}
-          </div>
-          <h3 className="mb-3 font-semibold">Три действия</h3>
-          <div className="overflow-hidden rounded-2xl border border-border">
-            <Table>
-              <TableHeader>
-                <TableRow className="hover:bg-transparent">
-                  <TableHead className="pl-4">Действие</TableHead>
-                  <TableHead>Ответственный</TableHead>
-                  <TableHead>Срок</TableHead>
-                  <TableHead className="pr-4">Зачем</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {[
-                  ["Указать зарплатные вилки во всех вакансиях", "Руководитель подбора", "2 недели", "Сейчас IT-кандидаты не видят цифр и сравнивают вас с федеральными банками вслепую"],
-                  ["Убрать «справедливую зарплату» из текстов до пересмотра окладов", "HR-бренд", "2 недели", "Оспоренное обещание снижает доверие ко всем остальным"],
-                  ["Описать правила гибридной работы для IT и бэк-офиса", "Директор по персоналу", "1 месяц", "Удалёнка не упоминается ни в одной вакансии, а кандидаты о ней спрашивают"],
-                ].map((r) => (
-                  <TableRow key={r[0]} className="hover:bg-white/[0.02]">
-                    <TableCell className="pl-4 align-top font-medium whitespace-normal">{r[0]}</TableCell>
-                    <TableCell className="align-top whitespace-normal">{r[1]}</TableCell>
-                    <TableCell className="align-top">{r[2]}</TableCell>
-                    <TableCell className="pr-4 align-top whitespace-normal text-muted-foreground">{r[3]}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
-        </PageCard>
+      <Section className="pt-0 md:pt-0">
+        <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+          <Kpi label="Индекс снаружи" value={String(ext)} delta={2} tone="text-chart-1" />
+          <Kpi label="Индекс изнутри" value={String(int)} delta={5} tone="text-chart-2" />
+          <Kpi label="Подтверждено обещаний" value={`${confirmed} из ${PROMISES.length}`} />
+          <Kpi label="Упоминаний за период" value={String(PROMISES.reduce((s, p) => s + p.mentions, 0))} />
+        </div>
 
-        <PageCard n="Страница 2 · обещания и конкуренты" title="Что подтверждается, а что нет">
-          <div className="overflow-hidden rounded-2xl border border-border">
-            <Table>
-              <TableHeader>
-                <TableRow className="hover:bg-transparent">
-                  <TableHead className="pl-4">Обещание</TableHead>
-                  <TableHead>{BANK_N.name}</TableHead>
-                  <TableHead>Федеральный банк А</TableHead>
-                  <TableHead className="pr-4">Федеральный банк Б</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {COMPETITORS.map((row) => (
-                  <TableRow key={row.title} className="hover:bg-white/[0.02]">
-                    <TableCell className="pl-4 font-medium">{row.title}</TableCell>
-                    {row.values.map((v, i) => (
-                      <TableCell key={i} className={i === 2 ? "pr-4" : undefined}>
-                        <StatusPill status={v} />
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
-          <div className="mt-6 grid gap-4 md:grid-cols-2">
-            <div className="rounded-2xl border border-status-ok/25 bg-status-ok/[0.06] p-5">
-              <h3 className="mb-1 font-semibold text-status-ok">Где вы выигрываете</h3>
-              <p className="text-sm text-muted-foreground">
-                Самостоятельность и коллектив. «Больше свободы в решениях, чем в федеральных компаниях» — повторяющаяся
-                тема отзывов. Об этом стоит говорить громче.
-              </p>
-            </div>
-            <div className="rounded-2xl border border-status-bad/25 bg-status-bad/[0.06] p-5">
-              <h3 className="mb-1 font-semibold text-status-bad">Где проигрываете</h3>
-              <p className="text-sm text-muted-foreground">
-                Зарплата IT и гибкий формат. Оба федеральных банка указывают вилки и описывают удалёнку.
-              </p>
-            </div>
-          </div>
-          <div className="mt-6 rounded-2xl border border-border p-4">
-            <p className="mb-1 text-sm font-medium">Внешний бренд по месяцам</p>
-            <BrandDynamicsChart className="h-64" />
-          </div>
-        </PageCard>
-
-        <PageCard n="Страница 3 · что не видно снаружи" title="Чтобы понять причины разрывов, нужны данные изнутри">
-          <div className="mb-6 grid gap-4 md:grid-cols-2">
-            {[
-              ["«У нас самый лучший начальник и коллектив. Только это удерживает. Очень жаль, что такие низкие зарплаты».", "сотрудник, Dreamjob"],
-              ["«Низкая зарплата, повышения незначительные раз в год, нет системы грейдов».", "разработчик, Dreamjob"],
-            ].map(([q, a]) => (
-              <figure key={a} className="rounded-2xl bg-white/[0.04] p-5">
-                <blockquote>{q}</blockquote>
-                <figcaption className="mt-2 text-sm text-muted-foreground">{a}</figcaption>
-              </figure>
+        <Panel title="Просадки и подъёмы" hint="Индекс по месяцам. Выделена просадка, метки — события, которые на неё повлияли." className="mt-3">
+          <BrandDynamicsChart />
+          <ul className="mt-3 flex flex-col gap-1 text-sm text-muted-foreground">
+            {EVENTS.map((e) => (
+              <li key={e.month}>
+                <span className="text-foreground">{e.month}:</span> {e.text}
+              </li>
             ))}
-          </div>
-          <h3 className="mb-3 font-semibold">Диагностика ответит на вопросы:</h3>
-          <CheckList
-            items={[
-              "Подтверждают ли сами сотрудники то, что пишут в отзывах",
-              "Что говорят внутренние документы и опросы о зарплатах, грейдах и формате работы",
-              "Где внутренний бренд сильнее внешнего — и об этом стоит рассказывать",
-              "Какой внутренний индекс у обещаний, по которым мало отзывов",
-            ]}
-          />
-          <Button asChild variant="outline" size="xl" className="mt-6 rounded-xl">
-            <Link href="/diagnostics">Подробнее о диагностике</Link>
-          </Button>
-        </PageCard>
+          </ul>
+        </Panel>
+
+        <div className="mt-3 grid gap-3 lg:grid-cols-2">
+          <Panel title="Где слова расходятся с делом" hint="Изнутри минус снаружи. Красное — переобещаете, бирюзовое — недорассказываете.">
+            <GapDivergingChart />
+          </Panel>
+          <Panel title="Обещания" hint="Статус снаружи и изнутри">
+            <ul className="flex flex-col divide-y divide-border">
+              {PROMISES.map((p) => (
+                <li key={p.id} className="flex flex-wrap items-center justify-between gap-2 py-2.5">
+                  <span className="text-sm">{p.title}</span>
+                  <span className="flex gap-1.5">
+                    <StatusPill status={statusOf(p.external, p.mentions)} />
+                    <StatusPill status={statusOf(p.internal)} className="opacity-75" />
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </Panel>
+        </div>
+
+        <Panel title="Откуда подтверждения" hint="Доля упоминаний, где опыт совпадает с обещанием, по источникам" className="mt-3">
+          <SourcesHeatmap />
+        </Panel>
+
+        <div className="mt-3 grid gap-3 lg:grid-cols-2">
+          <Panel title="Три первых шага">
+            <ol className="flex flex-col gap-3">
+              {ACTIONS.map(([what, who, when], i) => (
+                <li key={what} className="flex gap-3">
+                  <span className="inline-flex size-6 shrink-0 items-center justify-center rounded-full bg-secondary text-xs font-semibold text-primary">{i + 1}</span>
+                  <div>
+                    <p className="text-[15px]">{what}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {who} · {when}
+                    </p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </Panel>
+          <Panel title="Сравнение с конкурентами" hint="Одни правила для всех">
+            <div className="overflow-x-auto">
+              <table className="w-full min-w-[420px] text-sm">
+                <thead>
+                  <tr className="text-left text-xs text-muted-foreground">
+                    <th className="pb-2 font-normal">Обещание</th>
+                    <th className="pb-2 font-normal">{BANK_N.name}</th>
+                    <th className="pb-2 font-normal">Банк А</th>
+                    <th className="pb-2 font-normal">Банк Б</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {COMPETITORS.map((row) => (
+                    <tr key={row.title} className="border-t border-border">
+                      <td className="py-2.5 pr-2">{row.title}</td>
+                      {row.values.map((v, i) => (
+                        <td key={i} className="py-2.5 pr-2">
+                          <StatusPill status={v} />
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </Panel>
+        </div>
       </Section>
-      <CtaBand title="Получите такой срез по своей компании" cta="Получить срез" />
+      <CtaBand title="Получите такой срез по своей компании" />
     </>
   )
 }

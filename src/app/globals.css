@@ -15,11 +15,11 @@
   --color-status-bad: var(--status-bad);
   --color-status-none: var(--status-none);
   --color-brand-50: var(--brand-50);
+  --color-brand-100: var(--brand-100);
   --color-brand-200: var(--brand-200);
   --color-brand-500: var(--brand-500);
   --color-brand-600: var(--brand-600);
-  --color-brand-650: var(--brand-650);
-  --color-brand-800: var(--brand-800);
+  --color-brand-700: var(--brand-700);
   --color-brand-accent: var(--brand-accent);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
@@ -60,55 +60,54 @@
 }
 
 :root {
-  /* Фирменная палитра Mirror (из старого сайта) на тёмной основе */
-  --brand-50: #eadfee;
-  --brand-200: #b690b9;
-  --brand-500: #351f35;
-  --brand-600: #2d182e;
-  --brand-650: #2a1d2a;
-  --brand-800: #1e101e;
+  /* Светлая тема Mirror V2: белые карточки, лёгкий фиолетовый оттенок фона, фиолетовый акцент */
+  --brand-50: #f7f0f9;
+  --brand-100: #efe1f3;
+  --brand-200: #dcbfe5;
+  --brand-500: #a847b8;
+  --brand-600: #8f379e;
+  --brand-700: #712b7d;
   --brand-accent: #a847b8;
 
-  --background: #0e0710;
-  --foreground: #f4e5f3;
-  --card: #170d18;
-  --card-foreground: #f4e5f3;
-  --popover: #1e101e;
-  --popover-foreground: #f4e5f3;
+  --background: #faf8fb;
+  --foreground: #1a1320;
+  --card: #ffffff;
+  --card-foreground: #1a1320;
+  --popover: #ffffff;
+  --popover-foreground: #1a1320;
   --primary: #a847b8;
   --primary-foreground: #ffffff;
-  --secondary: #2a1d2a;
-  --secondary-foreground: #f4e5f3;
-  --muted: #241725;
-  --muted-foreground: #b4a0b8;
-  --accent: #2d182e;
-  --accent-foreground: #f4e5f3;
-  --destructive: #f2727f;
-  --border: rgb(234 223 238 / 0.1);
-  --input: rgb(234 223 238 / 0.14);
+  --secondary: #f4ecf6;
+  --secondary-foreground: #5b2266;
+  --muted: #f3eff5;
+  --muted-foreground: #6c6273;
+  --accent: #f4ecf6;
+  --accent-foreground: #5b2266;
+  --destructive: #e5484d;
+  --border: #ebe5ee;
+  --input: #e2dbe6;
   --ring: #a847b8;
 
-  /* Графики: внешний бренд — сиреневый, внутренний — бирюзовый */
-  --chart-1: #d27be6;
-  --chart-2: #5ee0c8;
-  --chart-3: #f5b850;
-  --chart-4: #f2727f;
-  --chart-5: #8c7bff;
+  /* Графики: снаружи — фиолетовый, изнутри — бирюзовый */
+  --chart-1: #a847b8;
+  --chart-2: #12a594;
+  --chart-3: #d97706;
+  --chart-4: #e5484d;
+  --chart-5: #6e56cf;
 
-  /* Статусы обещаний */
-  --status-ok: #5ed39a;
-  --status-warn: #f5b850;
-  --status-bad: #f2727f;
-  --status-none: #8f7f93;
+  --status-ok: #16a34a;
+  --status-warn: #d97706;
+  --status-bad: #e5484d;
+  --status-none: #9c93a3;
 
-  --radius: 0.75rem;
-  --sidebar: #140b15;
-  --sidebar-foreground: #f4e5f3;
+  --radius: 0.875rem;
+  --sidebar: #ffffff;
+  --sidebar-foreground: #1a1320;
   --sidebar-primary: #a847b8;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #2a1d2a;
-  --sidebar-accent-foreground: #f4e5f3;
-  --sidebar-border: rgb(234 223 238 / 0.1);
+  --sidebar-accent: #f4ecf6;
+  --sidebar-accent-foreground: #5b2266;
+  --sidebar-border: #ebe5ee;
   --sidebar-ring: #a847b8;
 }
 
@@ -129,50 +128,59 @@
 
 @layer base {
   html {
-    color-scheme: dark;
+    color-scheme: light;
     scroll-behavior: smooth;
   }
   ::selection {
-    background: rgb(168 71 184 / 0.45);
+    background: rgb(168 71 184 / 0.2);
+  }
+  h1, h2, h3 {
+    text-wrap: balance;
+    letter-spacing: -0.02em;
   }
 }
 
 @layer components {
-  /* Градиентный текст для акцентов в заголовках */
   .text-gradient {
-    background: linear-gradient(100deg, #f4e5f3 10%, #e3a3ef 45%, #b65bc9 80%);
+    background: linear-gradient(100deg, #712b7d 0%, #a847b8 55%, #c76ad6 100%);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
   }
 
-  /* Карточка со стеклянным фоном, как в шаблоне */
-  .glass {
-    background: linear-gradient(180deg, rgb(255 255 255 / 0.045), rgb(255 255 255 / 0.015));
-    border: 1px solid rgb(234 223 238 / 0.1);
-    backdrop-filter: blur(12px);
+  /* Белая карточка с тонкой рамкой — основной строительный блок */
+  .surface {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 1.25rem;
   }
 
-  /* Свечение-фон для героев и CTA */
-  .glow-bg {
+  .surface-raised {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 1.5rem;
+    box-shadow: 0 1px 2px rgb(26 19 32 / 0.04), 0 24px 48px -24px rgb(113 43 125 / 0.18);
+  }
+
+  /* Мягкое свечение и сетка — только на первых экранах */
+  .hero-glow {
     background:
-      radial-gradient(60% 50% at 20% 10%, rgb(168 71 184 / 0.35), transparent 70%),
-      radial-gradient(45% 45% at 85% 20%, rgb(94 224 200 / 0.12), transparent 70%),
-      radial-gradient(50% 60% at 60% 90%, rgb(140 123 255 / 0.18), transparent 70%);
+      radial-gradient(50% 60% at 75% 20%, rgb(168 71 184 / 0.14), transparent 70%),
+      radial-gradient(40% 50% at 10% 0%, rgb(18 165 148 / 0.07), transparent 70%);
   }
 
   .grid-bg {
     background-image:
-      linear-gradient(rgb(234 223 238 / 0.05) 1px, transparent 1px),
-      linear-gradient(90deg, rgb(234 223 238 / 0.05) 1px, transparent 1px);
-    background-size: 56px 56px;
-    mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+      linear-gradient(rgb(26 19 32 / 0.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(26 19 32 / 0.045) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: radial-gradient(ellipse at 50% 0%, black 20%, transparent 70%);
   }
 
-  /* Условный текст, который нужно заменить (включается переключателем в подвале) */
+  /* Условный текст, который нужно заменить (переключатель в подвале) */
   [data-ph="on"] .ph {
-    background: rgb(250 204 21 / 0.16);
-    box-shadow: inset 0 -2px 0 rgb(250 204 21 / 0.7);
+    background: rgb(250 204 21 / 0.25);
+    box-shadow: inset 0 -2px 0 rgb(202 138 4 / 0.6);
     border-radius: 3px;
   }
 
@@ -197,5 +205,5 @@
   .prose-mirror ul { list-style: disc; }
   .prose-mirror ol { list-style: decimal; }
   .prose-mirror strong { color: var(--foreground); }
-  .prose-mirror a { color: #e3a3ef; text-decoration: underline; text-underline-offset: 3px; }
+  .prose-mirror a { color: var(--brand-600); text-decoration: underline; text-underline-offset: 3px; }
 }

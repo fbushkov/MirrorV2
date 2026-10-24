@@ -29,7 +29,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="ru" className={`${manrope.variable} dark antialiased`} data-ph="on" suppressHydrationWarning>
+    <html lang="ru" className={`${manrope.variable} antialiased`} data-ph="on" suppressHydrationWarning>
       <head>
         {/* Восстанавливаем выбор подсветки условных текстов до отрисовки */}
         <script
@@ -43,7 +43,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <Header />
           <main className="flex-1">{children}</main>
           <Footer />
-          <Toaster theme="dark" />
+          <Toaster theme="light" />
         </TooltipProvider>
       </body>
     </html>
