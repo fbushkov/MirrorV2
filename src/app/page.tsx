@@ -5,9 +5,9 @@ import { Button } from "@/components/ui/button"
 import { Eyebrow, Section, SectionHeader } from "@/components/site/section"
 import { FaqSection } from "@/components/site/faq-list"
 import { Ph } from "@/components/site/ph"
-import { IndexGauge } from "@/components/charts/brand-charts"
 import { MirrorCard } from "@/components/home/mirror-card"
 import { TwoSides } from "@/components/home/two-sides"
+import { ThreeMetrics } from "@/components/home/three-metrics"
 import { StartForm } from "@/components/start/start-form"
 import { FAQ_HOME } from "@/content/faq"
 import { cn } from "@/lib/utils"
@@ -132,40 +132,13 @@ function Gap() {
 
 function IndexBlock() {
   return (
-    <Section>
-      <div className="grid items-center gap-10 lg:grid-cols-2">
-        <div className="surface-raised flex flex-col items-center gap-2 p-8 lg:order-2">
-          <IndexGauge value={65} label="индекс культуры" className="h-56 w-full max-w-xs" />
-          <p className="text-sm text-muted-foreground">Подтверждено 5 из 8 обещаний · пример</p>
-        </div>
-        <div className="flex flex-col items-start gap-5">
-          <Eyebrow>Индекс культуры</Eyebrow>
-          <h2 className="text-3xl font-semibold md:text-[2.75rem] md:leading-[1.1]">Одна цифра, с которой трудно спорить</h2>
-          <p className="text-muted-foreground md:text-lg">
-            Индекс показывает, какая доля ваших обещаний подтверждается опытом людей. От 0 до 100, отдельно снаружи и
-            изнутри.
-          </p>
-          <ol className="flex flex-col gap-3">
-            {[
-              ["Берём ваши слова", "Обещания из вакансий и коммуникаций. Чем чаще обещаете, тем больше вес."],
-              ["Проверяем опытом людей", "Каждое обещание — по отзывам, упоминаниям, интервью."],
-              ["Сводим в индекс", "И показываем, какие обещания тянут его вниз."],
-            ].map(([t, d], i) => (
-              <li key={t} className="flex gap-4">
-                <span className="inline-flex size-7 shrink-0 items-center justify-center rounded-full bg-secondary text-sm font-semibold text-primary">
-                  {i + 1}
-                </span>
-                <p>
-                  <span className="font-medium">{t}.</span> <span className="text-muted-foreground">{d}</span>
-                </p>
-              </li>
-            ))}
-          </ol>
-          <Link href="/culture-index" className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline">
-            Как мы считаем <ArrowRight className="size-4" />
-          </Link>
-        </div>
-      </div>
+    <Section id="metrics">
+      <SectionHeader
+        eyebrow="Три показателя"
+        title="Три вопроса, на которые отвечает отчёт"
+        description="Честность, слепые зоны и место на рынке. У каждого показателя своя точка отсчёта, поэтому мы не смешиваем их в одну цифру."
+      />
+      <ThreeMetrics />
     </Section>
   )
 }

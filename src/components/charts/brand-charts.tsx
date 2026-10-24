@@ -6,6 +6,8 @@ import {
   EXTERNAL_SERIES,
   HEATMAP,
   INTERNAL_SERIES,
+  MATRIX_POINTS,
+  MATRIX_SPLIT,
   MONTHS,
   PROMISES,
   QUARTERS,
@@ -315,4 +317,55 @@ export function IndexGauge({ value, label, color = C.external, className }: { va
     [value, label, color],
   )
   return <EChart option={option} className={className ?? "h-52"} ariaLabel={`${label}: ${value} из 100`} />
+}
+
+/** Матрица: по вертикали — честность (индекс культуры), по горизонтали — условия (место в отрасли) */
+export function CultureMatrixChart({ className }: { className?: string }) {
+  const option = useMemo(() => {
+    const { x: sx, y: sy } = MATRIX_SPLIT
+    const zone = (x0: number, x1: number, y0: number, y1: number, color: string, name: string, pos: string) => [
+      { xAxis: x0, yAxis: y0, itemStyle: { color }, name, label: { position: pos } },
+      { xAxis: x1, yAxis: y1 },
+    ]
+    return {
+      grid: { left: 30, right: 16, top: 16, bottom: 34, containLabel: true },
+      tooltip: {
+        formatter: (p: { data: { name: string; value: [number, number] } }) =>
+          p.data?.value ? `<b>${p.data.name}</b><br/>Индекс культуры: ${p.data.value[1]}<br/>Место в отрасли: ${p.data.value[0]}` : "",
+      },
+      xAxis: { type: "value", min: 0, max: 100, name: "условия · место в отрасли →", nameLocation: "middle", nameGap: 30, nameTextStyle: { color: C.muted, fontSize: 11 }, splitLine: { show: false } },
+      yAxis: { type: "value", min: 30, max: 90, name: "честность · индекс культуры →", nameLocation: "middle", nameGap: 34, nameTextStyle: { color: C.muted, fontSize: 11 }, splitLine: { show: false } },
+      series: [
+        {
+          type: "scatter",
+          symbolSize: (_v: unknown, p: { data: { you?: boolean } }) => (p.data.you ? 22 : 14),
+          data: MATRIX_POINTS.map((m) => ({
+            name: m.name,
+            value: [m.x, m.y],
+            you: m.you,
+            itemStyle: { color: m.you ? C.external : "#c9bfce", borderColor: "#fff", borderWidth: 3, shadowBlur: m.you ? 12 : 0, shadowColor: "rgba(168,71,184,.45)" },
+            label: { show: true, formatter: m.name, position: "right", color: m.you ? C.text : C.muted, fontWeight: m.you ? 600 : 400, fontSize: 12 },
+          })),
+          markArea: {
+            silent: true,
+            label: { color: C.muted, fontSize: 11, fontWeight: 500 },
+            data: [
+              zone(sx, 100, sy, 90, "rgba(22,163,74,0.06)", "Сильный и честный", "insideTopRight"),
+              zone(0, sx, sy, 90, "rgba(217,119,6,0.05)", "Честно, но слабо", "insideTopLeft"),
+              zone(sx, 100, 30, sy, "rgba(110,86,207,0.05)", "Обещаете не то", "insideBottomRight"),
+              zone(0, sx, 30, sy, "rgba(229,72,77,0.06)", "Переобещаете", "insideBottomLeft"),
+            ],
+          },
+          markLine: {
+            silent: true,
+            symbol: "none",
+            lineStyle: { color: "rgba(26,19,32,0.15)", type: "dashed" },
+            label: { show: false },
+            data: [{ xAxis: sx }, { yAxis: sy }],
+          },
+        },
+      ],
+    }
+  }, [])
+  return <EChart option={option} className={className ?? "h-96"} ariaLabel="Матрица: индекс культуры против места в отрасли" />
 }

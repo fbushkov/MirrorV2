@@ -4,13 +4,15 @@ import { PageHero } from "@/components/site/page-hero"
 import { Section } from "@/components/site/section"
 import { CtaBand } from "@/components/site/cta-band"
 import { StatusPill } from "@/components/site/status"
-import { BrandDynamicsChart, GapDivergingChart, SourcesHeatmap } from "@/components/charts/brand-charts"
-import { BANK_N, COMPETITORS, EVENTS, PROMISES, cultureIndex, statusOf } from "@/content/demo"
+import { BrandDynamicsChart, CultureMatrixChart, GapDivergingChart, SourcesHeatmap } from "@/components/charts/brand-charts"
+import { BlindSpots } from "@/components/metrics/blind-spots"
+import { IndustryTracks } from "@/components/metrics/industry-tracks"
+import { BANK_N, BLIND_SPOTS, COMPETITORS, EVENTS, INDUSTRY, PROMISES, cultureIndex, statusOf } from "@/content/demo"
 import { cn } from "@/lib/utils"
 
 export const metadata: Metadata = {
   title: "Пример отчёта",
-  description: "Как выглядит отчёт Mirror: индекс снаружи и изнутри, просадки и подъёмы, разрыв по обещаниям, сравнение с конкурентами.",
+  description: "Как выглядит отчёт Mirror: индекс снаружи и изнутри, слепые зоны, место в отрасли, просадки и подъёмы, сравнение с конкурентами.",
 }
 
 function Panel({ title, hint, children, className }: { title: string; hint?: string; children: React.ReactNode; className?: string }) {
@@ -60,11 +62,12 @@ export default function ExamplePage() {
         description={`Пример по условному «${BANK_N.name}», ${BANK_N.size}. Внешняя часть есть уже в бесплатном срезе, внутренняя появляется после диагностики.`}
       />
       <Section className="pt-0 md:pt-0">
-        <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+        <div className="grid grid-cols-2 gap-3 lg:grid-cols-5 [&>*:last-child]:col-span-2 lg:[&>*:last-child]:col-span-1">
           <Kpi label="Индекс снаружи" value={String(ext)} delta={2} tone="text-chart-1" />
           <Kpi label="Индекс изнутри" value={String(int)} delta={5} tone="text-chart-2" />
           <Kpi label="Подтверждено обещаний" value={`${confirmed} из ${PROMISES.length}`} />
-          <Kpi label="Упоминаний за период" value={String(PROMISES.reduce((s, p) => s + p.mentions, 0))} />
+          <Kpi label="Слепые зоны" value={`${BLIND_SPOTS.length} темы`} />
+          <Kpi label="Место в отрасли" value={`${INDUSTRY.overall}`} />
         </div>
 
         <Panel title="Просадки и подъёмы" hint="Индекс по месяцам. Выделена просадка, метки — события, которые на неё повлияли." className="mt-3">
@@ -99,6 +102,19 @@ export default function ExamplePage() {
 
         <Panel title="Откуда подтверждения" hint="Доля упоминаний, где опыт совпадает с обещанием, по источникам" className="mt-3">
           <SourcesHeatmap />
+        </Panel>
+
+        <div className="mt-3 grid gap-3 lg:grid-cols-2">
+          <Panel title="Слепые зоны" hint="О чём люди пишут, а в ваших текстах нет ни слова">
+            <BlindSpots />
+          </Panel>
+          <Panel title="Место в отрасли" hint="Базовые темы в сравнении с работодателями отрасли и региона">
+            <IndustryTracks />
+          </Panel>
+        </div>
+
+        <Panel title="Где вы на карте" hint="Честность против условий. Банк N — в зоне «сильный и честный», но зарплата и нагрузка тянут вниз." className="mt-3">
+          <CultureMatrixChart />
         </Panel>
 
         <div className="mt-3 grid gap-3 lg:grid-cols-2">

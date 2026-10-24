@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react"
 import * as echarts from "echarts/core"
-import { BarChart, GaugeChart, HeatmapChart, LineChart, RadarChart } from "echarts/charts"
+import { BarChart, GaugeChart, HeatmapChart, LineChart, RadarChart, ScatterChart } from "echarts/charts"
 import {
   GridComponent,
   LegendComponent,
@@ -25,6 +25,7 @@ echarts.use([
   HeatmapChart,
   LineChart,
   RadarChart,
+  ScatterChart,
   GridComponent,
   LegendComponent,
   MarkAreaComponent,
