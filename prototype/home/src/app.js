@@ -3,6 +3,32 @@
    Скрипт страницы (например, FAQ на главной) идёт раньше — типограф
    запускается последним и обрабатывает уже готовую разметку.
    ========================================================= */
+/* ---------- Вопросы: группы из FAQ_GROUPS (src/content.js), один открытый на группу ---------- */
+const faqRoot = document.getElementById("faq-list");
+if (faqRoot) {
+  const plus = document.getElementById("ico-plus").innerHTML;
+  faqRoot.dataset.groups.split(",").forEach((key, gi) => {
+    const g = FAQ_GROUPS[key.trim()];
+    const sec = document.createElement("div");
+    sec.className = "faq-group";
+    sec.innerHTML = `<div class="faq-group__info"><span class="faq-group__tag">${g.tag}</span><div><h3 class="faq-group__title">${g.title}</h3><p class="faq-group__desc">${g.desc}</p></div></div><div class="faq-list"></div>`;
+    const list = sec.querySelector(".faq-list");
+    g.items.forEach(([q, a], i) => {
+      const id = `qa-${gi}-${i}`;
+      const el = document.createElement("div");
+      el.className = "qa";
+      el.innerHTML = `<button class="qa__q" type="button" aria-expanded="false" aria-controls="${id}"><span>${q}</span><i class="qa__icon">${plus}</i></button><div class="qa__a" id="${id}" role="region"><div><p>${a}</p></div></div>`;
+      el.querySelector("button").addEventListener("click", () => {
+        const willOpen = !el.classList.contains("is-open");
+        list.querySelectorAll(".qa").forEach((o) => { o.classList.remove("is-open"); o.querySelector("button").setAttribute("aria-expanded", "false"); });
+        if (willOpen) { el.classList.add("is-open"); el.querySelector("button").setAttribute("aria-expanded", "true"); }
+      });
+      list.appendChild(el);
+    });
+    faqRoot.appendChild(sec);
+  });
+}
+
 /* ---------- Мега-меню: клик, Esc, клик вне, одно открытое ---------- */
 const header = document.querySelector(".header");
 const mega = document.getElementById("mega");
@@ -29,10 +55,12 @@ document.addEventListener("click", (e) => { if (current && !header.contains(e.ta
 document.addEventListener("keydown", (e) => { if (e.key === "Escape" && current) { const t = triggers.find((x) => x.dataset.panel === current); setMenu(null); t && t.focus(); } });
 addEventListener("scroll", () => header.classList.toggle("is-stuck", scrollY > 40), { passive: true });
 
-/* ---------- Цены → предвыбор темы в форме ---------- */
-document.querySelectorAll("[data-topic]").forEach((a) => a.addEventListener("click", () => {
-  const r = document.querySelector(`input[name=topic][value=${a.dataset.topic}]`); if (r) r.checked = true;
-}));
+/* ---------- Цены → предвыбор темы в форме ----------
+   На той же странице — по клику, с другой страницы — через ?topic= в адресе (в Next: /start?topic=…) */
+const pickTopic = (topic) => { const r = document.querySelector(`input[name=topic][value="${topic}"]`); if (r) r.checked = true; };
+document.querySelectorAll("[data-topic]").forEach((a) => a.addEventListener("click", () => pickTopic(a.dataset.topic)));
+const urlTopic = new URLSearchParams(location.search).get("topic");
+if (urlTopic) pickTopic(urlTopic);
 
 /* ---------- Форма: проверка обязательных полей, экран успеха ---------- */
 const form = document.querySelector("form.form");

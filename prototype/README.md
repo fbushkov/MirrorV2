@@ -3,7 +3,7 @@
 Статичные HTML-прототипы по макету Figma «Elements» (fileKey `wSWcfUravCxcymezdlNoko`).
 Это **эталон для переноса в Next.js**, а не код сайта: в сборку и линтер не входят.
 
-## `home/` — главная и «О нас»
+## `home/` — главная, «О нас», «Цены»
 
 ```bash
 cd prototype/home
@@ -11,7 +11,8 @@ python3 build.py        # pages/*.html → dist/*.html (самодостаточ
 node qa.js              # Playwright: ошибки консоли, горизонтальная прокрутка, скриншоты в shots/
 ```
 
-Открыть без сборки: `dist/index.html`, `dist/about.html`. Правила и токены: `design-system.html`.
+Открыть без сборки: `dist/index.html`, `dist/about.html`, `dist/pricing.html`.
+Общие блоки: `partials/pricing-plans.html` (тарифы), `src/content.js` (вопросы — страница выбирает группы через `data-groups`). Правила и токены: `design-system.html`.
 
 | Прототип | Next.js |
 |---|---|

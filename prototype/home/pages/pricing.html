@@ -1,0 +1,117 @@
+<!-- page: route=pricing; title=Цены — Mirror -->
+  <main>
+  <!-- ============ ШАПКА СТРАНИЦЫ ============ -->
+  <section class="page-hero" aria-labelledby="page-title">
+    <ol class="crumbs" aria-label="Хлебные крошки">
+      <li><a href="{{href:home}}">Главная</a></li>
+      <li><span aria-current="page">Цены</span></li>
+    </ol>
+    <div class="hero__head">
+      <span class="eyebrow">Цены · 2 направления · 4 тарифа</span>
+      <div class="hero__row">
+        <h1 class="hero__title" id="page-title">Начните бесплатно.<br><span class="dim">Платите, когда нужна глубина</span></h1>
+        <p class="hero__text">Внешний срез ничего не стоит. Платите, когда нужен мониторинг или взгляд изнутри. Все форматы разовые, кроме мониторинга.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ТАРИФЫ (общий блок с главной) ============ -->
+  <section class="section" style="margin-top: var(--head-gap)" aria-label="Тарифы">
+{{include:partials/pricing-plans.html}}
+  </section>
+
+  <!-- ============ ЦЕНА ПО ЧИСЛЕННОСТИ ============ -->
+  <section class="section" id="by-size" aria-labelledby="size-title">
+    <div class="section__head section__head--split">
+      <span class="eyebrow">Изнутри · цена по численности</span>
+      <div class="headline-block">
+        <h2 class="headline" id="size-title">Чем больше компания,<br><span class="dim">тем ниже цена на человека</span></h2>
+        <p class="lead">Цена проверки изнутри зависит от числа сотрудников и подразделений. Фиксируем её до начала работы. Внешний срез бесплатный для всех, мониторинг от численности не зависит.</p>
+      </div>
+    </div>
+    <div class="cmp cmp--size" role="region" aria-label="Цена по численности" tabindex="0">
+      <table class="cmp__table">
+        <colgroup><col class="cmp__col-feat"><col><col><col><col></colgroup>
+        <thead><tr><th scope="col" class="cmp__corner"><span class="cmp__hint">Сотрудников</span></th><th scope="col"><span class="cmp__name">до 300</span></th><th scope="col"><span class="cmp__name">300–1000</span></th><th scope="col"><span class="cmp__name">1000–3000</span></th><th scope="col"><span class="cmp__name">больше 3000</span></th></tr></thead>
+        <tbody>
+          <tr><th scope="row"><span class="cmp__feat">Диагностика</span><span class="cmp__note">Около 4 недель</span></th><td class="cmp__money"><span class="ph">180 000 ₽</span></td><td class="cmp__money"><span class="ph">260 000 ₽</span></td><td><span class="ph">По запросу</span></td><td>По запросу</td></tr>
+          <tr><th scope="row"><span class="cmp__feat">Кампания на 3 месяца</span><span class="cmp__note">Диагностика в составе</span></th><td class="cmp__money">490 000 ₽</td><td class="cmp__money">790 000 ₽</td><td class="cmp__money">1 290 000 ₽</td><td>По запросу</td></tr>
+          <tr><th scope="row"><span class="cmp__feat">Цена кампании на сотрудника</span><span class="cmp__note">При верхней границе диапазона</span></th><td>от 1 633 ₽</td><td>от 790 ₽</td><td>от 430 ₽</td><td>—</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="cmp__foot">После кампании замеры можно продлить. Условные цены подсвечены — их уточним перед запуском.</p>
+  </section>
+
+  <!-- ============ ПОДРОБНОЕ СРАВНЕНИЕ ============ -->
+  <section class="section" id="compare" aria-labelledby="compare-title">
+    <div class="section__head section__head--split">
+      <span class="eyebrow">Сравнение · что входит</span>
+      <div class="headline-block">
+        <h2 class="headline" id="compare-title">Что входит<br><span class="dim">в каждый тариф</span></h2>
+        <p class="lead">Снаружи смотрим, что видят кандидаты и рынок. Изнутри — что переживают сотрудники. Показатели направлений не смешиваем в одну цифру.</p>
+      </div>
+    </div>
+    <div class="cmp" role="region" aria-label="Сравнение тарифов" tabindex="0">
+      <table class="cmp__table">
+        <colgroup><col class="cmp__col-feat"><col><col><col><col></colgroup>
+        <thead><tr><th scope="col" class="cmp__corner"><span class="cmp__hint">Тариф</span></th><th scope="col" class="cmp__plan cmp__plan--brand"><span class="cmp__name">Внешний срез</span><span class="cmp__price">0 ₽</span></th><th scope="col" class="cmp__plan cmp__plan--brand"><span class="cmp__name">Мониторинг</span><span class="cmp__price"><span class="ph">от 30 000 ₽</span> / мес.</span></th><th scope="col" class="cmp__plan cmp__plan--health"><span class="cmp__name">Диагностика</span><span class="cmp__price"><span class="ph">от 180 000 ₽</span></span></th><th scope="col" class="cmp__plan cmp__plan--health"><span class="cmp__name">Кампания на 3 месяца</span><span class="cmp__price">от 490 000 ₽</span></th></tr></thead>
+        <tbody>
+          <tr class="cmp__group"><th scope="colgroup" colspan="5"><span>Условия</span></th></tr>
+          <tr><th scope="row"><span class="cmp__feat">Цена</span></th><td>0 ₽</td><td><span class="ph">от 30 000 ₽</span> в месяц</td><td><span class="ph">от 180 000 ₽</span></td><td>от 490 000 ₽</td></tr>
+          <tr><th scope="row"><span class="cmp__feat">Как платим</span></th><td>Бесплатно</td><td>Помесячно, можно остановить в любой месяц</td><td>Разово, по счёту</td><td>Разово, по счёту</td></tr>
+          <tr><th scope="row"><span class="cmp__feat">Срок</span></th><td>3 рабочих дня</td><td>Обновление каждый месяц</td><td>Около 4 недель</td><td>3 месяца</td></tr>
+          <tr><th scope="row"><span class="cmp__feat">Результат</span></th><td>PDF-отчёт</td><td>PDF-отчёт каждый месяц</td><td>Отчёт и план на 90 дней</td><td>Дашборд и итоговый отчёт</td></tr>
+          <tr><th scope="row"><span class="cmp__feat">От вас нужно</span></th><td>Название компании и ссылка на hh.ru</td><td>То же, что для среза</td><td>Культурный код или документы о ценностях</td><td>То же + список подразделений</td></tr>
+          <tr><th scope="row"><span class="cmp__feat">Договор и закрывающие документы</span></th><td>Не нужны</td><td><i class="yes" role="img" aria-label="есть"></i></td><td><i class="yes" role="img" aria-label="есть"></i></td><td><i class="yes" role="img" aria-label="есть"></i></td></tr>
+          <tr class="cmp__group"><th scope="colgroup" colspan="5"><span>Снаружи · оценка HR-бренда</span></th></tr>
+          <tr><th scope="row"><span class="cmp__feat">Индекс культуры и карта обещаний</span><span class="cmp__note">Насколько обещания в вакансиях и соцсетях совпадают с опытом людей</span></th><td><i class="yes" role="img" aria-label="есть"></i></td><td><i class="yes" role="img" aria-label="есть"></i></td><td>Из среза</td><td>Из среза</td></tr>
+          <tr><th scope="row"><span class="cmp__feat">Слепые зоны</span><span class="cmp__note">О чём люди говорят, а компания молчит</span></th><td><i class="yes" role="img" aria-label="есть"></i></td><td><i class="yes" role="img" aria-label="есть"></i></td><td>Из среза</td><td>Из среза</td></tr>
+          <tr><th scope="row"><span class="cmp__feat">Место в отрасли</span><span class="cmp__note">Условия против рынка</span></th><td><i class="yes" role="img" aria-label="есть"></i></td><td><i class="yes" role="img" aria-label="есть"></i></td><td>Из среза</td><td>Из среза</td></tr>
+          <tr><th scope="row"><span class="cmp__feat">Конкуренты в сравнении</span></th><td>2–3</td><td>2–3, можно добавить <span class="ph">до 5</span></td><td>Из среза</td><td>Из среза</td></tr>
+          <tr><th scope="row"><span class="cmp__feat">Что говорят нейросети</span></th><td><i class="yes" role="img" aria-label="есть"></i></td><td><i class="yes" role="img" aria-label="есть"></i></td><td>Из среза</td><td>Из среза</td></tr>
+          <tr><th scope="row"><span class="cmp__feat">Открытые источники</span><span class="cmp__note">hh.ru, Dreamjob, VK, Дзен, медиа</span></th><td><i class="yes" role="img" aria-label="есть"></i></td><td><i class="yes" role="img" aria-label="есть"></i></td><td>Из среза</td><td>Из среза</td></tr>
+          <tr><th scope="row"><span class="cmp__feat">Динамика индекса</span><span class="cmp__note">Просадки и подъёмы по месяцам</span></th><td><span class="no" aria-label="нет">—</span></td><td><i class="yes" role="img" aria-label="есть"></i></td><td><span class="no" aria-label="нет">—</span></td><td><span class="no" aria-label="нет">—</span></td></tr>
+          <tr><th scope="row"><span class="cmp__feat">Сигнал, если тема резко выросла</span></th><td><span class="no" aria-label="нет">—</span></td><td><i class="yes" role="img" aria-label="есть"></i></td><td><span class="no" aria-label="нет">—</span></td><td><span class="no" aria-label="нет">—</span></td></tr>
+          <tr><th scope="row"><span class="cmp__feat">Развёрнутый отчёт</span><span class="cmp__note">Позиционирование, вакансии, соцсети, персоны, конкуренты, SWOT</span></th><td>Краткая версия</td><td><span class="ph">Раз в квартал</span></td><td><span class="no" aria-label="нет">—</span></td><td><span class="no" aria-label="нет">—</span></td></tr>
+          <tr class="cmp__group"><th scope="colgroup" colspan="5"><span>Изнутри · здоровье культуры</span></th></tr>
+          <tr><th scope="row"><span class="cmp__feat">Описание культурного кода</span><span class="cmp__note">Что компания заявляет как нормы</span></th><td><span class="no" aria-label="нет">—</span></td><td><span class="no" aria-label="нет">—</span></td><td><i class="yes" role="img" aria-label="есть"></i></td><td><i class="yes" role="img" aria-label="есть"></i></td></tr>
+          <tr><th scope="row"><span class="cmp__feat">Ваши внутренние документы в анализе</span><span class="cmp__note">EVP, ценности, результаты прошлых опросов</span></th><td><span class="no" aria-label="нет">—</span></td><td><span class="no" aria-label="нет">—</span></td><td><i class="yes" role="img" aria-label="есть"></i></td><td><i class="yes" role="img" aria-label="есть"></i></td></tr>
+          <tr><th scope="row"><span class="cmp__feat">10 метрик культуры</span></th><td><span class="no" aria-label="нет">—</span></td><td><span class="no" aria-label="нет">—</span></td><td>Первый замер</td><td>3 замера</td></tr>
+          <tr><th scope="row"><span class="cmp__feat">Разрыв с культурным кодом</span></th><td><span class="no" aria-label="нет">—</span></td><td><span class="no" aria-label="нет">—</span></td><td><i class="yes" role="img" aria-label="есть"></i></td><td><i class="yes" role="img" aria-label="есть"></i></td></tr>
+          <tr><th scope="row"><span class="cmp__feat">Анонимные интервью с сотрудниками</span></th><td><span class="no" aria-label="нет">—</span></td><td><span class="no" aria-label="нет">—</span></td><td><span class="ph">До 12</span></td><td><span class="ph">До 12</span></td></tr>
+          <tr><th scope="row"><span class="cmp__feat">Пульс-опросы</span></th><td><span class="no" aria-label="нет">—</span></td><td><span class="no" aria-label="нет">—</span></td><td>1 волна</td><td>3 волны</td></tr>
+          <tr><th scope="row"><span class="cmp__feat">Анонимная обратная связь</span></th><td><span class="no" aria-label="нет">—</span></td><td><span class="no" aria-label="нет">—</span></td><td><span class="no" aria-label="нет">—</span></td><td>Все 3 месяца</td></tr>
+          <tr><th scope="row"><span class="cmp__feat">Дашборд</span><span class="cmp__note">Для команды культуры, руководителей и топов</span></th><td><span class="no" aria-label="нет">—</span></td><td><span class="no" aria-label="нет">—</span></td><td><span class="no" aria-label="нет">—</span></td><td><i class="yes" role="img" aria-label="есть"></i></td></tr>
+          <tr><th scope="row"><span class="cmp__feat">Страница «Решения по обратной связи»</span><span class="cmp__note">Тема → решение → что изменилось</span></th><td><span class="no" aria-label="нет">—</span></td><td><span class="no" aria-label="нет">—</span></td><td><span class="no" aria-label="нет">—</span></td><td><i class="yes" role="img" aria-label="есть"></i></td></tr>
+          <tr><th scope="row"><span class="cmp__feat">Сверка снаружи и изнутри</span><span class="cmp__note">Совпадения тем из отзывов и опросов</span></th><td><span class="no" aria-label="нет">—</span></td><td><span class="no" aria-label="нет">—</span></td><td><i class="yes" role="img" aria-label="есть"></i></td><td><i class="yes" role="img" aria-label="есть"></i></td></tr>
+          <tr class="cmp__group"><th scope="colgroup" colspan="5"><span>Эксперт и сопровождение</span></th></tr>
+          <tr><th scope="row"><span class="cmp__feat">Разбор с экспертом</span></th><td>30 минут</td><td><span class="ph">Звонок раз в месяц</span></td><td>Итоговая встреча</td><td>С руководителями раз в 2 недели</td></tr>
+          <tr><th scope="row"><span class="cmp__feat">План улучшений</span></th><td>3 первых шага</td><td><span class="ph">Рекомендации к каждому отчёту</span></td><td>План на 90 дней</td><td>План и сопровождение изменений</td></tr>
+          <tr><th scope="row"><span class="cmp__feat">Индивидуальное сопровождение</span><span class="cmp__note">Один эксперт ведёт проект от начала до конца</span></th><td><span class="no" aria-label="нет">—</span></td><td><span class="no" aria-label="нет">—</span></td><td><span class="no" aria-label="нет">—</span></td><td><i class="yes" role="img" aria-label="есть"></i></td></tr>
+          <tr class="cmp__group"><th scope="colgroup" colspan="5"><span>Данные и конфиденциальность</span></th></tr>
+          <tr><th scope="row"><span class="cmp__feat">Доступ к вашим системам</span></th><td>Не нужен</td><td>Не нужен</td><td>Только документы, которые передадите</td><td>Только документы, которые передадите</td></tr>
+          <tr><th scope="row"><span class="cmp__feat">Группы от 5 человек</span><span class="cmp__note">Не показываем малые группы и не ищем авторов</span></th><td><span class="no" aria-label="нет">—</span></td><td><span class="no" aria-label="нет">—</span></td><td><i class="yes" role="img" aria-label="есть"></i></td><td><i class="yes" role="img" aria-label="есть"></i></td></tr>
+          <tr><th scope="row"><span class="cmp__feat">Соглашение о конфиденциальности</span></th><td><span class="ph">По запросу</span></td><td><i class="yes" role="img" aria-label="есть"></i></td><td><i class="yes" role="img" aria-label="есть"></i></td><td><i class="yes" role="img" aria-label="есть"></i></td></tr>
+          <tr><th scope="row"><span class="cmp__feat">Договор на обработку данных сотрудников</span><span class="cmp__note">По 152-ФЗ, данные удаляем после проекта</span></th><td><span class="no" aria-label="нет">—</span></td><td><span class="no" aria-label="нет">—</span></td><td><i class="yes" role="img" aria-label="есть"></i></td><td><i class="yes" role="img" aria-label="есть"></i></td></tr>
+          <tr><th scope="row"><span class="cmp__feat">Данные хранятся в России</span></th><td><i class="yes" role="img" aria-label="есть"></i></td><td><i class="yes" role="img" aria-label="есть"></i></td><td><i class="yes" role="img" aria-label="есть"></i></td><td><i class="yes" role="img" aria-label="есть"></i></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="cards cards--2" style="margin-top:24px">
+      <article class="card card--white"><span class="card__no">Агентствам и консультантам</span><div><h3 class="card__title">Внешний аудит для ваших клиентов</h3><p class="card__text">Делаем отчёты под вашим логотипом. Первые три — бесплатно.</p></div><a class="btn-link" style="margin-left:-10px;margin-top:auto;width:fit-content" href="{{href:start?topic=other}}" data-topic="other">Обсудить пилот {{svgc:arrow-up-right.svg}}</a></article>
+      <article class="card card--white"><span class="card__no">Больше 3000 сотрудников</span><div><h3 class="card__title">Посчитаем под вашу структуру</h3><p class="card__text">Цена зависит от числа подразделений, срезов и встреч с руководителями.</p></div><a class="btn-link" style="margin-left:-10px;margin-top:auto;width:fit-content" href="{{href:start?topic=health}}" data-topic="health">Запросить расчёт {{svgc:arrow-up-right.svg}}</a></article>
+    </div>
+  </section>
+
+  <!-- ============ ВОПРОСЫ (группы «Оплата» как на главной + «Тарифы») ============ -->
+  <section class="section" id="faq" aria-labelledby="faq-title">
+    <div class="section__head section__head--split">
+      <span class="eyebrow">Вопросы · цены и договор</span>
+      <div class="headline-block">
+        <h2 class="headline" id="faq-title">Частые вопросы<br><span class="dim">об оплате и тарифах</span></h2>
+      </div>
+    </div>
+    <div class="faq" id="faq-list" data-groups="payment,plans"></div>
+  </section>
+  </main>

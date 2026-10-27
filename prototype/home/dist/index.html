@@ -425,6 +425,55 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 .contact:active { background: var(--c-line); }
 @media (max-width: 1023px) { .cards { --cols: 1; } .cards--2 { --cols: 1; } }
 
+/* --- 5.8 Таблица сравнения тарифов ---
+   Белая карточка radius 12. Шапка — тёмная строка с названиями и ценами, прилипает под шапкой сайта.
+   Группы строк — моно-подпись на #F7F7FB. Ячейки 15/20, разделители #ECEBF1.
+   «Есть» — тёмный круг с галочкой, «нет» — серое тире. На ≤1023 таблица прокручивается внутри карточки,
+   первая колонка закреплена. */
+.cmp { border-radius: var(--r-card); background: var(--c-surface); }
+.cmp__table { width: 100%; border-collapse: separate; border-spacing: 0; table-layout: fixed; font: 400 var(--fs-sm)/var(--lh-sm) var(--font-sans); }
+.cmp__col-feat { width: 34%; }
+.cmp__table th, .cmp__table td { padding: 16px 20px; text-align: left; vertical-align: middle; border-bottom: 1px solid var(--c-outline); }
+.cmp__table td { color: var(--c-ink); }
+.cmp__table thead th { position: sticky; top: 96px; z-index: 2; background: var(--c-dark); color: #fff; padding: 20px; vertical-align: bottom; border-bottom: 0; }
+.cmp__table thead th:first-child { border-top-left-radius: var(--r-card); }
+.cmp__table thead th:last-child { border-top-right-radius: var(--r-card); }
+.cmp__table tbody tr:last-child > * { border-bottom: 0; }
+.cmp__hint { font: 400 var(--fs-mono)/24px var(--font-mono); color: var(--c-ink-4); }
+.cmp__plan { position: relative; }
+.cmp__plan::before { content: ""; display: block; width: 8px; height: 8px; border-radius: 50%; margin-bottom: 12px; background: var(--c-violet); }
+.cmp__plan--health::before { background: var(--c-teal); }
+.cmp__name { display: block; font: 500 var(--fs-body)/var(--lh-tight) var(--font-sans); }
+.cmp__price { display: block; margin-top: 6px; font: 400 var(--fs-mono)/20px var(--font-mono); color: var(--c-ink-4); }
+.cmp__price .ph { background: rgba(255,255,255,.08); box-shadow: inset 0 0 0 1px rgba(209,174,232,.35); color: var(--c-violet-soft); }
+.cmp__group th { padding: 12px 20px; background: var(--c-surface-2); font: 400 var(--fs-mono)/24px var(--font-mono); color: var(--c-ink-4); }
+.cmp__table tbody th[scope="row"] { font-weight: 400; }
+.cmp__feat { display: block; font: 500 var(--fs-sm)/var(--lh-sm) var(--font-sans); color: var(--c-ink); }
+.cmp__note { display: block; margin-top: 4px; font: 400 var(--fs-xs)/18px var(--font-sans); color: var(--c-ink-4); }
+.cmp__money { font: 500 var(--fs-body)/var(--lh-tight) var(--font-sans); white-space: nowrap; }
+.cmp__table tbody tr:not(.cmp__group):hover > * { background: #fbfbfd; }
+.yes { display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: var(--c-dark); vertical-align: middle; }
+.yes::after { content: ""; width: 9px; height: 5px; border: 2px solid #fff; border-top: 0; border-right: 0; transform: translateY(-1px) rotate(-45deg); }
+.no { color: var(--c-line-hover); }
+.cmp__foot { margin-top: 16px; padding: 0 var(--inset-x); font-size: var(--fs-sm); line-height: var(--lh-sm); color: var(--c-ink-4); }
+.cmp:focus-visible { outline-offset: 4px; }
+@media (max-width: 1365px) { .cmp__table thead th { top: 88px; } }
+@media (max-width: 1023px) {
+  .cmp { overflow-x: auto; overscroll-behavior-x: contain; }
+  .cmp__table { min-width: 820px; }
+  .cmp__col-feat { width: 220px; }
+  .cmp__table thead th { position: static; }
+  /* Первая колонка закреплена. Строка группы шире экрана — закрепляем только подпись внутри неё */
+  .cmp__table th[scope="row"] { position: sticky; left: 0; z-index: 1; background: var(--c-surface); box-shadow: 1px 0 0 var(--c-outline); }
+  .cmp__table thead th.cmp__corner { position: sticky; top: auto; left: 0; z-index: 3; }
+  .cmp__group th span { position: sticky; left: 14px; }
+}
+@media (max-width: 767px) {
+  .cmp__table th, .cmp__table td { padding: 12px 14px; }
+  .cmp__table { min-width: 720px; }
+  .cmp__col-feat { width: 170px; }
+}
+
 /* =========================================================
    6. ПОДВАЛ
    ========================================================= */
@@ -567,7 +616,7 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 </g>
 </svg></button></li>
             <li><a class="nav__item" href="#">Методика</a></li>
-            <li><a class="nav__item" href="#pricing">Цены</a></li>
+            <li><a class="nav__item" href="pricing.html">Цены</a></li>
             <li><a class="nav__item" href="about.html">О нас</a></li>
           </ul>
           <a class="btn btn--primary header__cta" href="#request">Бесплатный срез</a>
@@ -609,7 +658,7 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
             </div>
             <div class="mega__cards">
               <a class="mega__card" href="#"><b>Методика</b></a>
-              <a class="mega__card" href="#pricing"><b>Цены</b></a>
+              <a class="mega__card" href="pricing.html"><b>Цены</b></a>
               <a class="mega__card" href="about.html"><b>О нас</b></a>
             </div>
             <a class="btn btn--primary btn--block" href="#request">Бесплатный срез</a>
@@ -764,13 +813,14 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
       <div class="headline-block">
         <h2 class="headline" id="price-title"><span class="dim">Начните бесплатно.</span><br>Платите, когда нужна глубина</h2>
         <p class="lead">Внешний срез ничего не стоит. Платите, когда нужен мониторинг или взгляд изнутри. Все форматы разовые, кроме мониторинга.</p>
-        <a class="btn-link" href="#pricing" style="margin-left:-10px;width:fit-content">Все условия <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <a class="btn-link" href="pricing.html" style="margin-left:-10px;width:fit-content">Все условия <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g>
 <path d="M14.8327 14.1641C14.8327 14.5323 14.5342 14.8307 14.166 14.8307C13.7978 14.8307 13.4993 14.5323 13.4993 14.1641V7.4401L6.30404 14.6354C6.04369 14.8958 5.62168 14.8958 5.36133 14.6354C5.10098 14.3751 5.10098 13.9531 5.36133 13.6927L12.5566 6.4974H5.83268C5.46449 6.4974 5.16602 6.19892 5.16602 5.83073C5.16602 5.46254 5.46449 5.16406 5.83268 5.16406H14.166C14.5342 5.16406 14.8327 5.46254 14.8327 5.83073V14.1641Z" fill="currentColor"/>
 </g>
 </svg></a>
       </div>
     </div>
+<!-- Тарифы: общий блок для главной и страницы «Цены». Кнопки ведут на заявку с выбранной темой -->
     <div class="groups">
       <div class="group">
         <div class="group__head"><span>Направление №1 · снаружи</span><span>Оценка HR-бренда и индекс культуры</span></div>
@@ -894,12 +944,13 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
     <div class="help">
       <img src="data:image/svg+xml;base64,PHN2ZyBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIiBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjIwMCIgaGVpZ2h0PSIyMDAiIHZpZXdCb3g9IjAgMCAyMDAgMjAwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8ZyBpZD0iR3JvdXAiPgo8cGF0aCBpZD0iVmVjdG9yIiBkPSJNNTAgMEgwVjEwMEg1MEMyMi4zODU4IDEwMCAwIDEyMi4zODYgMCAxNTBWMjAwSDEwMFYxNTBDMTAwIDE3Ny42MTQgMTIyLjM4NiAyMDAgMTUwIDIwMEgyMDBWMTAwSDE1MEMxNzcuNjE0IDEwMCAyMDAgNzcuNjE0MiAyMDAgNTBWMEgxMDBWNTBDMTAwIDIyLjM4NTggNzcuNjE0MiAwIDUwIDBaTTEwMCAxMDBINTBDNzcuNjE0MiAxMDAgMTAwIDEyMi4zODYgMTAwIDE1MFYxMDBaTTEwMCAxMDBWNTBDMTAwIDc3LjYxNDIgMTIyLjM4NiAxMDAgMTUwIDEwMEgxMDBaIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZmlsbD0idXJsKCNwYWludDBfbGluZWFyXzBfODYpIi8+CjwvZz4KPGRlZnM+CjxsaW5lYXJHcmFkaWVudCBpZD0icGFpbnQwX2xpbmVhcl8wXzg2IiB4MT0iMTAwIiB5MT0iMCIgeDI9IjEwMCIgeTI9IjIwMCIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgo8c3RvcCBzdG9wLWNvbG9yPSIjQTdCNUZGIi8+CjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI0YzQUNGRiIvPgo8L2xpbmVhckdyYWRpZW50Pgo8L2RlZnM+Cjwvc3ZnPgo=" alt="">
       <div class="help__text"><h3>Не знаете, с чего начать?</h3><p>Начните с бесплатного среза. На 30-минутном разборе эксперт поможет решить, нужен ли взгляд изнутри.</p></div>
-      <a class="btn btn--primary" href="#request">Получить бесплатный срез <svg aria-hidden="true" focusable="false" class="ico-arrow" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <a class="btn btn--primary" href="#request" data-topic="scan">Получить бесплатный срез <svg aria-hidden="true" focusable="false" class="ico-arrow" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g>
 <path d="M14.8327 14.1641C14.8327 14.5323 14.5342 14.8307 14.166 14.8307C13.7978 14.8307 13.4993 14.5323 13.4993 14.1641V7.4401L6.30404 14.6354C6.04369 14.8958 5.62168 14.8958 5.36133 14.6354C5.10098 14.3751 5.10098 13.9531 5.36133 13.6927L12.5566 6.4974H5.83268C5.46449 6.4974 5.16602 6.19892 5.16602 5.83073C5.16602 5.46254 5.46449 5.16406 5.83268 5.16406H14.166C14.5342 5.16406 14.8327 5.46254 14.8327 5.83073V14.1641Z" fill="currentColor"/>
 </g>
 </svg></a>
     </div>
+
   </section>
 
   <!-- ============ 6. ВОПРОСЫ ============ -->
@@ -911,7 +962,7 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
         <p class="lead">Собрали частые вопросы и разделили их по темам.</p>
       </div>
     </div>
-    <div class="faq" id="faq-list"></div>
+    <div class="faq" id="faq-list" data-groups="general,brand,health,payment"></div>
     <div class="ask" style="margin-top:24px">
       <div><h3>Не нашли ответ?</h3><p>Напишите нам — ответим в течение рабочего дня.</p></div>
       <div class="ask__actions">
@@ -980,58 +1031,6 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
   </section>
   </main>
 
-<template id="ico-plus"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g>
-<path d="M5 12H19M12 5V19" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
-</g>
-</svg></template>
-<script>
-/* ---------- Вопросы: данные + аккордеон (один открытый на группу) ---------- */
-const FAQ = [
-  { tag: "01 · Общее", title: "Как начать?", desc: "Что нужно от вас, сколько ждать и чем Mirror отличается от опроса.", items: [
-    ["Нужен доступ к вашим системам?", "Для среза — нет. Нужны название компании и ссылка на страницу работодателя на hh.ru. Для диагностики вы сами выбираете, какие документы передать."],
-    ["Срез правда бесплатный?", "Да. Внешний срез и 30 минут разбора с экспертом — бесплатно и без обязательств. Платите, только если решите идти дальше."],
-    ["Сколько ждать результат?", "Срез — 3 рабочих дня. Диагностика — около 4 недель. Кампания идёт 3 месяца."],
-    ["Чем это отличается от опроса вовлечённости?", "Опрос показывает, что думают сотрудники. Mirror сверяет это с тем, что вы обещаете и что видят люди снаружи. Видно, где слова расходятся с делом."]]},
-  { tag: "02 · Снаружи", title: "Оценка HR-бренда и индекс культуры", desc: "Откуда данные и как считаем индекс, слепые зоны и место в отрасли.", items: [
-    ["Откуда вы берёте данные?", "Из открытых источников: hh.ru, Dreamjob, VK, Дзен, медиа и ответы нейросетей. Имена авторов отзывов в отчёт не попадают."],
-    ["Можно поднять индекс, если просто меньше обещать?", "Индекс вырастет, но вырастут и слепые зоны. Поэтому мы всегда показываем оба показателя рядом."],
-    ["Почему не свести всё в одну оценку?", "У показателей разная точка отсчёта: ваши обещания, разговоры людей и рынок. В одной цифре они смешаются, и станет непонятно, что исправлять."],
-    ["А если отзывов о нас мало?", "Обещание с числом упоминаний меньше 10 получает статус «нет данных» и не входит в индекс. Такие темы можно проверить изнутри."]]},
-  { tag: "03 · Изнутри", title: "Дашборд здоровья корпоративной культуры", desc: "Приватность сотрудников, кто что видит и как быстро заметны изменения.", items: [
-    ["Это слежка за сотрудниками?", "Нет. Мы показываем только группы от 5 человек, не определяем авторов сообщений и не оцениваем людей. Правила одинаковы для всех ролей."],
-    ["Руководители увидят, кто что написал?", "Нет. Видны только группы от 5 человек и обезличенные темы. Цитаты проверяем на узнаваемые детали."],
-    ["Это оценка руководителей?", "Нет. Дашборд показывает состояние культуры в группах, а не эффективность людей. Для оценки сотрудников он не используется."],
-    ["Как быстро видны изменения?", "Данные обновляются примерно раз в 2 недели. Решения и их результат сотрудники видят на странице «Решения по обратной связи»."]]},
-  { tag: "04 · Оплата", title: "Цены и договор", desc: "Как платить, что разовое, а что помесячно.", items: [
-    ["Как оплатить?", "По счёту и договору. Работу начинаем после оплаты."],
-    ["Это подписка?", "Срез, диагностика и кампания — разовые. Помесячно оплачивается только мониторинг HR-бренда, его можно остановить в любой месяц."],
-    ["От чего зависит цена?", "От численности компании и числа подразделений. Цену фиксируем до начала работы."]]},
-];
-const plus = document.getElementById("ico-plus").innerHTML;
-const faqRoot = document.getElementById("faq-list");
-FAQ.forEach((g, gi) => {
-  const sec = document.createElement("div");
-  sec.className = "faq-group";
-  sec.innerHTML = `<div class="faq-group__info"><span class="faq-group__tag">${g.tag}</span><div><h3 class="faq-group__title">${g.title}</h3><p class="faq-group__desc">${g.desc}</p></div></div><div class="faq-list"></div>`;
-  const list = sec.querySelector(".faq-list");
-  g.items.forEach(([q, a], i) => {
-    const id = `qa-${gi}-${i}`, open = false;
-    const el = document.createElement("div");
-    el.className = "qa" + (open ? " is-open" : "");
-    el.innerHTML = `<button class="qa__q" type="button" aria-expanded="${open}" aria-controls="${id}"><span>${q}</span><i class="qa__icon">${plus}</i></button><div class="qa__a" id="${id}" role="region"><div><p>${a}</p></div></div>`;
-    el.querySelector("button").addEventListener("click", () => {
-      const willOpen = !el.classList.contains("is-open");
-      list.querySelectorAll(".qa").forEach((o) => { o.classList.remove("is-open"); o.querySelector("button").setAttribute("aria-expanded", "false"); });
-      if (willOpen) { el.classList.add("is-open"); el.querySelector("button").setAttribute("aria-expanded", "true"); }
-    });
-    list.appendChild(el);
-  });
-  faqRoot.appendChild(sec);
-});
-
-</script>
-
   <footer class="footer">
     <div class="footer__cta">
       <p><span class="dim">Хотите увидеть свою компанию в зеркале?</span><br>Обсудим задачу за 30 минут.</p>
@@ -1051,7 +1050,7 @@ FAQ.forEach((g, gi) => {
         <div class="footer__cols">
           <div class="fcol"><h4>Оценка HR-бренда</h4><ul><li><a href="#">Обзор направления</a></li><li><a href="#">Демо-отчёт</a></li><li><a href="#">Как считаем</a></li></ul></div>
           <div class="fcol"><h4>Здоровье культуры</h4><ul><li><a href="#">Обзор направления</a></li><li><a href="#">Демо-дашборд</a></li><li><a href="#">Как считаем</a></li></ul></div>
-          <div class="fcol"><h4>Компания</h4><ul><li><a href="#">Методика</a></li><li><a href="#pricing">Цены</a></li><li><a href="about.html">О нас</a></li></ul></div>
+          <div class="fcol"><h4>Компания</h4><ul><li><a href="#">Методика</a></li><li><a href="pricing.html">Цены</a></li><li><a href="about.html">О нас</a></li></ul></div>
           <div class="fcol"><h4>Контакты</h4><ul><li><a href="mailto:mirrorcom@mail.ru">mirrorcom@mail.ru</a></li><li><a href="tel:+79127023030">+7 912 702-30-30</a></li><li><a href="https://t.me/mirror_diary" target="_blank" rel="noreferrer">@mirror_diary</a></li></ul></div>
         </div>
       </div>
@@ -1061,12 +1060,78 @@ FAQ.forEach((g, gi) => {
   </footer>
 
 </div>
+<template id="ico-plus"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g>
+<path d="M5 12H19M12 5V19" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+</g>
+</svg></template>
 <script>
+/* =========================================================
+   Контент прототипа (в Next — src/content/faq.ts).
+   Страница выбирает группы через data-groups у #faq-list, поэтому вопросы
+   про цены на главной и на странице «Цены» берутся из одного места.
+   ========================================================= */
+const FAQ_GROUPS = {
+  general: { tag: "01 · Общее", title: "Как начать?", desc: "Что нужно от вас, сколько ждать и чем Mirror отличается от опроса.", items: [
+    ["Нужен доступ к вашим системам?", "Для среза — нет. Нужны название компании и ссылка на страницу работодателя на hh.ru. Для диагностики вы сами выбираете, какие документы передать."],
+    ["Срез правда бесплатный?", "Да. Внешний срез и 30 минут разбора с экспертом — бесплатно и без обязательств. Платите, только если решите идти дальше."],
+    ["Сколько ждать результат?", "Срез — 3 рабочих дня. Диагностика — около 4 недель. Кампания идёт 3 месяца."],
+    ["Чем это отличается от опроса вовлечённости?", "Опрос показывает, что думают сотрудники. Mirror сверяет это с тем, что вы обещаете и что видят люди снаружи. Видно, где слова расходятся с делом."]]},
+  brand: { tag: "02 · Снаружи", title: "Оценка HR-бренда и индекс культуры", desc: "Откуда данные и как считаем индекс, слепые зоны и место в отрасли.", items: [
+    ["Откуда вы берёте данные?", "Из открытых источников: hh.ru, Dreamjob, VK, Дзен, медиа и ответы нейросетей. Имена авторов отзывов в отчёт не попадают."],
+    ["Можно поднять индекс, если просто меньше обещать?", "Индекс вырастет, но вырастут и слепые зоны. Поэтому мы всегда показываем оба показателя рядом."],
+    ["Почему не свести всё в одну оценку?", "У показателей разная точка отсчёта: ваши обещания, разговоры людей и рынок. В одной цифре они смешаются, и станет непонятно, что исправлять."],
+    ["А если отзывов о нас мало?", "Обещание с числом упоминаний меньше 10 получает статус «нет данных» и не входит в индекс. Такие темы можно проверить изнутри."]]},
+  health: { tag: "03 · Изнутри", title: "Дашборд здоровья корпоративной культуры", desc: "Приватность сотрудников, кто что видит и как быстро заметны изменения.", items: [
+    ["Это слежка за сотрудниками?", "Нет. Мы показываем только группы от 5 человек, не определяем авторов сообщений и не оцениваем людей. Правила одинаковы для всех ролей."],
+    ["Руководители увидят, кто что написал?", "Нет. Видны только группы от 5 человек и обезличенные темы. Цитаты проверяем на узнаваемые детали."],
+    ["Это оценка руководителей?", "Нет. Дашборд показывает состояние культуры в группах, а не эффективность людей. Для оценки сотрудников он не используется."],
+    ["Как быстро видны изменения?", "Данные обновляются примерно раз в 2 недели. Решения и их результат сотрудники видят на странице «Решения по обратной связи»."]]},
+  payment: { tag: "04 · Оплата", title: "Цены и договор", desc: "Как платить, что разовое, а что помесячно.", items: [
+    ["Как оплатить?", "По счёту и договору. Работу начинаем после оплаты."],
+    ["Это подписка?", "Срез, диагностика и кампания — разовые. Помесячно оплачивается только мониторинг HR-бренда, его можно остановить в любой месяц."],
+    ["От чего зависит цена?", "От численности компании и числа подразделений. Цену фиксируем до начала работы."]]},
+  plans: { tag: "05 · Тарифы", title: "Что входит и как выбрать", desc: "Состав тарифов, конкуренты, численность и документы.", items: [
+    ["Почему внешний срез бесплатный?", "Это первый шаг к сотрудничеству. Срез показывает масштаб разрывов, а на разборе эксперт поможет решить, нужен ли следующий шаг. Обязательств он не создаёт."],
+    ["Чем срез отличается от мониторинга?", "Срез — один снимок на сегодня. Мониторинг обновляет индекс, слепые зоны и место в отрасли каждый месяц: видны просадки и подъёмы, а если тема резко выросла, придёт сигнал."],
+    ["Можно добавить конкурентов?", "В срезе сравниваем с 2–3 конкурентами. В мониторинге список можно расширить, цену назовём до начала работы."],
+    ["Диагностика входит в кампанию?", "Да. Кампания на 3 месяца начинается с диагностики, отдельно платить за неё не нужно."],
+    ["Что если у нас больше 3000 сотрудников?", "Посчитаем отдельно: цена зависит от числа подразделений и срезов. Напишите, пришлём расчёт."],
+    ["Какие документы вы даёте?", "Договор, счёт и закрывающие документы. Для проверки изнутри — ещё договор на обработку данных сотрудников по 152-ФЗ."],
+    ["Работаете с агентствами и консультантами?", "Да. Делаем внешний аудит HR-бренда для ваших клиентов под вашим логотипом. Первые три отчёта — бесплатно."]]},
+};
+
 /* =========================================================
    Общий скрипт всех страниц: меню, форма, шейдер, типограф.
    Скрипт страницы (например, FAQ на главной) идёт раньше — типограф
    запускается последним и обрабатывает уже готовую разметку.
    ========================================================= */
+/* ---------- Вопросы: группы из FAQ_GROUPS (src/content.js), один открытый на группу ---------- */
+const faqRoot = document.getElementById("faq-list");
+if (faqRoot) {
+  const plus = document.getElementById("ico-plus").innerHTML;
+  faqRoot.dataset.groups.split(",").forEach((key, gi) => {
+    const g = FAQ_GROUPS[key.trim()];
+    const sec = document.createElement("div");
+    sec.className = "faq-group";
+    sec.innerHTML = `<div class="faq-group__info"><span class="faq-group__tag">${g.tag}</span><div><h3 class="faq-group__title">${g.title}</h3><p class="faq-group__desc">${g.desc}</p></div></div><div class="faq-list"></div>`;
+    const list = sec.querySelector(".faq-list");
+    g.items.forEach(([q, a], i) => {
+      const id = `qa-${gi}-${i}`;
+      const el = document.createElement("div");
+      el.className = "qa";
+      el.innerHTML = `<button class="qa__q" type="button" aria-expanded="false" aria-controls="${id}"><span>${q}</span><i class="qa__icon">${plus}</i></button><div class="qa__a" id="${id}" role="region"><div><p>${a}</p></div></div>`;
+      el.querySelector("button").addEventListener("click", () => {
+        const willOpen = !el.classList.contains("is-open");
+        list.querySelectorAll(".qa").forEach((o) => { o.classList.remove("is-open"); o.querySelector("button").setAttribute("aria-expanded", "false"); });
+        if (willOpen) { el.classList.add("is-open"); el.querySelector("button").setAttribute("aria-expanded", "true"); }
+      });
+      list.appendChild(el);
+    });
+    faqRoot.appendChild(sec);
+  });
+}
+
 /* ---------- Мега-меню: клик, Esc, клик вне, одно открытое ---------- */
 const header = document.querySelector(".header");
 const mega = document.getElementById("mega");
@@ -1093,10 +1158,12 @@ document.addEventListener("click", (e) => { if (current && !header.contains(e.ta
 document.addEventListener("keydown", (e) => { if (e.key === "Escape" && current) { const t = triggers.find((x) => x.dataset.panel === current); setMenu(null); t && t.focus(); } });
 addEventListener("scroll", () => header.classList.toggle("is-stuck", scrollY > 40), { passive: true });
 
-/* ---------- Цены → предвыбор темы в форме ---------- */
-document.querySelectorAll("[data-topic]").forEach((a) => a.addEventListener("click", () => {
-  const r = document.querySelector(`input[name=topic][value=${a.dataset.topic}]`); if (r) r.checked = true;
-}));
+/* ---------- Цены → предвыбор темы в форме ----------
+   На той же странице — по клику, с другой страницы — через ?topic= в адресе (в Next: /start?topic=…) */
+const pickTopic = (topic) => { const r = document.querySelector(`input[name=topic][value="${topic}"]`); if (r) r.checked = true; };
+document.querySelectorAll("[data-topic]").forEach((a) => a.addEventListener("click", () => pickTopic(a.dataset.topic)));
+const urlTopic = new URLSearchParams(location.search).get("topic");
+if (urlTopic) pickTopic(urlTopic);
 
 /* ---------- Форма: проверка обязательных полей, экран успеха ---------- */
 const form = document.querySelector("form.form");

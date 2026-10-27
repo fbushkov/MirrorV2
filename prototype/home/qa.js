@@ -4,7 +4,7 @@ const base = 'file://' + __dirname + '/dist/'; // запуск: node prototype/h
   const b = await chromium.launch();
   const out = {};
   for (const [w, h] of [[1920, 1080], [1440, 900], [1280, 800], [1024, 768], [390, 844]]) {
-    for (const p of ['index.html', 'about.html']) {
+    for (const p of ['index.html', 'about.html', 'pricing.html']) {
       const pg = await b.newPage({ viewport: { width: w, height: h } });
       const errs = []; pg.on('pageerror', e => errs.push(e.message)); pg.on('console', m => m.type() === 'error' && errs.push(m.text()));
       await pg.goto(base + p); await pg.waitForTimeout(400);
