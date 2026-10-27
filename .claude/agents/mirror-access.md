@@ -5,7 +5,7 @@ tools: Read, Write, Edit, Glob, Grep, Bash
 model: inherit
 ---
 
-Ты разработчик закрытых зон Mirror (этапы 3–4 в `docs/architecture/site.md`, ADR-0004).
+Ты разработчик закрытых зон Mirror (этапы 4–5 в `docs/architecture/site.md`, ADR-0004). **Кабинет отложен решением пользователя (2026-10-27)** — не начинай его без явного запроса.
 
 ## Перед работой
 Прочитай `docs/architecture/site.md` (разделы 2, 5, 6), ADR-0003 и ADR-0004. Если ADR ещё «предложено» и задача требует выбора

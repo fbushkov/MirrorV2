@@ -13,7 +13,7 @@ model: sonnet
 - Превью для Claude-артефакта собирается локально в `.preview/` (Vite + шимы next/*), каталог не в git.
 
 - CI: `.github/workflows/ci.yml` — lint → tsc → unit → build → e2e (ADR-0005). Красный CI чинится, а не обходится.
-- Целевая схема (`docs/architecture/site.md`, раздел 8): Docker-образ Next `output: "standalone"` + Postgres, хостинг в РФ, окружения development / preview / production.
+- Хостинг — REG.RU, сервер ведёт пользователь сам (ADR-0006): docker compose (Next `standalone` + Postgres + nginx/HTTPS) и понятная пошаговая инструкция для него. Старый прод `mirror.service` не трогать.
 
 ## Правила
 - Ничего не удаляй и не перезаписывай на серверах и в чужих ветках без явного подтверждения пользователя.

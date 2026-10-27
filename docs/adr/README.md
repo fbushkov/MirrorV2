@@ -10,9 +10,11 @@
 |---|---|---|
 | [0001](0001-multipage-route-groups.md) | Многостраничный сайт: route groups, единая карта маршрутов, общие блоки | принято |
 | [0002](0002-design-source-figma.md) | Источник дизайна — макет Figma и прототип `prototype/home` | принято |
-| [0003](0003-forms-and-data.md) | Заявки: Server Action → Postgres → outbox → уведомления | предложено |
-| [0004](0004-auth-cabinet-admin.md) | Вход по ссылке, роли, изоляция клиентов в кабинете и админке | предложено |
+| [0003](0003-forms-and-data.md) | Заявки: Server Action → Postgres → письмо команде | принято частично |
+| [0004](0004-auth-cabinet-admin.md) | Вход по ссылке, роли, изоляция клиентов в кабинете и админке | отложено |
 | [0005](0005-testing-and-ci.md) | Vitest + Playwright, CI на каждый push | принято |
+| [0006](0006-hosting-regru.md) | Хостинг REG.RU, сервер ведёт пользователь, docker compose | принято |
+| [0007](0007-external-report.md) | Отчёт внешнего анализа: выгрузка парсера → ИИ → PDF | предложено |
 
 Шаблон:
 
