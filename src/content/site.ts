@@ -64,3 +64,24 @@ export const LEGAL_LINKS: NavLink[] = [
   { title: "Пользовательское соглашение", href: "/docs/terms-of-use" },
   { title: "Согласие на обработку данных", href: "/docs/data-processing-consent" },
 ]
+
+/**
+ * Карта публичных страниц — единый источник для sitemap, смоук-тестов, крошек и (после переноса по макету) меню.
+ * Новая страница сайта = запись здесь. Кабинет (/app) и админка (/admin) сюда не входят. См. ADR-0001.
+ */
+export const SITE_URL = "https://mirror-com.ru"
+
+export type Route = { path: string; title: string; parent?: string }
+
+export const ROUTES: Route[] = [
+  { path: "/", title: "Главная" },
+  { path: "/hr-brand", title: DIRECTION_NAMES.brand, parent: "/" },
+  { path: "/hr-brand/demo", title: "Демо-отчёт", parent: "/hr-brand" },
+  { path: "/culture-health", title: DIRECTION_NAMES.health, parent: "/" },
+  { path: "/culture-health/demo", title: "Демо-дашборд", parent: "/culture-health" },
+  { path: "/methodology", title: "Методика", parent: "/" },
+  { path: "/pricing", title: "Цены", parent: "/" },
+  { path: "/about", title: "О нас", parent: "/" },
+  { path: "/start", title: "Заявка", parent: "/" },
+  ...LEGAL_LINKS.map((l) => ({ path: l.href, title: l.title, parent: "/" })),
+]

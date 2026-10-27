@@ -1,0 +1,43 @@
+# Проверки на каждый push и PR (ADR-0005): линтер → типы → модульные тесты → сборка → e2e
+name: CI
+
+# Только push: PR из этого же репозитория получает проверки с ветки, без двойного запуска.
+# Не переходить на pull_request_target и не передавать в этот job секреты (SMTP, DATABASE_URL) — для деплоя отдельный workflow с environment.
+on:
+  push:
+    branches: ["**"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e
+        env:
+          CI: "true"
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
