@@ -1,0 +1,60 @@
+  <header class="header" id="top">
+    <div class="header__box">
+      <div class="header__bar">
+        <a class="logo" href="{{href:home}}" aria-label="Mirror — на главную">{{svg:logo.svg}}</a>
+        <nav class="nav" aria-label="Основное меню">
+          <ul class="nav__list">
+            <li><button class="nav__item" type="button" aria-expanded="false" aria-controls="mega" data-panel="brand">Оценка HR-бренда {{svgc:chevron-down.svg}}</button></li>
+            <li><button class="nav__item" type="button" aria-expanded="false" aria-controls="mega" data-panel="health">Дашборд здоровья корп.культуры {{svgc:chevron-down.svg}}</button></li>
+            <li><a class="nav__item" href="{{href:methodology}}"{{current:methodology}}>Методика</a></li>
+            <li><a class="nav__item" href="{{href:pricing}}"{{current:pricing}}>Цены</a></li>
+            <li><a class="nav__item" href="{{href:about}}"{{current:about}}>О нас</a></li>
+          </ul>
+          <a class="btn btn--primary header__cta" href="{{href:start}}">Бесплатный срез</a>
+        </nav>
+        <button class="header__burger" type="button" aria-expanded="false" aria-controls="mega" data-panel="mobile" aria-label="Открыть меню">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 6h16M3 11h16M3 16h16"/></svg>
+        </button>
+      </div>
+      <div class="mega" id="mega">
+        <div class="mega__inner">
+          <div class="mega__panel" data-id="brand">
+            <p class="mega__title">/ оценка HR-бренда и индекс культуры</p>
+            <div class="mega__cards">
+              <a class="mega__card" href="{{href:hr-brand}}"><b>Обзор</b><span>Что проверяем и что находится в отчёте</span></a>
+              <a class="mega__card" href="{{href:hr-brand-demo}}"><b>Демо-отчёт</b><span>Индекс · Слепые зоны · Место в отрасли</span></a>
+              <a class="mega__card" href="{{href:methodology-brand}}"><b>Как считаем</b><span>Методика внешней оценки</span></a>
+            </div>
+          </div>
+          <div class="mega__panel" data-id="health">
+            <p class="mega__title">/ дашборд здоровья корпоративной культуры</p>
+            <div class="mega__cards">
+              <a class="mega__card" href="{{href:culture-health}}"><b>Обзор</b><span>10 метрик и приватность сотрудников</span></a>
+              <a class="mega__card" href="{{href:culture-health-demo}}"><b>Демо-дашборд</b><span>Срезы · Сигналы · Расхождения</span></a>
+              <a class="mega__card" href="{{href:methodology-health}}"><b>Как считаем</b><span>Методика внутреннего замера</span></a>
+            </div>
+          </div>
+          <div class="mega__panel" data-id="mobile">
+            <p class="mega__title">/ оценка HR-бренда и индекс культуры</p>
+            <div class="mega__cards">
+              <a class="mega__card" href="{{href:hr-brand}}"><b>Обзор</b><span>Что проверяем и что в отчёте</span></a>
+              <a class="mega__card" href="{{href:hr-brand-demo}}"><b>Демо-отчёт</b><span>Индекс · Слепые зоны · Место в отрасли</span></a>
+              <a class="mega__card" href="{{href:methodology-brand}}"><b>Как считаем</b><span>Методика внешней оценки</span></a>
+            </div>
+            <p class="mega__title">/ дашборд здоровья корпоративной культуры</p>
+            <div class="mega__cards">
+              <a class="mega__card" href="{{href:culture-health}}"><b>Обзор</b><span>10 метрик и приватность</span></a>
+              <a class="mega__card" href="{{href:culture-health-demo}}"><b>Демо-дашборд</b><span>Срезы · Сигналы · Расхождения</span></a>
+              <a class="mega__card" href="{{href:methodology-health}}"><b>Как считаем</b><span>Методика внутреннего замера</span></a>
+            </div>
+            <div class="mega__cards">
+              <a class="mega__card" href="{{href:methodology}}"><b>Методика</b></a>
+              <a class="mega__card" href="{{href:pricing}}"><b>Цены</b></a>
+              <a class="mega__card" href="{{href:about}}"><b>О нас</b></a>
+            </div>
+            <a class="btn btn--primary btn--block" href="{{href:start}}">Бесплатный срез</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>

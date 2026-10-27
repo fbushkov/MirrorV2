@@ -14,6 +14,8 @@ const eslintConfig = defineConfig([
     "next-env.d.ts",
     // Локальная сборка превью-артефакта (не в git)
     ".preview/**",
+    // Статичный HTML-прототип по макету Figma — эталон для переноса, не код сайта
+    "prototype/**",
   ]),
 ]);
 
