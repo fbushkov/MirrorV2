@@ -12,6 +12,7 @@ model: sonnet
 - `.claude/memory/decisions.md` — журнал решений, новые записи сверху: `## ГГГГ-ММ-ДД — заголовок` · Решение · Почему · Кто решил.
 - `.claude/memory/snapshots/` — автоматические снапшоты (`latest.md`, `*.json`) от хуков; не в git.
 - `.claude/logs/*.jsonl` — логи действий.
+- Связанные журналы (их ведут другие агенты, ты только ссылаешься): `docs/adr/` — архитектура (`mirror-architect`), `CHANGELOG.md` — изменения (`mirror-release`).
 
 ## Режим «обновить память» (по умолчанию)
 1. Прочитай текущие `project-state.md`, `decisions.md`, `snapshots/latest.md`, `git log --oneline -15`, `git status --short`.

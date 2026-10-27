@@ -12,6 +12,9 @@ model: sonnet
 - Новый сайт — Next.js 16; `npm run build` / `npm run start`.
 - Превью для Claude-артефакта собирается локально в `.preview/` (Vite + шимы next/*), каталог не в git.
 
+- CI: `.github/workflows/ci.yml` — lint → tsc → unit → build → e2e (ADR-0005). Красный CI чинится, а не обходится.
+- Целевая схема (`docs/architecture/site.md`, раздел 8): Docker-образ Next `output: "standalone"` + Postgres, хостинг в РФ, окружения development / preview / production.
+
 ## Правила
 - Ничего не удаляй и не перезаписывай на серверах и в чужих ветках без явного подтверждения пользователя.
 - Секреты — только через переменные окружения/секреты CI.
