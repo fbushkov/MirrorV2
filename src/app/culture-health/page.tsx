@@ -24,7 +24,7 @@ import {
   PULSE_WHY,
   ROLES,
   SUCCESS,
-  YOU_SAID,
+  FEEDBACK_DECISIONS,
 } from "@/content/pulse"
 
 export const metadata: Metadata = {
@@ -263,23 +263,23 @@ export default function CultureHealthPage() {
         <p className="mt-3 text-center text-xs text-muted-foreground">Данные на иллюстрации демонстрационные</p>
       </Section>
 
-      {/* 12. Вы сказали — мы сделали + 13. Критерии успеха */}
+      {/* 12. Решения по обратной связи + 13. Критерии успеха */}
       <Section id="results" className="bg-card">
         <SectionHeader
           eyebrow="Что увидят сотрудники"
-          title="Вы сказали — мы сделали"
+          title="Решения по обратной связи"
           description="Публичная страница для сотрудников: какой сигнал пришёл, что решили и что изменилось. Без неё обратная связь превращается в пустую формальность."
         />
         <div className="grid gap-3 md:grid-cols-3">
-          {YOU_SAID.map((y) => (
+          {FEEDBACK_DECISIONS.map((y) => (
             <div key={y.topic} className="surface flex flex-col gap-4 bg-background p-6">
               <span className="w-fit rounded-full bg-muted px-2.5 py-0.5 text-xs text-muted-foreground">пример</span>
               <div>
-                <p className="text-xs text-muted-foreground">Вы сказали</p>
+                <p className="text-xs text-muted-foreground">Тема</p>
                 <p className="font-semibold">{y.topic}</p>
               </div>
               <div>
-                <p className="text-xs text-muted-foreground">Мы решили</p>
+                <p className="text-xs text-muted-foreground">Решение</p>
                 <p>{y.decided}</p>
               </div>
               <div className="mt-auto rounded-xl bg-status-ok/10 px-3 py-2 text-sm font-medium text-status-ok">{y.changed}</div>
