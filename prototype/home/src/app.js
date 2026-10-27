@@ -3,15 +3,22 @@
    Скрипт страницы (например, FAQ на главной) идёт раньше — типограф
    запускается последним и обрабатывает уже готовую разметку.
    ========================================================= */
-/* ---------- Вопросы: группы из FAQ_GROUPS (src/content.js), один открытый на группу ---------- */
+/* ---------- Вопросы: группы из FAQ_GROUPS (src/content.js), один открытый на группу ----------
+   data-groups="general,brand" — несколько блоков; "payment+plans" — один блок из нескольких групп
+   (название и описание — первой группы или из data-desc). Номер-тег показываем, только если блоков больше одного. */
 const faqRoot = document.getElementById("faq-list");
 if (faqRoot) {
   const plus = document.getElementById("ico-plus").innerHTML;
-  faqRoot.dataset.groups.split(",").forEach((key, gi) => {
-    const g = FAQ_GROUPS[key.trim()];
+  const blocks = faqRoot.dataset.groups.split(",").map((spec) => {
+    const parts = spec.trim().split("+").map((k) => FAQ_GROUPS[k]);
+    return { ...parts[0], items: parts.flatMap((g) => g.items) };
+  });
+  if (faqRoot.dataset.desc) blocks[0].desc = faqRoot.dataset.desc;
+  blocks.forEach((g, gi) => {
     const sec = document.createElement("div");
     sec.className = "faq-group";
-    sec.innerHTML = `<div class="faq-group__info"><span class="faq-group__tag">${g.tag}</span><div><h3 class="faq-group__title">${g.title}</h3><p class="faq-group__desc">${g.desc}</p></div></div><div class="faq-list"></div>`;
+    const tag = blocks.length > 1 ? `<span class="faq-group__tag">${g.tag}</span>` : "";
+    sec.innerHTML = `<div class="faq-group__info">${tag}<div><h3 class="faq-group__title">${g.title}</h3><p class="faq-group__desc">${g.desc}</p></div></div><div class="faq-list"></div>`;
     const list = sec.querySelector(".faq-list");
     g.items.forEach(([q, a], i) => {
       const id = `qa-${gi}-${i}`;

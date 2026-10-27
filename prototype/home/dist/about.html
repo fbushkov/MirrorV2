@@ -425,54 +425,67 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 .contact:active { background: var(--c-line); }
 @media (max-width: 1023px) { .cards { --cols: 1; } .cards--2 { --cols: 1; } }
 
-/* --- 5.8 Таблица сравнения тарифов ---
-   Белая карточка radius 12. Шапка — тёмная строка с названиями и ценами, прилипает под шапкой сайта.
-   Группы строк — моно-подпись на #F7F7FB. Ячейки 15/20, разделители #ECEBF1.
-   «Есть» — тёмный круг с галочкой, «нет» — серое тире. На ≤1023 таблица прокручивается внутри карточки,
-   первая колонка закреплена. */
-.cmp { border-radius: var(--r-card); background: var(--c-surface); }
-.cmp__table { width: 100%; border-collapse: separate; border-spacing: 0; table-layout: fixed; font: 400 var(--fs-sm)/var(--lh-sm) var(--font-sans); }
-.cmp__col-feat { width: 34%; }
-.cmp__table th, .cmp__table td { padding: 16px 20px; text-align: left; vertical-align: middle; border-bottom: 1px solid var(--c-outline); }
-.cmp__table td { color: var(--c-ink); }
-.cmp__table thead th { position: sticky; top: 96px; z-index: 2; background: var(--c-dark); color: #fff; padding: 20px; vertical-align: bottom; border-bottom: 0; }
-.cmp__table thead th:first-child { border-top-left-radius: var(--r-card); }
-.cmp__table thead th:last-child { border-top-right-radius: var(--r-card); }
-.cmp__table tbody tr:last-child > * { border-bottom: 0; }
-.cmp__hint { font: 400 var(--fs-mono)/24px var(--font-mono); color: var(--c-ink-4); }
-.cmp__plan { position: relative; }
-.cmp__plan::before { content: ""; display: block; width: 8px; height: 8px; border-radius: 50%; margin-bottom: 12px; background: var(--c-violet); }
-.cmp__plan--health::before { background: var(--c-teal); }
-.cmp__name { display: block; font: 500 var(--fs-body)/var(--lh-tight) var(--font-sans); }
-.cmp__price { display: block; margin-top: 6px; font: 400 var(--fs-mono)/20px var(--font-mono); color: var(--c-ink-4); }
-.cmp__price .ph { background: rgba(255,255,255,.08); box-shadow: inset 0 0 0 1px rgba(209,174,232,.35); color: var(--c-violet-soft); }
-.cmp__group th { padding: 12px 20px; background: var(--c-surface-2); font: 400 var(--fs-mono)/24px var(--font-mono); color: var(--c-ink-4); }
-.cmp__table tbody th[scope="row"] { font-weight: 400; }
-.cmp__feat { display: block; font: 500 var(--fs-sm)/var(--lh-sm) var(--font-sans); color: var(--c-ink); }
-.cmp__note { display: block; margin-top: 4px; font: 400 var(--fs-xs)/18px var(--font-sans); color: var(--c-ink-4); }
-.cmp__money { font: 500 var(--fs-body)/var(--lh-tight) var(--font-sans); white-space: nowrap; }
-.cmp__table tbody tr:not(.cmp__group):hover > * { background: #fbfbfd; }
-.yes { display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: var(--c-dark); vertical-align: middle; }
-.yes::after { content: ""; width: 9px; height: 5px; border: 2px solid #fff; border-top: 0; border-right: 0; transform: translateY(-1px) rotate(-45deg); }
-.no { color: var(--c-line-hover); }
+/* --- 5.8 Таблицы (цены по численности, сравнение тарифов) ---
+   Правила (как у блока тарифов): серая подложка #ECEBF1 radius 12, шапка лежит прямо на ней; тело — белое radius 8,
+   строки «зеброй» белый / #F7F7FB без линий; шрифт только Onest (моно — не в таблицах); все значения одного стиля 15/20; «есть» — та же галочка, что в списках тарифов, «нет» — серое тире;
+   никаких плашек и цветных выделений внутри таблицы. Длинная таблица — шапка прилипает под шапкой сайта,
+   короткая — статична. На ≤1023 таблица прокручивается внутри карточки, первая колонка закреплена. */
+.cmp { padding: 0 16px 16px; border-radius: var(--r-card); background: var(--c-well); }
+.cmp--size { margin-top: 24px; }
+.cmp__table { width: 100%; border-collapse: separate; border-spacing: 0; table-layout: fixed; font: 400 var(--fs-sm)/var(--lh-sm) var(--font-sans); color: var(--c-ink); }
+.cmp__col-feat { width: 30%; }
+.cmp__table th, .cmp__table td { padding: 16px 24px; text-align: left; vertical-align: middle; font-weight: 400; }
+.cmp__table tr > * { background: inherit; }
+/* Шапка */
+.cmp__table thead tr { background: var(--c-well); }
+.cmp__table thead th { padding: 24px 24px 16px; vertical-align: top; font: 500 var(--fs-body)/var(--lh-tight) var(--font-sans); }
+.cmp__table thead th:first-child { color: var(--c-ink-2); font-weight: 400; }
+.cmp--sticky thead th { position: sticky; top: 96px; z-index: 2; }
+.cmp__cap { display: block; margin-bottom: 4px; font: 400 var(--fs-xs)/18px var(--font-sans); color: var(--c-ink-4); }
+.cmp__name { display: block; }
+.cmp__price { display: block; margin-top: 4px; font: 400 var(--fs-sm)/var(--lh-sm) var(--font-sans); color: var(--c-ink-2); }
+/* Группа строк: заголовок 17/20 Medium, воздух сверху отделяет смысловые блоки */
+.cmp__group { background: var(--c-surface); }
+.cmp__group th { padding: 28px 24px 12px; font: 500 var(--fs-body)/var(--lh-tight) var(--font-sans); }
+/* Зебра внутри группы: первая строка после заголовка белая, вторая серая */
+.cmp__table tbody tr { background: var(--c-surface); }
+.cmp--sticky tbody tr:nth-child(even) { background: var(--c-surface-2); }  /* первая строка под заголовком группы — серая */
+.cmp--size tbody tr:nth-child(even) { background: var(--c-surface-2); }
+/* Скругления белого тела */
+.cmp__table tbody:first-of-type tr:first-child > *:first-child { border-top-left-radius: var(--r-inner); }
+.cmp__table tbody:first-of-type tr:first-child > *:last-child { border-top-right-radius: var(--r-inner); }
+.cmp__table tbody:last-of-type tr:last-child > *:first-child { border-bottom-left-radius: var(--r-inner); }
+.cmp__table tbody:last-of-type tr:last-child > *:last-child { border-bottom-right-radius: var(--r-inner); }
+.cmp__feat { display: block; font-weight: 500; }
+.cmp__note { display: block; margin-top: 2px; font-size: var(--fs-xs); line-height: 18px; color: var(--c-ink-4); }
+.cmp__yes { display: inline-flex; vertical-align: middle; color: var(--c-ink); }
+.cmp__yes svg { width: 24px; height: 24px; }
+.cmp__no { color: var(--c-line-hover); }
 .cmp__foot { margin-top: 16px; padding: 0 var(--inset-x); font-size: var(--fs-sm); line-height: var(--lh-sm); color: var(--c-ink-4); }
 .cmp:focus-visible { outline-offset: 4px; }
-@media (max-width: 1365px) { .cmp__table thead th { top: 88px; } }
+@media (max-width: 1365px) { .cmp--sticky thead th { top: 88px; } }
 @media (max-width: 1023px) {
-  .cmp { overflow-x: auto; overscroll-behavior-x: contain; }
+  /* Без внутренних полей: закреплённая колонка должна стоять у самого края области прокрутки */
+  .cmp { overflow-x: auto; overscroll-behavior-x: contain; padding: 0; }
+  .cmp__table tbody tr > * { border-radius: 0 !important; }
   .cmp__table { min-width: 820px; }
   .cmp__col-feat { width: 220px; }
-  .cmp__table thead th { position: static; }
-  /* Первая колонка закреплена. Строка группы шире экрана — закрепляем только подпись внутри неё */
-  .cmp__table th[scope="row"] { position: sticky; left: 0; z-index: 1; background: var(--c-surface); box-shadow: 1px 0 0 var(--c-outline); }
-  .cmp__table thead th.cmp__corner { position: sticky; top: auto; left: 0; z-index: 3; }
-  .cmp__group th span { position: sticky; left: 14px; }
+  .cmp--sticky thead th { position: static; }
+  /* Первая колонка закреплена; строка группы шире экрана — закрепляем только подпись внутри неё */
+  .cmp__table th[scope="row"], .cmp__table thead th:first-child { position: sticky; left: 0; z-index: 1; box-shadow: 1px 0 0 var(--c-outline); }
+  .cmp__table thead th:first-child { top: auto; box-shadow: none; }
+  .cmp__group th span { position: sticky; left: 16px; }
 }
 @media (max-width: 767px) {
-  .cmp__table th, .cmp__table td { padding: 12px 14px; }
+  .cmp__table th, .cmp__table td { padding: 12px 16px; }
+  .cmp__table thead th { padding: 16px; }
+  .cmp__group th { padding: 24px 16px 8px; }
   .cmp__table { min-width: 720px; }
   .cmp__col-feat { width: 170px; }
 }
+/* Первая секция под шапкой страницы — ближе, чем обычный отступ между секциями */
+.section--first { margin-top: var(--head-gap); }
+.card__more { margin: auto 0 0 -10px; width: fit-content; }
 
 /* =========================================================
    6. ПОДВАЛ
@@ -676,16 +689,15 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
       <li><span aria-current="page">О нас</span></li>
     </ol>
     <div class="hero__head">
-      <span class="eyebrow">О нас · Mirror</span>
       <div class="hero__row">
-        <h1 class="hero__title" id="page-title">Помогаем компаниям обещать<br><span class="dim">то, что выдержит проверку</span></h1>
-        <p class="hero__text">Раньше компании придумывали яркое EVP и упаковывали его. Теперь люди проверяют каждое слово. Поэтому мы начинаем с реальности, а обещания строим уже на ней.</p>
+        <h1 class="hero__title" id="page-title">О нас</h1>
+        <p class="hero__text">Помогаем компаниям обещать то, что выдержит проверку. Раньше EVP придумывали и упаковывали. Теперь люди проверяют каждое слово, поэтому мы начинаем с реальности, а обещания строим на ней.</p>
       </div>
     </div>
   </section>
 
   <!-- ============ ПРИНЦИПЫ ============ -->
-  <section class="section" style="margin-top: var(--head-gap)" aria-label="Принципы">
+  <section class="section section--first" aria-label="Принципы">
     <div class="cards cards--2">
       <article class="card">
         <span class="card__no">01</span>
@@ -700,7 +712,7 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 
   <!-- ============ КОМАНДА ============ -->
   <section class="section" id="team" aria-labelledby="team-title">
-    <div class="section__head section__head--split">
+    <div class="section__head">
       <span class="eyebrow">Команда · 3 человека</span>
       <div class="headline-block">
         <h2 class="headline" id="team-title">Каждый проект<br><span class="dim">ведём сами</span></h2>
@@ -725,7 +737,7 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 
   <!-- ============ КОНТАКТЫ ============ -->
   <section class="section" id="contacts" aria-labelledby="contacts-title">
-    <div class="section__head section__head--split">
+    <div class="section__head">
       <span class="eyebrow">Контакты</span>
       <div class="headline-block">
         <h2 class="headline" id="contacts-title">Напишите<br><span class="dim">или позвоните</span></h2>
@@ -827,15 +839,22 @@ const FAQ_GROUPS = {
    Скрипт страницы (например, FAQ на главной) идёт раньше — типограф
    запускается последним и обрабатывает уже готовую разметку.
    ========================================================= */
-/* ---------- Вопросы: группы из FAQ_GROUPS (src/content.js), один открытый на группу ---------- */
+/* ---------- Вопросы: группы из FAQ_GROUPS (src/content.js), один открытый на группу ----------
+   data-groups="general,brand" — несколько блоков; "payment+plans" — один блок из нескольких групп
+   (название и описание — первой группы или из data-desc). Номер-тег показываем, только если блоков больше одного. */
 const faqRoot = document.getElementById("faq-list");
 if (faqRoot) {
   const plus = document.getElementById("ico-plus").innerHTML;
-  faqRoot.dataset.groups.split(",").forEach((key, gi) => {
-    const g = FAQ_GROUPS[key.trim()];
+  const blocks = faqRoot.dataset.groups.split(",").map((spec) => {
+    const parts = spec.trim().split("+").map((k) => FAQ_GROUPS[k]);
+    return { ...parts[0], items: parts.flatMap((g) => g.items) };
+  });
+  if (faqRoot.dataset.desc) blocks[0].desc = faqRoot.dataset.desc;
+  blocks.forEach((g, gi) => {
     const sec = document.createElement("div");
     sec.className = "faq-group";
-    sec.innerHTML = `<div class="faq-group__info"><span class="faq-group__tag">${g.tag}</span><div><h3 class="faq-group__title">${g.title}</h3><p class="faq-group__desc">${g.desc}</p></div></div><div class="faq-list"></div>`;
+    const tag = blocks.length > 1 ? `<span class="faq-group__tag">${g.tag}</span>` : "";
+    sec.innerHTML = `<div class="faq-group__info">${tag}<div><h3 class="faq-group__title">${g.title}</h3><p class="faq-group__desc">${g.desc}</p></div></div><div class="faq-list"></div>`;
     const list = sec.querySelector(".faq-list");
     g.items.forEach(([q, a], i) => {
       const id = `qa-${gi}-${i}`;
