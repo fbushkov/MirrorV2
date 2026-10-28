@@ -1,0 +1,250 @@
+<!-- page: route=hr-brand; title=Оценка HR-бренда и индекс культуры — Mirror -->
+  <main>
+  <!-- ============ ПЕРВЫЙ ЭКРАН: текст | живой пример «зеркала» (макет «Оценка HR бренда») ============ -->
+  <section class="page-hero dir-intro" aria-labelledby="page-title">
+    <ol class="crumbs" aria-label="Хлебные крошки">
+      <li><a href="{{href:home}}">Главная</a></li>
+      <li><span aria-current="page">Оценка HR-бренда</span></li>
+    </ol>
+    <div class="dir-hero">
+      <div class="page-hero__head">
+        <h1 class="hero__title" id="page-title">Оценка HR-бренда<br><span class="dim">и индекс культуры</span></h1>
+        <p class="page-hero__lead">Mirror сверяет то, что компания обещает сотрудникам и кандидатам, с отзывами, соцсетями, ответами нейросетей и опытом самих сотрудников.</p>
+        <div class="dir-hero__actions">
+          <a class="btn btn--primary" href="{{href:start?topic=scan}}" data-topic="scan">Бесплатный срез</a>
+          <a class="btn-link" href="#check">Подробнее {{svgc:arrow-up-right.svg}}</a>
+        </div>
+      </div>
+      <figure class="mirror" id="mirror-demo" aria-label="Проверка обещания: пример">
+        <div class="mirror__bar"><span class="mirror__label">Проверка обещания</span><div class="mirror__dots" role="tablist" aria-label="Примеры обещаний"><button type="button" role="tab" aria-selected="true" aria-label="Гибкий формат"></button><button type="button" role="tab" aria-selected="false" aria-label="Дружный коллектив"></button><button type="button" role="tab" aria-selected="false" aria-label="Ежегодная индексация"></button></div></div>
+        <div class="mirror__side">
+          <span class="mirror__label">Вы обещаете</span>
+          <p class="mirror__promise" data-m="promise">Гибкий формат</p>
+          <p class="mirror__vacancy"><span>Из вакансии</span><span data-m="vacancy">«Гибридный формат: часть недели можно работать из дома»</span></p>
+        </div>
+        <div class="mirror__side mirror__side--people" data-m="quotes">
+          <span class="mirror__label">Люди видят</span>
+          <blockquote><p>Удалёнку обещали на собеседовании. По факту — офис пять дней в неделю.</p><cite>Dreamjob</cite></blockquote>
+          <blockquote><p>Гибрид есть только у руководителей.</p><cite>VK</cite></blockquote>
+        </div>
+        <figcaption class="mirror__verdict"><span class="cmp__status" data-m="status"><span class="cmp__ico cmp__ico--no">{{svgc:circle-x.svg}}</span>Не подтверждается</span><div class="mirror__track"><i data-m="bar" class="is-bad" style="width:22%"></i></div><span class="mirror__pct"><b data-m="value">22%</b> упоминаний подтверждают</span></figcaption>
+      </figure>
+<template id="tpl-st-ok"><span class="cmp__ico cmp__ico--yes">{{svgc:circle-check.svg}}</span>Подтверждается</template><template id="tpl-st-warn"><span class="cmp__ico cmp__ico--warn">{{svgc:circle-alert.svg}}</span>Частично</template><template id="tpl-st-bad"><span class="cmp__ico cmp__ico--no">{{svgc:circle-x.svg}}</span>Не подтверждается</template>
+    </div>
+  </section>
+
+  <!-- ============ ПОЛОСА РАЗДЕЛОВ: внизу первого экрана, при прокрутке прилипает под шапкой ============ -->
+  <nav class="anchors" id="anchors" aria-label="Разделы страницы">
+    <a href="#check" class="is-active">Что проверяем</a><a href="#metrics">Три показателя</a><a href="#matrix">Матрица</a><a href="#report">Отчёт</a><a href="#process">Как проходит</a><a href="#faq">Вопросы</a>
+  </nav>
+
+  <!-- ============ ЧТО ПРОВЕРЯЕМ: центр + фиолетовая лента из трёх шагов ============ -->
+  <section class="section section--anchors" id="check" aria-labelledby="check-title">
+    <div class="section__head section__head--center">
+      <h2 class="headline" id="check-title">Ваши обещания<br><span class="dim">против опыта людей</span></h2>
+      <p class="lead">Проверяем по вашим же текстам, а не по чужому списку ценностей.</p>
+    </div>
+    <ol class="vflow" role="list">
+      <li class="vflow__item"><img src="{{uri:shape-check-01.svg}}" alt="" width="80" height="80"><span class="vflow__no">01</span><div class="vflow__text"><h3>Что вы обещаете</h3><p>Собираем обещания из вакансий, карьерного сайта и соцсетей.</p></div><div class="badges"><span class="badge badge--hard">hh</span><span class="badge badge--hard">карьерный сайт</span><span class="badge badge--hard">соцсети компании</span></div></li>
+      <li class="vflow__item"><img src="{{uri:shape-check-02.svg}}" alt="" width="80" height="80"><span class="vflow__no">02</span><div class="vflow__text"><h3>Где проверяем</h3><p>Ищем упоминания каждой темы там, где о вас пишут люди.</p></div><div class="badges"><span class="badge badge--hard">hh</span><span class="badge badge--hard">dreamjob</span><span class="badge badge--hard">vk</span><span class="badge badge--hard">дзен</span></div></li>
+      <li class="vflow__item"><img src="{{uri:shape-check-03.svg}}" alt="" width="80" height="80"><span class="vflow__no">03</span><div class="vflow__text"><h3>Что получаете</h3><p>Статус каждого обещания и одну цифру — индекс культуры.</p></div></li>
+    </ol>
+  </section>
+
+  <!-- ============ ТРИ ПОКАЗАТЕЛЯ: шапка слева, вкладки-карточки + панель «текст | график» ============ -->
+  <section class="section section--anchors" id="metrics" aria-labelledby="metrics-title">
+    <div class="section__head">
+      <div class="headline-block">
+        <h2 class="headline" id="metrics-title">Три вопроса,<br><span class="dim">на которые отвечает отчёт</span></h2>
+        <p class="lead lead--narrow">У каждого показателя своя точка отсчёта, поэтому мы не смешиваем их в одну цифру.</p>
+      </div>
+    </div>
+    <div class="qtabs">
+      <div class="qtabs__list" role="tablist" aria-label="Показатели">
+        <button class="qtab is-active" type="button" role="tab" aria-selected="true" aria-controls="mp-index" id="mt-index"><span class="qtab__ico">{{svgc:lucide-scale.svg}}</span><span class="qtab__foot"><span class="qtab__text"><span class="qtab__name">Индекс культуры</span><span class="qtab__q">Совпадают ли слова и дела?</span></span><span class="qtab__val"><b>65</b>из 100</span></span></button>
+        <button class="qtab" type="button" role="tab" aria-selected="false" aria-controls="mp-blind" id="mt-blind" tabindex="-1"><span class="qtab__ico">{{svgc:lucide-eye-off.svg}}</span><span class="qtab__foot"><span class="qtab__text"><span class="qtab__name">Слепые зоны</span><span class="qtab__q">О чём говорят, а вы молчите?</span></span><span class="qtab__val"><b>4</b>темы</span></span></button>
+        <button class="qtab" type="button" role="tab" aria-selected="false" aria-controls="mp-industry" id="mt-industry" tabindex="-1"><span class="qtab__ico">{{svgc:lucide-trophy.svg}}</span><span class="qtab__foot"><span class="qtab__text"><span class="qtab__name">Место в отрасли</span><span class="qtab__q">Насколько хороши условия?</span></span><span class="qtab__val"><b>62</b>перцентиль</span></span></button>
+      </div>
+      <div class="qpanel" role="tabpanel" id="mp-index" aria-labelledby="mt-index">
+        <div class="qpanel__text"><div><span class="qpanel__eyebrow">Относительно ваших обещаний</span><h3 class="qpanel__title">Совпадают ли слова и дела?</h3><p>Доля ваших обещаний, которые подтверждает опыт людей в отзывах, соцсетях, медиа и ответах нейросетей.</p></div><a class="btn-link" href="{{href:methodology}}">Подробнее о показателях {{svgc:arrow-up-right.svg}}</a></div>
+        <div class="qpanel__vis"><div class="gauge gauge--big" id="g-index" role="img" aria-label="Индекс культуры 65 из 100"></div><p class="mcard__cap">Подтверждено 5 из 8 обещаний</p></div>
+      </div>
+      <div class="qpanel" role="tabpanel" id="mp-blind" aria-labelledby="mt-blind" hidden>
+        <div class="qpanel__text"><div><span class="qpanel__eyebrow">Относительно того, что обсуждают люди</span><h3 class="qpanel__title">О чём говорят, а вы молчите?</h3><p>Темы, которые часто встречаются в отзывах и разговорах, но которых нет в ваших текстах. Молчать выгодно только до первого отзыва.</p></div><a class="btn-link" href="{{href:methodology}}">Подробнее о показателях {{svgc:arrow-up-right.svg}}</a></div>
+        <div class="qpanel__vis"><ul class="spots"><li><div class="spots__head"><b>Переработки</b><span>18% упоминаний</span></div><div class="spots__meta"><span class="spots__tone spots__tone--neg"><span class="cmp__ico cmp__ico--no">{{svgc:circle-x.svg}}</span>чаще негатив</span><span>в ваших текстах — ни разу</span></div><div class="blind__bar"><i class="is-neg" style="width:72%"></i></div></li><li><div class="spots__head"><b>Руководители</b><span>14% упоминаний</span></div><div class="spots__meta"><span class="spots__tone spots__tone--mix"><span class="cmp__ico cmp__ico--warn">{{svgc:circle-alert.svg}}</span>по-разному</span><span>в ваших текстах — ни разу</span></div><div class="blind__bar"><i class="is-mix" style="width:56%"></i></div></li><li><div class="spots__head"><b>Нагрузка и планы</b><span>11% упоминаний</span></div><div class="spots__meta"><span class="spots__tone spots__tone--neg"><span class="cmp__ico cmp__ico--no">{{svgc:circle-x.svg}}</span>чаще негатив</span><span>в ваших текстах — ни разу</span></div><div class="blind__bar"><i class="is-neg" style="width:44%"></i></div></li><li><div class="spots__head"><b>Офис и техника</b><span>6% упоминаний</span></div><div class="spots__meta"><span class="spots__tone spots__tone--neu"><span class="cmp__ico cmp__ico--na">{{svgc:minus.svg}}</span>нейтрально</span><span>в ваших текстах — ни разу</span></div><div class="blind__bar"><i class="is-neu" style="width:24%"></i></div></li></ul></div>
+      </div>
+      <div class="qpanel" role="tabpanel" id="mp-industry" aria-labelledby="mt-industry" hidden>
+        <div class="qpanel__text"><div><span class="qpanel__eyebrow">Относительно рынка</span><h3 class="qpanel__title">Насколько хороши условия?</h3><p>Сравниваем базовые темы — зарплату, развитие, руководство, нагрузку — с работодателями вашей отрасли и региона.</p></div><a class="btn-link" href="{{href:methodology}}">Подробнее о показателях {{svgc:arrow-up-right.svg}}</a></div>
+        <div class="qpanel__vis"><ul class="tracks"><li><span>Коллектив</span><div class="tracks__bar"><i style="left:82%"></i></div><b>82</b></li><li><span>Стабильность</span><div class="tracks__bar"><i style="left:77%"></i></div><b>77</b></li><li><span>Развитие</span><div class="tracks__bar"><i style="left:71%"></i></div><b>71</b></li><li><span>Руководство</span><div class="tracks__bar"><i style="left:58%"></i></div><b>58</b></li><li><span>Нагрузка</span><div class="tracks__bar"><i style="left:41%"></i></div><b>41</b></li><li><span>Зарплата</span><div class="tracks__bar"><i style="left:34%"></i></div><b>34</b></li></ul><div class="tracks__scale"><span>хуже рынка</span><span>медиана</span><span>лучше рынка</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ МАТРИЦА: центр + зоны по бокам ============ -->
+  <section class="section section--anchors" id="matrix" aria-labelledby="matrix-title">
+    <div class="section__head section__head--center">
+      <h2 class="headline" id="matrix-title"><span class="dim">Честность и условия</span><br>на одном поле</h2>
+      <p class="lead">Честность (индекс культуры) против условий труда (место в отрасли).</p>
+    </div>
+    <div class="well">
+      <div class="qmap qmap--page">
+        <ul class="qmap__side qmap__side--left">
+          <li class="qzone qzone--lilac"><b><i></i>Обещаете не то</b><p>Условия хорошие, но в текстах есть то, что не подтверждается.</p></li>
+          <li class="qzone qzone--red"><b><i></i>Переобещаете</b><p>Условия ниже рынка, обещания не подтверждаются. Главный риск для доверия.</p></li>
+        </ul>
+        <div class="qmap__chart" id="ch-matrix" role="img" aria-label="Матрица: Банк N в зоне «Сильный и честный»"></div>
+        <ul class="qmap__side">
+          <li class="qzone qzone--green is-you"><b><i></i>Сильный и честный</b><p>Условия выше рынка, обещания подтверждаются. Рассказывайте громче.</p><span class="qzone__you">Вы здесь</span></li>
+          <li class="qzone qzone--yellow"><b><i></i>Честно, но слабо</b><p>Обещания честные, но условия хуже рынка. Улучшайте условия.</p></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ОТЧЁТ: текст со списком | график на подложке ============ -->
+  <section class="section section--anchors" id="report" aria-labelledby="report-title">
+    <div class="rsplit">
+      <div class="rsplit__text">
+        <h2 class="headline" id="report-title">Что будет<br><span class="dim">в отчёте</span></h2>
+        <ul class="checks checks--ok"><li>{{svgc:circle-check.svg|checks__ico}}Индекс культуры и его динамика по месяцам: просадки и подъёмы</li><li>{{svgc:circle-check.svg|checks__ico}}Карта обещаний со статусом каждого</li><li>{{svgc:circle-check.svg|checks__ico}}Слепые зоны: о чём говорят люди, а в ваших текстах ни слова</li><li>{{svgc:circle-check.svg|checks__ico}}Место в отрасли по базовым темам</li><li>{{svgc:circle-check.svg|checks__ico}}Сравнение с 2–3 конкурентами по тем же правилам</li><li>{{svgc:circle-check.svg|checks__ico}}Что нейросети отвечают о вас как о работодателе</li><li>{{svgc:circle-check.svg|checks__ico}}Три первых шага с ответственными и сроками</li></ul>
+        <a class="btn btn--primary" href="{{href:hr-brand-demo}}">Открыть демо-отчёт {{svgc:arrow-up-right-white.svg}}</a>
+      </div>
+      <div class="well rsplit__vis">
+        <div class="panel">
+          <div class="panel__head"><h3 class="panel__title">Просадки и подъёмы</h3><p class="panel__hint">Индекс культуры по месяцам. Пунктир — события, которые на него повлияли.</p></div>
+          <div class="chart" id="ch-dynamics" role="img" aria-label="Индекс культуры по месяцам: просадка в марте, рост после августа"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ КАК ПРОХОДИТ: шапка слева + эйброу справа, шаги и две карточки на подложке ============ -->
+  <section class="section section--anchors" id="process" aria-labelledby="process-title">
+    <div class="section__head section__head--aside">
+      <div class="headline-block">
+        <h2 class="headline" id="process-title"><span class="dim">Первые два шага</span><br>ничего не стоят</h2>
+        <p class="lead lead--narrow">Срез и разбор с экспертом бесплатны. Платить — только если решите продолжить.</p>
+      </div>
+      <span class="eyebrow">Как проходит · 3 шага</span>
+    </div>
+    <div class="well well--stack">
+      <ol class="pstep-row" role="list">
+        <li class="pstep"><span class="pstep__no">Шаг №1</span><div class="pstep__text"><h3>Внешний срез</h3><p>Нужны только название компании и ссылка на hh.ru. Доступ к вашим системам не нужен.</p></div><div class="badges"><span class="badge badge--soft">Бесплатно</span><span class="badge badge--soft">3 рабочих дня</span></div></li>
+        <li class="pstep"><span class="pstep__no">Шаг №2</span><div class="pstep__text"><h3>Разбор с экспертом</h3><p>Объясняем цифры и отвечаем на вопросы. Вместе решаем, что делать дальше.</p></div><div class="badges"><span class="badge badge--soft">Бесплатно</span><span class="badge badge--soft">30 минут</span></div></li>
+        <li class="pstep"><span class="pstep__no">Шаг №3</span><div class="pstep__text"><h3>Мониторинг</h3><p>Обновляем индекс, слепые зоны и место в отрасли. Сообщаем, если тема резко выросла.</p></div><div class="badges"><span class="badge badge--purple">По желанию</span><span class="badge badge--soft">Каждый месяц</span></div></li>
+      </ol>
+      <div class="pnext">
+        <a class="pnext__dark" href="{{href:culture-health}}"><span class="pnext__label">направление 02 · изнутри</span><div><h3>Нужен взгляд изнутри?</h3><p>Дашборд здоровья корпоративной культуры. Как сотрудники переживают культуру и где она расходится с заявленной.</p></div></a>
+        <article class="pnext__card"><div><h3>Агентствам<br>и консультантам</h3><p>Внешний аудит HR-бренда для ваших клиентов под вашим логотипом. Первые три отчёта — бесплатно.</p></div><a class="btn-link" href="{{href:start?topic=other}}" data-topic="other">Обсудить пилот {{svgc:arrow-up-right.svg}}</a></article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ВОПРОСЫ ============ -->
+  <section class="section section--anchors" id="faq" aria-labelledby="faq-title">
+    <div class="section__head section__head--split">
+      <span class="eyebrow">Вопросы · об оценке</span>
+      <div class="headline-block">
+        <h2 class="headline" id="faq-title"><span class="dim">Частые вопросы</span><br>об оценке HR-бренда</h2>
+        <p class="lead">Собрали частые вопросы и разделили их по темам.</p>
+      </div>
+    </div>
+    <div class="faq" id="faq-list" data-groups="brandPage" data-desc="Сроки, доступы и как устроен индекс."></div>
+  </section>
+  </main>
+<script>
+{{include:../../node_modules/echarts/dist/echarts.min.js}}
+</script>
+<script>
+{{include:src/charts.js}}
+mountChart(document.getElementById("ch-dynamics"), {
+  grid: { left: 40, right: 16, top: 48, bottom: 32 },
+  tooltip: { ...chTooltip, trigger: "axis", axisPointer: { type: "line", lineStyle: { color: CH.violetSoft } }, formatter: (p) => `${p[0].name}: индекс ${p[0].value}` },
+  xAxis: { type: "category", data: ["Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт"], boundaryGap: false, ...chAxis, splitLine: { show: false } },
+  yAxis: { type: "value", min: 40, max: 80, interval: 10, ...chAxis, axisLine: { show: false } },
+  series: [{
+    type: "line", data: [58, 60, 54, 57, 61, 62, 63, 66, 65, 65], smooth: 0.35, showSymbol: false,
+    lineStyle: { color: CH.violet, width: 2.5 }, itemStyle: { color: CH.violet },
+    areaStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: "rgba(122,47,209,.16)" }, { offset: 1, color: "rgba(122,47,209,0)" }]) },
+    markLine: eventMarks(innerWidth < 768 ? [{ x: "Мар", text: "Отзывы" }, { x: "Авг", text: "Вилки" }] : [{ x: "Мар", text: "Отзывы о задержке индексации" }, { x: "Авг", text: "Вилки зарплат в вакансиях" }]),
+  }],
+});
+const MX = [{ name: "Банк N", x: 62, y: 65, you: true }, { name: "Банк А", x: 74, y: 72 }, { name: "Банк Б", x: 38, y: 54 }];
+const Q = (x1, y1, x2, y2, color) => [{ coord: [x1, y1], itemStyle: { color } }, { coord: [x2, y2] }];
+mountChart(document.getElementById("ch-matrix"), {
+  grid: { left: 64, right: 64, top: 16, bottom: 56 },
+  xAxis: { type: "value", min: 10, max: 90, interval: 10, name: "честность · индекс культуры", nameLocation: "middle", nameGap: 36, nameTextStyle: { color: CH.ink3, fontSize: 14, fontFamily: CH.font }, ...chAxis, splitLine: { show: false } },
+  yAxis: { type: "value", min: 40, max: 80, interval: 5, name: "условия · место в отрасли", nameLocation: "middle", nameGap: 36, nameTextStyle: { color: CH.ink3, fontSize: 14, fontFamily: CH.font }, ...chAxis, splitLine: { show: false }, axisLabel: { ...chAxis.axisLabel, formatter: (v) => (v % 10 ? "" : v) } },
+  tooltip: { ...chTooltip, formatter: (p) => `${MX[p.dataIndex].name}: честность ${MX[p.dataIndex].x}, условия ${MX[p.dataIndex].y}` },
+  series: [{
+    type: "scatter", symbolSize: (v, p) => (MX[p.dataIndex].you ? 22 : 14), z: 3,
+    data: MX.map((m) => ({ value: [m.x, m.y], itemStyle: { color: m.you ? CH.violet : CH.ink4, borderColor: "#fff", borderWidth: 3, shadowBlur: m.you ? 12 : 0, shadowColor: "rgba(122,47,209,.35)" } })),
+    label: { show: true, position: "right", distance: 10, formatter: (p) => MX[p.dataIndex].name, color: CH.ink, fontSize: 15, fontWeight: (p) => 500, fontFamily: CH.font },
+    markLine: { silent: true, symbol: "none", lineStyle: { color: CH.ink4, type: [4, 4], width: 1 }, label: { show: false }, data: [{ xAxis: 50 }, { yAxis: 60 }] },
+    markArea: { silent: true, data: [
+      Q(10, 60, 50, 80, "rgba(122,47,209,.11)"), Q(50, 60, 90, 80, "rgba(59,153,82,.09)"),
+      Q(10, 40, 50, 60, "rgba(219,79,79,.08)"), Q(50, 40, 90, 60, "rgba(214,178,40,.14)"),
+    ] },
+  }],
+});
+
+/* Три показателя: вкладки (стрелки ←/→ переключают) */
+const tabs = [...document.querySelectorAll(".qtab")];
+let gIndex = null;
+function showTab(t) {
+  tabs.forEach((x) => { const on = x === t; x.classList.toggle("is-active", on); x.setAttribute("aria-selected", on); x.tabIndex = on ? 0 : -1; document.getElementById(x.getAttribute("aria-controls")).hidden = !on; });
+  if (t.id === "mt-index" && !gIndex) gIndex = gaugeChart(document.getElementById("g-index"), 65);
+}
+tabs.forEach((t, i) => {
+  t.addEventListener("click", () => showTab(t));
+  t.addEventListener("keydown", (e) => { const d = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0; if (d) { const n = tabs[(i + d + tabs.length) % tabs.length]; n.focus(); showTab(n); } });
+});
+function gaugeChart(el, value) {
+  return mountChart(el, { series: [{
+    type: "gauge", startAngle: 215, endAngle: -35, min: 0, max: 100, radius: "92%", center: ["50%", "56%"],
+    progress: { show: true, width: 16, roundCap: true, itemStyle: { color: CH.violet } },
+    axisLine: { roundCap: true, lineStyle: { width: 16, color: [[1, CH.grid]] } },
+    axisTick: { show: false }, splitLine: { show: false }, axisLabel: { show: false }, pointer: { show: false }, anchor: { show: false },
+    title: { show: true, offsetCenter: [0, "34%"], color: CH.ink3, fontFamily: CH.font, fontSize: 14 },
+    detail: { offsetCenter: [0, "-2%"], color: CH.ink, fontFamily: "JetBrains Mono, monospace", fontWeight: 500, fontSize: 64, formatter: (v) => Math.round(v) },
+    data: [{ value, name: "индекс культуры" }],
+  }] });
+}
+showTab(tabs[0]);
+/* «Зеркало»: три примера, листаются раз в 5 секунд; пауза при наведении и фокусе, без движения при reduced-motion */
+const MIRROR = [
+  { promise: "Гибкий формат", vacancy: "Гибридный формат: часть недели можно работать из дома.", quotes: [["Dreamjob", "Удалёнку обещали на собеседовании. По факту — офис пять дней в неделю."], ["VK", "Гибрид есть только у руководителей."]], status: "bad", value: 22 },
+  { promise: "Дружный коллектив", vacancy: "Сильная команда, которая помогает новичкам освоиться.", quotes: [["Dreamjob", "Коллектив — лучшее, что есть в компании."], ["hh.ru", "Руководитель всегда объяснит и поможет."]], status: "ok", value: 91 },
+  { promise: "Ежегодная индексация", vacancy: "Индексация зарплаты каждый год.", quotes: [["Dreamjob", "Индексация есть, но меньше инфляции."], ["GigaChat", "Сотрудники пишут, что индексацию иногда задерживают."]], status: "warn", value: 48 },
+];
+const mirrorEl = document.getElementById("mirror-demo"), dots = [...mirrorEl.querySelectorAll(".mirror__dots button")];
+const $m = (k) => mirrorEl.querySelector(`[data-m="${k}"]`);
+let mi = 0, paused = false;
+function showMirror(n) {
+  mi = n; const ex = MIRROR[n];
+  $m("promise").textContent = ex.promise; $m("vacancy").textContent = `«${ex.vacancy.replace(/\.$/, "")}»`;
+  $m("quotes").innerHTML = '<span class="mirror__label">Люди видят</span>' + ex.quotes.map(([src, t]) => `<blockquote><p>${t}</p><cite>${src}</cite></blockquote>`).join("");
+  $m("status").innerHTML = document.getElementById("tpl-st-" + ex.status).innerHTML;
+  const bar = $m("bar"); bar.className = "is-" + ex.status; bar.style.width = ex.value + "%";
+  $m("value").textContent = ex.value + "%";
+  dots.forEach((d, i) => d.setAttribute("aria-selected", i === n));
+  if (typeof typograf === "function") typograf(mirrorEl);
+}
+dots.forEach((d, i) => d.addEventListener("click", () => showMirror(i)));
+mirrorEl.addEventListener("pointerenter", () => (paused = true)); mirrorEl.addEventListener("pointerleave", () => (paused = false));
+mirrorEl.addEventListener("focusin", () => (paused = true)); mirrorEl.addEventListener("focusout", () => (paused = false));
+if (!matchMedia("(prefers-reduced-motion: reduce)").matches) setInterval(() => { if (!paused && !document.hidden) showMirror((mi + 1) % MIRROR.length); }, 5000);
+
+/* Полоса разделов: прилипает под шапкой, подсвечивает раздел, который сейчас на экране */
+const anchors = document.getElementById("anchors"), alinks = [...anchors.querySelectorAll("a")];
+const secs = alinks.map((a) => document.querySelector(a.getAttribute("href")));
+const headerEl = document.querySelector(".header");
+function syncAnchors() {
+  const top = headerEl ? headerEl.getBoundingClientRect().bottom : 0;
+  anchors.classList.toggle("is-stuck", anchors.getBoundingClientRect().top <= top + 1);
+  const line = top + anchors.offsetHeight + 120;
+  let cur = 0; secs.forEach((s, i) => { if (s.getBoundingClientRect().top <= line) cur = i; });
+  alinks.forEach((a, i) => { a.classList.toggle("is-active", i === cur); if (i === cur) a.setAttribute("aria-current", "true"); else a.removeAttribute("aria-current"); });
+}
+addEventListener("scroll", syncAnchors, { passive: true }); addEventListener("resize", syncAnchors); syncAnchors();
+</script>

@@ -1,10 +1,8 @@
-# Черновики страниц: в git только главная и «Цены» (решение пользователя 2026-10-28).
-# Обзор HR-бренда, демо-отчёт, «Как считаем» и демо-дашборд ждут нового дизайна.
-pages/hr-brand.html
+# Черновики страниц: в git главная, «Цены» и обзор HR-бренда (свёрстан по макету 2026-10-28).
+# Демо-отчёт, «Как считаем» и демо-дашборд ждут нового дизайна.
 pages/hr-brand-demo.html
 pages/methodology.html
 pages/culture-health-demo.html
-dist/hr-brand.html
 dist/hr-brand-demo.html
 dist/methodology.html
 dist/culture-health-demo.html
