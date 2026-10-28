@@ -17,20 +17,28 @@
         </div>
         <div class="badges"><span class="badge badge--soft">Бесплатно</span><span class="badge badge--soft">3 рабочих дня</span><span class="badge badge--soft">Без доступа к вашим системам</span></div>
       </div>
-      <figure class="mirror" aria-label="Пример проверки одного обещания">
+      <figure class="mirror" id="mirror-demo" aria-label="Проверка обещания: пример">
+        <div class="mirror__bar"><span class="mirror__label">Проверка обещания</span><div class="mirror__dots" role="tablist" aria-label="Примеры обещаний"><button type="button" role="tab" aria-selected="true" aria-label="Гибкий формат"></button><button type="button" role="tab" aria-selected="false" aria-label="Дружный коллектив"></button><button type="button" role="tab" aria-selected="false" aria-label="Ежегодная индексация"></button></div></div>
         <div class="mirror__side">
-          <span class="mirror__label">Обещание в вакансии</span>
-          <p class="mirror__promise">«Гибридный формат: часть недели можно работать из дома»</p>
+          <span class="mirror__label">Вы обещаете</span>
+          <p class="mirror__promise" data-m="promise">Гибкий формат</p>
+          <p class="mirror__vacancy"><span>Из вакансии</span><span data-m="vacancy">«Гибридный формат: часть недели можно работать из дома»</span></p>
         </div>
-        <div class="mirror__side mirror__side--people">
-          <span class="mirror__label">Что пишут люди</span>
+        <div class="mirror__side mirror__side--people" data-m="quotes">
+          <span class="mirror__label">Люди видят</span>
           <blockquote><p>Удалёнку обещали на собеседовании. По факту — офис пять дней в неделю.</p><cite>Dreamjob</cite></blockquote>
           <blockquote><p>Гибрид есть только у руководителей.</p><cite>VK</cite></blockquote>
         </div>
-        <figcaption class="mirror__verdict"><span class="cmp__ico cmp__ico--no">{{svgc:circle-x.svg}}</span><span><b>Не подтверждается</b> в 78% упоминаний</span><span class="mirror__value">22%</span></figcaption>
+        <figcaption class="mirror__verdict"><span class="cmp__status" data-m="status"><span class="cmp__ico cmp__ico--no">{{svgc:circle-x.svg}}</span>Не подтверждается</span><div class="mirror__track"><i data-m="bar" class="is-bad" style="width:22%"></i></div><span class="mirror__pct"><b data-m="value">22%</b> упоминаний подтверждают</span></figcaption>
       </figure>
+<template id="tpl-st-ok"><span class="cmp__ico cmp__ico--yes">{{svgc:circle-check.svg}}</span>Подтверждается</template><template id="tpl-st-warn"><span class="cmp__ico cmp__ico--warn">{{svgc:circle-alert.svg}}</span>Частично</template><template id="tpl-st-bad"><span class="cmp__ico cmp__ico--no">{{svgc:circle-x.svg}}</span>Не подтверждается</template>
     </div>
   </section>
+
+  <nav class="report-bar anchor-bar" aria-label="Разделы страницы">
+    <div class="report-nav"><a href="#check">Что проверяем</a><a href="#metrics">Три показателя</a><a href="#matrix">Матрица</a><a href="#report">Отчёт</a><a href="#process">Как проходит</a><a href="#faq">Вопросы</a></div>
+    <a class="btn btn--primary report-bar__pdf" href="{{href:start?topic=scan}}" data-topic="scan">Бесплатный срез</a>
+  </nav>
 
   <!-- ============ ЧТО ПРОВЕРЯЕМ: split-шапка + три шага в ряд ============ -->
   <section class="section" id="check" aria-labelledby="check-title">
@@ -54,13 +62,27 @@
       <span class="eyebrow">Три показателя · не смешиваем</span>
       <div class="headline-block">
         <h2 class="headline" id="metrics-title">Три вопроса,<br><span class="dim">на которые отвечает отчёт</span></h2>
+        <p class="lead">У каждого показателя своя точка отсчёта, поэтому мы не смешиваем их в одну цифру.</p>
       </div>
     </div>
-    <div class="metric-rows">
-      <article class="metric-row"><div class="metric-row__num"><span>65</span><small>индекс культуры</small></div><div class="metric-row__body"><span class="step__kicker">Точка отсчёта · ваши обещания</span><h3 class="metric-row__q">Совпадают ли слова и дела?</h3><p>Доля ваших обещаний, которые подтверждает опыт людей: в отзывах, соцсетях, медиа и ответах нейросетей.</p></div></article>
-      <article class="metric-row"><div class="metric-row__num"><span>4</span><small>слепые зоны</small></div><div class="metric-row__body"><span class="step__kicker">Точка отсчёта · разговоры людей</span><h3 class="metric-row__q">О чём говорят, а вы молчите?</h3><p>Темы, которые часто встречаются в отзывах, но которых нет в ваших текстах. Молчать выгодно только до первого отзыва.</p></div></article>
-      <article class="metric-row"><div class="metric-row__num"><span>62</span><small>перцентиль в отрасли</small></div><div class="metric-row__body"><span class="step__kicker">Точка отсчёта · рынок</span><h3 class="metric-row__q">Насколько хороши условия?</h3><p>Сравниваем базовые темы — зарплату, развитие, руководство, нагрузку — с работодателями вашей отрасли и региона.</p></div></article>
+    <div class="mtabs" role="tablist" aria-label="Показатели">
+      <button class="mtab is-active" type="button" role="tab" aria-selected="true" aria-controls="mp-index" id="mt-index"><span class="mtab__ico">{{svgc:lucide-scale.svg}}</span><span class="mtab__val"><b>65</b> из 100</span><span class="mtab__name">Индекс культуры</span><span class="mtab__q">Совпадают ли слова и дела?</span></button>
+      <button class="mtab" type="button" role="tab" aria-selected="false" aria-controls="mp-blind" id="mt-blind"><span class="mtab__ico">{{svgc:lucide-eye-off.svg}}</span><span class="mtab__val"><b>4</b> темы</span><span class="mtab__name">Слепые зоны</span><span class="mtab__q">О чём говорят, а вы молчите?</span></button>
+      <button class="mtab" type="button" role="tab" aria-selected="false" aria-controls="mp-industry" id="mt-industry"><span class="mtab__ico">{{svgc:lucide-trophy.svg}}</span><span class="mtab__val"><b>62</b> перцентиль</span><span class="mtab__name">Место в отрасли</span><span class="mtab__q">Насколько хороши условия?</span></button>
     </div>
+    <div class="mpanel" role="tabpanel" id="mp-index" aria-labelledby="mt-index">
+      <div class="mpanel__text"><span class="badge badge--purple">относительно ваших обещаний</span><h3 class="mpanel__q">Совпадают ли<br>слова и дела?</h3><p>Доля ваших обещаний, которые подтверждает опыт людей: в отзывах, соцсетях, медиа и ответах нейросетей.</p><a class="btn-link card__more" href="{{href:methodology}}">Подробнее о показателях {{svgc:arrow-up-right.svg}}</a></div>
+      <div class="mpanel__vis"><div class="gauge gauge--big" id="g-index" role="img" aria-label="Индекс культуры 65 из 100"></div><p class="mcard__cap">Подтверждено 5 из 8 обещаний</p></div>
+    </div>
+    <div class="mpanel" role="tabpanel" id="mp-blind" aria-labelledby="mt-blind" hidden>
+      <div class="mpanel__text"><span class="badge badge--purple">относительно того, что обсуждают люди</span><h3 class="mpanel__q">О чём говорят,<br>а вы молчите?</h3><p>Темы, которые часто встречаются в отзывах и разговорах, но которых нет в ваших текстах. Молчать выгодно только до первого отзыва.</p><a class="btn-link card__more" href="{{href:methodology}}">Подробнее о показателях {{svgc:arrow-up-right.svg}}</a></div>
+      <div class="mpanel__vis"><ul class="spots"><li><div class="spots__head"><b>Переработки</b><span>18% упоминаний</span></div><div class="spots__meta"><span class="spots__tone spots__tone--neg"><span class="cmp__ico cmp__ico--no">{{svgc:circle-x.svg}}</span>чаще негатив</span><span>в ваших текстах — ни разу</span></div><div class="blind__bar"><i class="is-neg" style="width:72%"></i></div></li><li><div class="spots__head"><b>Руководители</b><span>14% упоминаний</span></div><div class="spots__meta"><span class="spots__tone spots__tone--mix"><span class="cmp__ico cmp__ico--warn">{{svgc:circle-alert.svg}}</span>по-разному</span><span>в ваших текстах — ни разу</span></div><div class="blind__bar"><i class="is-mix" style="width:56%"></i></div></li><li><div class="spots__head"><b>Нагрузка и планы</b><span>11% упоминаний</span></div><div class="spots__meta"><span class="spots__tone spots__tone--neg"><span class="cmp__ico cmp__ico--no">{{svgc:circle-x.svg}}</span>чаще негатив</span><span>в ваших текстах — ни разу</span></div><div class="blind__bar"><i class="is-neg" style="width:44%"></i></div></li><li><div class="spots__head"><b>Офис и техника</b><span>6% упоминаний</span></div><div class="spots__meta"><span class="spots__tone spots__tone--neu"><span class="cmp__ico cmp__ico--na">{{svgc:minus.svg}}</span>нейтрально</span><span>в ваших текстах — ни разу</span></div><div class="blind__bar"><i class="is-neu" style="width:24%"></i></div></li></ul></div>
+    </div>
+    <div class="mpanel" role="tabpanel" id="mp-industry" aria-labelledby="mt-industry" hidden>
+      <div class="mpanel__text"><span class="badge badge--purple">относительно рынка</span><h3 class="mpanel__q">Насколько<br>хороши условия?</h3><p>Сравниваем базовые темы — зарплату, развитие, руководство, нагрузку — с работодателями вашей отрасли и региона.</p><a class="btn-link card__more" href="{{href:methodology}}">Подробнее о показателях {{svgc:arrow-up-right.svg}}</a></div>
+      <div class="mpanel__vis"><ul class="tracks"><li><span>Коллектив</span><div class="tracks__bar"><i style="left:82%"></i></div><b>82</b></li><li><span>Стабильность</span><div class="tracks__bar"><i style="left:77%"></i></div><b>77</b></li><li><span>Развитие</span><div class="tracks__bar"><i style="left:71%"></i></div><b>71</b></li><li><span>Руководство</span><div class="tracks__bar"><i style="left:58%"></i></div><b>58</b></li><li><span>Нагрузка</span><div class="tracks__bar"><i style="left:41%"></i></div><b>41</b></li><li><span>Зарплата</span><div class="tracks__bar"><i style="left:34%"></i></div><b>34</b></li></ul><div class="tracks__scale"><span>хуже рынка</span><span>медиана</span><span>лучше рынка</span></div></div>
+    </div>
+    <p class="mfoot">Пример на условных данных. Показатели не смешиваются в одну цифру: каждый отвечает на свой вопрос.</p>
   </section>
 
   <!-- ============ КАК ЧИТАТЬ ВМЕСТЕ: центр + матрица ============ -->
@@ -129,7 +151,7 @@
       <span class="eyebrow">Вопросы · об оценке</span>
       <div class="headline-block"><h2 class="headline" id="faq-title">Частые вопросы<br><span class="dim">об оценке HR-бренда</span></h2></div>
     </div>
-    <div class="faq" id="faq-list" data-groups="brand"></div>
+    <div class="faq" id="faq-list" data-groups="brandPage"></div>
   </section>
   </main>
 <script>
@@ -168,4 +190,50 @@ mountChart(document.getElementById("ch-matrix"), {
     ] },
   }],
 });
+/* Три показателя: вкладки (стрелки ←/→ переключают) */
+const tabs = [...document.querySelectorAll(".mtab")];
+let gIndex = null;
+function showTab(t) {
+  tabs.forEach((x) => { const on = x === t; x.classList.toggle("is-active", on); x.setAttribute("aria-selected", on); x.tabIndex = on ? 0 : -1; document.getElementById(x.getAttribute("aria-controls")).hidden = !on; });
+  if (t.id === "mt-index" && !gIndex) gIndex = gaugeChart(document.getElementById("g-index"), 65);
+}
+tabs.forEach((t, i) => {
+  t.addEventListener("click", () => showTab(t));
+  t.addEventListener("keydown", (e) => { const d = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0; if (d) { const n = tabs[(i + d + tabs.length) % tabs.length]; n.focus(); showTab(n); } });
+});
+function gaugeChart(el, value) {
+  return mountChart(el, { series: [{
+    type: "gauge", startAngle: 215, endAngle: -35, min: 0, max: 100, radius: "92%", center: ["50%", "56%"],
+    progress: { show: true, width: 16, roundCap: true, itemStyle: { color: CH.violet } },
+    axisLine: { roundCap: true, lineStyle: { width: 16, color: [[1, CH.grid]] } },
+    axisTick: { show: false }, splitLine: { show: false }, axisLabel: { show: false }, pointer: { show: false }, anchor: { show: false },
+    title: { show: true, offsetCenter: [0, "34%"], color: CH.ink3, fontFamily: CH.font, fontSize: 14 },
+    detail: { offsetCenter: [0, "-2%"], color: CH.ink, fontFamily: "JetBrains Mono, monospace", fontWeight: 500, fontSize: 64, formatter: (v) => Math.round(v) },
+    data: [{ value, name: "индекс культуры" }],
+  }] });
+}
+showTab(tabs[0]);
+/* «Зеркало»: три примера, листаются раз в 5 секунд; пауза при наведении и фокусе, без движения при reduced-motion */
+const MIRROR = [
+  { promise: "Гибкий формат", vacancy: "Гибридный формат: часть недели можно работать из дома.", quotes: [["Dreamjob", "Удалёнку обещали на собеседовании. По факту — офис пять дней в неделю."], ["VK", "Гибрид есть только у руководителей."]], status: "bad", value: 22 },
+  { promise: "Дружный коллектив", vacancy: "Сильная команда, которая помогает новичкам освоиться.", quotes: [["Dreamjob", "Коллектив — лучшее, что есть в компании."], ["hh.ru", "Руководитель всегда объяснит и поможет."]], status: "ok", value: 91 },
+  { promise: "Ежегодная индексация", vacancy: "Индексация зарплаты каждый год.", quotes: [["Dreamjob", "Индексация есть, но меньше инфляции."], ["GigaChat", "Сотрудники пишут, что индексацию иногда задерживают."]], status: "warn", value: 48 },
+];
+const mirrorEl = document.getElementById("mirror-demo"), dots = [...mirrorEl.querySelectorAll(".mirror__dots button")];
+const $m = (k) => mirrorEl.querySelector(`[data-m="${k}"]`);
+let mi = 0, paused = false;
+function showMirror(n) {
+  mi = n; const ex = MIRROR[n];
+  $m("promise").textContent = ex.promise; $m("vacancy").textContent = `«${ex.vacancy.replace(/\.$/, "")}»`;
+  $m("quotes").innerHTML = '<span class="mirror__label">Люди видят</span>' + ex.quotes.map(([src, t]) => `<blockquote><p>${t}</p><cite>${src}</cite></blockquote>`).join("");
+  $m("status").innerHTML = document.getElementById("tpl-st-" + ex.status).innerHTML;
+  const bar = $m("bar"); bar.className = "is-" + ex.status; bar.style.width = ex.value + "%";
+  $m("value").textContent = ex.value + "%";
+  dots.forEach((d, i) => d.setAttribute("aria-selected", i === n));
+  if (typeof typograf === "function") typograf(mirrorEl);
+}
+dots.forEach((d, i) => d.addEventListener("click", () => showMirror(i)));
+mirrorEl.addEventListener("pointerenter", () => (paused = true)); mirrorEl.addEventListener("pointerleave", () => (paused = false));
+mirrorEl.addEventListener("focusin", () => (paused = true)); mirrorEl.addEventListener("focusout", () => (paused = false));
+if (!matchMedia("(prefers-reduced-motion: reduce)").matches) setInterval(() => { if (!paused && !document.hidden) showMirror((mi + 1) % MIRROR.length); }, 5000);
 </script>

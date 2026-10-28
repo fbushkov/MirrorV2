@@ -587,7 +587,7 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 .dir-hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 760px); gap: 48px; align-items: center; }
 .dir-hero .page-hero__lead { max-width: 560px; }
 .dir-hero__actions { display: flex; align-items: center; gap: 16px 24px; flex-wrap: wrap; }
-.mirror { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 8px; border-radius: var(--r-card); background: var(--c-well); }
+.mirror { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px; padding: 8px; border-radius: var(--r-card); background: var(--c-well); }
 .mirror__side { display: flex; flex-direction: column; gap: 16px; padding: 24px; border-radius: var(--r-inner); background: var(--c-surface); }
 .mirror__side--people { background: var(--c-surface-2); }
 .mirror__label { font: 400 var(--fs-mono)/24px var(--font-mono); color: var(--c-ink-4); }
@@ -595,9 +595,28 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 .mirror blockquote { display: flex; flex-direction: column; gap: 6px; padding-left: 12px; border-left: 2px solid var(--c-violet-soft); }
 .mirror blockquote p { font: 400 var(--fs-sm)/var(--lh-sm) var(--font-sans); }
 .mirror cite { font: 400 var(--fs-xs)/18px var(--font-mono); font-style: normal; color: var(--c-ink-4); }
-.mirror__verdict { grid-column: 1 / -1; display: flex; align-items: center; gap: 12px; padding: 16px 24px; border-radius: var(--r-inner); background: var(--c-surface); }
-.mirror__verdict b { font-weight: 500; }
-.mirror__value { margin-left: auto; font: 500 var(--fs-h4)/1 var(--font-mono); color: var(--c-bad); }
+.mirror__verdict { grid-column: 1 / -1; display: grid; grid-template-columns: auto minmax(80px, 1fr) auto; align-items: center; gap: 12px 20px; padding: 16px 24px; border-radius: var(--r-inner); background: var(--c-surface); }
+.mirror__verdict .cmp__status { font-weight: 500; white-space: nowrap; }
+/* Карусель примеров: подпись и полоски-переключатели */
+.mirror__bar { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 4px 8px 4px 16px; }
+.mirror__dots { display: flex; gap: 6px; }
+.mirror__dots button { width: 12px; height: 32px; padding: 0; border: 0; background: none; cursor: pointer; position: relative; transition: width .3s var(--ease); }
+.mirror__dots button::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 6px; margin-top: -3px; border-radius: var(--r-pill); background: var(--c-line); transition: background .2s; }
+.mirror__dots button:hover::before { background: var(--c-line-hover); }
+.mirror__dots button[aria-selected="true"] { width: 32px; }
+.mirror__dots button[aria-selected="true"]::before { background: var(--c-violet); }
+.mirror__dots button:focus-visible { outline: 2px solid var(--c-violet); outline-offset: 2px; border-radius: 4px; }
+.mirror__vacancy { display: flex; flex-direction: column; gap: 6px; margin-top: auto; padding: 16px; border-radius: var(--r-inner); background: var(--c-surface-2); font: 400 var(--fs-sm)/var(--lh-sm) var(--font-sans); color: var(--c-ink-2); }
+.mirror__vacancy span:first-child { font: 400 var(--fs-xs)/18px var(--font-mono); color: var(--c-ink-4); }
+.mirror__track { height: 8px; border-radius: var(--r-pill); background: var(--c-surface-2); overflow: hidden; }
+.mirror__track i { display: block; height: 100%; border-radius: inherit; transition: width .5s var(--ease), background .3s; }
+.mirror__track i.is-ok { background: var(--c-ok); }
+.mirror__track i.is-warn { background: #d08a1e; }
+.mirror__track i.is-bad { background: var(--c-bad); }
+.mirror__pct { font: 400 var(--fs-sm)/var(--lh-sm) var(--font-sans); color: var(--c-ink-2); white-space: nowrap; }
+.mirror__pct b { font: 500 var(--fs-body)/1 var(--font-mono); color: var(--c-ink); }
+/* Навигация по разделам обзора — та же закреплённая панель, что в отчёте */
+.anchor-bar { margin-top: 24px; }
 /* Что проверяем: три шага в ряд на серых карточках, последний — белый результат */
 .flow { list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
 .flow__item { display: flex; flex-direction: column; gap: 16px; padding: 32px; border-radius: var(--r-card); background: var(--c-well); }
@@ -632,9 +651,9 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 .pair { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 24px; }
 .dir--compact { min-height: 360px; }
 .pair__side { justify-content: space-between; }
-@media (max-width: 1279px) { .dir-hero, .split { grid-template-columns: 1fr; } .split { padding-left: 0; } .metric-row { grid-template-columns: 1fr; padding: 16px; } }
+@media (max-width: 1279px) { .dir-hero, .split { grid-template-columns: minmax(0, 1fr); } .split { padding-left: 0; } .metric-row { grid-template-columns: 1fr; padding: 16px; } }
 @media (max-width: 1023px) { .flow, .track, .pair { grid-template-columns: 1fr; } }
-@media (max-width: 767px) { .mirror { grid-template-columns: 1fr; } .flow__item { padding: 24px; } .mirror__verdict { flex-wrap: wrap; } }
+@media (max-width: 767px) { .mirror { grid-template-columns: minmax(0, 1fr); } .flow__item { padding: 24px; } .mirror__verdict { grid-template-columns: minmax(0, 1fr); gap: 10px; padding: 16px; } .mirror__pct { white-space: normal; } }
 
 /* --- 5.11 Методика («Как считаем») --- */
 /* Формула — тёмная карточка, как блок «Есть вопрос?» и подвал: главный объект страницы */
@@ -693,6 +712,30 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 .spots__tone--mix { color: #d08a1e; }
 .blind__bar i.is-neg { background: rgba(219,79,79,.55); }
 .blind__bar i.is-mix { background: rgba(208,138,30,.55); }
+.spots__tone--neu { color: var(--c-ink-2); }
+.blind__bar i.is-neu { background: var(--c-line-hover); }
+/* Три показателя: вкладки-карточки и панель «текст | визуал» */
+.mtabs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; padding: 8px; border-radius: var(--r-card) var(--r-card) 0 0; background: var(--c-well); }
+.mtab { display: grid; grid-template-columns: auto 1fr; grid-template-areas: "ico val" "name name" "q q"; align-items: center; gap: 4px 16px; padding: 20px 24px; border: 1px solid transparent; border-radius: var(--r-inner); background: transparent; text-align: left; cursor: pointer; font: inherit; color: inherit; transition: background .2s, border-color .2s; }
+.mtab:hover { background: rgba(255,255,255,.6); }
+.mtab:focus-visible { outline: 2px solid var(--c-violet); outline-offset: 2px; }
+.mtab.is-active { background: var(--c-surface); border-color: var(--c-violet-soft); }
+.mtab__ico { grid-area: ico; width: 48px; height: 48px; display: grid; place-items: center; margin-bottom: 12px; border-radius: var(--r-pill); background: var(--c-chrome); color: var(--c-ink-2); transition: background .2s, color .2s; }
+.mtab__ico svg { width: 24px; height: 24px; }
+.mtab.is-active .mtab__ico { background: var(--c-violet); color: #fff; }
+.mtab__val { grid-area: val; justify-self: end; margin-bottom: 12px; font: 400 var(--fs-sm)/var(--lh-sm) var(--font-sans); color: var(--c-ink-4); }
+.mtab__val b { font: 500 32px/1 var(--font-mono); color: var(--c-ink); }
+.mtab.is-active .mtab__val b { color: var(--c-violet); }
+.mtab__name { grid-area: name; font: 500 var(--fs-title)/var(--lh-title) var(--font-sans); }
+.mtab__q { grid-area: q; font: 400 var(--fs-sm)/var(--lh-sm) var(--font-sans); color: var(--c-ink-2); }
+.mpanel { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; padding: 0 8px 8px; border-radius: 0 0 var(--r-card) var(--r-card); background: var(--c-well); }
+.mpanel[hidden] { display: none; }
+.mfoot { margin-top: 16px; font: 400 var(--fs-sm)/var(--lh-sm) var(--font-sans); color: var(--c-ink-4); }
+.mpanel__text { display: flex; flex-direction: column; align-items: flex-start; gap: 20px; padding: 40px; border-radius: var(--r-inner); background: var(--c-surface); }
+.mpanel__text p { color: var(--c-ink-2); max-width: 520px; }
+.mpanel__text .card__more { margin-top: auto; }
+.mpanel__q { font: 500 var(--fs-h4)/1.15 var(--font-sans); }
+.mpanel__vis { display: flex; flex-direction: column; justify-content: center; gap: 8px; min-height: 380px; padding: 32px; border-radius: var(--r-inner); background: var(--c-surface); }
 /* Место в отрасли: шкала «хуже — медиана — лучше рынка», точка — ваш перцентиль */
 .tracks { list-style: none; display: flex; flex-direction: column; gap: 18px; }
 .tracks li { display: grid; grid-template-columns: 120px minmax(0, 1fr) 32px; align-items: center; gap: 16px; }
@@ -840,6 +883,8 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
   *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
   html { scroll-behavior: auto; }
 }
+@media (max-width: 1279px) { .mpanel { grid-template-columns: 1fr; } .mpanel__vis { min-height: 0; } }
+@media (max-width: 767px) { .mtabs { grid-template-columns: 1fr; } .mtab { grid-template-areas: "ico val" "name name"; padding: 16px; } .mtab__q { display: none; } .mtab__ico { width: 40px; height: 40px; margin-bottom: 4px; } .mtab__val { margin-bottom: 4px; } .mpanel__text, .mpanel__vis { padding: 24px; } .mirror__bar { padding-left: 8px; } }
 
 </style>
 </head>
@@ -952,24 +997,40 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
         </div>
         <div class="badges"><span class="badge badge--soft">Бесплатно</span><span class="badge badge--soft">3 рабочих дня</span><span class="badge badge--soft">Без доступа к вашим системам</span></div>
       </div>
-      <figure class="mirror" aria-label="Пример проверки одного обещания">
+      <figure class="mirror" id="mirror-demo" aria-label="Проверка обещания: пример">
+        <div class="mirror__bar"><span class="mirror__label">Проверка обещания</span><div class="mirror__dots" role="tablist" aria-label="Примеры обещаний"><button type="button" role="tab" aria-selected="true" aria-label="Гибкий формат"></button><button type="button" role="tab" aria-selected="false" aria-label="Дружный коллектив"></button><button type="button" role="tab" aria-selected="false" aria-label="Ежегодная индексация"></button></div></div>
         <div class="mirror__side">
-          <span class="mirror__label">Обещание в вакансии</span>
-          <p class="mirror__promise">«Гибридный формат: часть недели можно работать из дома»</p>
+          <span class="mirror__label">Вы обещаете</span>
+          <p class="mirror__promise" data-m="promise">Гибкий формат</p>
+          <p class="mirror__vacancy"><span>Из вакансии</span><span data-m="vacancy">«Гибридный формат: часть недели можно работать из дома»</span></p>
         </div>
-        <div class="mirror__side mirror__side--people">
-          <span class="mirror__label">Что пишут люди</span>
+        <div class="mirror__side mirror__side--people" data-m="quotes">
+          <span class="mirror__label">Люди видят</span>
           <blockquote><p>Удалёнку обещали на собеседовании. По факту — офис пять дней в неделю.</p><cite>Dreamjob</cite></blockquote>
           <blockquote><p>Гибрид есть только у руководителей.</p><cite>VK</cite></blockquote>
         </div>
-        <figcaption class="mirror__verdict"><span class="cmp__ico cmp__ico--no"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <figcaption class="mirror__verdict"><span class="cmp__status" data-m="status"><span class="cmp__ico cmp__ico--no"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g>
 <path d="M15 9L9 15M9 9L15 15M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
 </g>
-</svg></span><span><b>Не подтверждается</b> в 78% упоминаний</span><span class="mirror__value">22%</span></figcaption>
+</svg></span>Не подтверждается</span><div class="mirror__track"><i data-m="bar" class="is-bad" style="width:22%"></i></div><span class="mirror__pct"><b data-m="value">22%</b> упоминаний подтверждают</span></figcaption>
       </figure>
+<template id="tpl-st-ok"><span class="cmp__ico cmp__ico--yes"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g>
+<path d="M9 12L11 14L15 10M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+</g>
+</svg></span>Подтверждается</template><template id="tpl-st-warn"><span class="cmp__ico cmp__ico--warn"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 8V12M12 16H12.01M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/></svg></span>Частично</template><template id="tpl-st-bad"><span class="cmp__ico cmp__ico--no"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g>
+<path d="M15 9L9 15M9 9L15 15M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+</g>
+</svg></span>Не подтверждается</template>
     </div>
   </section>
+
+  <nav class="report-bar anchor-bar" aria-label="Разделы страницы">
+    <div class="report-nav"><a href="#check">Что проверяем</a><a href="#metrics">Три показателя</a><a href="#matrix">Матрица</a><a href="#report">Отчёт</a><a href="#process">Как проходит</a><a href="#faq">Вопросы</a></div>
+    <a class="btn btn--primary report-bar__pdf" href="index.html?topic=scan#request" data-topic="scan">Бесплатный срез</a>
+  </nav>
 
   <!-- ============ ЧТО ПРОВЕРЯЕМ: split-шапка + три шага в ряд ============ -->
   <section class="section" id="check" aria-labelledby="check-title">
@@ -1001,13 +1062,51 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
       <span class="eyebrow">Три показателя · не смешиваем</span>
       <div class="headline-block">
         <h2 class="headline" id="metrics-title">Три вопроса,<br><span class="dim">на которые отвечает отчёт</span></h2>
+        <p class="lead">У каждого показателя своя точка отсчёта, поэтому мы не смешиваем их в одну цифру.</p>
       </div>
     </div>
-    <div class="metric-rows">
-      <article class="metric-row"><div class="metric-row__num"><span>65</span><small>индекс культуры</small></div><div class="metric-row__body"><span class="step__kicker">Точка отсчёта · ваши обещания</span><h3 class="metric-row__q">Совпадают ли слова и дела?</h3><p>Доля ваших обещаний, которые подтверждает опыт людей: в отзывах, соцсетях, медиа и ответах нейросетей.</p></div></article>
-      <article class="metric-row"><div class="metric-row__num"><span>4</span><small>слепые зоны</small></div><div class="metric-row__body"><span class="step__kicker">Точка отсчёта · разговоры людей</span><h3 class="metric-row__q">О чём говорят, а вы молчите?</h3><p>Темы, которые часто встречаются в отзывах, но которых нет в ваших текстах. Молчать выгодно только до первого отзыва.</p></div></article>
-      <article class="metric-row"><div class="metric-row__num"><span>62</span><small>перцентиль в отрасли</small></div><div class="metric-row__body"><span class="step__kicker">Точка отсчёта · рынок</span><h3 class="metric-row__q">Насколько хороши условия?</h3><p>Сравниваем базовые темы — зарплату, развитие, руководство, нагрузку — с работодателями вашей отрасли и региона.</p></div></article>
+    <div class="mtabs" role="tablist" aria-label="Показатели">
+      <button class="mtab is-active" type="button" role="tab" aria-selected="true" aria-controls="mp-index" id="mt-index"><span class="mtab__ico"><svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18"/><path d="m19 8 3 8a5 5 0 0 1-6 0zV7"/><path d="M3 7h1a17 17 0 0 0 8-2 17 17 0 0 0 8 2h1"/><path d="m5 8 3 8a5 5 0 0 1-6 0zV7"/><path d="M7 21h10"/></svg></span><span class="mtab__val"><b>65</b> из 100</span><span class="mtab__name">Индекс культуры</span><span class="mtab__q">Совпадают ли слова и дела?</span></button>
+      <button class="mtab" type="button" role="tab" aria-selected="false" aria-controls="mp-blind" id="mt-blind"><span class="mtab__ico"><svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"/><path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"/><path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"/><path d="m2 2 20 20"/></svg></span><span class="mtab__val"><b>4</b> темы</span><span class="mtab__name">Слепые зоны</span><span class="mtab__q">О чём говорят, а вы молчите?</span></button>
+      <button class="mtab" type="button" role="tab" aria-selected="false" aria-controls="mp-industry" id="mt-industry"><span class="mtab__ico"><svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 14.66V17a1 1 0 0 1-1 1 2 2 0 0 0-2 2v2"/><path d="M14 14.66V17a1 1 0 0 0 1 1 2 2 0 0 1 2 2v2"/><path d="M17.916 10H19.5A2.5 2.5 0 0 0 22 7.5V5a1 1 0 0 0-1-1h-3"/><path d="M4 22h16"/><path d="M6 9a6 6 0 0 0 12 0V3a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1z"/><path d="M6.084 10H4.5A2.5 2.5 0 0 1 2 7.5V5a1 1 0 0 1 1-1h3"/></svg></span><span class="mtab__val"><b>62</b> перцентиль</span><span class="mtab__name">Место в отрасли</span><span class="mtab__q">Насколько хороши условия?</span></button>
     </div>
+    <div class="mpanel" role="tabpanel" id="mp-index" aria-labelledby="mt-index">
+      <div class="mpanel__text"><span class="badge badge--purple">относительно ваших обещаний</span><h3 class="mpanel__q">Совпадают ли<br>слова и дела?</h3><p>Доля ваших обещаний, которые подтверждает опыт людей: в отзывах, соцсетях, медиа и ответах нейросетей.</p><a class="btn-link card__more" href="methodology.html">Подробнее о показателях <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g>
+<path d="M14.8327 14.1641C14.8327 14.5323 14.5342 14.8307 14.166 14.8307C13.7978 14.8307 13.4993 14.5323 13.4993 14.1641V7.4401L6.30404 14.6354C6.04369 14.8958 5.62168 14.8958 5.36133 14.6354C5.10098 14.3751 5.10098 13.9531 5.36133 13.6927L12.5566 6.4974H5.83268C5.46449 6.4974 5.16602 6.19892 5.16602 5.83073C5.16602 5.46254 5.46449 5.16406 5.83268 5.16406H14.166C14.5342 5.16406 14.8327 5.46254 14.8327 5.83073V14.1641Z" fill="currentColor"/>
+</g>
+</svg></a></div>
+      <div class="mpanel__vis"><div class="gauge gauge--big" id="g-index" role="img" aria-label="Индекс культуры 65 из 100"></div><p class="mcard__cap">Подтверждено 5 из 8 обещаний</p></div>
+    </div>
+    <div class="mpanel" role="tabpanel" id="mp-blind" aria-labelledby="mt-blind" hidden>
+      <div class="mpanel__text"><span class="badge badge--purple">относительно того, что обсуждают люди</span><h3 class="mpanel__q">О чём говорят,<br>а вы молчите?</h3><p>Темы, которые часто встречаются в отзывах и разговорах, но которых нет в ваших текстах. Молчать выгодно только до первого отзыва.</p><a class="btn-link card__more" href="methodology.html">Подробнее о показателях <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g>
+<path d="M14.8327 14.1641C14.8327 14.5323 14.5342 14.8307 14.166 14.8307C13.7978 14.8307 13.4993 14.5323 13.4993 14.1641V7.4401L6.30404 14.6354C6.04369 14.8958 5.62168 14.8958 5.36133 14.6354C5.10098 14.3751 5.10098 13.9531 5.36133 13.6927L12.5566 6.4974H5.83268C5.46449 6.4974 5.16602 6.19892 5.16602 5.83073C5.16602 5.46254 5.46449 5.16406 5.83268 5.16406H14.166C14.5342 5.16406 14.8327 5.46254 14.8327 5.83073V14.1641Z" fill="currentColor"/>
+</g>
+</svg></a></div>
+      <div class="mpanel__vis"><ul class="spots"><li><div class="spots__head"><b>Переработки</b><span>18% упоминаний</span></div><div class="spots__meta"><span class="spots__tone spots__tone--neg"><span class="cmp__ico cmp__ico--no"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g>
+<path d="M15 9L9 15M9 9L15 15M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+</g>
+</svg></span>чаще негатив</span><span>в ваших текстах — ни разу</span></div><div class="blind__bar"><i class="is-neg" style="width:72%"></i></div></li><li><div class="spots__head"><b>Руководители</b><span>14% упоминаний</span></div><div class="spots__meta"><span class="spots__tone spots__tone--mix"><span class="cmp__ico cmp__ico--warn"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 8V12M12 16H12.01M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/></svg></span>по-разному</span><span>в ваших текстах — ни разу</span></div><div class="blind__bar"><i class="is-mix" style="width:56%"></i></div></li><li><div class="spots__head"><b>Нагрузка и планы</b><span>11% упоминаний</span></div><div class="spots__meta"><span class="spots__tone spots__tone--neg"><span class="cmp__ico cmp__ico--no"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g>
+<path d="M15 9L9 15M9 9L15 15M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+</g>
+</svg></span>чаще негатив</span><span>в ваших текстах — ни разу</span></div><div class="blind__bar"><i class="is-neg" style="width:44%"></i></div></li><li><div class="spots__head"><b>Офис и техника</b><span>6% упоминаний</span></div><div class="spots__meta"><span class="spots__tone spots__tone--neu"><span class="cmp__ico cmp__ico--na"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g>
+<path d="M5 12H19" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+</g>
+</svg></span>нейтрально</span><span>в ваших текстах — ни разу</span></div><div class="blind__bar"><i class="is-neu" style="width:24%"></i></div></li></ul></div>
+    </div>
+    <div class="mpanel" role="tabpanel" id="mp-industry" aria-labelledby="mt-industry" hidden>
+      <div class="mpanel__text"><span class="badge badge--purple">относительно рынка</span><h3 class="mpanel__q">Насколько<br>хороши условия?</h3><p>Сравниваем базовые темы — зарплату, развитие, руководство, нагрузку — с работодателями вашей отрасли и региона.</p><a class="btn-link card__more" href="methodology.html">Подробнее о показателях <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g>
+<path d="M14.8327 14.1641C14.8327 14.5323 14.5342 14.8307 14.166 14.8307C13.7978 14.8307 13.4993 14.5323 13.4993 14.1641V7.4401L6.30404 14.6354C6.04369 14.8958 5.62168 14.8958 5.36133 14.6354C5.10098 14.3751 5.10098 13.9531 5.36133 13.6927L12.5566 6.4974H5.83268C5.46449 6.4974 5.16602 6.19892 5.16602 5.83073C5.16602 5.46254 5.46449 5.16406 5.83268 5.16406H14.166C14.5342 5.16406 14.8327 5.46254 14.8327 5.83073V14.1641Z" fill="currentColor"/>
+</g>
+</svg></a></div>
+      <div class="mpanel__vis"><ul class="tracks"><li><span>Коллектив</span><div class="tracks__bar"><i style="left:82%"></i></div><b>82</b></li><li><span>Стабильность</span><div class="tracks__bar"><i style="left:77%"></i></div><b>77</b></li><li><span>Развитие</span><div class="tracks__bar"><i style="left:71%"></i></div><b>71</b></li><li><span>Руководство</span><div class="tracks__bar"><i style="left:58%"></i></div><b>58</b></li><li><span>Нагрузка</span><div class="tracks__bar"><i style="left:41%"></i></div><b>41</b></li><li><span>Зарплата</span><div class="tracks__bar"><i style="left:34%"></i></div><b>34</b></li></ul><div class="tracks__scale"><span>хуже рынка</span><span>медиана</span><span>лучше рынка</span></div></div>
+    </div>
+    <p class="mfoot">Пример на условных данных. Показатели не смешиваются в одну цифру: каждый отвечает на свой вопрос.</p>
   </section>
 
   <!-- ============ КАК ЧИТАТЬ ВМЕСТЕ: центр + матрица ============ -->
@@ -1116,7 +1215,7 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
       <span class="eyebrow">Вопросы · об оценке</span>
       <div class="headline-block"><h2 class="headline" id="faq-title">Частые вопросы<br><span class="dim">об оценке HR-бренда</span></h2></div>
     </div>
-    <div class="faq" id="faq-list" data-groups="brand"></div>
+    <div class="faq" id="faq-list" data-groups="brandPage"></div>
   </section>
   </main>
 <script>
@@ -1235,6 +1334,52 @@ mountChart(document.getElementById("ch-matrix"), {
     ] },
   }],
 });
+/* Три показателя: вкладки (стрелки ←/→ переключают) */
+const tabs = [...document.querySelectorAll(".mtab")];
+let gIndex = null;
+function showTab(t) {
+  tabs.forEach((x) => { const on = x === t; x.classList.toggle("is-active", on); x.setAttribute("aria-selected", on); x.tabIndex = on ? 0 : -1; document.getElementById(x.getAttribute("aria-controls")).hidden = !on; });
+  if (t.id === "mt-index" && !gIndex) gIndex = gaugeChart(document.getElementById("g-index"), 65);
+}
+tabs.forEach((t, i) => {
+  t.addEventListener("click", () => showTab(t));
+  t.addEventListener("keydown", (e) => { const d = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0; if (d) { const n = tabs[(i + d + tabs.length) % tabs.length]; n.focus(); showTab(n); } });
+});
+function gaugeChart(el, value) {
+  return mountChart(el, { series: [{
+    type: "gauge", startAngle: 215, endAngle: -35, min: 0, max: 100, radius: "92%", center: ["50%", "56%"],
+    progress: { show: true, width: 16, roundCap: true, itemStyle: { color: CH.violet } },
+    axisLine: { roundCap: true, lineStyle: { width: 16, color: [[1, CH.grid]] } },
+    axisTick: { show: false }, splitLine: { show: false }, axisLabel: { show: false }, pointer: { show: false }, anchor: { show: false },
+    title: { show: true, offsetCenter: [0, "34%"], color: CH.ink3, fontFamily: CH.font, fontSize: 14 },
+    detail: { offsetCenter: [0, "-2%"], color: CH.ink, fontFamily: "JetBrains Mono, monospace", fontWeight: 500, fontSize: 64, formatter: (v) => Math.round(v) },
+    data: [{ value, name: "индекс культуры" }],
+  }] });
+}
+showTab(tabs[0]);
+/* «Зеркало»: три примера, листаются раз в 5 секунд; пауза при наведении и фокусе, без движения при reduced-motion */
+const MIRROR = [
+  { promise: "Гибкий формат", vacancy: "Гибридный формат: часть недели можно работать из дома.", quotes: [["Dreamjob", "Удалёнку обещали на собеседовании. По факту — офис пять дней в неделю."], ["VK", "Гибрид есть только у руководителей."]], status: "bad", value: 22 },
+  { promise: "Дружный коллектив", vacancy: "Сильная команда, которая помогает новичкам освоиться.", quotes: [["Dreamjob", "Коллектив — лучшее, что есть в компании."], ["hh.ru", "Руководитель всегда объяснит и поможет."]], status: "ok", value: 91 },
+  { promise: "Ежегодная индексация", vacancy: "Индексация зарплаты каждый год.", quotes: [["Dreamjob", "Индексация есть, но меньше инфляции."], ["GigaChat", "Сотрудники пишут, что индексацию иногда задерживают."]], status: "warn", value: 48 },
+];
+const mirrorEl = document.getElementById("mirror-demo"), dots = [...mirrorEl.querySelectorAll(".mirror__dots button")];
+const $m = (k) => mirrorEl.querySelector(`[data-m="${k}"]`);
+let mi = 0, paused = false;
+function showMirror(n) {
+  mi = n; const ex = MIRROR[n];
+  $m("promise").textContent = ex.promise; $m("vacancy").textContent = `«${ex.vacancy.replace(/\.$/, "")}»`;
+  $m("quotes").innerHTML = '<span class="mirror__label">Люди видят</span>' + ex.quotes.map(([src, t]) => `<blockquote><p>${t}</p><cite>${src}</cite></blockquote>`).join("");
+  $m("status").innerHTML = document.getElementById("tpl-st-" + ex.status).innerHTML;
+  const bar = $m("bar"); bar.className = "is-" + ex.status; bar.style.width = ex.value + "%";
+  $m("value").textContent = ex.value + "%";
+  dots.forEach((d, i) => d.setAttribute("aria-selected", i === n));
+  if (typeof typograf === "function") typograf(mirrorEl);
+}
+dots.forEach((d, i) => d.addEventListener("click", () => showMirror(i)));
+mirrorEl.addEventListener("pointerenter", () => (paused = true)); mirrorEl.addEventListener("pointerleave", () => (paused = false));
+mirrorEl.addEventListener("focusin", () => (paused = true)); mirrorEl.addEventListener("focusout", () => (paused = false));
+if (!matchMedia("(prefers-reduced-motion: reduce)").matches) setInterval(() => { if (!paused && !document.hidden) showMirror((mi + 1) % MIRROR.length); }, 5000);
 </script>
 
   <footer class="footer">
@@ -1305,6 +1450,13 @@ const FAQ_GROUPS = {
     ["Что если у нас больше 3000 сотрудников?", "Посчитаем отдельно: цена зависит от числа подразделений и срезов. Напишите, пришлём расчёт."],
     ["Какие документы вы даёте?", "Договор, счёт и закрывающие документы. Для проверки изнутри — ещё договор на обработку данных сотрудников по 152-ФЗ."],
     ["Работаете с агентствами и консультантами?", "Да. Делаем внешний аудит HR-бренда для ваших клиентов под вашим логотипом. Первые три отчёта — бесплатно."]]},
+  brandPage: { tag: "Об оценке", title: "Оценка HR-бренда", desc: "Сроки, доступы и как устроен индекс.", items: [
+    ["Срез правда бесплатный?", "Да. Внешний срез и 30 минут разбора с экспертом — бесплатно и без обязательств. Платите, только если решите продолжить с диагностикой."],
+    ["Нужен доступ к нашим системам?", "Для среза — нет. Нужны название компании и ссылка на страницу работодателя на hh.ru. Для диагностики вы сами выбираете, какие документы передать."],
+    ["Сколько ждать результат?", "Срез — 3 рабочих дня. Диагностика — около 4 недель."],
+    ["Можно поднять индекс, если просто меньше обещать?", "Индекс вырастет, но вырастут и слепые зоны: темы, которые люди обсуждают, а вы молчите. Поэтому мы всегда показываем оба показателя рядом."],
+    ["Почему не свести всё в одну оценку?", "У показателей разная точка отсчёта: ваши обещания, разговоры людей и рынок. В одной цифре они смешаются, и станет непонятно, что исправлять."],
+    ["А если отзывов мало?", "Обещание с числом упоминаний меньше 10 получает статус «нет данных» и не входит в индекс. Такие обещания проверяем изнутри, в диагностике."]]},
 };
 
 /* =========================================================
