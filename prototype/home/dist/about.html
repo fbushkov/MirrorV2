@@ -504,6 +504,68 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
   .cmp__col-feat { width: 180px; }
   .cmp__rowhead { flex-wrap: wrap; gap: 4px 16px; } /* колонка 180: ссылка уходит под название */
 }
+/* --- 5.9 Отчёт и дашборд (демо-отчёт HR-бренда) --- */
+/* Панель отчёта: переключатель направления, мета, PDF — на серой подложке, как шапка таблиц */
+.report-bar { display: flex; align-items: center; gap: 16px 32px; flex-wrap: wrap; padding: 16px; border-radius: var(--r-card); background: var(--c-well); }
+.seg { display: inline-flex; padding: 4px; border-radius: var(--r-pill); background: var(--c-chrome); }
+.seg__item { padding: 10px 20px; border-radius: var(--r-pill); font: 500 var(--fs-body)/var(--lh-tight) var(--font-sans); color: var(--c-ink-2); transition: color .2s, background .2s; }
+.seg__item:hover { color: var(--c-ink); }
+.seg__item.is-active { background: var(--c-surface); color: var(--c-ink); box-shadow: 0 1px 2px rgba(23,20,43,.06); }
+.report-bar__meta { font: 400 var(--fs-mono)/24px var(--font-mono); color: var(--c-ink-4); }
+.report-bar__pdf { margin-left: auto; }
+/* Показатели: как плитка с числом в шагах главной — метка моно, число моно 80, подпись снизу */
+.kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; margin-top: 24px; }
+.kpi { display: flex; flex-direction: column; gap: 12px; padding: 24px; border-radius: var(--r-card); background: var(--c-surface); }
+.kpi__label { font: 400 var(--fs-mono)/24px var(--font-mono); color: var(--c-ink-4); }
+.kpi__num { font: 500 var(--fs-stat)/var(--lh-stat) var(--font-mono); color: var(--c-violet); }
+.kpi__num small { font-size: .45em; color: var(--c-ink-4); }
+.kpi__cap { margin-top: auto; font: 400 var(--fs-sm)/var(--lh-sm) var(--font-sans); color: var(--c-ink-2); }
+.kpi__up { font-weight: 500; color: var(--c-ok); }
+/* Карточка-панель: белая, радиус 12, поля 32; заголовок 20/27 Medium + пояснение 15/20 */
+.panel { margin-top: 24px; padding: 32px; border-radius: var(--r-card); background: var(--c-surface); min-width: 0; }
+.cards > .panel { margin-top: 0; }
+.panel__head { display: flex; flex-direction: column; gap: 8px; margin-bottom: 24px; }
+.panel__title { font: 500 var(--fs-title)/var(--lh-title) var(--font-sans); }
+.panel__hint { font: 400 var(--fs-sm)/var(--lh-sm) var(--font-sans); color: var(--c-ink-2); }
+.summary { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+.summary > div { display: flex; flex-direction: column; gap: 12px; padding: 24px; border-radius: var(--r-inner); background: var(--c-surface-2); }
+.summary__tag { font: 400 var(--fs-mono)/24px var(--font-mono); color: var(--c-violet-num); }
+/* Графики */
+.chart { width: 100%; height: 360px; }
+.chart--tall { height: 420px; }
+.chart--heat { height: 440px; }
+/* Слепые зоны: тема, доля, полоса, цитата */
+.blinds { list-style: none; display: flex; flex-direction: column; gap: 24px; }
+.blind__head { display: flex; justify-content: space-between; gap: 16px; }
+.blind__head b { font-weight: 500; }
+.blind__head span { font: 400 var(--fs-sm)/var(--lh-sm) var(--font-sans); color: var(--c-ink-2); }
+.blind__bar { height: 8px; margin-top: 10px; border-radius: var(--r-pill); background: var(--c-surface-2); overflow: hidden; }
+.blind__bar i { display: block; height: 100%; border-radius: inherit; background: var(--c-violet-soft); }
+.blind p { margin-top: 10px; font: 400 var(--fs-sm)/var(--lh-sm) var(--font-sans); color: var(--c-ink-2); }
+/* Матрица: график + описание зон */
+.matrix { display: grid; grid-template-columns: minmax(0, 1fr) 420px; gap: 32px; align-items: center; }
+.zones { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+.zones li { padding: 16px 20px; border-radius: var(--r-inner); background: var(--c-surface-2); }
+.zones li.is-you { box-shadow: inset 0 0 0 2px var(--c-violet-soft); }
+.zones b { font-weight: 500; }
+.zones p { margin-top: 4px; font: 400 var(--fs-sm)/var(--lh-sm) var(--font-sans); color: var(--c-ink-2); }
+/* Статус в таблице: иконка + слово */
+.cmp__status { display: inline-flex; align-items: center; gap: 8px; }
+.cmp__ico--warn { color: #d08a1e; }
+/* Развёрнутый отчёт: подводка слева, оглавление справа */
+.help--left { flex-direction: row; align-items: flex-start; justify-content: space-between; text-align: left; gap: 48px; margin-top: 0; }
+.help--left .help__text { max-width: 420px; }
+.toc-list { list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 48px; flex: 1; max-width: 900px; }
+.toc-list li { display: flex; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--c-line); }
+.toc-list span { font: 400 var(--fs-mono)/27px var(--font-mono); color: var(--c-violet-num); }
+@media (max-width: 1279px) { .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); } .matrix { grid-template-columns: 1fr; } .help--left { flex-direction: column; } }
+@media (max-width: 767px) {
+  .kpis, .summary, .toc-list { grid-template-columns: 1fr; }
+  .report-bar__pdf { margin-left: 0; }
+  .panel { padding: 20px; }
+  .chart, .chart--tall { height: 320px; }
+}
+
 /* --- Подсказка (tooltip) — одна на страницу, позиционируется скриптом у кнопки, не обрезается прокруткой таблиц ---
    Тёмная плашка как у кнопок и подвала: #171717, текст 15/20 белый, радиус 8, поля 12 × 16, ширина до 320, стрелка 8 */
 .tip { position: fixed; z-index: 100; max-width: min(320px, calc(100vw - 32px)); padding: 12px 16px; border-radius: var(--r-inner); background: var(--c-dark); color: #fff; font: 400 var(--fs-xs)/20px var(--font-sans); box-shadow: 0 12px 32px -12px rgba(23,20,43,.45); opacity: 0; visibility: hidden; transform: translateY(4px); transition: opacity .15s, transform .15s var(--ease), visibility 0s .15s; pointer-events: none; }
@@ -673,7 +735,7 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
             <p class="mega__title">/ оценка HR-бренда и индекс культуры</p>
             <div class="mega__cards">
               <a class="mega__card" href="#"><b>Обзор</b><span>Что проверяем и что находится в отчёте</span></a>
-              <a class="mega__card" href="#"><b>Демо-отчёт</b><span>Индекс · Слепые зоны · Место в отрасли</span></a>
+              <a class="mega__card" href="hr-brand-demo.html"><b>Демо-отчёт</b><span>Индекс · Слепые зоны · Место в отрасли</span></a>
               <a class="mega__card" href="#"><b>Как считаем</b><span>Методика внешней оценки</span></a>
             </div>
           </div>
@@ -689,7 +751,7 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
             <p class="mega__title">/ оценка HR-бренда и индекс культуры</p>
             <div class="mega__cards">
               <a class="mega__card" href="#"><b>Обзор</b><span>Что проверяем и что в отчёте</span></a>
-              <a class="mega__card" href="#"><b>Демо-отчёт</b><span>Индекс · Слепые зоны · Место в отрасли</span></a>
+              <a class="mega__card" href="hr-brand-demo.html"><b>Демо-отчёт</b><span>Индекс · Слепые зоны · Место в отрасли</span></a>
               <a class="mega__card" href="#"><b>Как считаем</b><span>Методика внешней оценки</span></a>
             </div>
             <p class="mega__title">/ дашборд здоровья корпоративной культуры</p>
@@ -808,7 +870,7 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
       <div class="footer__nav">
         <p class="footer__about">Сверяем обещания работодателя с тем, что видят кандидаты и что переживают сотрудники. Снаружи и изнутри.</p>
         <div class="footer__cols">
-          <div class="fcol"><h4>Оценка HR-бренда</h4><ul><li><a href="#">Обзор направления</a></li><li><a href="#">Демо-отчёт</a></li><li><a href="#">Как считаем</a></li></ul></div>
+          <div class="fcol"><h4>Оценка HR-бренда</h4><ul><li><a href="#">Обзор направления</a></li><li><a href="hr-brand-demo.html">Демо-отчёт</a></li><li><a href="#">Как считаем</a></li></ul></div>
           <div class="fcol"><h4>Здоровье культуры</h4><ul><li><a href="#">Обзор направления</a></li><li><a href="#">Демо-дашборд</a></li><li><a href="#">Как считаем</a></li></ul></div>
           <div class="fcol"><h4>Компания</h4><ul><li><a href="#">Методика</a></li><li><a href="pricing.html">Цены</a></li><li><a href="about.html">О нас</a></li></ul></div>
           <div class="fcol"><h4>Контакты</h4><ul><li><a href="mailto:mirrorcom@mail.ru">mirrorcom@mail.ru</a></li><li><a href="tel:+79127023030">+7 912 702-30-30</a></li><li><a href="https://t.me/mirror_diary" target="_blank" rel="noreferrer">@mirror_diary</a></li></ul></div>
