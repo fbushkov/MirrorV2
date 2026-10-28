@@ -15,21 +15,22 @@
           <a class="btn-link" href="#check">Подробнее {{svgc:arrow-up-right.svg}}</a>
         </div>
       </div>
-      <figure class="mirror" id="mirror-demo" aria-label="Проверка обещания: пример">
+      <figure class="mirror mirror--flat" id="mirror-demo" aria-label="Проверка обещания: пример">
         <div class="mirror__bar"><span class="mirror__label">Проверка обещания</span><div class="mirror__dots" role="tablist" aria-label="Примеры обещаний"><button type="button" role="tab" aria-selected="true" aria-label="Гибкий формат"></button><button type="button" role="tab" aria-selected="false" aria-label="Дружный коллектив"></button><button type="button" role="tab" aria-selected="false" aria-label="Ежегодная индексация"></button></div></div>
-        <div class="mirror__side">
-          <span class="mirror__label">Вы обещаете</span>
-          <p class="mirror__promise" data-m="promise">Гибкий формат</p>
-          <p class="mirror__vacancy"><span>Из вакансии</span><span data-m="vacancy">«Гибридный формат: часть недели можно работать из дома»</span></p>
+        <div class="mirror__cols">
+          <div class="mirror__side">
+            <span class="mirror__label">Вы обещаете</span>
+            <div class="mirror__promise-block"><p class="mirror__promise" data-m="promise">Гибкий формат</p><p class="mirror__vacancy" data-m="vacancy">«Гибридный формат: часть недели можно работать из дома»</p></div>
+          </div>
+          <div class="mirror__side mirror__side--people" data-m="quotes">
+            <span class="mirror__label">Люди видят</span>
+            <blockquote><p>Удалёнку обещали на собеседовании. По факту — офис пять дней в неделю.</p><cite>Dreamjob</cite></blockquote>
+            <blockquote><p>Гибрид есть только у руководителей.</p><cite>VK</cite></blockquote>
+          </div>
         </div>
-        <div class="mirror__side mirror__side--people" data-m="quotes">
-          <span class="mirror__label">Люди видят</span>
-          <blockquote><p>Удалёнку обещали на собеседовании. По факту — офис пять дней в неделю.</p><cite>Dreamjob</cite></blockquote>
-          <blockquote><p>Гибрид есть только у руководителей.</p><cite>VK</cite></blockquote>
-        </div>
-        <figcaption class="mirror__verdict"><span class="cmp__status" data-m="status"><span class="cmp__ico cmp__ico--no">{{svgc:circle-x.svg}}</span>Не подтверждается</span><div class="mirror__track"><i data-m="bar" class="is-bad" style="width:22%"></i></div><span class="mirror__pct"><b data-m="value">22%</b> упоминаний подтверждают</span></figcaption>
+        <figcaption class="mirror__verdict is-bad" data-m="verdict"><span class="mirror__status" data-m="status"><span class="cmp__ico">{{svgc:circle-x.svg}}</span>Не подтверждается</span><span class="mirror__pct"><b data-m="value">22%</b> упоминаний подтверждают</span></figcaption>
       </figure>
-<template id="tpl-st-ok"><span class="cmp__ico cmp__ico--yes">{{svgc:circle-check.svg}}</span>Подтверждается</template><template id="tpl-st-warn"><span class="cmp__ico cmp__ico--warn">{{svgc:circle-alert.svg}}</span>Частично</template><template id="tpl-st-bad"><span class="cmp__ico cmp__ico--no">{{svgc:circle-x.svg}}</span>Не подтверждается</template>
+<template id="tpl-st-ok"><span class="cmp__ico">{{svgc:circle-check.svg}}</span>Подтверждается</template><template id="tpl-st-warn"><span class="cmp__ico">{{svgc:circle-alert.svg}}</span>Частично</template><template id="tpl-st-bad"><span class="cmp__ico">{{svgc:circle-x.svg}}</span>Не подтверждается</template>
     </div>
   </section>
 
@@ -134,7 +135,7 @@
         <li class="pstep"><span class="pstep__no">Шаг №3</span><div class="pstep__text"><h3>Мониторинг</h3><p>Обновляем индекс, слепые зоны и место в отрасли. Сообщаем, если тема резко выросла.</p></div><div class="badges"><span class="badge badge--purple">По желанию</span><span class="badge badge--soft">Каждый месяц</span></div></li>
       </ol>
       <div class="pnext">
-        <a class="pnext__dark" href="{{href:culture-health}}"><span class="pnext__label">направление 02 · изнутри</span><div><h3>Нужен взгляд изнутри?</h3><p>Дашборд здоровья корпоративной культуры. Как сотрудники переживают культуру и где она расходится с заявленной.</p></div></a>
+        <a class="pnext__dark dir dir--health" href="{{href:culture-health}}" data-shader="health"><canvas aria-hidden="true"></canvas><span class="dir__fallback" aria-hidden="true"></span><span class="dir__top"><span class="dir__label">направление 02 · изнутри</span>{{svgc:arrow-up-right-white.svg|dir__arrow}}</span><div><h3>Нужен взгляд изнутри?</h3><p>Дашборд здоровья корпоративной культуры. Как сотрудники переживают культуру и где она расходится с заявленной.</p></div></a>
         <article class="pnext__card"><div><h3>Агентствам<br>и консультантам</h3><p>Внешний аудит HR-бренда для ваших клиентов под вашим логотипом. Первые три отчёта — бесплатно.</p></div><a class="btn-link" href="{{href:start?topic=other}}" data-topic="other">Обсудить пилот {{svgc:arrow-up-right.svg}}</a></article>
       </div>
     </div>
@@ -142,7 +143,7 @@
 
   <!-- ============ ВОПРОСЫ ============ -->
   <section class="section section--anchors" id="faq" aria-labelledby="faq-title">
-    <div class="section__head section__head--split">
+    <div class="section__head section__head--faq">
       <span class="eyebrow">Вопросы · об оценке</span>
       <div class="headline-block">
         <h2 class="headline" id="faq-title"><span class="dim">Частые вопросы</span><br>об оценке HR-бренда</h2>
@@ -170,6 +171,9 @@ mountChart(document.getElementById("ch-dynamics"), {
   }],
 });
 const MX = [{ name: "Банк N", x: 62, y: 65, you: true }, { name: "Банк А", x: 74, y: 72 }, { name: "Банк Б", x: 38, y: 54 }];
+/* Поле матрицы квадратное: отступы сетки 64 + 64 по ширине и 16 + 56 по высоте */
+const mxEl = document.getElementById("ch-matrix"), fitMx = () => (mxEl.style.height = Math.max(200, mxEl.clientWidth - 56) + "px");
+fitMx(); addEventListener("resize", fitMx);
 const Q = (x1, y1, x2, y2, color) => [{ coord: [x1, y1], itemStyle: { color } }, { coord: [x2, y2] }];
 mountChart(document.getElementById("ch-matrix"), {
   grid: { left: 64, right: 64, top: 16, bottom: 56 },
@@ -225,7 +229,7 @@ function showMirror(n) {
   $m("promise").textContent = ex.promise; $m("vacancy").textContent = `«${ex.vacancy.replace(/\.$/, "")}»`;
   $m("quotes").innerHTML = '<span class="mirror__label">Люди видят</span>' + ex.quotes.map(([src, t]) => `<blockquote><p>${t}</p><cite>${src}</cite></blockquote>`).join("");
   $m("status").innerHTML = document.getElementById("tpl-st-" + ex.status).innerHTML;
-  const bar = $m("bar"); bar.className = "is-" + ex.status; bar.style.width = ex.value + "%";
+  $m("verdict").className = "mirror__verdict is-" + ex.status;
   $m("value").textContent = ex.value + "%";
   dots.forEach((d, i) => d.setAttribute("aria-selected", i === n));
   if (typeof typograf === "function") typograf(mirrorEl);

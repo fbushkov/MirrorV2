@@ -186,7 +186,7 @@ img, svg { display: block; }
 .header { position: sticky; top: 16px; z-index: 50; }
 .header__box { position: relative; background: var(--c-chrome); border: 1px solid var(--c-line-3); border-radius: var(--r-card); transition: border-radius .2s, box-shadow .2s; }
 .header__box:has(.mega.is-open) { border-radius: var(--r-card) var(--r-card) 0 0; }
-.header.is-stuck .header__box { box-shadow: 0 12px 32px -18px rgba(23,20,43,.35); }
+.header.is-stuck .header__box { box-shadow: none; } /* без тени (правка 2026-10-28) */
 .header__bar { height: 80px; display: flex; align-items: center; justify-content: space-between; padding: 16px clamp(16px, 2.5vw, 48px); gap: 24px; }
 .logo { display: block; width: 137px; height: 26px; flex: none; }
 .logo svg { width: 100%; height: 100%; }
@@ -303,7 +303,7 @@ img, svg { display: block; }
 /* --- 5.3 Ситуации + приватность --- */
 .situations { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 25px; padding: 0 var(--inset-x); margin-bottom: 80px; }
 .sit { display: flex; flex-direction: column; gap: 16px; line-height: var(--lh-body); }
-.sit__no { font: 400 var(--fs-mono)/27px var(--font-mono); color: var(--c-violet-num); }
+.sit__no { font: 400 var(--fs-mono)/27px var(--font-mono); color: var(--c-ink-4); }
 .sit__title { font: 600 var(--fs-title)/var(--lh-title) var(--font-sans); }
 .trust { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; padding: clamp(24px, 4.17vw, 80px); border-radius: var(--r-card); background: linear-gradient(90deg, var(--c-violet), var(--c-violet-700)); color: #f7f7fb; }
 .trust__item { display: flex; flex-direction: column; gap: 40px; padding: 32px clamp(0px, 2.5vw, 48px); }
@@ -567,18 +567,18 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 .qmap__side { list-style: none; display: grid; grid-template-rows: 1fr 1fr; gap: 16px; padding: var(--q-top) 0 var(--q-bottom); }
 .qmap__side--left { text-align: right; }
 /* Зона: заголовок 20/27 SemiBold + квадрат цвета зоны 24, текст 17/24 (макет «Оценка HR бренда») */
-.qzone { align-self: start; display: flex; flex-direction: column; gap: 8px; padding: 32px; border-radius: var(--r-card); }
+.qzone { align-self: start; display: flex; flex-direction: column; gap: 8px; padding: 24px; border-radius: var(--r-card); }
 .qmap__side--left .qzone { align-items: flex-end; }
-.qzone b { display: inline-flex; align-items: center; gap: 12px; font: 600 var(--fs-title)/var(--lh-title) var(--font-sans); }
+.qzone b { display: inline-flex; align-items: center; gap: 10px; font: 600 var(--fs-body)/var(--lh-body) var(--font-sans); }
 .qmap__side--left .qzone b { flex-direction: row-reverse; }
-.qzone b i { flex: none; width: 24px; height: 24px; border-radius: 4px; }
-.qzone p { font: 400 var(--fs-body)/var(--lh-body) var(--font-sans); color: var(--c-ink); max-width: 356px; }
+.qzone b i { flex: none; width: 20px; height: 20px; border-radius: 4px; }
+.qzone p { font: 400 var(--fs-sm)/var(--lh-sm) var(--font-sans); color: var(--c-ink-2); max-width: 320px; }
 .qzone--lilac b i { background: #dbc6f2; }
 .qzone--green b i { background: #bed8c6; }
 .qzone--red b i { background: #f4caca; }
 .qzone--yellow b i { background: #f1ddaa; }
-.qzone.is-you { background: var(--c-surface-2); gap: 16px; }
-.qzone__you { display: inline-flex; align-items: center; gap: 8px; font: 700 var(--fs-mono)/27px var(--font-mono); color: #8d4dd7; }
+.qzone.is-you { background: var(--c-surface-2); gap: 12px; }
+.qzone__you { display: inline-flex; align-items: center; gap: 8px; font: 700 var(--fs-xs)/20px var(--font-mono); color: #8d4dd7; }
 .qzone__you::before { content: ""; width: 12px; height: 12px; margin: 4px; border-radius: 50%; background: var(--c-violet); box-shadow: 0 0 0 4px rgba(122,47,209,.18); }
 @media (max-width: 1279px) {
   .qmap { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
@@ -1078,6 +1078,7 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 .dir-intro { min-height: calc(100svh - 114px - 61px - 48px - 32px - clamp(48px, 5.2vw, 100px)); }
 .dir-intro .page-hero__lead { max-width: 568px; color: var(--c-ink); }
 .dir-intro .dir-hero__actions { gap: 16px; }
+.dir-intro .dir-hero { padding-right: var(--inset-x); }
 /* Полоса разделов: при прокрутке прилипает к шапке (98 = 16 + 82), раздел на экране подсвечен */
 .anchors { position: sticky; top: 98px; z-index: 45; display: flex; gap: 32px; margin-top: 32px; padding: 8px 48px; border: 1px solid var(--c-line-3); border-radius: var(--r-card); background: var(--c-chrome); overflow-x: auto; scrollbar-width: none; transition: box-shadow .2s; }
 .anchors::-webkit-scrollbar { display: none; }
@@ -1127,8 +1128,8 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 .qpanel__vis .gauge--big { height: 260px; }
 /* Матрица на странице: белая карточка на подложке */
 .well { padding: 16px; border-radius: var(--r-card); background: var(--c-well); }
-.qmap--page { --q-top: 16px; --q-bottom: 56px; grid-template-columns: minmax(0, 420px) minmax(0, 626px) minmax(0, 420px); justify-content: space-between; padding: 32px clamp(16px, 6.35vw, 122px); border-radius: var(--r-card); background: var(--c-surface); }
-.qmap--page .qmap__chart { height: 565px; }
+.qmap--page { --q-top: 16px; --q-bottom: 56px; grid-template-columns: minmax(0, 380px) minmax(0, 600px) minmax(0, 380px); justify-content: space-between; padding: 32px clamp(16px, 6.35vw, 122px); border-radius: var(--r-card); background: var(--c-surface); }
+.qmap--page .qmap__chart { height: 544px; } /* высоту подгоняет скрипт: поле графика — квадрат */
 /* Отчёт: текст со списком | график на подложке */
 .rsplit { display: grid; grid-template-columns: minmax(0, 612px) minmax(0, 1025px); justify-content: space-between; gap: 48px; padding-left: var(--inset-x); align-items: start; }
 .rsplit__text { display: flex; flex-direction: column; align-items: flex-start; gap: 40px; }
@@ -1144,10 +1145,9 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 .pstep { display: flex; flex-direction: column; align-items: flex-start; gap: 32px; padding: clamp(24px, 2.5vw, 48px); border-radius: var(--r-card); background: var(--c-surface); }
 .pstep__no { font: 400 var(--fs-mono)/27px var(--font-mono); color: var(--c-ink-4); }
 .pstep__text { display: flex; flex-direction: column; gap: 16px; }
-.pstep__text h3, .pnext h3 { font: 600 var(--fs-cta)/1.3 var(--font-sans); color: #171717; }
+.pstep__text h3, .pnext h3 { font: 600 var(--fs-cta)/var(--lh-cta) var(--font-sans); color: #171717; }
 .pnext { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 720px); gap: 16px; min-height: 380px; }
 .pnext__dark { display: flex; flex-direction: column; justify-content: space-between; gap: 48px; padding: clamp(24px, 2.5vw, 48px); border-radius: var(--r-card); background: var(--c-dark); color: #fff; transition: background .2s; }
-.pnext__dark:hover { background: #222; }
 .pnext__dark h3 { color: #fff; }
 .pnext__dark div { display: flex; flex-direction: column; gap: 25px; max-width: 560px; }
 .pnext__label { font: 400 var(--fs-mono)/30px var(--font-mono); color: var(--c-ink-4); }
@@ -1158,7 +1158,7 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
   .qpanel, .rsplit, .pnext { grid-template-columns: minmax(0, 1fr); }
   .qpanel__vis { margin: 0 24px 24px; }
   .qmap--page { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); padding: 24px; }
-  .qmap--page .qmap__chart { height: 460px; }
+  .qmap--page .qmap__chart { max-width: 600px; width: 100%; justify-self: center; }
   .rsplit { padding-left: 0; }
   .qtab { padding: 28px 32px; }
 }
@@ -1174,13 +1174,48 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
   .qpanel__text { padding: 24px; }
   .qpanel__vis { margin: 0 12px 12px; padding: 20px; }
   .qmap--page { grid-template-columns: minmax(0, 1fr); padding: 16px; }
-  .qmap--page .qmap__chart { height: 340px; }
+
   .qzone { padding: 16px; }
   .vflow__item { padding: 16px 8px; gap: 32px; }
   .qtab { padding: 20px; gap: 20px; }
   .qtab__foot { flex-direction: column; align-items: flex-start; gap: 12px; }
   .qtab__val b { font-size: 48px; margin-bottom: -3px; }
 }
+
+/* Вопросы: заголовок выравнивается по плашкам вопросов (правило 2026-10-28).
+   Плашки начинаются после колонки 524 и зазора --content-gap внутри белого блока с полями 32 */
+.section__head--faq { display: grid; grid-template-columns: calc(32px + 524px + var(--content-gap) - var(--inset-x)) minmax(0, 1fr); column-gap: 0; align-items: start; }
+.section__head--faq .eyebrow { margin-top: 4px; }
+@media (max-width: 1279px) { .section__head--faq { grid-template-columns: minmax(0, 1fr); } }
+
+/* «Проверка обещания»: одна белая карточка без вложенных подложек, вердикт — плашка цвета статуса */
+.mirror--flat { display: flex; flex-direction: column; gap: 24px; padding: 28px 32px 32px; border: 1px solid var(--c-line-3); border-radius: var(--r-card); background: var(--c-surface); }
+.mirror--flat .mirror__bar { padding: 0; }
+.mirror__cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; }
+.mirror--flat .mirror__side { padding: 0; border-radius: 0; background: none; gap: 16px; }
+.mirror--flat .mirror__side--people { padding-left: 32px; border-left: 1px solid var(--c-line-3); }
+.mirror__promise-block { display: flex; flex-direction: column; gap: 8px; }
+.mirror--flat .mirror__vacancy { display: block; margin: 0; padding: 0; background: none; font: 400 var(--fs-body)/var(--lh-body) var(--font-sans); color: var(--c-ink-2); }
+.mirror--flat blockquote { padding-left: 0; border-left: 0; gap: 4px; }
+.mirror--flat .mirror__verdict { display: flex; align-items: center; justify-content: space-between; gap: 8px 16px; flex-wrap: wrap; padding: 16px 24px; border-radius: var(--r-inner); color: #fff; transition: background .3s; }
+.mirror__verdict.is-ok { background: var(--c-ok); }
+.mirror__verdict.is-warn { background: #d08a1e; }
+.mirror__verdict.is-bad { background: var(--c-bad); }
+.mirror__status { display: inline-flex; align-items: center; gap: 8px; font-weight: 500; }
+.mirror__status .cmp__ico { color: #fff; }
+.mirror__status .cmp__ico svg { width: 20px; height: 20px; }
+.mirror--flat .mirror__pct { font: 400 var(--fs-sm)/var(--lh-sm) var(--font-sans); color: rgba(255,255,255,.85); }
+.mirror--flat .mirror__pct b { font: 500 var(--fs-body)/1 var(--font-mono); color: #fff; }
+/* Тёмная карточка «Нужен взгляд изнутри?» — как направления на главной: бирюзовый перелив при наведении */
+.pnext__dark.dir { min-height: 0; padding: clamp(24px, 2.5vw, 48px); }
+.pnext__dark .dir__top { display: flex; justify-content: space-between; align-items: center; }
+@media (max-width: 767px) {
+  .mirror--flat { padding: 20px; }
+  .mirror__cols { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+  .mirror--flat .mirror__side--people { padding: 20px 0 0; border-left: 0; border-top: 1px solid var(--c-line-3); }
+  .mirror--flat .mirror__verdict { padding: 14px 16px; }
+}
+
 
 </style>
 </head>
@@ -1287,29 +1322,30 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 </svg></a>
         </div>
       </div>
-      <figure class="mirror" id="mirror-demo" aria-label="Проверка обещания: пример">
+      <figure class="mirror mirror--flat" id="mirror-demo" aria-label="Проверка обещания: пример">
         <div class="mirror__bar"><span class="mirror__label">Проверка обещания</span><div class="mirror__dots" role="tablist" aria-label="Примеры обещаний"><button type="button" role="tab" aria-selected="true" aria-label="Гибкий формат"></button><button type="button" role="tab" aria-selected="false" aria-label="Дружный коллектив"></button><button type="button" role="tab" aria-selected="false" aria-label="Ежегодная индексация"></button></div></div>
-        <div class="mirror__side">
-          <span class="mirror__label">Вы обещаете</span>
-          <p class="mirror__promise" data-m="promise">Гибкий формат</p>
-          <p class="mirror__vacancy"><span>Из вакансии</span><span data-m="vacancy">«Гибридный формат: часть недели можно работать из дома»</span></p>
+        <div class="mirror__cols">
+          <div class="mirror__side">
+            <span class="mirror__label">Вы обещаете</span>
+            <div class="mirror__promise-block"><p class="mirror__promise" data-m="promise">Гибкий формат</p><p class="mirror__vacancy" data-m="vacancy">«Гибридный формат: часть недели можно работать из дома»</p></div>
+          </div>
+          <div class="mirror__side mirror__side--people" data-m="quotes">
+            <span class="mirror__label">Люди видят</span>
+            <blockquote><p>Удалёнку обещали на собеседовании. По факту — офис пять дней в неделю.</p><cite>Dreamjob</cite></blockquote>
+            <blockquote><p>Гибрид есть только у руководителей.</p><cite>VK</cite></blockquote>
+          </div>
         </div>
-        <div class="mirror__side mirror__side--people" data-m="quotes">
-          <span class="mirror__label">Люди видят</span>
-          <blockquote><p>Удалёнку обещали на собеседовании. По факту — офис пять дней в неделю.</p><cite>Dreamjob</cite></blockquote>
-          <blockquote><p>Гибрид есть только у руководителей.</p><cite>VK</cite></blockquote>
-        </div>
-        <figcaption class="mirror__verdict"><span class="cmp__status" data-m="status"><span class="cmp__ico cmp__ico--no"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <figcaption class="mirror__verdict is-bad" data-m="verdict"><span class="mirror__status" data-m="status"><span class="cmp__ico"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g>
 <path d="M15 9L9 15M9 9L15 15M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
 </g>
-</svg></span>Не подтверждается</span><div class="mirror__track"><i data-m="bar" class="is-bad" style="width:22%"></i></div><span class="mirror__pct"><b data-m="value">22%</b> упоминаний подтверждают</span></figcaption>
+</svg></span>Не подтверждается</span><span class="mirror__pct"><b data-m="value">22%</b> упоминаний подтверждают</span></figcaption>
       </figure>
-<template id="tpl-st-ok"><span class="cmp__ico cmp__ico--yes"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<template id="tpl-st-ok"><span class="cmp__ico"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g>
 <path d="M9 12L11 14L15 10M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
 </g>
-</svg></span>Подтверждается</template><template id="tpl-st-warn"><span class="cmp__ico cmp__ico--warn"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 8V12M12 16H12.01M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/></svg></span>Частично</template><template id="tpl-st-bad"><span class="cmp__ico cmp__ico--no"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+</svg></span>Подтверждается</template><template id="tpl-st-warn"><span class="cmp__ico"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 8V12M12 16H12.01M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/></svg></span>Частично</template><template id="tpl-st-bad"><span class="cmp__ico"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g>
 <path d="M15 9L9 15M9 9L15 15M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
 </g>
@@ -1474,7 +1510,11 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
         <li class="pstep"><span class="pstep__no">Шаг №3</span><div class="pstep__text"><h3>Мониторинг</h3><p>Обновляем индекс, слепые зоны и место в отрасли. Сообщаем, если тема резко выросла.</p></div><div class="badges"><span class="badge badge--purple">По желанию</span><span class="badge badge--soft">Каждый месяц</span></div></li>
       </ol>
       <div class="pnext">
-        <a class="pnext__dark" href="#"><span class="pnext__label">направление 02 · изнутри</span><div><h3>Нужен взгляд изнутри?</h3><p>Дашборд здоровья корпоративной культуры. Как сотрудники переживают культуру и где она расходится с заявленной.</p></div></a>
+        <a class="pnext__dark dir dir--health" href="#" data-shader="health"><canvas aria-hidden="true"></canvas><span class="dir__fallback" aria-hidden="true"></span><span class="dir__top"><span class="dir__label">направление 02 · изнутри</span><svg aria-hidden="true" focusable="false" class="dir__arrow" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g>
+<path d="M14.8327 14.1641C14.8327 14.5323 14.5342 14.8307 14.166 14.8307C13.7978 14.8307 13.4993 14.5323 13.4993 14.1641V7.4401L6.30404 14.6354C6.04369 14.8958 5.62168 14.8958 5.36133 14.6354C5.10098 14.3751 5.10098 13.9531 5.36133 13.6927L12.5566 6.4974H5.83268C5.46449 6.4974 5.16602 6.19892 5.16602 5.83073C5.16602 5.46254 5.46449 5.16406 5.83268 5.16406H14.166C14.5342 5.16406 14.8327 5.46254 14.8327 5.83073V14.1641Z" fill="currentColor"/>
+</g>
+</svg></span><div><h3>Нужен взгляд изнутри?</h3><p>Дашборд здоровья корпоративной культуры. Как сотрудники переживают культуру и где она расходится с заявленной.</p></div></a>
         <article class="pnext__card"><div><h3>Агентствам<br>и консультантам</h3><p>Внешний аудит HR-бренда для ваших клиентов под вашим логотипом. Первые три отчёта — бесплатно.</p></div><a class="btn-link" href="index.html?topic=other#request" data-topic="other">Обсудить пилот <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g>
 <path d="M14.8327 14.1641C14.8327 14.5323 14.5342 14.8307 14.166 14.8307C13.7978 14.8307 13.4993 14.5323 13.4993 14.1641V7.4401L6.30404 14.6354C6.04369 14.8958 5.62168 14.8958 5.36133 14.6354C5.10098 14.3751 5.10098 13.9531 5.36133 13.6927L12.5566 6.4974H5.83268C5.46449 6.4974 5.16602 6.19892 5.16602 5.83073C5.16602 5.46254 5.46449 5.16406 5.83268 5.16406H14.166C14.5342 5.16406 14.8327 5.46254 14.8327 5.83073V14.1641Z" fill="currentColor"/>
@@ -1486,7 +1526,7 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 
   <!-- ============ ВОПРОСЫ ============ -->
   <section class="section section--anchors" id="faq" aria-labelledby="faq-title">
-    <div class="section__head section__head--split">
+    <div class="section__head section__head--faq">
       <span class="eyebrow">Вопросы · об оценке</span>
       <div class="headline-block">
         <h2 class="headline" id="faq-title"><span class="dim">Частые вопросы</span><br>об оценке HR-бренда</h2>
@@ -1594,6 +1634,9 @@ mountChart(document.getElementById("ch-dynamics"), {
   }],
 });
 const MX = [{ name: "Банк N", x: 62, y: 65, you: true }, { name: "Банк А", x: 74, y: 72 }, { name: "Банк Б", x: 38, y: 54 }];
+/* Поле матрицы квадратное: отступы сетки 64 + 64 по ширине и 16 + 56 по высоте */
+const mxEl = document.getElementById("ch-matrix"), fitMx = () => (mxEl.style.height = Math.max(200, mxEl.clientWidth - 56) + "px");
+fitMx(); addEventListener("resize", fitMx);
 const Q = (x1, y1, x2, y2, color) => [{ coord: [x1, y1], itemStyle: { color } }, { coord: [x2, y2] }];
 mountChart(document.getElementById("ch-matrix"), {
   grid: { left: 64, right: 64, top: 16, bottom: 56 },
@@ -1649,7 +1692,7 @@ function showMirror(n) {
   $m("promise").textContent = ex.promise; $m("vacancy").textContent = `«${ex.vacancy.replace(/\.$/, "")}»`;
   $m("quotes").innerHTML = '<span class="mirror__label">Люди видят</span>' + ex.quotes.map(([src, t]) => `<blockquote><p>${t}</p><cite>${src}</cite></blockquote>`).join("");
   $m("status").innerHTML = document.getElementById("tpl-st-" + ex.status).innerHTML;
-  const bar = $m("bar"); bar.className = "is-" + ex.status; bar.style.width = ex.value + "%";
+  $m("verdict").className = "mirror__verdict is-" + ex.status;
   $m("value").textContent = ex.value + "%";
   dots.forEach((d, i) => d.setAttribute("aria-selected", i === n));
   if (typeof typograf === "function") typograf(mirrorEl);
