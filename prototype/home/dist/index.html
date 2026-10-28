@@ -560,6 +560,32 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 .blind p { margin-top: 10px; font: 400 var(--fs-sm)/var(--lh-sm) var(--font-sans); color: var(--c-ink-2); }
 /* Матрица: график + описание зон */
 .matrix { display: grid; grid-template-columns: minmax(0, 1fr) 420px; gap: 32px; align-items: center; }
+/* Матрица «честность × условия»: описания зон по бокам, напротив своих четвертей; график по центру */
+.qmap { --q-top: 16px; --q-bottom: 56px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 640px) minmax(0, 1fr); gap: 32px; }
+.qmap__chart { height: 520px; min-width: 0; }
+.qmap__side { list-style: none; display: grid; grid-template-rows: 1fr 1fr; gap: 16px; padding: var(--q-top) 0 var(--q-bottom); }
+.qmap__side--left { text-align: right; }
+.qzone { align-self: start; display: flex; flex-direction: column; gap: 8px; padding: 20px 24px; border-radius: var(--r-inner); }
+.qmap__side--left .qzone { align-items: flex-end; }
+.qzone b { display: inline-flex; align-items: center; gap: 10px; font: 500 var(--fs-title)/var(--lh-title) var(--font-sans); }
+.qmap__side--left .qzone b { flex-direction: row-reverse; }
+.qzone b i { flex: none; width: 14px; height: 14px; border-radius: 4px; }
+.qzone p { font: 400 var(--fs-sm)/var(--lh-sm) var(--font-sans); color: var(--c-ink-2); max-width: 300px; }
+.qzone--lilac b i { background: rgba(122,47,209,.28); }
+.qzone--green b i { background: rgba(59,153,82,.32); }
+.qzone--red b i { background: rgba(219,79,79,.3); }
+.qzone--yellow b i { background: rgba(214,178,40,.42); }
+.qzone.is-you { background: var(--c-surface-2); box-shadow: inset 0 0 0 2px var(--c-violet-soft); }
+.qzone__you { font: 400 var(--fs-xs)/18px var(--font-mono); color: var(--c-violet); }
+@media (max-width: 1279px) {
+  .qmap { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .qmap__chart { grid-column: 1 / -1; grid-row: 1; height: 440px; }
+  .qmap__side { padding: 0; }
+  .qmap__side--left { text-align: left; }
+  .qmap__side--left .qzone { align-items: flex-start; }
+  .qmap__side--left .qzone b { flex-direction: row; }
+}
+@media (max-width: 767px) { .qmap { grid-template-columns: 1fr; } .qmap__chart { height: 340px; } }
 .zones { list-style: none; display: flex; flex-direction: column; gap: 12px; }
 .zones li { padding: 16px 20px; border-radius: var(--r-inner); background: var(--c-surface-2); }
 .zones li.is-you { box-shadow: inset 0 0 0 2px var(--c-violet-soft); }
