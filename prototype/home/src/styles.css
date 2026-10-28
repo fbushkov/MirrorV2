@@ -71,7 +71,8 @@
   --inset-x: clamp(0px, 1.67vw, 32px);     /* сдвиг заголовков секций внутрь */
   --section-gap: clamp(96px, 11.46vw, 220px);
   --head-gap: clamp(40px, 4.17vw, 80px);   /* шапка секции → контент */
-  --split-col: 36.6%;                      /* левая колонка «эйброу | заголовок» */
+  --split-col: 36.6%;
+  --content-gap: clamp(32px, 5.8vw, 112px); /* зазор «описание | содержимое» в белых блоках */                      /* левая колонка «эйброу | заголовок» */
 
   /* Радиусы */
   --r-card: 12px;  --r-inner: 8px;  --r-ctl: 10px;  --r-pill: 999px;  --r-check: 4px;
@@ -347,7 +348,9 @@ img, svg { display: block; }
 
 /* --- 5.5 FAQ --- */
 .faq { display: flex; flex-direction: column; gap: 24px; }
-.faq-group { display: grid; grid-template-columns: minmax(0, 524px) minmax(0, 1fr); gap: clamp(32px, 5.8vw, 112px); padding: 32px; border-radius: var(--r-card); background: #fff; }
+/* Сетка «описание | содержимое»: правая колонка начинается на одной вертикали во всех белых блоках
+   (вопросы, заявка) — 32 + 524 + зазор от края карточки, на 1920 это 716 px от края страницы */
+.faq-group { display: grid; grid-template-columns: minmax(0, 524px) minmax(0, 1fr); gap: var(--content-gap); padding: 32px; border-radius: var(--r-card); background: #fff; }
 .faq-group__info { display: flex; flex-direction: column; gap: 32px; }
 .faq-group__tag { font: 400 var(--fs-mono)/27px var(--font-mono); color: var(--c-ink-4); }
 .faq-group__title { font: 600 var(--fs-h3)/var(--lh-h3) var(--font-sans); letter-spacing: -0.01em; }
@@ -376,7 +379,7 @@ img, svg { display: block; }
 .ask__actions { display: flex; gap: 16px; flex-wrap: wrap; }
 
 /* --- 5.6 Заявка --- */
-.request { display: grid; grid-template-columns: minmax(0, 778fr) minmax(0, 838fr); gap: clamp(40px, 5.8vw, 112px); padding: 48px 48px 112px; border-radius: var(--r-card); background: #fff; }
+.request { display: grid; grid-template-columns: minmax(0, 508px) minmax(0, 1fr); gap: var(--content-gap); padding: 48px 48px 112px; /* 48 + 508 = 32 + 524: форма начинается там же, где вопросы */ border-radius: var(--r-card); background: #fff; }
 .contacts { display: flex; flex-direction: column; gap: 64px; }
 .contacts dl { display: flex; flex-direction: column; gap: 40px; }
 .contacts dt { font: 400 var(--fs-body)/var(--lh-tight) var(--font-sans); color: var(--c-ink-2); margin-bottom: 8px; }
