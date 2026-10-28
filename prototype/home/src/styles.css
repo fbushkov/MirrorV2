@@ -1068,7 +1068,8 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 .dir-intro { min-height: calc(100svh - 114px - 61px - 48px - 32px - clamp(48px, 5.2vw, 100px)); }
 .dir-intro .page-hero__lead { max-width: 568px; color: var(--c-ink); }
 .dir-intro .dir-hero__actions { gap: 16px; }
-.dir-intro .dir-hero { padding-right: var(--inset-x); }
+.dir-intro .dir-hero { grid-template-columns: minmax(0, 1fr) minmax(0, 640px); gap: clamp(32px, 4vw, 80px); padding-right: var(--inset-x); }
+.dir-intro .page-hero__head { min-width: 0; }
 /* Полоса разделов: при прокрутке прилипает к шапке (98 = 16 + 82), раздел на экране подсвечен */
 .anchors { position: sticky; top: 98px; z-index: 45; display: flex; gap: 32px; margin-top: 32px; padding: 8px 48px; border: 1px solid var(--c-line-3); border-radius: var(--r-card); background: var(--c-chrome); overflow-x: auto; scrollbar-width: none; transition: box-shadow .2s; }
 .anchors::-webkit-scrollbar { display: none; }
@@ -1118,8 +1119,12 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 .qpanel__vis .gauge--big { height: 260px; }
 /* Матрица на странице: белая карточка на подложке */
 .well { padding: 16px; border-radius: var(--r-card); background: var(--c-well); }
-.qmap--page { --q-top: 16px; --q-bottom: 56px; grid-template-columns: minmax(0, 380px) minmax(0, 600px) minmax(0, 380px); justify-content: space-between; padding: 32px clamp(16px, 6.35vw, 122px); border-radius: var(--r-card); background: var(--c-surface); }
-.qmap--page .qmap__chart { height: 544px; } /* высоту подгоняет скрипт: поле графика — квадрат */
+.qmap--page { --plot: clamp(300px, 27vw, 520px); --q-top: 16px; --q-bottom: 56px; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: clamp(16px, 2.5vw, 48px); padding: 32px clamp(16px, 6.35vw, 122px); border-radius: var(--r-card); background: var(--c-surface); }
+/* Поле графика — квадрат --plot; поля сетки ECharts 64 + 64 по ширине (симметрично) и 16 + 56 по высоте,
+   поэтому центр поля совпадает с центром карточки */
+.qmap--page .qmap__chart { --mx-side: 64px; width: calc(var(--plot) + 2 * var(--mx-side)); height: calc(var(--plot) + 72px); }
+.qmap--page .qmap__side--left { justify-items: end; }
+.qmap--page .qmap__side { align-content: stretch; }
 /* Отчёт: текст со списком | график на подложке */
 .rsplit { display: grid; grid-template-columns: minmax(0, 612px) minmax(0, 1025px); justify-content: space-between; gap: 48px; padding-left: var(--inset-x); align-items: start; }
 .rsplit__text { display: flex; flex-direction: column; align-items: flex-start; gap: 40px; }
@@ -1139,16 +1144,17 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 .pnext { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 720px); gap: 16px; min-height: 380px; }
 .pnext__dark { display: flex; flex-direction: column; justify-content: space-between; gap: 48px; padding: clamp(24px, 2.5vw, 48px); border-radius: var(--r-card); background: var(--c-dark); color: #fff; transition: background .2s; }
 .pnext__dark h3 { color: #fff; }
-.pnext__dark div { display: flex; flex-direction: column; gap: 25px; max-width: 560px; }
+.pnext__dark div { display: flex; flex-direction: column; gap: 16px; max-width: 560px; }
 .pnext__label { font: 400 var(--fs-mono)/30px var(--font-mono); color: var(--c-ink-4); }
 .pnext__card { display: flex; flex-direction: column; justify-content: space-between; align-items: flex-start; gap: 32px; padding: clamp(24px, 2.5vw, 48px) clamp(24px, 2.5vw, 48px) 32px; border-radius: var(--r-card); background: var(--c-surface); }
-.pnext__card div { display: flex; flex-direction: column; gap: 25px; max-width: 520px; }
+.pnext__card div { display: flex; flex-direction: column; gap: 16px; max-width: 520px; }
 .pnext__card .btn-link { margin-left: -10px; }
 @media (max-width: 1279px) {
   .qpanel, .rsplit, .pnext { grid-template-columns: minmax(0, 1fr); }
   .qpanel__vis { margin: 0 24px 24px; }
   .qmap--page { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); padding: 24px; }
-  .qmap--page .qmap__chart { max-width: 600px; width: 100%; justify-self: center; }
+  .qmap--page .qmap__chart { justify-self: center; }
+  .qmap--page .qmap__side--left { justify-items: start; }
   .rsplit { padding-left: 0; }
   .qtab { padding: 28px 32px; }
 }
@@ -1163,7 +1169,8 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
   .anchors { top: 74px; padding: 4px 12px; gap: 4px; }
   .qpanel__text { padding: 24px; }
   .qpanel__vis { margin: 0 12px 12px; padding: 20px; }
-  .qmap--page { grid-template-columns: minmax(0, 1fr); padding: 16px; }
+  .qmap--page { --plot: calc(100vw - 32px - 32px - 32px - 88px); grid-template-columns: minmax(0, 1fr); padding: 16px; }
+  .qmap--page .qmap__chart { --mx-side: 44px; }
 
   .qzone { padding: 16px; }
   .vflow__item { padding: 16px 8px; gap: 32px; }
@@ -1178,31 +1185,32 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 .section__head--faq .eyebrow { margin-top: 4px; }
 @media (max-width: 1279px) { .section__head--faq { grid-template-columns: minmax(0, 1fr); } }
 
-/* «Проверка обещания»: одна белая карточка без вложенных подложек, вердикт — плашка цвета статуса */
-.mirror--flat { display: flex; flex-direction: column; gap: 24px; padding: 28px 32px 32px; border: 1px solid var(--c-line-3); border-radius: var(--r-card); background: var(--c-surface); }
-.mirror--flat .mirror__bar { padding: 0; }
-.mirror__cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; }
-.mirror--flat .mirror__side { padding: 0; border-radius: 0; background: none; gap: 16px; }
-.mirror--flat .mirror__side--people { padding-left: 32px; border-left: 1px solid var(--c-line-3); }
-.mirror__promise-block { display: flex; flex-direction: column; gap: 8px; }
-.mirror--flat .mirror__vacancy { display: block; margin: 0; padding: 0; background: none; font: 400 var(--fs-body)/var(--lh-body) var(--font-sans); color: var(--c-ink-2); }
-.mirror--flat blockquote { padding-left: 0; border-left: 0; gap: 4px; }
-.mirror--flat .mirror__verdict { display: flex; align-items: center; justify-content: space-between; gap: 8px 16px; flex-wrap: wrap; padding: 16px 24px; border-radius: var(--r-inner); color: #fff; transition: background .3s; }
+/* «Проверка обещания»: белая карточка, внутри два серых блока и плашка вердикта цвета статуса; размеры мельче текста первого экрана */
+.mirror--flat { display: flex; flex-direction: column; gap: 12px; padding: 16px; border: 1px solid var(--c-line-3); border-radius: var(--r-card); background: var(--c-surface); }
+.mirror--flat .mirror__bar { padding: 0 4px 0 8px; }
+.mirror--flat .mirror__label { font: 400 13px/20px var(--font-mono); }
+.mirror--flat .mirror__dots button { height: 20px; }
+.mirror__cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px; }
+.mirror--flat .mirror__side { padding: 16px 20px 20px; border-radius: var(--r-inner); background: var(--c-surface-2); gap: 12px; }
+.mirror__promise-block { display: flex; flex-direction: column; gap: 6px; }
+.mirror--flat .mirror__promise { font: 500 var(--fs-body)/var(--lh-body) var(--font-sans); }
+.mirror--flat .mirror__vacancy { display: block; margin: 0; padding: 0; background: none; font: 400 var(--fs-sm)/var(--lh-sm) var(--font-sans); color: var(--c-ink-2); }
+.mirror--flat blockquote { padding-left: 0; border-left: 0; gap: 2px; }
+.mirror--flat blockquote p { font: 400 var(--fs-sm)/var(--lh-sm) var(--font-sans); }
+.mirror--flat cite { font: 400 13px/18px var(--font-mono); }
+.mirror--flat .mirror__verdict { display: flex; align-items: center; justify-content: space-between; gap: 4px 12px; flex-wrap: wrap; padding: 10px 16px; border-radius: var(--r-inner); color: #fff; transition: background .3s; }
 .mirror__verdict.is-ok { background: var(--c-ok); }
 .mirror__verdict.is-warn { background: #d08a1e; }
 .mirror__verdict.is-bad { background: var(--c-bad); }
-.mirror__status { display: inline-flex; align-items: center; gap: 8px; font-weight: 500; }
+.mirror__status { display: inline-flex; align-items: center; gap: 8px; font: 500 var(--fs-sm)/var(--lh-sm) var(--font-sans); }
 .mirror__status .cmp__ico { color: #fff; }
-.mirror__status .cmp__ico svg { width: 20px; height: 20px; }
-.mirror--flat .mirror__pct { font: 400 var(--fs-sm)/var(--lh-sm) var(--font-sans); color: rgba(255,255,255,.85); }
-.mirror--flat .mirror__pct b { font: 500 var(--fs-body)/1 var(--font-mono); color: #fff; }
+.mirror__status .cmp__ico svg { width: 18px; height: 18px; }
+.mirror--flat .mirror__pct { font: 400 13px/18px var(--font-sans); color: rgba(255,255,255,.85); }
+.mirror--flat .mirror__pct b { font: 500 var(--fs-sm)/1 var(--font-mono); color: #fff; }
+@media (max-width: 767px) {
+  .mirror__cols { grid-template-columns: minmax(0, 1fr); }
+}
 /* Тёмная карточка «Нужен взгляд изнутри?» — как направления на главной: бирюзовый перелив при наведении */
 .pnext__dark.dir { min-height: 0; padding: clamp(24px, 2.5vw, 48px); }
 .pnext__dark .dir__top { display: flex; justify-content: space-between; align-items: center; }
-@media (max-width: 767px) {
-  .mirror--flat { padding: 20px; }
-  .mirror__cols { grid-template-columns: minmax(0, 1fr); gap: 20px; }
-  .mirror--flat .mirror__side--people { padding: 20px 0 0; border-left: 0; border-top: 1px solid var(--c-line-3); }
-  .mirror--flat .mirror__verdict { padding: 14px 16px; }
-}
 

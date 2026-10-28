@@ -171,12 +171,10 @@ mountChart(document.getElementById("ch-dynamics"), {
   }],
 });
 const MX = [{ name: "Банк N", x: 62, y: 65, you: true }, { name: "Банк А", x: 74, y: 72 }, { name: "Банк Б", x: 38, y: 54 }];
-/* Поле матрицы квадратное: отступы сетки 64 + 64 по ширине и 16 + 56 по высоте */
-const mxEl = document.getElementById("ch-matrix"), fitMx = () => (mxEl.style.height = Math.max(200, mxEl.clientWidth - 56) + "px");
-fitMx(); addEventListener("resize", fitMx);
 const Q = (x1, y1, x2, y2, color) => [{ coord: [x1, y1], itemStyle: { color } }, { coord: [x2, y2] }];
+const MXS = innerWidth < 768 ? 44 : 64; // поля сетки по бокам — симметричные (как --mx-side в CSS)
 mountChart(document.getElementById("ch-matrix"), {
-  grid: { left: 64, right: 64, top: 16, bottom: 56 },
+  grid: { left: MXS, right: MXS, top: 16, bottom: 56 },
   xAxis: { type: "value", min: 10, max: 90, interval: 10, name: "честность · индекс культуры", nameLocation: "middle", nameGap: 36, nameTextStyle: { color: CH.ink3, fontSize: 14, fontFamily: CH.font }, ...chAxis, splitLine: { show: false } },
   yAxis: { type: "value", min: 40, max: 80, interval: 5, name: "условия · место в отрасли", nameLocation: "middle", nameGap: 36, nameTextStyle: { color: CH.ink3, fontSize: 14, fontFamily: CH.font }, ...chAxis, splitLine: { show: false }, axisLabel: { ...chAxis.axisLabel, formatter: (v) => (v % 10 ? "" : v) } },
   tooltip: { ...chTooltip, formatter: (p) => `${MX[p.dataIndex].name}: честность ${MX[p.dataIndex].x}, условия ${MX[p.dataIndex].y}` },
@@ -235,6 +233,14 @@ function showMirror(n) {
   if (typeof typograf === "function") typograf(mirrorEl);
 }
 dots.forEach((d, i) => d.addEventListener("click", () => showMirror(i)));
+/* Карточка не прыгает при смене примера: высота колонок — по самому высокому примеру */
+const mirrorCols = mirrorEl.querySelector(".mirror__cols");
+function lockMirror() {
+  const keep = mi; mirrorCols.style.minHeight = ""; let h = 0;
+  MIRROR.forEach((_, i) => { showMirror(i); h = Math.max(h, mirrorCols.offsetHeight); });
+  showMirror(keep); mirrorCols.style.minHeight = h + "px";
+}
+lockMirror(); addEventListener("resize", lockMirror); document.fonts && document.fonts.ready.then(lockMirror);
 mirrorEl.addEventListener("pointerenter", () => (paused = true)); mirrorEl.addEventListener("pointerleave", () => (paused = false));
 mirrorEl.addEventListener("focusin", () => (paused = true)); mirrorEl.addEventListener("focusout", () => (paused = false));
 if (!matchMedia("(prefers-reduced-motion: reduce)").matches) setInterval(() => { if (!paused && !document.hidden) showMirror((mi + 1) % MIRROR.length); }, 5000);
