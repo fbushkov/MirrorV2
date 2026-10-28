@@ -190,7 +190,7 @@ export function PulseDashboard() {
                       </span>
                       <Sparkline values={m.trend} />
                     </span>
-                    <span className="text-xs font-medium text-primary">Детали →</span>
+                    <span className="text-xs font-medium text-primary">Детали</span>
                   </button>
                 ))}
             </div>

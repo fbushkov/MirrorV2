@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest"
 import { typograf } from "./typograf"
 
-const show = (s: string) => s.replaceAll(" ", "⍽")
+const show = (s: string) => s.replaceAll("\u00a0", "⍽")
 
 describe("typograf", () => {
   it("связывает предлоги и союзы со следующим словом", () => {

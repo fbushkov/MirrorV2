@@ -179,8 +179,8 @@ export function CultureMatrixChart({ className }: { className?: string }) {
         formatter: (p: { data: { name: string; value: [number, number] } }) =>
           p.data?.value ? `<b>${p.data.name}</b><br/>Индекс культуры: ${p.data.value[1]}<br/>Место в отрасли: ${p.data.value[0]}` : "",
       },
-      xAxis: { type: "value", min: 0, max: 100, name: "условия · место в отрасли →", nameLocation: "middle", nameGap: 30, nameTextStyle: { color: C.muted, fontSize: 11 }, splitLine: { show: false } },
-      yAxis: { type: "value", min: 30, max: 90, name: "честность · индекс культуры →", nameLocation: "middle", nameGap: 34, nameTextStyle: { color: C.muted, fontSize: 11 }, splitLine: { show: false } },
+      xAxis: { type: "value", min: 0, max: 100, name: "условия · место в отрасли", nameLocation: "middle", nameGap: 30, nameTextStyle: { color: C.muted, fontSize: 11 }, splitLine: { show: false } },
+      yAxis: { type: "value", min: 30, max: 90, name: "честность · индекс культуры", nameLocation: "middle", nameGap: 34, nameTextStyle: { color: C.muted, fontSize: 11 }, splitLine: { show: false } },
       series: [
         {
           type: "scatter",

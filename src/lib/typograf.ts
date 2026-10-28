@@ -4,8 +4,8 @@
  * — тире связывается с предыдущим словом.
  * Применяется к строкам из src/content, поэтому на клиент уходит уже готовый текст.
  */
-const NBSP = " "
-const SHORT_WORD = /(^|[\s («"„—–/])([A-Za-zА-Яа-яЁё0-9№]{1,3}) +(?=\S)/g
+const NBSP = "\u00a0"
+const SHORT_WORD = /(^|[\s\u00a0(«"„—–/])([A-Za-zА-Яа-яЁё0-9№]{1,3}) +(?=\S)/g
 const DASH = / +([—–])/g
 
 export function typograf(text: string): string {

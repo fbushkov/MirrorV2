@@ -59,7 +59,7 @@ export function Sparkline({ values, className }: { values: number[]; className?:
 }
 
 export function Delta({ value, suffix = "" }: { value: number; suffix?: string }) {
-  if (value === 0) return <span className="text-xs text-muted-foreground tabular-nums">→ 0{suffix}</span>
+  if (value === 0) return <span className="text-xs text-muted-foreground tabular-nums">0{suffix}</span>
   const up = value > 0
   return (
     <span className={cn("text-xs font-medium tabular-nums", up ? "text-status-ok" : "text-status-bad")}>

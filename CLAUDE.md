@@ -43,7 +43,8 @@ npm run lint
 npm run typecheck   # tsc --noEmit
 npm test            # Vitest, src/**/*.test.ts
 npm run test:e2e    # Playwright по собранному сайту (после build), tests/e2e
-npm run check       # lint + typecheck + test
+npm run check       # check:text + lint + typecheck + test
+npm run check:text  # символы и тексты: невидимые символы, эмодзи, NBSP символом, «→», штампы, дефис вместо тире (входит в check и CI)
 ```
 
 CI (`.github/workflows/ci.yml`) гоняет всё это на каждый push. Тесты не отключать и не пропускать ради зелёного CI.

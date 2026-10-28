@@ -241,11 +241,11 @@ export default function MethodologyPage() {
           </div>
           <div className="surface p-5">
             <p className="mb-2 font-semibold">Что влияет</p>
-            <p className="text-sm text-muted-foreground">Каждая причина помечена уровнем доказанности: гипотеза → коррелирует → подтверждено пилотом.</p>
+            <p className="text-sm text-muted-foreground">Каждая причина помечена уровнем доказанности: гипотеза, коррелирует или подтверждено пилотом.</p>
           </div>
           <div className="surface p-5">
             <p className="mb-2 font-semibold">Подтверждающие сигналы</p>
-            <p className="text-sm text-muted-foreground">Текучесть новичков, отказы от офферов, абсентеизм, доля закрытых петель обратной связи. Баллом не становятся.</p>
+            <p className="text-sm text-muted-foreground">Отказы от офферов, абсентеизм, доля закрытых петель обратной связи. Баллом не становятся.</p>
           </div>
         </div>
         <p className="mt-6 text-sm text-muted-foreground">{NOT_IN_METRICS} Разрыв считаем по нормам культурного кода: каждая норма привязана к одной или нескольким метрикам.</p>

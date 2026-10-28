@@ -11,7 +11,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
-    "check": "npm run lint && npm run typecheck && npm test"
+    "check:text": "node scripts/check-text.mjs",
+    "check": "npm run check:text && npm run lint && npm run typecheck && npm test"
   },
   "dependencies": {
     "class-variance-authority": "^0.7.1",
