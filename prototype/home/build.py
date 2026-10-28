@@ -21,11 +21,11 @@ ROUTES = {
     "start":               ("/start",                     "index.html#request"),   # пока форма на главной
     "hr-brand":            ("/hr-brand",                  "hr-brand.html"),
     "hr-brand-demo":       ("/hr-brand/demo",             "hr-brand-demo.html"),
-    "methodology-brand":   ("/methodology#brand",         None),
+    "methodology-brand":   ("/methodology#brand",         "methodology.html#brand"),
     "culture-health":      ("/culture-health",            None),
     "culture-health-demo": ("/culture-health/demo",       None),
     "methodology-health":  ("/methodology#health",        None),
-    "methodology":         ("/methodology",               None),
+    "methodology":         ("/methodology",               "methodology.html"),
     "privacy":             ("/docs/privacy-policy",       None),
     "terms":               ("/docs/terms-of-use",         None),
     "consent":             ("/docs/data-processing-consent", None),

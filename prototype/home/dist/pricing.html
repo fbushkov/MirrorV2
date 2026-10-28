@@ -636,6 +636,42 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 @media (max-width: 1023px) { .flow, .track, .pair { grid-template-columns: 1fr; } }
 @media (max-width: 767px) { .mirror { grid-template-columns: 1fr; } .flow__item { padding: 24px; } .mirror__verdict { flex-wrap: wrap; } }
 
+/* --- 5.11 Методика («Как считаем») --- */
+/* Формула — тёмная карточка, как блок «Есть вопрос?» и подвал: главный объект страницы */
+.dir-hero--method { grid-template-columns: minmax(0, 1fr) minmax(0, 720px); align-items: end; }
+.formula { display: flex; flex-direction: column; gap: 24px; padding: 40px; border-radius: var(--r-card); background: var(--c-dark); color: #fff; }
+.formula .mirror__label { color: var(--c-ink-4); }
+.formula__expr { font: 500 clamp(26px, 2.1vw, 40px)/1.25 var(--font-mono); text-wrap: balance; letter-spacing: -.01em; }
+.formula__expr span { color: var(--c-violet-soft); }
+.formula__legend { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; padding-top: 24px; border-top: 1px solid var(--c-dark-2); }
+.formula__legend dt { font: 500 var(--fs-body)/var(--lh-tight) var(--font-sans); margin-bottom: 6px; }
+.formula__legend dd { font: 400 var(--fs-sm)/var(--lh-sm) var(--font-sans); color: var(--c-ink-4); }
+.formula__result { display: flex; align-items: baseline; justify-content: space-between; padding: 16px 20px; border-radius: var(--r-inner); background: var(--c-dark-2); font: 400 var(--fs-mono)/24px var(--font-mono); color: var(--c-ink-4); }
+.formula__result b { font: 500 48px/1 var(--font-mono); color: #fff; }
+/* Шесть шагов: лента строк на подложке — номер | текст | справка */
+.ladder { list-style: none; display: flex; flex-direction: column; gap: 8px; padding: 16px; border-radius: var(--r-card); background: var(--c-well); }
+.ladder__step { display: grid; grid-template-columns: 96px minmax(0, 1fr) minmax(0, 440px); gap: 24px 32px; align-items: start; padding: 24px 32px 24px 24px; border-radius: var(--r-inner); background: var(--c-surface); }
+.ladder__step > div { display: flex; flex-direction: column; gap: 8px; max-width: 640px; }
+.ladder__step > div p { color: var(--c-ink-2); }
+.ladder__no { font: 500 32px/1 var(--font-mono); color: var(--c-violet-num); }
+.ladder__aside { list-style: none; display: flex; flex-direction: column; gap: 8px; padding: 16px 20px; border-radius: var(--r-inner); background: var(--c-surface-2); font: 400 var(--fs-sm)/var(--lh-sm) var(--font-sans); }
+.ladder__aside div, .ladder__aside li { display: flex; align-items: center; gap: 10px; }
+.ladder__aside dt { color: var(--c-ink-2); flex: 1; }
+.ladder__aside dd { font-weight: 500; }
+.ladder__aside--status span:not(.cmp__ico) { flex: 1; }
+.ladder__aside--status b { font-weight: 500; }
+.ladder__aside .cmp__ico svg { width: 20px; height: 20px; }
+/* Итог таблицы */
+.cmp__table tbody tr.cmp__total > * { font-weight: 500; background: var(--c-chrome); }
+.split--tight { margin-top: 24px; padding-left: 0; gap: 24px; grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr); align-items: stretch; }
+.split--tight > .panel { margin-top: 0; }
+.split__text--note { justify-content: center; gap: 16px; padding: 32px; border-radius: var(--r-card); background: var(--c-surface); }
+.pair--even { grid-template-columns: 1fr 1fr; }
+.pair .card p { color: var(--c-ink-2); }
+.dir--strip { margin-top: 24px; min-height: 280px; }
+@media (max-width: 1279px) { .ladder__step { grid-template-columns: 64px minmax(0, 1fr); } .ladder__aside { grid-column: 2; } .split--tight { grid-template-columns: 1fr; } }
+@media (max-width: 767px) { .formula { padding: 24px; } .formula__legend { grid-template-columns: 1fr; } .ladder__step { grid-template-columns: 1fr; padding: 20px; } .ladder__aside { grid-column: 1; } .pair--even { grid-template-columns: 1fr; } }
+
 /* --- Подсказка (tooltip) — одна на страницу, позиционируется скриптом у кнопки, не обрезается прокруткой таблиц ---
    Тёмная плашка как у кнопок и подвала: #171717, текст 15/20 белый, радиус 8, поля 12 × 16, ширина до 320, стрелка 8 */
 .tip { position: fixed; z-index: 100; max-width: min(320px, calc(100vw - 32px)); padding: 12px 16px; border-radius: var(--r-inner); background: var(--c-dark); color: #fff; font: 400 var(--fs-xs)/20px var(--font-sans); box-shadow: 0 12px 32px -12px rgba(23,20,43,.45); opacity: 0; visibility: hidden; transform: translateY(4px); transition: opacity .15s, transform .15s var(--ease), visibility 0s .15s; pointer-events: none; }
@@ -789,7 +825,7 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 <path d="M14.4109 6.91089C14.7363 6.58547 15.2638 6.58546 15.5893 6.91089C15.9146 7.23633 15.9147 7.76386 15.5893 8.08928L10.5893 13.0893C10.2638 13.4147 9.73632 13.4147 9.41088 13.0893L4.41088 8.08928C4.08544 7.76384 4.08544 7.23633 4.41088 6.91089C4.73632 6.58547 5.26383 6.58546 5.58927 6.91089L10.0001 11.3217L14.4109 6.91089Z" fill="currentColor"/>
 </g>
 </svg></button></li>
-            <li><a class="nav__item" href="#">Методика</a></li>
+            <li><a class="nav__item" href="methodology.html">Методика</a></li>
             <li><a class="nav__item" href="pricing.html" aria-current="page">Цены</a></li>
             <li><a class="nav__item" href="about.html">О нас</a></li>
           </ul>
@@ -806,7 +842,7 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
             <div class="mega__cards">
               <a class="mega__card" href="hr-brand.html"><b>Обзор</b><span>Что проверяем и что находится в отчёте</span></a>
               <a class="mega__card" href="hr-brand-demo.html"><b>Демо-отчёт</b><span>Индекс · Слепые зоны · Место в отрасли</span></a>
-              <a class="mega__card" href="#"><b>Как считаем</b><span>Методика внешней оценки</span></a>
+              <a class="mega__card" href="methodology.html#brand"><b>Как считаем</b><span>Методика внешней оценки</span></a>
             </div>
           </div>
           <div class="mega__panel" data-id="health">
@@ -822,7 +858,7 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
             <div class="mega__cards">
               <a class="mega__card" href="hr-brand.html"><b>Обзор</b><span>Что проверяем и что в отчёте</span></a>
               <a class="mega__card" href="hr-brand-demo.html"><b>Демо-отчёт</b><span>Индекс · Слепые зоны · Место в отрасли</span></a>
-              <a class="mega__card" href="#"><b>Как считаем</b><span>Методика внешней оценки</span></a>
+              <a class="mega__card" href="methodology.html#brand"><b>Как считаем</b><span>Методика внешней оценки</span></a>
             </div>
             <p class="mega__title">/ дашборд здоровья корпоративной культуры</p>
             <div class="mega__cards">
@@ -831,7 +867,7 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
               <a class="mega__card" href="#"><b>Как считаем</b><span>Методика внутреннего замера</span></a>
             </div>
             <div class="mega__cards">
-              <a class="mega__card" href="#"><b>Методика</b></a>
+              <a class="mega__card" href="methodology.html"><b>Методика</b></a>
               <a class="mega__card" href="pricing.html"><b>Цены</b></a>
               <a class="mega__card" href="about.html"><b>О нас</b></a>
             </div>
@@ -1415,9 +1451,9 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
       <div class="footer__nav">
         <p class="footer__about">Сверяем обещания работодателя с тем, что видят кандидаты и что переживают сотрудники. Снаружи и изнутри.</p>
         <div class="footer__cols">
-          <div class="fcol"><h4>Оценка HR-бренда</h4><ul><li><a href="hr-brand.html">Обзор направления</a></li><li><a href="hr-brand-demo.html">Демо-отчёт</a></li><li><a href="#">Как считаем</a></li></ul></div>
+          <div class="fcol"><h4>Оценка HR-бренда</h4><ul><li><a href="hr-brand.html">Обзор направления</a></li><li><a href="hr-brand-demo.html">Демо-отчёт</a></li><li><a href="methodology.html#brand">Как считаем</a></li></ul></div>
           <div class="fcol"><h4>Здоровье культуры</h4><ul><li><a href="#">Обзор направления</a></li><li><a href="#">Демо-дашборд</a></li><li><a href="#">Как считаем</a></li></ul></div>
-          <div class="fcol"><h4>Компания</h4><ul><li><a href="#">Методика</a></li><li><a href="pricing.html">Цены</a></li><li><a href="about.html">О нас</a></li></ul></div>
+          <div class="fcol"><h4>Компания</h4><ul><li><a href="methodology.html">Методика</a></li><li><a href="pricing.html">Цены</a></li><li><a href="about.html">О нас</a></li></ul></div>
           <div class="fcol"><h4>Контакты</h4><ul><li><a href="mailto:mirrorcom@mail.ru">mirrorcom@mail.ru</a></li><li><a href="tel:+79127023030">+7 912 702-30-30</a></li><li><a href="https://t.me/mirror_diary" target="_blank" rel="noreferrer">@mirror_diary</a></li></ul></div>
         </div>
       </div>

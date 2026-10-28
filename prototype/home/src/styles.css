@@ -626,6 +626,42 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 @media (max-width: 1023px) { .flow, .track, .pair { grid-template-columns: 1fr; } }
 @media (max-width: 767px) { .mirror { grid-template-columns: 1fr; } .flow__item { padding: 24px; } .mirror__verdict { flex-wrap: wrap; } }
 
+/* --- 5.11 Методика («Как считаем») --- */
+/* Формула — тёмная карточка, как блок «Есть вопрос?» и подвал: главный объект страницы */
+.dir-hero--method { grid-template-columns: minmax(0, 1fr) minmax(0, 720px); align-items: end; }
+.formula { display: flex; flex-direction: column; gap: 24px; padding: 40px; border-radius: var(--r-card); background: var(--c-dark); color: #fff; }
+.formula .mirror__label { color: var(--c-ink-4); }
+.formula__expr { font: 500 clamp(26px, 2.1vw, 40px)/1.25 var(--font-mono); text-wrap: balance; letter-spacing: -.01em; }
+.formula__expr span { color: var(--c-violet-soft); }
+.formula__legend { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; padding-top: 24px; border-top: 1px solid var(--c-dark-2); }
+.formula__legend dt { font: 500 var(--fs-body)/var(--lh-tight) var(--font-sans); margin-bottom: 6px; }
+.formula__legend dd { font: 400 var(--fs-sm)/var(--lh-sm) var(--font-sans); color: var(--c-ink-4); }
+.formula__result { display: flex; align-items: baseline; justify-content: space-between; padding: 16px 20px; border-radius: var(--r-inner); background: var(--c-dark-2); font: 400 var(--fs-mono)/24px var(--font-mono); color: var(--c-ink-4); }
+.formula__result b { font: 500 48px/1 var(--font-mono); color: #fff; }
+/* Шесть шагов: лента строк на подложке — номер | текст | справка */
+.ladder { list-style: none; display: flex; flex-direction: column; gap: 8px; padding: 16px; border-radius: var(--r-card); background: var(--c-well); }
+.ladder__step { display: grid; grid-template-columns: 96px minmax(0, 1fr) minmax(0, 440px); gap: 24px 32px; align-items: start; padding: 24px 32px 24px 24px; border-radius: var(--r-inner); background: var(--c-surface); }
+.ladder__step > div { display: flex; flex-direction: column; gap: 8px; max-width: 640px; }
+.ladder__step > div p { color: var(--c-ink-2); }
+.ladder__no { font: 500 32px/1 var(--font-mono); color: var(--c-violet-num); }
+.ladder__aside { list-style: none; display: flex; flex-direction: column; gap: 8px; padding: 16px 20px; border-radius: var(--r-inner); background: var(--c-surface-2); font: 400 var(--fs-sm)/var(--lh-sm) var(--font-sans); }
+.ladder__aside div, .ladder__aside li { display: flex; align-items: center; gap: 10px; }
+.ladder__aside dt { color: var(--c-ink-2); flex: 1; }
+.ladder__aside dd { font-weight: 500; }
+.ladder__aside--status span:not(.cmp__ico) { flex: 1; }
+.ladder__aside--status b { font-weight: 500; }
+.ladder__aside .cmp__ico svg { width: 20px; height: 20px; }
+/* Итог таблицы */
+.cmp__table tbody tr.cmp__total > * { font-weight: 500; background: var(--c-chrome); }
+.split--tight { margin-top: 24px; padding-left: 0; gap: 24px; grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr); align-items: stretch; }
+.split--tight > .panel { margin-top: 0; }
+.split__text--note { justify-content: center; gap: 16px; padding: 32px; border-radius: var(--r-card); background: var(--c-surface); }
+.pair--even { grid-template-columns: 1fr 1fr; }
+.pair .card p { color: var(--c-ink-2); }
+.dir--strip { margin-top: 24px; min-height: 280px; }
+@media (max-width: 1279px) { .ladder__step { grid-template-columns: 64px minmax(0, 1fr); } .ladder__aside { grid-column: 2; } .split--tight { grid-template-columns: 1fr; } }
+@media (max-width: 767px) { .formula { padding: 24px; } .formula__legend { grid-template-columns: 1fr; } .ladder__step { grid-template-columns: 1fr; padding: 20px; } .ladder__aside { grid-column: 1; } .pair--even { grid-template-columns: 1fr; } }
+
 /* --- Подсказка (tooltip) — одна на страницу, позиционируется скриптом у кнопки, не обрезается прокруткой таблиц ---
    Тёмная плашка как у кнопок и подвала: #171717, текст 15/20 белый, радиус 8, поля 12 × 16, ширина до 320, стрелка 8 */
 .tip { position: fixed; z-index: 100; max-width: min(320px, calc(100vw - 32px)); padding: 12px 16px; border-radius: var(--r-inner); background: var(--c-dark); color: #fff; font: 400 var(--fs-xs)/20px var(--font-sans); box-shadow: 0 12px 32px -12px rgba(23,20,43,.45); opacity: 0; visibility: hidden; transform: translateY(4px); transition: opacity .15s, transform .15s var(--ease), visibility 0s .15s; pointer-events: none; }
