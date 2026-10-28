@@ -467,6 +467,13 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 .cmp__table tbody tr:first-child > *:last-child { border-top-right-radius: var(--r-inner); }
 .cmp__table tbody tr:last-child > *:first-child { border-bottom-left-radius: var(--r-inner); }
 .cmp__table tbody tr:last-child > *:last-child { border-bottom-right-radius: var(--r-inner); }
+/* Первая колонка: название Medium + «Подробнее» справа (макет 1029:14343). Пояснение — в подсказке */
+.cmp__table tbody th { font-weight: 500; }
+.cmp__rowhead { display: flex; align-items: center; justify-content: space-between; gap: 8px 16px; flex-wrap: wrap; }
+.cmp__more { flex: none; font: 400 var(--fs-body)/24px var(--font-mono); color: var(--c-ink-4); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; cursor: help; transition: color .2s; }
+.cmp__more:hover, .cmp__more[aria-expanded="true"] { color: var(--c-violet); }
+.cmp__more:active { color: var(--c-violet-press); }
+.cmp--size { margin-top: 24px; }
 .cmp__ico { display: inline-flex; vertical-align: middle; }
 .cmp__ico svg { width: 24px; height: 24px; }
 .cmp__ico--yes { color: var(--c-ok); }
@@ -493,6 +500,13 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
   .cmp__table { min-width: 760px; }
   .cmp__col-feat { width: 180px; }
 }
+/* --- Подсказка (tooltip) — одна на страницу, позиционируется скриптом у кнопки, не обрезается прокруткой таблиц ---
+   Тёмная плашка как у кнопок и подвала: #171717, текст 15/20 белый, радиус 8, поля 12 × 16, ширина до 320, стрелка 8 */
+.tip { position: fixed; z-index: 100; max-width: min(320px, calc(100vw - 32px)); padding: 12px 16px; border-radius: var(--r-inner); background: var(--c-dark); color: #fff; font: 400 var(--fs-sm)/var(--lh-sm) var(--font-sans); box-shadow: 0 12px 32px -12px rgba(23,20,43,.45); opacity: 0; visibility: hidden; transform: translateY(4px); transition: opacity .15s, transform .15s var(--ease), visibility 0s .15s; pointer-events: none; }
+.tip.is-shown { opacity: 1; visibility: visible; transform: none; transition: opacity .15s, transform .15s var(--ease); }
+.tip::after { content: ""; position: absolute; left: var(--tip-arrow, 50%); top: 100%; width: 0; height: 0; margin-left: -8px; border: 8px solid transparent; border-top-color: var(--c-dark); }
+.tip[data-side="bottom"]::after { top: auto; bottom: 100%; border-top-color: transparent; border-bottom-color: var(--c-dark); }
+
 /* Первая секция под шапкой страницы — ближе, чем обычный отступ между секциями */
 .section--first { margin-top: var(--head-gap); }
 .card__more { margin: auto 0 0 -10px; width: fit-content; }
@@ -1259,6 +1273,51 @@ document.querySelectorAll(".dir[data-shader]").forEach((card) => {
   if (matchMedia("(hover: none)").matches) new IntersectionObserver(([en]) => { card.classList.toggle("is-live", en.isIntersecting); en.isIntersecting ? start() : stop(); }, { threshold: .5 }).observe(card);
   draw();
 });
+
+/* ---------- Подсказки: кнопка с data-tip ----------
+   Наведение и фокус показывают, уход и Esc прячут; на тач-экранах — по нажатию. Над кнопкой,
+   если сверху мало места — под ней. Связь для скринридеров — aria-describedby. */
+const tip = document.createElement("div");
+tip.className = "tip"; tip.id = "tip"; tip.setAttribute("role", "tooltip");
+document.body.appendChild(tip);
+let tipFor = null;
+function showTip(btn) {
+  tipFor = btn;
+  tip.textContent = btn.dataset.tip;
+  if (typeof typograf === "function") typograf(tip);
+  btn.setAttribute("aria-describedby", "tip"); btn.setAttribute("aria-expanded", "true");
+  tip.classList.add("is-shown");
+  const b = btn.getBoundingClientRect(), t = tip.getBoundingClientRect(), gap = 12;
+  const left = Math.min(Math.max(16, b.left + b.width / 2 - t.width / 2), innerWidth - t.width - 16);
+  const above = b.top - t.height - gap > 8;
+  tip.dataset.side = above ? "top" : "bottom";
+  tip.style.left = left + "px";
+  tip.style.top = (above ? b.top - t.height - gap : b.bottom + gap) + "px";
+  tip.style.setProperty("--tip-arrow", (b.left + b.width / 2 - left) + "px");
+}
+function hideTip() {
+  if (!tipFor) return;
+  tipFor.removeAttribute("aria-describedby"); tipFor.setAttribute("aria-expanded", "false");
+  tip.classList.remove("is-shown"); tipFor = null;
+}
+document.querySelectorAll("[data-tip]").forEach((btn) => {
+  btn.setAttribute("aria-expanded", "false");
+  btn.addEventListener("pointerenter", (e) => { if (e.pointerType === "mouse") showTip(btn); });
+  btn.addEventListener("pointerleave", (e) => { if (e.pointerType === "mouse") hideTip(); });
+  btn.addEventListener("focus", () => { if (btn.matches(":focus-visible")) showTip(btn); }); // только с клавиатуры: нажатие обработает click
+  btn.addEventListener("blur", hideTip);
+  let lastPointer = "mouse";
+  btn.addEventListener("pointerdown", (e) => { lastPointer = e.pointerType; });
+  btn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    if (lastPointer === "mouse") { showTip(btn); return; } // мышью подсказка уже открыта наведением
+    tipFor === btn ? hideTip() : showTip(btn);
+  });
+});
+document.addEventListener("click", hideTip);
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") hideTip(); });
+addEventListener("scroll", hideTip, { passive: true });
+document.querySelectorAll(".cmp").forEach((c) => c.addEventListener("scroll", hideTip, { passive: true }));
 
 /* ---------- Типограф: короткие слова не висят в конце строки ----------
    Правило: слово из 1–3 символов (предлог, союз, частица, число, «№1») связываем

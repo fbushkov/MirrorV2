@@ -133,6 +133,51 @@ document.querySelectorAll(".dir[data-shader]").forEach((card) => {
   draw();
 });
 
+/* ---------- Подсказки: кнопка с data-tip ----------
+   Наведение и фокус показывают, уход и Esc прячут; на тач-экранах — по нажатию. Над кнопкой,
+   если сверху мало места — под ней. Связь для скринридеров — aria-describedby. */
+const tip = document.createElement("div");
+tip.className = "tip"; tip.id = "tip"; tip.setAttribute("role", "tooltip");
+document.body.appendChild(tip);
+let tipFor = null;
+function showTip(btn) {
+  tipFor = btn;
+  tip.textContent = btn.dataset.tip;
+  if (typeof typograf === "function") typograf(tip);
+  btn.setAttribute("aria-describedby", "tip"); btn.setAttribute("aria-expanded", "true");
+  tip.classList.add("is-shown");
+  const b = btn.getBoundingClientRect(), t = tip.getBoundingClientRect(), gap = 12;
+  const left = Math.min(Math.max(16, b.left + b.width / 2 - t.width / 2), innerWidth - t.width - 16);
+  const above = b.top - t.height - gap > 8;
+  tip.dataset.side = above ? "top" : "bottom";
+  tip.style.left = left + "px";
+  tip.style.top = (above ? b.top - t.height - gap : b.bottom + gap) + "px";
+  tip.style.setProperty("--tip-arrow", (b.left + b.width / 2 - left) + "px");
+}
+function hideTip() {
+  if (!tipFor) return;
+  tipFor.removeAttribute("aria-describedby"); tipFor.setAttribute("aria-expanded", "false");
+  tip.classList.remove("is-shown"); tipFor = null;
+}
+document.querySelectorAll("[data-tip]").forEach((btn) => {
+  btn.setAttribute("aria-expanded", "false");
+  btn.addEventListener("pointerenter", (e) => { if (e.pointerType === "mouse") showTip(btn); });
+  btn.addEventListener("pointerleave", (e) => { if (e.pointerType === "mouse") hideTip(); });
+  btn.addEventListener("focus", () => { if (btn.matches(":focus-visible")) showTip(btn); }); // только с клавиатуры: нажатие обработает click
+  btn.addEventListener("blur", hideTip);
+  let lastPointer = "mouse";
+  btn.addEventListener("pointerdown", (e) => { lastPointer = e.pointerType; });
+  btn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    if (lastPointer === "mouse") { showTip(btn); return; } // мышью подсказка уже открыта наведением
+    tipFor === btn ? hideTip() : showTip(btn);
+  });
+});
+document.addEventListener("click", hideTip);
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") hideTip(); });
+addEventListener("scroll", hideTip, { passive: true });
+document.querySelectorAll(".cmp").forEach((c) => c.addEventListener("scroll", hideTip, { passive: true }));
+
 /* ---------- Типограф: короткие слова не висят в конце строки ----------
    Правило: слово из 1–3 символов (предлог, союз, частица, число, «№1») связываем
    неразрывным пробелом со следующим словом, а тире — с предыдущим.
