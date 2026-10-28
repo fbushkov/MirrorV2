@@ -672,6 +672,54 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 @media (max-width: 1279px) { .ladder__step { grid-template-columns: 64px minmax(0, 1fr); } .ladder__aside { grid-column: 2; } .split--tight { grid-template-columns: 1fr; } }
 @media (max-width: 767px) { .formula { padding: 24px; } .formula__legend { grid-template-columns: 1fr; } .ladder__step { grid-template-columns: 1fr; padding: 20px; } .ladder__aside { grid-column: 1; } .pair--even { grid-template-columns: 1fr; } }
 
+/* --- 5.12 Методика: карточки показателей, шкалы рынка, калькулятор --- */
+.mcards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+.mcard { display: flex; flex-direction: column; align-items: flex-start; gap: 20px; padding: 32px; border-radius: var(--r-card); background: var(--c-well); }
+.mcard__q { margin-top: 4px; color: var(--c-ink-2); }
+.mcard__vis { align-self: stretch; display: flex; flex-direction: column; justify-content: center; min-height: 340px; padding: 24px; border-radius: var(--r-inner); background: var(--c-surface); }
+.mcard__cap { text-align: center; font: 400 var(--fs-sm)/var(--lh-sm) var(--font-sans); color: var(--c-ink-2); }
+.mcard__text { margin-top: auto; font: 400 var(--fs-sm)/var(--lh-sm) var(--font-sans); color: var(--c-ink-2); }
+.gauge { width: 100%; height: 240px; }
+.gauge--big { height: 300px; }
+/* Слепые зоны: тема, тон, «в ваших текстах — ни разу», доля */
+.spots { list-style: none; display: flex; flex-direction: column; gap: 20px; }
+.spots__head { display: flex; justify-content: space-between; gap: 12px; }
+.spots__head b { font-weight: 500; }
+.spots__head span, .spots__meta { font: 400 var(--fs-sm)/var(--lh-sm) var(--font-sans); color: var(--c-ink-2); }
+.spots__meta { display: flex; flex-wrap: wrap; gap: 4px 12px; margin-top: 6px; }
+.spots__tone { display: inline-flex; align-items: center; gap: 6px; font-weight: 500; }
+.spots__tone svg { width: 18px; height: 18px; }
+.spots__tone--neg { color: var(--c-bad); }
+.spots__tone--mix { color: #d08a1e; }
+.blind__bar i.is-neg { background: rgba(219,79,79,.55); }
+.blind__bar i.is-mix { background: rgba(208,138,30,.55); }
+/* Место в отрасли: шкала «хуже — медиана — лучше рынка», точка — ваш перцентиль */
+.tracks { list-style: none; display: flex; flex-direction: column; gap: 18px; }
+.tracks li { display: grid; grid-template-columns: 120px minmax(0, 1fr) 32px; align-items: center; gap: 16px; }
+.tracks b { font: 500 var(--fs-body)/1 var(--font-mono); text-align: right; }
+.tracks__bar { position: relative; height: 8px; border-radius: var(--r-pill); background: linear-gradient(90deg, rgba(219,79,79,.25), rgba(236,235,241,1) 50%, rgba(59,153,82,.3)); }
+.tracks__bar::before { content: ""; position: absolute; left: 50%; top: -5px; bottom: -5px; width: 1px; background: var(--c-ink-4); }
+.tracks__bar i { position: absolute; top: 50%; width: 16px; height: 16px; margin: -8px 0 0 -8px; border-radius: 50%; background: var(--c-violet); box-shadow: 0 0 0 3px #fff; }
+.tracks__scale { display: flex; justify-content: space-between; margin: 14px 48px 0 136px; font: 400 var(--fs-xs)/18px var(--font-sans); color: var(--c-ink-4); }
+/* Калькулятор */
+.calc { display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: 24px; align-items: start; }
+.calc__col-feat { width: 30%; }
+.calc .cmp__status { white-space: nowrap; }
+.calc__item { display: flex; align-items: center; gap: 12px; cursor: pointer; font-weight: 500; }
+.calc__item input { appearance: none; width: 20px; height: 20px; flex: none; border-radius: var(--r-check); background: var(--c-surface-3); border: 1px solid var(--c-line); display: grid; place-items: center; cursor: pointer; transition: background .2s, border-color .2s; }
+.calc__item input:hover { border-color: var(--c-line-hover); }
+.calc__item input:checked { background: var(--c-violet); border-color: var(--c-violet); }
+.calc__item input:checked::after { content: ""; width: 10px; height: 6px; border: 2px solid #fff; border-top: 0; border-right: 0; transform: translateY(-1px) rotate(-45deg); }
+.calc__item input:focus-visible { outline: 2px solid var(--c-violet); outline-offset: 3px; }
+.calc tr.is-off > * { color: var(--c-ink-4); }
+.calc tr.is-off .cmp__ico { opacity: .4; }
+.calc__result { position: sticky; top: 120px; margin-top: 0; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.calc__reset { color: var(--c-ink-2); }
+.mcard { min-width: 0; }
+.mcard .badge { max-width: 100%; height: auto; min-height: var(--h-badge); white-space: normal; }
+@media (max-width: 1279px) { .mcards { grid-template-columns: minmax(0, 1fr); } .calc { grid-template-columns: 1fr; } .calc__result { position: static; } }
+@media (max-width: 767px) { .mcard { padding: 20px; } .tracks li { grid-template-columns: 96px minmax(0, 1fr) 28px; gap: 10px; } .tracks__scale { margin-left: 106px; margin-right: 38px; } }
+
 /* --- Подсказка (tooltip) — одна на страницу, позиционируется скриптом у кнопки, не обрезается прокруткой таблиц ---
    Тёмная плашка как у кнопок и подвала: #171717, текст 15/20 белый, радиус 8, поля 12 × 16, ширина до 320, стрелка 8 */
 .tip { position: fixed; z-index: 100; max-width: min(320px, calc(100vw - 32px)); padding: 12px 16px; border-radius: var(--r-inner); background: var(--c-dark); color: #fff; font: 400 var(--fs-xs)/20px var(--font-sans); box-shadow: 0 12px 32px -12px rgba(23,20,43,.45); opacity: 0; visibility: hidden; transform: translateY(4px); transition: opacity .15s, transform .15s var(--ease), visibility 0s .15s; pointer-events: none; }
@@ -918,6 +966,70 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
     </div>
   </section>
 
+  <!-- ============ ТРИ ПОКАЗАТЕЛЯ: центр + три карточки с наглядной схемой ============ -->
+  <section class="section" id="metrics" aria-labelledby="m-title">
+    <div class="section__head section__head--center">
+      <h2 class="headline" id="m-title">У каждого показателя<br><span class="dim">своя точка отсчёта</span></h2>
+      <p class="lead">Индекс культуры меряет честность. Но честно можно обещать и мало. Поэтому рядом — ещё два показателя. В одну цифру мы их не смешиваем.</p>
+    </div>
+    <div class="mcards">
+      <article class="mcard">
+        <span class="badge badge--purple">относительно ваших обещаний</span>
+        <div><h3 class="card__title">Индекс культуры</h3><p class="mcard__q">Совпадают ли слова и дела?</p></div>
+        <div class="mcard__vis"><div class="gauge" id="g-index" role="img" aria-label="Индекс культуры 65 из 100"></div><p class="mcard__cap">Подтверждено 5 из 8 обещаний</p></div>
+        <p class="mcard__text">Доля обещаний, которые подтверждает опыт людей: по отзывам, соцсетям, медиа и ответам нейросетей.</p>
+      </article>
+      <article class="mcard">
+        <span class="badge badge--purple">относительно того, что обсуждают люди</span>
+        <div><h3 class="card__title">Слепые зоны</h3><p class="mcard__q">О чём говорят, а вы молчите?</p></div>
+        <div class="mcard__vis">
+          <ul class="spots">
+            <li><div class="spots__head"><b>Переработки</b><span>18% упоминаний</span></div><div class="spots__meta"><span class="spots__tone spots__tone--neg"><span class="cmp__ico cmp__ico--no"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g>
+<path d="M15 9L9 15M9 9L15 15M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+</g>
+</svg></span>чаще негатив</span><span>в ваших текстах — ни разу</span></div><div class="blind__bar"><i class="is-neg" style="width:72%"></i></div></li>
+            <li><div class="spots__head"><b>Руководители</b><span>14% упоминаний</span></div><div class="spots__meta"><span class="spots__tone spots__tone--mix"><span class="cmp__ico cmp__ico--warn"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 8V12M12 16H12.01M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/></svg></span>по-разному</span><span>в ваших текстах — ни разу</span></div><div class="blind__bar"><i class="is-mix" style="width:56%"></i></div></li>
+            <li><div class="spots__head"><b>Нагрузка и планы</b><span>11% упоминаний</span></div><div class="spots__meta"><span class="spots__tone spots__tone--neg"><span class="cmp__ico cmp__ico--no"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g>
+<path d="M15 9L9 15M9 9L15 15M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+</g>
+</svg></span>чаще негатив</span><span>в ваших текстах — ни разу</span></div><div class="blind__bar"><i class="is-neg" style="width:44%"></i></div></li>
+          </ul>
+        </div>
+        <p class="mcard__text">Темы, которых нет в ваших текстах, хотя люди обсуждают их постоянно. Закрывают лазейку «пообещать поменьше, чтобы индекс был выше».</p>
+      </article>
+      <article class="mcard">
+        <span class="badge badge--purple">относительно рынка</span>
+        <div><h3 class="card__title">Место в отрасли</h3><p class="mcard__q">Насколько хороши условия?</p></div>
+        <div class="mcard__vis">
+          <ul class="tracks"><li><span>Коллектив</span><div class="tracks__bar"><i style="left:82%"></i></div><b>82</b></li><li><span>Стабильность</span><div class="tracks__bar"><i style="left:77%"></i></div><b>77</b></li><li><span>Развитие</span><div class="tracks__bar"><i style="left:71%"></i></div><b>71</b></li><li><span>Руководство</span><div class="tracks__bar"><i style="left:58%"></i></div><b>58</b></li><li><span>Нагрузка</span><div class="tracks__bar"><i style="left:41%"></i></div><b>41</b></li><li><span>Зарплата</span><div class="tracks__bar"><i style="left:34%"></i></div><b>34</b></li></ul>
+          <div class="tracks__scale"><span>хуже рынка</span><span>медиана</span><span>лучше рынка</span></div>
+        </div>
+        <p class="mcard__text">Зарплата, развитие, руководство, нагрузка — в сравнении с работодателями отрасли и региона. Считаем, когда в базе отрасли 30 и больше компаний.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============ МАТРИЦА: split-шапка + график с зонами ============ -->
+  <section class="section" id="matrix" aria-labelledby="mx-title">
+    <div class="section__head section__head--split">
+      <span class="eyebrow">Как читать вместе</span>
+      <div class="headline-block"><h2 class="headline" id="mx-title">Честность и условия<br><span class="dim">на одном поле</span></h2><p class="lead">По горизонтали — индекс культуры, по вертикали — место в отрасли. Где вы стоите, подсказывает, что делать дальше.</p></div>
+    </div>
+    <div class="panel">
+      <div class="matrix">
+        <div class="chart chart--tall" id="ch-matrix" role="img" aria-label="Матрица: Банк N в зоне «Сильный и честный»"></div>
+        <ul class="zones">
+          <li class="is-you"><b>Сильный и честный</b><p>Условия выше рынка, обещания подтверждаются. Рассказывайте громче.</p></li>
+          <li><b>Честно, но слабо</b><p>Обещания честные, но условия хуже рынка. Улучшайте условия.</p></li>
+          <li><b>Обещаете не то</b><p>Условия хорошие, но в текстах — то, что не подтверждается. Перестройте обещания вокруг сильных сторон.</p></li>
+          <li><b>Переобещаете</b><p>Условия ниже рынка, обещания не подтверждаются. Главный риск для доверия.</p></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
   <!-- ============ ШЕСТЬ ШАГОВ: split-шапка + вертикальная лента ============ -->
   <section class="section" id="steps" aria-labelledby="steps-title">
     <div class="section__head section__head--split">
@@ -948,56 +1060,34 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
     </ol>
   </section>
 
-  <!-- ============ ПРИМЕР РАСЧЁТА: центр + таблица + график недобора ============ -->
+  <!-- ============ КАЛЬКУЛЯТОР: центр + таблица с галочками | шкала индекса ============ -->
   <section class="section" id="example" aria-labelledby="ex-title">
     <div class="section__head section__head--center">
-      <h2 class="headline" id="ex-title">Пример расчёта<br><span class="dim">на условном «Банке N»</span></h2>
-      <p class="lead">Восемь обещаний из вакансий и соцсетей. Вклад — вес × доля подтверждения. Сумма вкладов — индекс.</p>
+      <h2 class="headline" id="ex-title">Что будет, если<br><span class="dim">перестать обещать лишнее</span></h2>
+      <p class="lead">Условный «Банк N». Снимите галочку — обещание уйдёт из расчёта, а веса остальных пересчитаются.</p>
     </div>
-    <div class="cmp" role="region" aria-labelledby="ex-t" tabindex="0">
-      <table class="cmp__table">
-        <colgroup><col class="cmp__col-feat"><col><col><col><col></colgroup>
-        <thead><tr><th scope="col" id="ex-t" class="cmp__title">Обещание</th><th scope="col"><span class="cmp__cap">Вес</span></th><th scope="col"><span class="cmp__cap">Подтверждено</span></th><th scope="col"><span class="cmp__cap">Вклад в индекс</span></th><th scope="col"><span class="cmp__cap">Статус</span></th></tr></thead>
-        <tbody>
-            <tr><th scope="row"><div class="cmp__rowhead"><span>Официальное оформление</span></div></th><td>10%</td><td>95%</td><td>9,50</td><td><span class="cmp__status"><span class="cmp__ico cmp__ico--yes"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g>
-<path d="M9 12L11 14L15 10M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
-</g>
-</svg></span>Подтверждается</span></td></tr>
-            <tr><th scope="row"><div class="cmp__rowhead"><span>Справедливая зарплата</span></div></th><td>22%</td><td>27%</td><td>5,94</td><td><span class="cmp__status"><span class="cmp__ico cmp__ico--no"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g>
-<path d="M15 9L9 15M9 9L15 15M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
-</g>
-</svg></span>Не подтверждается</span></td></tr>
-            <tr><th scope="row"><div class="cmp__rowhead"><span>Карьерный рост</span></div></th><td>15%</td><td>80%</td><td>12,00</td><td><span class="cmp__status"><span class="cmp__ico cmp__ico--yes"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g>
-<path d="M9 12L11 14L15 10M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
-</g>
-</svg></span>Подтверждается</span></td></tr>
-            <tr><th scope="row"><div class="cmp__rowhead"><span>Дружный коллектив</span></div></th><td>14%</td><td>91%</td><td>12,74</td><td><span class="cmp__status"><span class="cmp__ico cmp__ico--yes"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g>
-<path d="M9 12L11 14L15 10M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
-</g>
-</svg></span>Подтверждается</span></td></tr>
-            <tr><th scope="row"><div class="cmp__rowhead"><span>Гибкий формат</span></div></th><td>9%</td><td>22%</td><td>1,98</td><td><span class="cmp__status"><span class="cmp__ico cmp__ico--no"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g>
-<path d="M15 9L9 15M9 9L15 15M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
-</g>
-</svg></span>Не подтверждается</span></td></tr>
-            <tr><th scope="row"><div class="cmp__rowhead"><span>Ежегодная индексация</span></div></th><td>10%</td><td>48%</td><td>4,80</td><td><span class="cmp__status"><span class="cmp__ico cmp__ico--warn"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 8V12M12 16H12.01M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/></svg></span>Частично</span></td></tr>
-            <tr><th scope="row"><div class="cmp__rowhead"><span>Обучение за счёт компании</span></div></th><td>12%</td><td>88%</td><td>10,56</td><td><span class="cmp__status"><span class="cmp__ico cmp__ico--yes"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g>
-<path d="M9 12L11 14L15 10M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
-</g>
-</svg></span>Подтверждается</span></td></tr>
-            <tr><th scope="row"><div class="cmp__rowhead"><span>ДМС</span></div></th><td>8%</td><td>92%</td><td>7,36</td><td><span class="cmp__status"><span class="cmp__ico cmp__ico--yes"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g>
-<path d="M9 12L11 14L15 10M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
-</g>
-</svg></span>Подтверждается</span></td></tr>
-            <tr class="cmp__total"><th scope="row"><div class="cmp__rowhead"><span>Индекс культуры</span></div></th><td>100%</td><td></td><td>64,88 ≈ 65</td><td></td></tr>
-        </tbody>
-      </table>
+    <div class="calc">
+      <div class="cmp" role="region" aria-labelledby="ex-t" tabindex="0">
+        <table class="cmp__table">
+          <colgroup><col class="calc__col-feat"><col><col><col><col></colgroup>
+          <thead><tr><th scope="col" id="ex-t" class="cmp__title">Обещания «Банка N»</th><th scope="col"><span class="cmp__cap">Вес</span></th><th scope="col"><span class="cmp__cap">Подтверждают</span></th><th scope="col"><span class="cmp__cap">Статус</span></th><th scope="col"><span class="cmp__cap">Вклад</span></th></tr></thead>
+          <tbody>
+            <tr data-w="10" data-v="95"><th scope="row"><label class="calc__item"><input type="checkbox" checked><span>Официальное оформление</span></label></th><td>10%</td><td>95%</td><td class="calc__st"></td><td class="calc__c"></td></tr>
+            <tr data-w="22" data-v="27"><th scope="row"><label class="calc__item"><input type="checkbox" checked><span>Справедливая зарплата</span></label></th><td>22%</td><td>27%</td><td class="calc__st"></td><td class="calc__c"></td></tr>
+            <tr data-w="15" data-v="80"><th scope="row"><label class="calc__item"><input type="checkbox" checked><span>Карьерный рост</span></label></th><td>15%</td><td>80%</td><td class="calc__st"></td><td class="calc__c"></td></tr>
+            <tr data-w="14" data-v="91"><th scope="row"><label class="calc__item"><input type="checkbox" checked><span>Дружный коллектив</span></label></th><td>14%</td><td>91%</td><td class="calc__st"></td><td class="calc__c"></td></tr>
+            <tr data-w="9" data-v="22"><th scope="row"><label class="calc__item"><input type="checkbox" checked><span>Гибкий формат</span></label></th><td>9%</td><td>22%</td><td class="calc__st"></td><td class="calc__c"></td></tr>
+            <tr data-w="10" data-v="48"><th scope="row"><label class="calc__item"><input type="checkbox" checked><span>Ежегодная индексация</span></label></th><td>10%</td><td>48%</td><td class="calc__st"></td><td class="calc__c"></td></tr>
+            <tr data-w="12" data-v="88"><th scope="row"><label class="calc__item"><input type="checkbox" checked><span>Обучение за счёт компании</span></label></th><td>12%</td><td>88%</td><td class="calc__st"></td><td class="calc__c"></td></tr>
+            <tr data-w="8" data-v="92"><th scope="row"><label class="calc__item"><input type="checkbox" checked><span>ДМС</span></label></th><td>8%</td><td>92%</td><td class="calc__st"></td><td class="calc__c"></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <aside class="calc__result panel" aria-live="polite">
+        <div class="gauge gauge--big" id="g-calc" role="img" aria-label="Индекс культуры"></div>
+        <p class="mcard__cap" id="calc-conf">Подтверждено 5 из 8</p>
+        <button class="btn-link calc__reset" type="button" id="calc-reset">Вернуть все обещания</button>
+      </aside>
     </div>
     <div class="split split--tight">
       <div class="panel">
@@ -1009,19 +1099,6 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
         <p class="metric-row__q">Почти половину недобора даёт одно обещание — «справедливая зарплата»</p>
         <p class="lead">Его можно исправить вилками в вакансиях и системой грейдов или временно убрать из текстов, пока оклады не пересмотрены. Убрать обещание честнее, чем держать неподтверждённое.</p>
       </div>
-    </div>
-  </section>
-
-  <!-- ============ ТРИ ПОКАЗАТЕЛЯ: stack-шапка + строки ============ -->
-  <section class="section" id="metrics" aria-labelledby="m-title">
-    <div class="section__head">
-      <span class="eyebrow">Рядом с индексом · ещё два показателя</span>
-      <div class="headline-block"><h2 class="headline" id="m-title">Честно можно обещать<br><span class="dim">и мало</span></h2><p class="lead">Поэтому рядом с индексом — слепые зоны и место в отрасли. У каждого своя точка отсчёта, в одну цифру их не смешиваем.</p></div>
-    </div>
-    <div class="metric-rows">
-      <article class="metric-row"><div class="metric-row__num"><span>65</span><small>индекс культуры</small></div><div class="metric-row__body"><span class="step__kicker">Точка отсчёта · ваши обещания</span><h3 class="metric-row__q">Совпадают ли слова и дела?</h3><p>Доля обещаний, которые подтверждает опыт людей: по отзывам, соцсетям, медиа и ответам нейросетей.</p></div></article>
-      <article class="metric-row"><div class="metric-row__num"><span>4</span><small>слепые зоны</small></div><div class="metric-row__body"><span class="step__kicker">Точка отсчёта · что обсуждают люди</span><h3 class="metric-row__q">О чём говорят, а вы молчите?</h3><p>Темы, которых нет в ваших текстах, хотя люди обсуждают их постоянно. Закрывают лазейку «пообещать поменьше, чтобы индекс был выше».</p></div></article>
-      <article class="metric-row"><div class="metric-row__num"><span>62</span><small>перцентиль в отрасли</small></div><div class="metric-row__body"><span class="step__kicker">Точка отсчёта · рынок</span><h3 class="metric-row__q">Насколько хороши условия?</h3><p>Зарплата, развитие, руководство, нагрузка — в сравнении с работодателями отрасли и региона. Считаем, когда в базе отрасли 30 и больше компаний.</p></div></article>
     </div>
   </section>
 
@@ -1051,6 +1128,15 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
     <div class="faq" id="faq-list" data-groups="brand"></div>
   </section>
   </main>
+<template id="tpl-ok"><span class="cmp__ico cmp__ico--yes"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g>
+<path d="M9 12L11 14L15 10M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+</g>
+</svg></span></template><template id="tpl-warn"><span class="cmp__ico cmp__ico--warn"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 8V12M12 16H12.01M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/></svg></span></template><template id="tpl-bad"><span class="cmp__ico cmp__ico--no"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g>
+<path d="M15 9L9 15M9 9L15 15M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+</g>
+</svg></span></template>
 <script>
 
 /*
@@ -1145,6 +1231,60 @@ mountChart(document.getElementById("ch-short"), {
   series: [{ type: "bar", barWidth: 18, data: SH.map((d, i) => ({ value: d[1], itemStyle: { color: i === 0 ? CH.violet : CH.violetSoft, borderRadius: [0, 6, 6, 0] } })),
     label: { show: true, position: "right", color: CH.ink, fontFamily: CH.font, fontSize: 14, formatter: (p) => "−" + String(p.value).replace(".", ",") } }],
 });
+function gauge(el, value, big) {
+  return mountChart(el, { series: [{
+    type: "gauge", startAngle: 215, endAngle: -35, min: 0, max: 100, radius: "92%", center: ["50%", "56%"],
+    progress: { show: true, width: big ? 16 : 14, roundCap: true, itemStyle: { color: CH.violet } },
+    axisLine: { roundCap: true, lineStyle: { width: big ? 16 : 14, color: [[1, CH.grid]] } },
+    axisTick: { show: false }, splitLine: { show: false }, axisLabel: { show: false }, pointer: { show: false }, anchor: { show: false },
+    title: { show: true, offsetCenter: [0, "34%"], color: CH.ink3, fontFamily: CH.font, fontSize: 14 },
+    detail: { valueAnimation: true, offsetCenter: [0, "-2%"], color: CH.ink, fontFamily: "JetBrains Mono, monospace", fontWeight: 500, fontSize: big ? 64 : 56, formatter: (v) => Math.round(v) },
+    data: [{ value, name: "индекс культуры" }],
+  }] });
+}
+gauge(document.getElementById("g-index"), 65);
+const gCalc = gauge(document.getElementById("g-calc"), 65, true);
+const MX = [{ name: "Банк N", x: 62, y: 65, you: true }, { name: "Банк А", x: 74, y: 72 }, { name: "Банк Б", x: 38, y: 54 }];
+mountChart(document.getElementById("ch-matrix"), {
+  grid: { left: 56, right: 24, top: 16, bottom: 48 },
+  xAxis: { type: "value", min: 20, max: 90, interval: 10, name: "честность", nameLocation: "middle", nameGap: 32, nameTextStyle: { color: CH.ink3, fontSize: 14 }, ...chAxis },
+  yAxis: { type: "value", min: 40, max: 80, interval: 10, name: "условия", nameLocation: "middle", nameGap: 36, nameTextStyle: { color: CH.ink3, fontSize: 14 }, ...chAxis },
+  tooltip: { ...chTooltip, formatter: (p) => `${MX[p.dataIndex].name}: честность ${MX[p.dataIndex].x}, условия ${MX[p.dataIndex].y}` },
+  series: [{
+    type: "scatter", symbolSize: (v, p) => (MX[p.dataIndex].you ? 20 : 14),
+    data: MX.map((m) => ({ value: [m.x, m.y], itemStyle: { color: m.you ? CH.violet : CH.ink4, borderColor: "#fff", borderWidth: 2 } })),
+    label: { show: true, position: "right", distance: 8, formatter: (p) => MX[p.dataIndex].name, color: CH.ink, fontSize: 15, fontFamily: CH.font },
+    markLine: { silent: true, symbol: "none", lineStyle: { color: CH.ink4, type: [4, 4] }, label: { show: false }, data: [{ xAxis: 50 }, { yAxis: 60 }] },
+    markArea: { silent: true, data: [
+      [{ coord: [50, 60], itemStyle: { color: "rgba(59,153,82,.07)" }, name: "Сильный и честный", label: { position: "insideTopRight", color: CH.ok, fontFamily: CH.font, fontSize: 13 } }, { coord: [90, 80] }],
+      [{ coord: [20, 60], itemStyle: { color: "rgba(0,0,0,0)" }, name: "Обещаете не то", label: { position: "insideTopLeft", color: CH.ink3, fontFamily: CH.font, fontSize: 13 } }, { coord: [50, 80] }],
+      [{ coord: [50, 40], itemStyle: { color: "rgba(0,0,0,0)" }, name: "Честно, но слабо", label: { position: "insideBottomRight", color: CH.ink3, fontFamily: CH.font, fontSize: 13 } }, { coord: [90, 60] }],
+      [{ coord: [20, 40], itemStyle: { color: "rgba(219,79,79,.07)" }, name: "Переобещаете", label: { position: "insideBottomLeft", color: CH.bad, fontFamily: CH.font, fontSize: 13 } }, { coord: [50, 60] }],
+    ] },
+  }],
+});
+/* Калькулятор: индекс = Σ (вес / Σ весов выбранных) × % подтверждения */
+const ICO = { ok: document.querySelector("#tpl-ok").innerHTML, warn: document.querySelector("#tpl-warn").innerHTML, bad: document.querySelector("#tpl-bad").innerHTML };
+const calcRows = [...document.querySelectorAll(".calc tbody tr")];
+function recalc() {
+  const on = calcRows.filter((r) => r.querySelector("input").checked);
+  const total = on.reduce((s, r) => s + +r.dataset.w, 0);
+  let idx = 0, conf = 0;
+  calcRows.forEach((r) => {
+    const w = +r.dataset.w, v = +r.dataset.v, active = r.querySelector("input").checked;
+    const st = v >= 60 ? ["ok", "Подтверждается"] : v >= 40 ? ["warn", "Частично"] : ["bad", "Не подтверждается"];
+    r.querySelector(".calc__st").innerHTML = `<span class="cmp__status">${ICO[st[0]]}${st[1]}</span>`;
+    const c = active && total ? (w / total) * v : 0;
+    r.querySelector(".calc__c").textContent = active ? c.toFixed(1).replace(".", ",") : "—";
+    r.classList.toggle("is-off", !active);
+    if (active) { idx += c; if (v >= 60) conf++; }
+  });
+  gCalc.setOption({ series: [{ data: [{ value: Math.round(idx), name: "индекс культуры" }] }] });
+  document.getElementById("calc-conf").textContent = `Подтверждено ${conf} из ${on.length}`;
+}
+calcRows.forEach((r) => r.querySelector("input").addEventListener("change", recalc));
+document.getElementById("calc-reset").addEventListener("click", () => { calcRows.forEach((r) => (r.querySelector("input").checked = true)); recalc(); });
+recalc();
 </script>
 
   <footer class="footer">

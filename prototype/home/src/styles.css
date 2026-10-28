@@ -662,6 +662,54 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 @media (max-width: 1279px) { .ladder__step { grid-template-columns: 64px minmax(0, 1fr); } .ladder__aside { grid-column: 2; } .split--tight { grid-template-columns: 1fr; } }
 @media (max-width: 767px) { .formula { padding: 24px; } .formula__legend { grid-template-columns: 1fr; } .ladder__step { grid-template-columns: 1fr; padding: 20px; } .ladder__aside { grid-column: 1; } .pair--even { grid-template-columns: 1fr; } }
 
+/* --- 5.12 Методика: карточки показателей, шкалы рынка, калькулятор --- */
+.mcards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+.mcard { display: flex; flex-direction: column; align-items: flex-start; gap: 20px; padding: 32px; border-radius: var(--r-card); background: var(--c-well); }
+.mcard__q { margin-top: 4px; color: var(--c-ink-2); }
+.mcard__vis { align-self: stretch; display: flex; flex-direction: column; justify-content: center; min-height: 340px; padding: 24px; border-radius: var(--r-inner); background: var(--c-surface); }
+.mcard__cap { text-align: center; font: 400 var(--fs-sm)/var(--lh-sm) var(--font-sans); color: var(--c-ink-2); }
+.mcard__text { margin-top: auto; font: 400 var(--fs-sm)/var(--lh-sm) var(--font-sans); color: var(--c-ink-2); }
+.gauge { width: 100%; height: 240px; }
+.gauge--big { height: 300px; }
+/* Слепые зоны: тема, тон, «в ваших текстах — ни разу», доля */
+.spots { list-style: none; display: flex; flex-direction: column; gap: 20px; }
+.spots__head { display: flex; justify-content: space-between; gap: 12px; }
+.spots__head b { font-weight: 500; }
+.spots__head span, .spots__meta { font: 400 var(--fs-sm)/var(--lh-sm) var(--font-sans); color: var(--c-ink-2); }
+.spots__meta { display: flex; flex-wrap: wrap; gap: 4px 12px; margin-top: 6px; }
+.spots__tone { display: inline-flex; align-items: center; gap: 6px; font-weight: 500; }
+.spots__tone svg { width: 18px; height: 18px; }
+.spots__tone--neg { color: var(--c-bad); }
+.spots__tone--mix { color: #d08a1e; }
+.blind__bar i.is-neg { background: rgba(219,79,79,.55); }
+.blind__bar i.is-mix { background: rgba(208,138,30,.55); }
+/* Место в отрасли: шкала «хуже — медиана — лучше рынка», точка — ваш перцентиль */
+.tracks { list-style: none; display: flex; flex-direction: column; gap: 18px; }
+.tracks li { display: grid; grid-template-columns: 120px minmax(0, 1fr) 32px; align-items: center; gap: 16px; }
+.tracks b { font: 500 var(--fs-body)/1 var(--font-mono); text-align: right; }
+.tracks__bar { position: relative; height: 8px; border-radius: var(--r-pill); background: linear-gradient(90deg, rgba(219,79,79,.25), rgba(236,235,241,1) 50%, rgba(59,153,82,.3)); }
+.tracks__bar::before { content: ""; position: absolute; left: 50%; top: -5px; bottom: -5px; width: 1px; background: var(--c-ink-4); }
+.tracks__bar i { position: absolute; top: 50%; width: 16px; height: 16px; margin: -8px 0 0 -8px; border-radius: 50%; background: var(--c-violet); box-shadow: 0 0 0 3px #fff; }
+.tracks__scale { display: flex; justify-content: space-between; margin: 14px 48px 0 136px; font: 400 var(--fs-xs)/18px var(--font-sans); color: var(--c-ink-4); }
+/* Калькулятор */
+.calc { display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: 24px; align-items: start; }
+.calc__col-feat { width: 30%; }
+.calc .cmp__status { white-space: nowrap; }
+.calc__item { display: flex; align-items: center; gap: 12px; cursor: pointer; font-weight: 500; }
+.calc__item input { appearance: none; width: 20px; height: 20px; flex: none; border-radius: var(--r-check); background: var(--c-surface-3); border: 1px solid var(--c-line); display: grid; place-items: center; cursor: pointer; transition: background .2s, border-color .2s; }
+.calc__item input:hover { border-color: var(--c-line-hover); }
+.calc__item input:checked { background: var(--c-violet); border-color: var(--c-violet); }
+.calc__item input:checked::after { content: ""; width: 10px; height: 6px; border: 2px solid #fff; border-top: 0; border-right: 0; transform: translateY(-1px) rotate(-45deg); }
+.calc__item input:focus-visible { outline: 2px solid var(--c-violet); outline-offset: 3px; }
+.calc tr.is-off > * { color: var(--c-ink-4); }
+.calc tr.is-off .cmp__ico { opacity: .4; }
+.calc__result { position: sticky; top: 120px; margin-top: 0; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.calc__reset { color: var(--c-ink-2); }
+.mcard { min-width: 0; }
+.mcard .badge { max-width: 100%; height: auto; min-height: var(--h-badge); white-space: normal; }
+@media (max-width: 1279px) { .mcards { grid-template-columns: minmax(0, 1fr); } .calc { grid-template-columns: 1fr; } .calc__result { position: static; } }
+@media (max-width: 767px) { .mcard { padding: 20px; } .tracks li { grid-template-columns: 96px minmax(0, 1fr) 28px; gap: 10px; } .tracks__scale { margin-left: 106px; margin-right: 38px; } }
+
 /* --- Подсказка (tooltip) — одна на страницу, позиционируется скриптом у кнопки, не обрезается прокруткой таблиц ---
    Тёмная плашка как у кнопок и подвала: #171717, текст 15/20 белый, радиус 8, поля 12 × 16, ширина до 320, стрелка 8 */
 .tip { position: fixed; z-index: 100; max-width: min(320px, calc(100vw - 32px)); padding: 12px 16px; border-radius: var(--r-inner); background: var(--c-dark); color: #fff; font: 400 var(--fs-xs)/20px var(--font-sans); box-shadow: 0 12px 32px -12px rgba(23,20,43,.45); opacity: 0; visibility: hidden; transform: translateY(4px); transition: opacity .15s, transform .15s var(--ease), visibility 0s .15s; pointer-events: none; }
