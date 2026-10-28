@@ -44,6 +44,10 @@
   --c-outline: #ecebf1;       /* обводка пункта FAQ при наведении (2px) */
   --c-outline-2: #e0dee9;     /* кольцо иконки FAQ при наведении */
   --c-menu-hover: #e1e0e8;    /* карточка в панели меню при наведении */
+  --c-zebra: #faf9fe;         /* чётные строки таблиц (макет «Цена») */
+  --c-ok: #3b9952;            /* иконка «входит» в таблицах */
+  --c-bad: #db4f4f;           /* иконка «не нужно / не предусмотрено» */
+  --c-na: #949494;            /* иконка «не входит» (минус) */
   /* Бейджи (переменные из макета) */
   --badge-soft-bg: rgba(0,0,0,.07);
   --badge-soft-text: #3d3d3d;
@@ -129,6 +133,7 @@ img, svg { display: block; }
 /* Badge — неинтерактивный, h24, px6+2, текст 14/16 Medium */
 .badges { display: flex; flex-wrap: wrap; gap: 8px; }
 .badge { display: inline-flex; align-items: center; height: var(--h-badge); padding: 4px 8px; border-radius: var(--r-pill); border: 1px solid var(--badge-border); font: 500 var(--fs-xs)/16px var(--font-sans); white-space: nowrap; }
+.step .badge { font-size: var(--fs-body); } /* в шагах — 17, как в макете (1027:3078) */
 .badge--inverse { background: #fff; color: var(--badge-soft-text); }
 .badge--soft { background: var(--badge-soft-bg); color: var(--badge-soft-text); }
 .badge--purple { background: var(--badge-purple-bg); color: var(--badge-purple-text); }
@@ -228,6 +233,9 @@ img, svg { display: block; }
    ========================================================= */
 .section { margin-top: var(--section-gap); scroll-margin-top: 120px; }
 .section__head { display: flex; flex-direction: column; gap: 40px; padding: 0 var(--inset-x); margin-bottom: var(--head-gap); }
+/* Центрированная шапка (макет «Цена», «Что входит»): ширина 864, заголовок → лид 40 */
+.section__head--center { align-items: center; text-align: center; max-width: 864px; margin-left: auto; margin-right: auto; padding: 0; }
+.section__head--center .lead { max-width: none; }
 /* Схема «эйброу слева | заголовок справа» */
 .section__head--split { display: grid; grid-template-columns: var(--split-col) minmax(0, 1fr); align-items: start; }
 .section__head--split .eyebrow { margin-top: 4px; }
@@ -269,14 +277,15 @@ img, svg { display: block; }
 .steps { display: flex; flex-direction: column; gap: 24px; }
 .step { display: grid; grid-template-columns: var(--step-no) var(--step-stat) minmax(0, 1fr); column-gap: var(--step-gap); align-items: stretch; padding: 32px; border-radius: var(--r-card); background: var(--c-well);
   --step-no: clamp(64px, 7.4vw, 142px);           /* 142 на 1920 → 64 */
-  --step-stat: clamp(240px, 16.1vw, 310px);       /* 310 → 240 */
-  --step-gap: clamp(16px, 1.67vw, 32px);
-  --step-push: clamp(0px, calc(12.5vw - 120px), 120px); /* доп. отступ до текста: 120 на 1920, 0 на ≤960 */ }
+  --step-stat: clamp(240px, 14.9vw, 286px);       /* 286 на 1920 → 240 */
+  --step-gap: clamp(16px, 2.24vw, 43px);           /* номер → плитка: 43 на 1920 */
+  --step-push: clamp(0px, calc(12.6vw - 121px), 121px); /* плитка → текст 164 = 43 + 121 на 1920, 0 на ≤960 */ }
 .step__no { font: 400 var(--fs-mono)/24px var(--font-mono); color: var(--c-ink-4); white-space: nowrap; }
-.stat { display: flex; flex-direction: column; justify-content: flex-start; gap: 24px; align-self: start; padding: 24px; border-radius: var(--r-inner); background: var(--c-surface-2); }
+/* Плитка на всю высоту карточки: метка и число сверху, подпись прижата к низу (макет) */
+.stat { display: flex; flex-direction: column; justify-content: space-between; gap: 24px; align-self: stretch; padding: 24px; border-radius: var(--r-inner); background: var(--c-surface-2); }
 .stat__label { font: 400 var(--fs-mono)/24px var(--font-mono); color: var(--c-ink-4); }
 .stat__num { margin-top: 12px; font: 500 var(--fs-stat)/var(--lh-stat) var(--font-mono); color: var(--c-ink-4); }
-.stat__cap { font: 400 var(--fs-body)/21px var(--font-sans); }
+.stat__cap { font: 400 var(--fs-xs)/16px var(--font-sans); }
 .step__main { display: flex; flex-direction: column; gap: 32px; margin-left: var(--step-push); min-width: 0; }
 .step__kicker { font: 400 var(--fs-mono)/24px var(--font-mono); color: var(--c-ink-4); }
 .step__title { font: 600 var(--fs-title)/var(--lh-title) var(--font-sans); max-width: 800px; }
@@ -285,8 +294,9 @@ img, svg { display: block; }
 .fact { flex: 0 1 auto; min-width: min(240px, 100%); }
 .fact dt { font: 400 var(--fs-body)/var(--lh-tight) var(--font-sans); color: var(--c-ink-2); margin-bottom: 4px; }
 .fact dd { line-height: var(--lh-body); }
-.step__foot { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-top: auto; }
-.step__more { margin-right: -10px; }
+.step__foot { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-top: auto; padding-top: 8px; } /* факты → бейджи: 40 */
+.step__foot .badges { gap: 10px; }
+.step__more { margin: -12px -10px 0 0; } /* ссылка h36 не раздвигает строку бейджей h24: низ ссылки на линии низа карточки, как в макете */
 
 /* --- 5.3 Ситуации + приватность --- */
 .situations { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 25px; padding: 0 var(--inset-x); margin-bottom: 80px; }
@@ -341,6 +351,7 @@ img, svg { display: block; }
 }
 .help { margin-top: 24px; display: flex; flex-direction: column; align-items: center; gap: 32px; padding: 48px clamp(20px, 3.3vw, 64px); border-radius: var(--r-card); background: var(--c-well); text-align: center; }
 .help img { width: 80px; height: 80px; }
+.help__shape--72 { transform: scaleY(-1); }
 .help__text { display: flex; flex-direction: column; gap: 16px; }
 .help h3 { font: 500 var(--fs-h4)/var(--lh-h4) var(--font-sans); }
 
@@ -375,7 +386,7 @@ img, svg { display: block; }
 .ask__actions { display: flex; gap: 16px; flex-wrap: wrap; }
 
 /* --- 5.6 Заявка --- */
-.request { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 838px); gap: clamp(40px, 5.8vw, 112px); padding: 48px 48px 112px; border-radius: var(--r-card); background: #fff; }
+.request { display: grid; grid-template-columns: minmax(0, 778fr) minmax(0, 838fr); gap: clamp(40px, 5.8vw, 112px); padding: 48px 48px 112px; border-radius: var(--r-card); background: #fff; }
 .contacts { display: flex; flex-direction: column; gap: 64px; }
 .contacts dl { display: flex; flex-direction: column; gap: 40px; }
 .contacts dt { font: 400 var(--fs-body)/var(--lh-tight) var(--font-sans); color: var(--c-ink-2); margin-bottom: 8px; }
@@ -395,7 +406,9 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 /* --- 5.7 Внутренние страницы (общие блоки для всех, кроме главной) --- */
 /* Шапка страницы: крошки → эйброу → заголовок в два тона | лид. Та же сетка, что у hero главной */
 .page-hero { margin-top: clamp(48px, 5.2vw, 100px); }
-.crumbs { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 0 clamp(0px, 2.5vw, 48px); margin-bottom: 32px; font: 400 var(--fs-mono)/24px var(--font-mono); color: var(--c-ink-4); list-style: none; }
+.page-hero__head { display: flex; flex-direction: column; align-items: flex-start; gap: 40px; padding: 0 var(--inset-x); }
+.page-hero__lead { max-width: 508px; }
+.crumbs { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 0 var(--inset-x); margin-bottom: 32px; font: 400 var(--fs-mono)/24px var(--font-mono); color: var(--c-ink-4); list-style: none; }
 .crumbs li + li::before { content: "/"; margin-right: 8px; color: var(--c-line-hover); }
 .crumbs a { transition: color .2s; }
 .crumbs a:hover { color: var(--c-violet); }
@@ -425,63 +438,60 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 .contact:active { background: var(--c-line); }
 @media (max-width: 1023px) { .cards { --cols: 1; } .cards--2 { --cols: 1; } }
 
-/* --- 5.8 Таблицы (цены по численности, сравнение тарифов) ---
-   Правила (как у блока тарифов): серая подложка #ECEBF1 radius 12, шапка лежит прямо на ней; тело — белое radius 8,
-   строки «зеброй» белый / #F7F7FB без линий; шрифт только Onest (моно — не в таблицах); все значения одного стиля 15/20; «есть» — та же галочка, что в списках тарифов, «нет» — серое тире;
-   никаких плашек и цветных выделений внутри таблицы. Длинная таблица — шапка прилипает под шапкой сайта,
-   короткая — статична. На ≤1023 таблица прокручивается внутри карточки, первая колонка закреплена. */
-.cmp { padding: 0 16px 16px; border-radius: var(--r-card); background: var(--c-well); }
-.cmp--size { margin-top: 24px; }
-.cmp__table { width: 100%; border-collapse: separate; border-spacing: 0; table-layout: fixed; font: 400 var(--fs-sm)/var(--lh-sm) var(--font-sans); color: var(--c-ink); }
-.cmp__col-feat { width: 30%; }
-.cmp__table th, .cmp__table td { padding: 16px 24px; text-align: left; vertical-align: middle; font-weight: 400; }
+/* --- 5.8 Таблицы (макет «Цена»: 1027:4242, 1027:4293, 1027:4369) ---
+   Подложка #ECEBF1, поля 16, радиус 12. Шапка лежит на подложке: слева название группы (20/27 Medium),
+   по колонкам — направление (моно 17/24 #8A86A0), тариф (20/27 Medium), цена (17/27 #5F5B76), шаг 8.
+   Тело белое радиус 8, строки «зеброй» белый / #FAF9FE без линий. Название строки 20/27, значение 17/24.
+   Иконки 24: ✓ входит (#3B9952), ✕ не нужно (#DB4F4F), — не входит (#949494). Длинное сравнение
+   разбито на группы — у каждой своя таблица и своя шапка, поэтому шапка не прилипает. */
+.cmp-stack { display: flex; flex-direction: column; gap: 16px; }
+.cmp { padding: 16px; border-radius: var(--r-card); background: var(--c-well); }
+.cmp__table { width: 100%; border-collapse: separate; border-spacing: 0; table-layout: fixed; color: var(--c-ink); }
+.cmp__col-feat { width: 30.1%; }   /* 540 из 1792 */
+.cmp__table th, .cmp__table td { padding: 24px 32px; text-align: left; vertical-align: middle; font: 400 var(--fs-body)/24px var(--font-sans); }
+.cmp__table tbody th { font: 400 var(--fs-title)/var(--lh-title) var(--font-sans); }
 .cmp__table tr > * { background: inherit; }
 /* Шапка */
 .cmp__table thead tr { background: var(--c-well); }
-.cmp__table thead th { padding: 24px 24px 16px; vertical-align: top; font: 500 var(--fs-body)/var(--lh-tight) var(--font-sans); }
-.cmp__table thead th:first-child { color: var(--c-ink-2); font-weight: 400; }
-.cmp--sticky thead th { position: sticky; top: 96px; z-index: 2; }
-.cmp__cap { display: block; margin-bottom: 4px; font: 400 var(--fs-xs)/18px var(--font-sans); color: var(--c-ink-4); }
-.cmp__name { display: block; }
-.cmp__price { display: block; margin-top: 4px; font: 400 var(--fs-sm)/var(--lh-sm) var(--font-sans); color: var(--c-ink-2); }
-/* Группа строк: заголовок 17/20 Medium, воздух сверху отделяет смысловые блоки */
-.cmp__group { background: var(--c-surface); }
-.cmp__group th { padding: 28px 24px 12px; font: 500 var(--fs-body)/var(--lh-tight) var(--font-sans); }
-/* Зебра внутри группы: первая строка после заголовка белая, вторая серая */
+.cmp__table thead th { padding: 16px 32px 32px; vertical-align: middle; }
+.cmp__title { font: 500 var(--fs-title)/var(--lh-title) var(--font-sans) !important; }
+.cmp__cap { display: block; font: 400 var(--fs-body)/24px var(--font-mono); color: var(--c-ink-4); }
+.cmp__name { display: block; margin-top: 8px; font: 500 var(--fs-title)/var(--lh-title) var(--font-sans); }
+.cmp__price { display: block; margin-top: 8px; font: 400 var(--fs-body)/var(--lh-body) var(--font-sans); color: var(--c-ink-2); }
+/* Тело: белое, радиус 8, зебра */
 .cmp__table tbody tr { background: var(--c-surface); }
-.cmp--sticky tbody tr:nth-child(even) { background: var(--c-surface-2); }  /* первая строка под заголовком группы — серая */
-.cmp--size tbody tr:nth-child(even) { background: var(--c-surface-2); }
-/* Скругления белого тела */
-.cmp__table tbody:first-of-type tr:first-child > *:first-child { border-top-left-radius: var(--r-inner); }
-.cmp__table tbody:first-of-type tr:first-child > *:last-child { border-top-right-radius: var(--r-inner); }
-.cmp__table tbody:last-of-type tr:last-child > *:first-child { border-bottom-left-radius: var(--r-inner); }
-.cmp__table tbody:last-of-type tr:last-child > *:last-child { border-bottom-right-radius: var(--r-inner); }
-.cmp__feat { display: block; font-weight: 500; }
-.cmp__note { display: block; margin-top: 2px; font-size: var(--fs-xs); line-height: 18px; color: var(--c-ink-4); }
-.cmp__yes { display: inline-flex; vertical-align: middle; color: var(--c-ink); }
-.cmp__yes svg { width: 24px; height: 24px; }
-.cmp__no { color: var(--c-line-hover); }
-.cmp__foot { margin-top: 16px; padding: 0 var(--inset-x); font-size: var(--fs-sm); line-height: var(--lh-sm); color: var(--c-ink-4); }
+.cmp__table tbody tr:nth-child(even) { background: var(--c-zebra); }
+.cmp__table tbody tr:first-child > *:first-child { border-top-left-radius: var(--r-inner); }
+.cmp__table tbody tr:first-child > *:last-child { border-top-right-radius: var(--r-inner); }
+.cmp__table tbody tr:last-child > *:first-child { border-bottom-left-radius: var(--r-inner); }
+.cmp__table tbody tr:last-child > *:last-child { border-bottom-right-radius: var(--r-inner); }
+.cmp__ico { display: inline-flex; vertical-align: middle; }
+.cmp__ico svg { width: 24px; height: 24px; }
+.cmp__ico--yes { color: var(--c-ok); }
+.cmp__ico--no { color: var(--c-bad); }
+.cmp__ico--na { color: var(--c-na); }
+/* Цена по численности: шапка 20/32 сверху/снизу, строки 83 (макет), названия строк 17/27 */
+.cmp--size thead th { padding: 20px 32px 32px; }
+.cmp--size .cmp__cap { white-space: nowrap; }
+.cmp--size tbody th, .cmp--size tbody td { padding: 28px 32px; }
+.cmp--size tbody th { font: 400 var(--fs-body)/var(--lh-body) var(--font-sans); }
 .cmp:focus-visible { outline-offset: 4px; }
-@media (max-width: 1365px) { .cmp--sticky thead th { top: 88px; } }
+@media (max-width: 1440px) { .cmp__table th, .cmp__table td, .cmp__table thead th, .cmp--size thead th, .cmp--size tbody th, .cmp--size tbody td { padding-left: 24px; padding-right: 24px; } }
 @media (max-width: 1023px) {
-  /* Без внутренних полей: закреплённая колонка должна стоять у самого края области прокрутки */
+  /* Прокрутка внутри подложки; поля 0, чтобы закреплённая колонка стояла у самого края */
   .cmp { overflow-x: auto; overscroll-behavior-x: contain; padding: 0; }
+  .cmp__table { min-width: 880px; }
+  .cmp__col-feat { width: 240px; }
   .cmp__table tbody tr > * { border-radius: 0 !important; }
-  .cmp__table { min-width: 820px; }
-  .cmp__col-feat { width: 220px; }
-  .cmp--sticky thead th { position: static; }
-  /* Первая колонка закреплена; строка группы шире экрана — закрепляем только подпись внутри неё */
-  .cmp__table th[scope="row"], .cmp__table thead th:first-child { position: sticky; left: 0; z-index: 1; box-shadow: 1px 0 0 var(--c-outline); }
-  .cmp__table thead th:first-child { top: auto; box-shadow: none; }
-  .cmp__group th span { position: sticky; left: 16px; }
+  .cmp__table th:first-child { position: sticky; left: 0; z-index: 1; }
+  .cmp__table tbody th { box-shadow: 1px 0 0 var(--c-outline); }
+  .cmp--size .cmp__cap { white-space: normal; }
 }
 @media (max-width: 767px) {
-  .cmp__table th, .cmp__table td { padding: 12px 16px; }
-  .cmp__table thead th { padding: 16px; }
-  .cmp__group th { padding: 24px 16px 8px; }
-  .cmp__table { min-width: 720px; }
-  .cmp__col-feat { width: 170px; }
+  .cmp__table th, .cmp__table td, .cmp__table thead th, .cmp--size thead th, .cmp--size tbody th, .cmp--size tbody td { padding: 16px; }
+  .cmp__table tbody th { font-size: var(--fs-body); line-height: 24px; }
+  .cmp__table { min-width: 760px; }
+  .cmp__col-feat { width: 180px; }
 }
 /* Первая секция под шапкой страницы — ближе, чем обычный отступ между секциями */
 .section--first { margin-top: var(--head-gap); }
@@ -570,6 +580,7 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
   .dir__body { gap: 28px; }
   .step { grid-template-columns: 1fr; padding: 20px; }
   .step__main { gap: 20px; }
+  .step__more { margin-top: 4px; }  /* на телефоне ссылка уходит под бейджи — обычный отступ */
   .stat { flex-direction: column; align-items: flex-start; gap: 12px; padding: 16px 20px; }
   .stat__num { margin-top: 4px; }
   .stat__cap { max-width: none; }
@@ -682,21 +693,20 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
   </header>
 
   <main>
-  <!-- ============ ШАПКА СТРАНИЦЫ: H1 = пункт меню, без эйброу ============ -->
+  <!-- ============ ШАПКА СТРАНИЦЫ (макет «Цена» 1027:4031) ============ -->
   <section class="page-hero" aria-labelledby="page-title">
     <ol class="crumbs" aria-label="Хлебные крошки">
       <li><a href="index.html">Главная</a></li>
       <li><span aria-current="page">Цены</span></li>
     </ol>
-    <div class="hero__head">
-      <div class="hero__row">
-        <h1 class="hero__title" id="page-title">Цены</h1>
-        <p class="hero__text">Внешний срез бесплатный. Мониторинг оплачивается помесячно, диагностика и кампания — разово. Цену проверки изнутри фиксируем в договоре до начала работы.</p>
-      </div>
+    <div class="page-hero__head">
+      <span class="eyebrow">Когда приходят к нам</span>
+      <h1 class="hero__title" id="page-title">Цены</h1>
+      <p class="page-hero__lead">Внешний срез бесплатный. Мониторинг оплачивается помесячно, диагностика и кампания разово. Цену проверки изнутри фиксируем в договоре до начала работы.</p>
     </div>
   </section>
 
-  <!-- ============ ТАРИФЫ (общий блок с главной) ============ -->
+  <!-- ============ ТАРИФЫ (общий блок с главной) + подводка к цене по численности ============ -->
   <section class="section section--first" aria-label="Тарифы">
 <!-- Тарифы: общий блок для главной и страницы «Цены». Кнопки ведут на заявку с выбранной темой -->
     <div class="groups">
@@ -820,234 +830,401 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
       </div>
     </div>
 
-    <!-- Цена по численности: подводка в стиле блока «Не знаете, с чего начать?» + таблица -->
-    <div class="help" id="by-size">
-      <img src="data:image/svg+xml;base64,PHN2ZyBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIiBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjIwMCIgaGVpZ2h0PSIyMDAiIHZpZXdCb3g9IjAgMCAyMDAgMjAwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8ZyBpZD0iR3JvdXAiPgo8cGF0aCBpZD0iVmVjdG9yIiBkPSJNNTAgMEgwVjEwMEg1MEMyMi4zODU4IDEwMCAwIDEyMi4zODYgMCAxNTBWMjAwSDEwMFYxNTBDMTAwIDE3Ny42MTQgMTIyLjM4NiAyMDAgMTUwIDIwMEgyMDBWMTAwSDE1MEMxNzcuNjE0IDEwMCAyMDAgNzcuNjE0MiAyMDAgNTBWMEgxMDBWNTBDMTAwIDIyLjM4NTggNzcuNjE0MiAwIDUwIDBaTTEwMCAxMDBINTBDNzcuNjE0MiAxMDAgMTAwIDEyMi4zODYgMTAwIDE1MFYxMDBaTTEwMCAxMDBWNTBDMTAwIDc3LjYxNDIgMTIyLjM4NiAxMDAgMTUwIDEwMEgxMDBaIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZmlsbD0idXJsKCNwYWludDBfbGluZWFyXzBfODYpIi8+CjwvZz4KPGRlZnM+CjxsaW5lYXJHcmFkaWVudCBpZD0icGFpbnQwX2xpbmVhcl8wXzg2IiB4MT0iMTAwIiB5MT0iMCIgeDI9IjEwMCIgeTI9IjIwMCIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgo8c3RvcCBzdG9wLWNvbG9yPSIjQTdCNUZGIi8+CjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI0YzQUNGRiIvPgo8L2xpbmVhckdyYWRpZW50Pgo8L2RlZnM+Cjwvc3ZnPgo=" alt="">
-      <div class="help__text"><h3>Чем больше компания, тем ниже цена на человека</h3><p>Цена проверки изнутри зависит от числа сотрудников и подразделений. Внешний срез бесплатный для всех, мониторинг от численности не зависит.</p></div>
+    <div class="help">
+      <img class="help__shape--72" src="data:image/svg+xml;base64,PHN2ZyBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIiBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjIwMCIgaGVpZ2h0PSIyMDAiIHZpZXdCb3g9IjAgMCAyMDAgMjAwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8ZyBpZD0iR3JvdXAiPgo8cGF0aCBpZD0iVmVjdG9yIiBkPSJNMjAwIDEwMC42NzFMMTAwIDBMMCAxMDAuNjcxSDk4LjY2NjhMMCAyMDBIMjAwTDEwMS4zMzMgMTAwLjY3MUgyMDBaIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZmlsbD0idXJsKCNwYWludDBfbGluZWFyXzBfOSkiLz4KPC9nPgo8ZGVmcz4KPGxpbmVhckdyYWRpZW50IGlkPSJwYWludDBfbGluZWFyXzBfOSIgeDE9IjIwLjUiIHkxPSIxNiIgeDI9IjEwMCIgeTI9IjIwMCIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgo8c3RvcCBzdG9wLWNvbG9yPSIjQUNBQUZGIi8+CjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI0MwRThGRiIvPgo8L2xpbmVhckdyYWRpZW50Pgo8L2RlZnM+Cjwvc3ZnPgo=" alt="">
+      <div class="help__text"><h3>Чем больше компания, тем ниже цена на человека</h3><p>Цена проверки изнутри зависит от числа сотрудников и подразделений.<br>Внешний срез бесплатный для всех, мониторинг от численности не зависит.</p></div>
     </div>
-    <div class="cmp cmp--size" role="region" aria-label="Цена по численности" tabindex="0">
+  </section>
+
+  <!-- ============ ЦЕНА ПО ЧИСЛЕННОСТИ (1027:4242) ============ -->
+  <section class="section" aria-label="Цена по численности">
+    <div class="cmp cmp--size" id="by-size" role="region" aria-labelledby="size-title" tabindex="0">
       <table class="cmp__table">
         <colgroup><col class="cmp__col-feat"><col><col><col><col></colgroup>
-        <thead><tr><th scope="col">Сотрудников</th><th scope="col">До 300</th><th scope="col">300–1000</th><th scope="col">1000–3000</th><th scope="col">Больше 3000</th></tr></thead>
+        <thead><tr><th scope="col" id="size-title" class="cmp__title">Дашборд здоровья корпоративной культуры</th><th scope="col"><span class="cmp__cap">До 300 сотрудников</span></th><th scope="col"><span class="cmp__cap">300–1000 сотрудников</span></th><th scope="col"><span class="cmp__cap">1000–3000 сотрудников</span></th><th scope="col"><span class="cmp__cap">Больше 3000</span></th></tr></thead>
         <tbody>
-          <tr><th scope="row"><span class="cmp__feat">Диагностика</span><span class="cmp__note">Около 4 недель</span></th><td>180 000 ₽</td><td>260 000 ₽</td><td>По запросу</td><td>По запросу</td></tr>
-          <tr><th scope="row"><span class="cmp__feat">Кампания на 3 месяца</span><span class="cmp__note">Диагностика в составе</span></th><td>490 000 ₽</td><td>790 000 ₽</td><td>1 290 000 ₽</td><td>По запросу</td></tr>
-          <tr><th scope="row"><span class="cmp__feat">Кампания на одного сотрудника</span><span class="cmp__note">При верхней границе диапазона</span></th><td>от 1 633 ₽</td><td>от 790 ₽</td><td>от 430 ₽</td><td>По запросу</td></tr>
+          <tr><th scope="row">Диагностика</th><td>180 000 ₽</td><td>260 000 ₽</td><td>По запросу</td><td>По запросу</td></tr>
+          <tr><th scope="row">Кампания на 3 месяца</th><td>490 000 ₽</td><td>790 000 ₽</td><td>1 290 000 ₽</td><td>По запросу</td></tr>
+          <tr><th scope="row">Кампания на одного сотрудника</th><td>от 1 633 ₽</td><td>от 790 ₽</td><td>от 430 ₽</td><td>По запросу</td></tr>
         </tbody>
       </table>
     </div>
-    <p class="cmp__foot">После кампании замеры можно продлить.</p>
   </section>
 
-  <!-- ============ ПОДРОБНОЕ СРАВНЕНИЕ ============ -->
+  <!-- ============ ЧТО ВХОДИТ (1027:4288): по таблице на группу ============ -->
   <section class="section" id="compare" aria-labelledby="compare-title">
-    <div class="section__head">
-      <span class="eyebrow">Сравнение · 4 тарифа</span>
-      <div class="headline-block">
-        <h2 class="headline" id="compare-title">Что входит<br><span class="dim">в каждый тариф</span></h2>
-        <p class="lead">Снаружи смотрим, что видят кандидаты и рынок. Изнутри — что переживают сотрудники. Показатели направлений не смешиваем в одну цифру.</p>
-      </div>
+    <div class="section__head section__head--center">
+      <h2 class="headline" id="compare-title">Что входит<br><span class="dim">в каждый тариф</span></h2>
+      <p class="lead">Снаружи смотрим, что видят кандидаты и рынок. Изнутри — что переживают сотрудники. Показатели направлений не смешиваем в одну цифру.</p>
     </div>
-    <div class="cmp cmp--sticky" role="region" aria-label="Сравнение тарифов" tabindex="0">
-      <table class="cmp__table">
-        <colgroup><col class="cmp__col-feat"><col><col><col><col></colgroup>
-        <thead><tr><th scope="col" class="cmp__corner"><span class="sr-only">Что входит</span></th><th scope="col"><span class="cmp__cap">Снаружи</span><span class="cmp__name">Внешний срез</span><span class="cmp__price">0 ₽</span></th><th scope="col"><span class="cmp__cap">Снаружи</span><span class="cmp__name">Мониторинг</span><span class="cmp__price">от 30 000 ₽ в месяц</span></th><th scope="col"><span class="cmp__cap">Изнутри</span><span class="cmp__name">Диагностика</span><span class="cmp__price">от 180 000 ₽</span></th><th scope="col"><span class="cmp__cap">Изнутри</span><span class="cmp__name">Кампания на 3 месяца</span><span class="cmp__price">от 490 000 ₽</span></th></tr></thead>
+    <div class="cmp-stack">
+      <div class="cmp" role="region" aria-labelledby="cmp-g0" tabindex="0">
+        <table class="cmp__table">
+          <colgroup><col class="cmp__col-feat"><col><col><col><col></colgroup>
+          <thead><tr><th scope="col" id="cmp-g0" class="cmp__title">Условия сотрудничества</th><th scope="col"><span class="cmp__cap">Снаружи</span><span class="cmp__name">Внешний срез</span><span class="cmp__price">0 ₽</span></th><th scope="col"><span class="cmp__cap">Снаружи</span><span class="cmp__name">Мониторинг</span><span class="cmp__price">от 30 000 ₽ в месяц</span></th><th scope="col"><span class="cmp__cap">Изнутри</span><span class="cmp__name">Диагностика</span><span class="cmp__price">от 180 000 ₽</span></th><th scope="col"><span class="cmp__cap">Изнутри</span><span class="cmp__name">Кампания на 3 месяца</span><span class="cmp__price">от 490 000 ₽</span></th></tr></thead>
           <tbody>
-            <tr class="cmp__group"><th scope="colgroup" colspan="5"><span>Условия</span></th></tr>
-            <tr><th scope="row"><span class="cmp__feat">Как платим</span></th><td>Бесплатно</td><td>Помесячно, можно остановить в любой месяц</td><td>Разово, по счёту</td><td>Разово, по счёту</td></tr>
-            <tr><th scope="row"><span class="cmp__feat">Срок</span></th><td>3 рабочих дня</td><td>Обновление каждый месяц</td><td>Около 4 недель</td><td>3 месяца</td></tr>
-            <tr><th scope="row"><span class="cmp__feat">Результат</span></th><td>PDF-отчёт</td><td>PDF-отчёт каждый месяц</td><td>Отчёт и план на 90 дней</td><td>Дашборд и итоговый отчёт</td></tr>
-            <tr><th scope="row"><span class="cmp__feat">От вас нужно</span></th><td>Название компании и ссылка на hh.ru</td><td>То же, что для среза</td><td>Культурный код или документы о ценностях</td><td>То же и список подразделений</td></tr>
-            <tr><th scope="row"><span class="cmp__feat">Договор и закрывающие документы</span></th><td>Не нужны</td><td><span class="cmp__yes" role="img" aria-label="есть"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <tr><th scope="row">Как платим</th><td>Бесплатно</td><td>Помесячно, можно остановить в любой месяц</td><td>Разово, по счёту</td><td>Разово, по счёту</td></tr>
+            <tr><th scope="row">Срок</th><td>3 рабочих дня</td><td>Обновление каждый месяц</td><td>Около 4 недель</td><td>3 месяца</td></tr>
+            <tr><th scope="row">Результат</th><td>PDF-отчёт</td><td>PDF-отчёт каждый месяц</td><td>Отчёт и план на 90 дней</td><td>Дашборд и итоговый отчёт</td></tr>
+            <tr><th scope="row">От вас нужно</th><td>Название компании и ссылка на hh.ru</td><td>Название компании и ссылка на hh.ru</td><td>Культурный код или документы о ценностях</td><td>Культурный код или документы о ценностях и список подразделений</td></tr>
+            <tr><th scope="row">Договор и закрывающие документы</th><td><span class="cmp__ico cmp__ico--no" role="img" aria-label="Не нужен"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g>
-<path d="M20 6L9 17L4 12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+<path d="M15 9L9 15M9 9L15 15M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
 </g>
-</svg></span></td><td><span class="cmp__yes" role="img" aria-label="есть"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+</svg></span></td><td><span class="cmp__ico cmp__ico--yes" role="img" aria-label="Входит"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g>
-<path d="M20 6L9 17L4 12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+<path d="M9 12L11 14L15 10M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
 </g>
-</svg></span></td><td><span class="cmp__yes" role="img" aria-label="есть"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+</svg></span></td><td><span class="cmp__ico cmp__ico--yes" role="img" aria-label="Входит"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g>
-<path d="M20 6L9 17L4 12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+<path d="M9 12L11 14L15 10M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+</g>
+</svg></span></td><td><span class="cmp__ico cmp__ico--yes" role="img" aria-label="Входит"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g>
+<path d="M9 12L11 14L15 10M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
 </g>
 </svg></span></td></tr>
           </tbody>
+        </table>
+      </div>
+      <div class="cmp" role="region" aria-labelledby="cmp-g1" tabindex="0">
+        <table class="cmp__table">
+          <colgroup><col class="cmp__col-feat"><col><col><col><col></colgroup>
+          <thead><tr><th scope="col" id="cmp-g1" class="cmp__title">Оценка HR-бренда</th><th scope="col"><span class="cmp__cap">Снаружи</span><span class="cmp__name">Внешний срез</span><span class="cmp__price">0 ₽</span></th><th scope="col"><span class="cmp__cap">Снаружи</span><span class="cmp__name">Мониторинг</span><span class="cmp__price">от 30 000 ₽ в месяц</span></th><th scope="col"><span class="cmp__cap">Изнутри</span><span class="cmp__name">Диагностика</span><span class="cmp__price">от 180 000 ₽</span></th><th scope="col"><span class="cmp__cap">Изнутри</span><span class="cmp__name">Кампания на 3 месяца</span><span class="cmp__price">от 490 000 ₽</span></th></tr></thead>
           <tbody>
-            <tr class="cmp__group"><th scope="colgroup" colspan="5"><span>Снаружи: оценка HR-бренда</span></th></tr>
-            <tr><th scope="row"><span class="cmp__feat">Индекс культуры и карта обещаний</span><span class="cmp__note">Насколько обещания в вакансиях и соцсетях совпадают с опытом людей</span></th><td><span class="cmp__yes" role="img" aria-label="есть"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <tr><th scope="row">Индекс культуры и карта обещаний</th><td><span class="cmp__ico cmp__ico--yes" role="img" aria-label="Входит"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g>
-<path d="M20 6L9 17L4 12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+<path d="M9 12L11 14L15 10M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
 </g>
-</svg></span></td><td><span class="cmp__yes" role="img" aria-label="есть"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+</svg></span></td><td><span class="cmp__ico cmp__ico--yes" role="img" aria-label="Входит"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g>
-<path d="M20 6L9 17L4 12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+<path d="M9 12L11 14L15 10M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
 </g>
-</svg></span></td><td>Из среза</td><td>Из среза</td></tr>
-            <tr><th scope="row"><span class="cmp__feat">Слепые зоны</span><span class="cmp__note">О чём люди говорят, а компания молчит</span></th><td><span class="cmp__yes" role="img" aria-label="есть"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+</svg></span></td><td>Из внешнего среза</td><td>Из внешнего среза</td></tr>
+            <tr><th scope="row">Слепые зоны</th><td><span class="cmp__ico cmp__ico--yes" role="img" aria-label="Входит"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g>
-<path d="M20 6L9 17L4 12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+<path d="M9 12L11 14L15 10M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
 </g>
-</svg></span></td><td><span class="cmp__yes" role="img" aria-label="есть"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+</svg></span></td><td><span class="cmp__ico cmp__ico--yes" role="img" aria-label="Входит"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g>
-<path d="M20 6L9 17L4 12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+<path d="M9 12L11 14L15 10M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
 </g>
-</svg></span></td><td>Из среза</td><td>Из среза</td></tr>
-            <tr><th scope="row"><span class="cmp__feat">Место в отрасли</span><span class="cmp__note">Как ваши условия выглядят на фоне рынка</span></th><td><span class="cmp__yes" role="img" aria-label="есть"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+</svg></span></td><td>Из внешнего среза</td><td>Из внешнего среза</td></tr>
+            <tr><th scope="row">Место в отрасли</th><td><span class="cmp__ico cmp__ico--yes" role="img" aria-label="Входит"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g>
-<path d="M20 6L9 17L4 12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+<path d="M9 12L11 14L15 10M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
 </g>
-</svg></span></td><td><span class="cmp__yes" role="img" aria-label="есть"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+</svg></span></td><td><span class="cmp__ico cmp__ico--yes" role="img" aria-label="Входит"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g>
-<path d="M20 6L9 17L4 12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+<path d="M9 12L11 14L15 10M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
 </g>
-</svg></span></td><td>Из среза</td><td>Из среза</td></tr>
-            <tr><th scope="row"><span class="cmp__feat">Конкуренты в сравнении</span></th><td>2–3</td><td>2–3, можно добавить до 5</td><td>Из среза</td><td>Из среза</td></tr>
-            <tr><th scope="row"><span class="cmp__feat">Что говорят нейросети</span></th><td><span class="cmp__yes" role="img" aria-label="есть"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+</svg></span></td><td>Из внешнего среза</td><td>Из внешнего среза</td></tr>
+            <tr><th scope="row">Конкуренты в сравнении</th><td>Два-три конкурента</td><td>До пяти конкурентов</td><td>Из внешнего среза</td><td>Из внешнего среза</td></tr>
+            <tr><th scope="row">Открытые источники</th><td><span class="cmp__ico cmp__ico--yes" role="img" aria-label="Входит"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g>
-<path d="M20 6L9 17L4 12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+<path d="M9 12L11 14L15 10M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
 </g>
-</svg></span></td><td><span class="cmp__yes" role="img" aria-label="есть"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+</svg></span></td><td><span class="cmp__ico cmp__ico--yes" role="img" aria-label="Входит"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g>
-<path d="M20 6L9 17L4 12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+<path d="M9 12L11 14L15 10M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
 </g>
-</svg></span></td><td>Из среза</td><td>Из среза</td></tr>
-            <tr><th scope="row"><span class="cmp__feat">Открытые источники</span><span class="cmp__note">hh.ru, Dreamjob, VK, Дзен, медиа</span></th><td><span class="cmp__yes" role="img" aria-label="есть"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+</svg></span></td><td>Из внешнего среза</td><td>Из внешнего среза</td></tr>
+            <tr><th scope="row">Динамика индекса</th><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g>
-<path d="M20 6L9 17L4 12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+<path d="M5 12H19" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
 </g>
-</svg></span></td><td><span class="cmp__yes" role="img" aria-label="есть"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+</svg></span></td><td><span class="cmp__ico cmp__ico--yes" role="img" aria-label="Входит"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g>
-<path d="M20 6L9 17L4 12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+<path d="M9 12L11 14L15 10M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
 </g>
-</svg></span></td><td>Из среза</td><td>Из среза</td></tr>
-            <tr><th scope="row"><span class="cmp__feat">Динамика индекса</span><span class="cmp__note">Просадки и подъёмы по месяцам</span></th><td><span class="cmp__no" role="img" aria-label="нет">—</span></td><td><span class="cmp__yes" role="img" aria-label="есть"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+</svg></span></td><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g>
-<path d="M20 6L9 17L4 12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+<path d="M5 12H19" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
 </g>
-</svg></span></td><td><span class="cmp__no" role="img" aria-label="нет">—</span></td><td><span class="cmp__no" role="img" aria-label="нет">—</span></td></tr>
-            <tr><th scope="row"><span class="cmp__feat">Сигнал о резком росте темы</span></th><td><span class="cmp__no" role="img" aria-label="нет">—</span></td><td><span class="cmp__yes" role="img" aria-label="есть"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+</svg></span></td><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g>
-<path d="M20 6L9 17L4 12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
-</g>
-</svg></span></td><td><span class="cmp__no" role="img" aria-label="нет">—</span></td><td><span class="cmp__no" role="img" aria-label="нет">—</span></td></tr>
-            <tr><th scope="row"><span class="cmp__feat">Развёрнутый отчёт</span><span class="cmp__note">Позиционирование, вакансии, соцсети, персоны, конкуренты, SWOT</span></th><td>Краткая версия</td><td>Раз в квартал</td><td><span class="cmp__no" role="img" aria-label="нет">—</span></td><td><span class="cmp__no" role="img" aria-label="нет">—</span></td></tr>
-          </tbody>
-          <tbody>
-            <tr class="cmp__group"><th scope="colgroup" colspan="5"><span>Изнутри: здоровье культуры</span></th></tr>
-            <tr><th scope="row"><span class="cmp__feat">Описание культурного кода</span><span class="cmp__note">Какие нормы компания заявляет</span></th><td><span class="cmp__no" role="img" aria-label="нет">—</span></td><td><span class="cmp__no" role="img" aria-label="нет">—</span></td><td><span class="cmp__yes" role="img" aria-label="есть"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g>
-<path d="M20 6L9 17L4 12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
-</g>
-</svg></span></td><td><span class="cmp__yes" role="img" aria-label="есть"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g>
-<path d="M20 6L9 17L4 12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+<path d="M5 12H19" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
 </g>
 </svg></span></td></tr>
-            <tr><th scope="row"><span class="cmp__feat">Ваши внутренние документы в анализе</span><span class="cmp__note">EVP, ценности, результаты прошлых опросов</span></th><td><span class="cmp__no" role="img" aria-label="нет">—</span></td><td><span class="cmp__no" role="img" aria-label="нет">—</span></td><td><span class="cmp__yes" role="img" aria-label="есть"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <tr><th scope="row">Сигнал о резком росте темы</th><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g>
-<path d="M20 6L9 17L4 12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+<path d="M5 12H19" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
 </g>
-</svg></span></td><td><span class="cmp__yes" role="img" aria-label="есть"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+</svg></span></td><td><span class="cmp__ico cmp__ico--yes" role="img" aria-label="Входит"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g>
-<path d="M20 6L9 17L4 12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+<path d="M9 12L11 14L15 10M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
 </g>
-</svg></span></td></tr>
-            <tr><th scope="row"><span class="cmp__feat">10 метрик культуры</span></th><td><span class="cmp__no" role="img" aria-label="нет">—</span></td><td><span class="cmp__no" role="img" aria-label="нет">—</span></td><td>Первый замер</td><td>3 замера</td></tr>
-            <tr><th scope="row"><span class="cmp__feat">Разрыв с культурным кодом</span></th><td><span class="cmp__no" role="img" aria-label="нет">—</span></td><td><span class="cmp__no" role="img" aria-label="нет">—</span></td><td><span class="cmp__yes" role="img" aria-label="есть"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+</svg></span></td><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g>
-<path d="M20 6L9 17L4 12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+<path d="M5 12H19" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
 </g>
-</svg></span></td><td><span class="cmp__yes" role="img" aria-label="есть"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+</svg></span></td><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g>
-<path d="M20 6L9 17L4 12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+<path d="M5 12H19" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
 </g>
 </svg></span></td></tr>
-            <tr><th scope="row"><span class="cmp__feat">Анонимные интервью с сотрудниками</span></th><td><span class="cmp__no" role="img" aria-label="нет">—</span></td><td><span class="cmp__no" role="img" aria-label="нет">—</span></td><td>До 12</td><td>До 12</td></tr>
-            <tr><th scope="row"><span class="cmp__feat">Пульс-опросы</span></th><td><span class="cmp__no" role="img" aria-label="нет">—</span></td><td><span class="cmp__no" role="img" aria-label="нет">—</span></td><td>1 волна</td><td>3 волны</td></tr>
-            <tr><th scope="row"><span class="cmp__feat">Анонимная обратная связь</span></th><td><span class="cmp__no" role="img" aria-label="нет">—</span></td><td><span class="cmp__no" role="img" aria-label="нет">—</span></td><td><span class="cmp__no" role="img" aria-label="нет">—</span></td><td>Все 3 месяца</td></tr>
-            <tr><th scope="row"><span class="cmp__feat">Дашборд</span><span class="cmp__note">Для команды культуры, руководителей и топов</span></th><td><span class="cmp__no" role="img" aria-label="нет">—</span></td><td><span class="cmp__no" role="img" aria-label="нет">—</span></td><td><span class="cmp__no" role="img" aria-label="нет">—</span></td><td><span class="cmp__yes" role="img" aria-label="есть"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <tr><th scope="row">Развёрнутый отчёт</th><td>Краткая версия</td><td>Раз в квартал</td><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g>
-<path d="M20 6L9 17L4 12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+<path d="M5 12H19" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
 </g>
-</svg></span></td></tr>
-            <tr><th scope="row"><span class="cmp__feat">Страница «Решения по обратной связи»</span><span class="cmp__note">Какие решения приняли по отзывам сотрудников и что изменилось</span></th><td><span class="cmp__no" role="img" aria-label="нет">—</span></td><td><span class="cmp__no" role="img" aria-label="нет">—</span></td><td><span class="cmp__no" role="img" aria-label="нет">—</span></td><td><span class="cmp__yes" role="img" aria-label="есть"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+</svg></span></td><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g>
-<path d="M20 6L9 17L4 12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
-</g>
-</svg></span></td></tr>
-            <tr><th scope="row"><span class="cmp__feat">Сверка снаружи и изнутри</span><span class="cmp__note">Темы, которые звучат и в отзывах, и в опросах</span></th><td><span class="cmp__no" role="img" aria-label="нет">—</span></td><td><span class="cmp__no" role="img" aria-label="нет">—</span></td><td><span class="cmp__yes" role="img" aria-label="есть"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g>
-<path d="M20 6L9 17L4 12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
-</g>
-</svg></span></td><td><span class="cmp__yes" role="img" aria-label="есть"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g>
-<path d="M20 6L9 17L4 12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+<path d="M5 12H19" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
 </g>
 </svg></span></td></tr>
           </tbody>
+        </table>
+      </div>
+      <div class="cmp" role="region" aria-labelledby="cmp-g2" tabindex="0">
+        <table class="cmp__table">
+          <colgroup><col class="cmp__col-feat"><col><col><col><col></colgroup>
+          <thead><tr><th scope="col" id="cmp-g2" class="cmp__title">Здоровье корпоративной культуры</th><th scope="col"><span class="cmp__cap">Снаружи</span><span class="cmp__name">Внешний срез</span><span class="cmp__price">0 ₽</span></th><th scope="col"><span class="cmp__cap">Снаружи</span><span class="cmp__name">Мониторинг</span><span class="cmp__price">от 30 000 ₽ в месяц</span></th><th scope="col"><span class="cmp__cap">Изнутри</span><span class="cmp__name">Диагностика</span><span class="cmp__price">от 180 000 ₽</span></th><th scope="col"><span class="cmp__cap">Изнутри</span><span class="cmp__name">Кампания на 3 месяца</span><span class="cmp__price">от 490 000 ₽</span></th></tr></thead>
           <tbody>
-            <tr class="cmp__group"><th scope="colgroup" colspan="5"><span>Эксперт и сопровождение</span></th></tr>
-            <tr><th scope="row"><span class="cmp__feat">Разбор с экспертом</span></th><td>30 минут</td><td>Звонок раз в месяц</td><td>Итоговая встреча</td><td>С руководителями раз в 2 недели</td></tr>
-            <tr><th scope="row"><span class="cmp__feat">План улучшений</span></th><td>3 первых шага</td><td>Рекомендации к каждому отчёту</td><td>План на 90 дней</td><td>План и сопровождение изменений</td></tr>
-            <tr><th scope="row"><span class="cmp__feat">Индивидуальное сопровождение</span><span class="cmp__note">Один эксперт ведёт проект от начала до конца</span></th><td><span class="cmp__no" role="img" aria-label="нет">—</span></td><td><span class="cmp__no" role="img" aria-label="нет">—</span></td><td><span class="cmp__no" role="img" aria-label="нет">—</span></td><td><span class="cmp__yes" role="img" aria-label="есть"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <tr><th scope="row">Описание культурного кода</th><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g>
-<path d="M20 6L9 17L4 12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+<path d="M5 12H19" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+</g>
+</svg></span></td><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g>
+<path d="M5 12H19" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+</g>
+</svg></span></td><td><span class="cmp__ico cmp__ico--yes" role="img" aria-label="Входит"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g>
+<path d="M9 12L11 14L15 10M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+</g>
+</svg></span></td><td><span class="cmp__ico cmp__ico--yes" role="img" aria-label="Входит"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g>
+<path d="M9 12L11 14L15 10M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+</g>
+</svg></span></td></tr>
+            <tr><th scope="row">Ваши документы в анализе</th><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g>
+<path d="M5 12H19" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+</g>
+</svg></span></td><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g>
+<path d="M5 12H19" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+</g>
+</svg></span></td><td><span class="cmp__ico cmp__ico--yes" role="img" aria-label="Входит"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g>
+<path d="M9 12L11 14L15 10M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+</g>
+</svg></span></td><td><span class="cmp__ico cmp__ico--yes" role="img" aria-label="Входит"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g>
+<path d="M9 12L11 14L15 10M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+</g>
+</svg></span></td></tr>
+            <tr><th scope="row">10 метрик культуры</th><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g>
+<path d="M5 12H19" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+</g>
+</svg></span></td><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g>
+<path d="M5 12H19" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+</g>
+</svg></span></td><td>Первый замер</td><td>Три замера</td></tr>
+            <tr><th scope="row">Разрыв с культурным кодом</th><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g>
+<path d="M5 12H19" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+</g>
+</svg></span></td><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g>
+<path d="M5 12H19" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+</g>
+</svg></span></td><td><span class="cmp__ico cmp__ico--yes" role="img" aria-label="Входит"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g>
+<path d="M9 12L11 14L15 10M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+</g>
+</svg></span></td><td><span class="cmp__ico cmp__ico--yes" role="img" aria-label="Входит"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g>
+<path d="M9 12L11 14L15 10M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+</g>
+</svg></span></td></tr>
+            <tr><th scope="row">Анонимные интервью</th><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g>
+<path d="M5 12H19" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+</g>
+</svg></span></td><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g>
+<path d="M5 12H19" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+</g>
+</svg></span></td><td>До 12 интервью</td><td>До 12 интервью</td></tr>
+            <tr><th scope="row">Пульс-опросы</th><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g>
+<path d="M5 12H19" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+</g>
+</svg></span></td><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g>
+<path d="M5 12H19" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+</g>
+</svg></span></td><td>Одна волна</td><td>Три волны</td></tr>
+            <tr><th scope="row">Анонимная обратная связь</th><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g>
+<path d="M5 12H19" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+</g>
+</svg></span></td><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g>
+<path d="M5 12H19" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+</g>
+</svg></span></td><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g>
+<path d="M5 12H19" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+</g>
+</svg></span></td><td>Все 3 месяца</td></tr>
+            <tr><th scope="row">Дашборд для руководителей</th><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g>
+<path d="M5 12H19" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+</g>
+</svg></span></td><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g>
+<path d="M5 12H19" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+</g>
+</svg></span></td><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g>
+<path d="M5 12H19" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+</g>
+</svg></span></td><td><span class="cmp__ico cmp__ico--yes" role="img" aria-label="Входит"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g>
+<path d="M9 12L11 14L15 10M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+</g>
+</svg></span></td></tr>
+            <tr><th scope="row">Страница «Решения по обратной связи»</th><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g>
+<path d="M5 12H19" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+</g>
+</svg></span></td><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g>
+<path d="M5 12H19" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+</g>
+</svg></span></td><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g>
+<path d="M5 12H19" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+</g>
+</svg></span></td><td><span class="cmp__ico cmp__ico--yes" role="img" aria-label="Входит"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g>
+<path d="M9 12L11 14L15 10M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+</g>
+</svg></span></td></tr>
+            <tr><th scope="row">Сверка снаружи и изнутри</th><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g>
+<path d="M5 12H19" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+</g>
+</svg></span></td><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g>
+<path d="M5 12H19" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+</g>
+</svg></span></td><td><span class="cmp__ico cmp__ico--yes" role="img" aria-label="Входит"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g>
+<path d="M9 12L11 14L15 10M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+</g>
+</svg></span></td><td><span class="cmp__ico cmp__ico--yes" role="img" aria-label="Входит"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g>
+<path d="M9 12L11 14L15 10M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
 </g>
 </svg></span></td></tr>
           </tbody>
+        </table>
+      </div>
+      <div class="cmp" role="region" aria-labelledby="cmp-g3" tabindex="0">
+        <table class="cmp__table">
+          <colgroup><col class="cmp__col-feat"><col><col><col><col></colgroup>
+          <thead><tr><th scope="col" id="cmp-g3" class="cmp__title">Эксперт и сопровождение</th><th scope="col"><span class="cmp__cap">Снаружи</span><span class="cmp__name">Внешний срез</span><span class="cmp__price">0 ₽</span></th><th scope="col"><span class="cmp__cap">Снаружи</span><span class="cmp__name">Мониторинг</span><span class="cmp__price">от 30 000 ₽ в месяц</span></th><th scope="col"><span class="cmp__cap">Изнутри</span><span class="cmp__name">Диагностика</span><span class="cmp__price">от 180 000 ₽</span></th><th scope="col"><span class="cmp__cap">Изнутри</span><span class="cmp__name">Кампания на 3 месяца</span><span class="cmp__price">от 490 000 ₽</span></th></tr></thead>
           <tbody>
-            <tr class="cmp__group"><th scope="colgroup" colspan="5"><span>Данные и конфиденциальность</span></th></tr>
-            <tr><th scope="row"><span class="cmp__feat">Доступ к вашим системам</span></th><td>Не нужен</td><td>Не нужен</td><td>Только документы, которые передадите</td><td>Только документы, которые передадите</td></tr>
-            <tr><th scope="row"><span class="cmp__feat">Группы от 5 человек</span><span class="cmp__note">Не показываем малые группы и не ищем авторов</span></th><td><span class="cmp__no" role="img" aria-label="нет">—</span></td><td><span class="cmp__no" role="img" aria-label="нет">—</span></td><td><span class="cmp__yes" role="img" aria-label="есть"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <tr><th scope="row">Разбор с экспертом</th><td>30 минут</td><td>Звонок раз в месяц</td><td>Итоговая встреча</td><td>С руководителями раз в 2 недели</td></tr>
+            <tr><th scope="row">План улучшений</th><td>Три первых шага</td><td>Рекомендации к каждому отчёту</td><td>План на 90 дней</td><td>План и сопровождение изменений</td></tr>
+            <tr><th scope="row">Индивидуальное сопровождение</th><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g>
-<path d="M20 6L9 17L4 12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+<path d="M5 12H19" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
 </g>
-</svg></span></td><td><span class="cmp__yes" role="img" aria-label="есть"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+</svg></span></td><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g>
-<path d="M20 6L9 17L4 12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+<path d="M5 12H19" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
 </g>
-</svg></span></td></tr>
-            <tr><th scope="row"><span class="cmp__feat">Соглашение о конфиденциальности</span></th><td>По запросу</td><td><span class="cmp__yes" role="img" aria-label="есть"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+</svg></span></td><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g>
-<path d="M20 6L9 17L4 12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+<path d="M5 12H19" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
 </g>
-</svg></span></td><td><span class="cmp__yes" role="img" aria-label="есть"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+</svg></span></td><td><span class="cmp__ico cmp__ico--yes" role="img" aria-label="Входит"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g>
-<path d="M20 6L9 17L4 12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
-</g>
-</svg></span></td><td><span class="cmp__yes" role="img" aria-label="есть"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g>
-<path d="M20 6L9 17L4 12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
-</g>
-</svg></span></td></tr>
-            <tr><th scope="row"><span class="cmp__feat">Договор на обработку данных сотрудников</span><span class="cmp__note">По 152-ФЗ, данные удаляем после проекта</span></th><td><span class="cmp__no" role="img" aria-label="нет">—</span></td><td><span class="cmp__no" role="img" aria-label="нет">—</span></td><td><span class="cmp__yes" role="img" aria-label="есть"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g>
-<path d="M20 6L9 17L4 12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
-</g>
-</svg></span></td><td><span class="cmp__yes" role="img" aria-label="есть"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g>
-<path d="M20 6L9 17L4 12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
-</g>
-</svg></span></td></tr>
-            <tr><th scope="row"><span class="cmp__feat">Данные хранятся в России</span></th><td><span class="cmp__yes" role="img" aria-label="есть"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g>
-<path d="M20 6L9 17L4 12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
-</g>
-</svg></span></td><td><span class="cmp__yes" role="img" aria-label="есть"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g>
-<path d="M20 6L9 17L4 12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
-</g>
-</svg></span></td><td><span class="cmp__yes" role="img" aria-label="есть"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g>
-<path d="M20 6L9 17L4 12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
-</g>
-</svg></span></td><td><span class="cmp__yes" role="img" aria-label="есть"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g>
-<path d="M20 6L9 17L4 12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+<path d="M9 12L11 14L15 10M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
 </g>
 </svg></span></td></tr>
           </tbody>
-      </table>
+        </table>
+      </div>
+      <div class="cmp" role="region" aria-labelledby="cmp-g4" tabindex="0">
+        <table class="cmp__table">
+          <colgroup><col class="cmp__col-feat"><col><col><col><col></colgroup>
+          <thead><tr><th scope="col" id="cmp-g4" class="cmp__title">Данные и конфиденциальность</th><th scope="col"><span class="cmp__cap">Снаружи</span><span class="cmp__name">Внешний срез</span><span class="cmp__price">0 ₽</span></th><th scope="col"><span class="cmp__cap">Снаружи</span><span class="cmp__name">Мониторинг</span><span class="cmp__price">от 30 000 ₽ в месяц</span></th><th scope="col"><span class="cmp__cap">Изнутри</span><span class="cmp__name">Диагностика</span><span class="cmp__price">от 180 000 ₽</span></th><th scope="col"><span class="cmp__cap">Изнутри</span><span class="cmp__name">Кампания на 3 месяца</span><span class="cmp__price">от 490 000 ₽</span></th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Доступ к вашим системам</th><td>Не нужен</td><td>Не нужен</td><td>Только переданные документы</td><td>Только переданные документы</td></tr>
+            <tr><th scope="row">Группы от 5 человек</th><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g>
+<path d="M5 12H19" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+</g>
+</svg></span></td><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g>
+<path d="M5 12H19" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+</g>
+</svg></span></td><td><span class="cmp__ico cmp__ico--yes" role="img" aria-label="Входит"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g>
+<path d="M9 12L11 14L15 10M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+</g>
+</svg></span></td><td><span class="cmp__ico cmp__ico--yes" role="img" aria-label="Входит"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g>
+<path d="M9 12L11 14L15 10M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+</g>
+</svg></span></td></tr>
+            <tr><th scope="row">Соглашение о конфиденциальности</th><td>По запросу</td><td><span class="cmp__ico cmp__ico--yes" role="img" aria-label="Входит"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g>
+<path d="M9 12L11 14L15 10M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+</g>
+</svg></span></td><td><span class="cmp__ico cmp__ico--yes" role="img" aria-label="Входит"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g>
+<path d="M9 12L11 14L15 10M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+</g>
+</svg></span></td><td><span class="cmp__ico cmp__ico--yes" role="img" aria-label="Входит"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g>
+<path d="M9 12L11 14L15 10M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+</g>
+</svg></span></td></tr>
+            <tr><th scope="row">Договор на обработку данных сотрудников</th><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g>
+<path d="M5 12H19" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+</g>
+</svg></span></td><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g>
+<path d="M5 12H19" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+</g>
+</svg></span></td><td><span class="cmp__ico cmp__ico--yes" role="img" aria-label="Входит"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g>
+<path d="M9 12L11 14L15 10M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+</g>
+</svg></span></td><td><span class="cmp__ico cmp__ico--yes" role="img" aria-label="Входит"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g>
+<path d="M9 12L11 14L15 10M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+</g>
+</svg></span></td></tr>
+            <tr><th scope="row">Данные хранятся в России</th><td><span class="cmp__ico cmp__ico--yes" role="img" aria-label="Входит"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g>
+<path d="M9 12L11 14L15 10M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+</g>
+</svg></span></td><td><span class="cmp__ico cmp__ico--yes" role="img" aria-label="Входит"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g>
+<path d="M9 12L11 14L15 10M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+</g>
+</svg></span></td><td><span class="cmp__ico cmp__ico--yes" role="img" aria-label="Входит"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g>
+<path d="M9 12L11 14L15 10M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+</g>
+</svg></span></td><td><span class="cmp__ico cmp__ico--yes" role="img" aria-label="Входит"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g>
+<path d="M9 12L11 14L15 10M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+</g>
+</svg></span></td></tr>
+          </tbody>
+        </table>
+      </div>
     </div>
     <div class="cards cards--2" style="margin-top:24px">
       <article class="card card--white"><div><h3 class="card__title">Агентствам и консультантам</h3><p class="card__text">Делаем внешний аудит HR-бренда для ваших клиентов под вашим логотипом. Первые три отчёта — бесплатно.</p></div><a class="btn-link card__more" href="index.html?topic=other#request" data-topic="other">Обсудить пилот <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1063,7 +1240,7 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
     </div>
   </section>
 
-  <!-- ============ ВОПРОСЫ: одна группа «Цены и договор» ============ -->
+  <!-- ============ ВОПРОСЫ: одна группа «Цены и договор» (в макете нет — оставлены по прошлой договорённости) ============ -->
   <section class="section" id="faq" aria-labelledby="faq-title">
     <div class="section__head">
       <span class="eyebrow">Вопросы · цены и договор</span>

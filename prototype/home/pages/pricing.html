@@ -1,102 +1,120 @@
 <!-- page: route=pricing; title=Цены — Mirror -->
   <main>
-  <!-- ============ ШАПКА СТРАНИЦЫ: H1 = пункт меню, без эйброу ============ -->
+  <!-- ============ ШАПКА СТРАНИЦЫ (макет «Цена» 1027:4031) ============ -->
   <section class="page-hero" aria-labelledby="page-title">
     <ol class="crumbs" aria-label="Хлебные крошки">
       <li><a href="{{href:home}}">Главная</a></li>
       <li><span aria-current="page">Цены</span></li>
     </ol>
-    <div class="hero__head">
-      <div class="hero__row">
-        <h1 class="hero__title" id="page-title">Цены</h1>
-        <p class="hero__text">Внешний срез бесплатный. Мониторинг оплачивается помесячно, диагностика и кампания — разово. Цену проверки изнутри фиксируем в договоре до начала работы.</p>
-      </div>
+    <div class="page-hero__head">
+      <span class="eyebrow">Когда приходят к нам</span>
+      <h1 class="hero__title" id="page-title">Цены</h1>
+      <p class="page-hero__lead">Внешний срез бесплатный. Мониторинг оплачивается помесячно, диагностика и кампания разово. Цену проверки изнутри фиксируем в договоре до начала работы.</p>
     </div>
   </section>
 
-  <!-- ============ ТАРИФЫ (общий блок с главной) ============ -->
+  <!-- ============ ТАРИФЫ (общий блок с главной) + подводка к цене по численности ============ -->
   <section class="section section--first" aria-label="Тарифы">
 {{include:partials/pricing-plans.html}}
-    <!-- Цена по численности: подводка в стиле блока «Не знаете, с чего начать?» + таблица -->
-    <div class="help" id="by-size">
-      <img src="{{uri:shape-30.svg}}" alt="">
-      <div class="help__text"><h3>Чем больше компания, тем ниже цена на человека</h3><p>Цена проверки изнутри зависит от числа сотрудников и подразделений. Внешний срез бесплатный для всех, мониторинг от численности не зависит.</p></div>
+    <div class="help">
+      <img class="help__shape--72" src="{{uri:shape-72.svg}}" alt="">
+      <div class="help__text"><h3>Чем больше компания, тем ниже цена на человека</h3><p>Цена проверки изнутри зависит от числа сотрудников и подразделений.<br>Внешний срез бесплатный для всех, мониторинг от численности не зависит.</p></div>
     </div>
-    <div class="cmp cmp--size" role="region" aria-label="Цена по численности" tabindex="0">
+  </section>
+
+  <!-- ============ ЦЕНА ПО ЧИСЛЕННОСТИ (1027:4242) ============ -->
+  <section class="section" aria-label="Цена по численности">
+    <div class="cmp cmp--size" id="by-size" role="region" aria-labelledby="size-title" tabindex="0">
       <table class="cmp__table">
         <colgroup><col class="cmp__col-feat"><col><col><col><col></colgroup>
-        <thead><tr><th scope="col">Сотрудников</th><th scope="col">До 300</th><th scope="col">300–1000</th><th scope="col">1000–3000</th><th scope="col">Больше 3000</th></tr></thead>
+        <thead><tr><th scope="col" id="size-title" class="cmp__title">Дашборд здоровья корпоративной культуры</th><th scope="col"><span class="cmp__cap">До 300 сотрудников</span></th><th scope="col"><span class="cmp__cap">300–1000 сотрудников</span></th><th scope="col"><span class="cmp__cap">1000–3000 сотрудников</span></th><th scope="col"><span class="cmp__cap">Больше 3000</span></th></tr></thead>
         <tbody>
-          <tr><th scope="row"><span class="cmp__feat">Диагностика</span><span class="cmp__note">Около 4 недель</span></th><td>180 000 ₽</td><td>260 000 ₽</td><td>По запросу</td><td>По запросу</td></tr>
-          <tr><th scope="row"><span class="cmp__feat">Кампания на 3 месяца</span><span class="cmp__note">Диагностика в составе</span></th><td>490 000 ₽</td><td>790 000 ₽</td><td>1 290 000 ₽</td><td>По запросу</td></tr>
-          <tr><th scope="row"><span class="cmp__feat">Кампания на одного сотрудника</span><span class="cmp__note">При верхней границе диапазона</span></th><td>от 1 633 ₽</td><td>от 790 ₽</td><td>от 430 ₽</td><td>По запросу</td></tr>
+          <tr><th scope="row">Диагностика</th><td>180 000 ₽</td><td>260 000 ₽</td><td>По запросу</td><td>По запросу</td></tr>
+          <tr><th scope="row">Кампания на 3 месяца</th><td>490 000 ₽</td><td>790 000 ₽</td><td>1 290 000 ₽</td><td>По запросу</td></tr>
+          <tr><th scope="row">Кампания на одного сотрудника</th><td>от 1 633 ₽</td><td>от 790 ₽</td><td>от 430 ₽</td><td>По запросу</td></tr>
         </tbody>
       </table>
     </div>
-    <p class="cmp__foot">После кампании замеры можно продлить.</p>
   </section>
 
-  <!-- ============ ПОДРОБНОЕ СРАВНЕНИЕ ============ -->
+  <!-- ============ ЧТО ВХОДИТ (1027:4288): по таблице на группу ============ -->
   <section class="section" id="compare" aria-labelledby="compare-title">
-    <div class="section__head">
-      <span class="eyebrow">Сравнение · 4 тарифа</span>
-      <div class="headline-block">
-        <h2 class="headline" id="compare-title">Что входит<br><span class="dim">в каждый тариф</span></h2>
-        <p class="lead">Снаружи смотрим, что видят кандидаты и рынок. Изнутри — что переживают сотрудники. Показатели направлений не смешиваем в одну цифру.</p>
-      </div>
+    <div class="section__head section__head--center">
+      <h2 class="headline" id="compare-title">Что входит<br><span class="dim">в каждый тариф</span></h2>
+      <p class="lead">Снаружи смотрим, что видят кандидаты и рынок. Изнутри — что переживают сотрудники. Показатели направлений не смешиваем в одну цифру.</p>
     </div>
-    <div class="cmp cmp--sticky" role="region" aria-label="Сравнение тарифов" tabindex="0">
-      <table class="cmp__table">
-        <colgroup><col class="cmp__col-feat"><col><col><col><col></colgroup>
-        <thead><tr><th scope="col" class="cmp__corner"><span class="sr-only">Что входит</span></th><th scope="col"><span class="cmp__cap">Снаружи</span><span class="cmp__name">Внешний срез</span><span class="cmp__price">0 ₽</span></th><th scope="col"><span class="cmp__cap">Снаружи</span><span class="cmp__name">Мониторинг</span><span class="cmp__price">от 30 000 ₽ в месяц</span></th><th scope="col"><span class="cmp__cap">Изнутри</span><span class="cmp__name">Диагностика</span><span class="cmp__price">от 180 000 ₽</span></th><th scope="col"><span class="cmp__cap">Изнутри</span><span class="cmp__name">Кампания на 3 месяца</span><span class="cmp__price">от 490 000 ₽</span></th></tr></thead>
+    <div class="cmp-stack">
+      <div class="cmp" role="region" aria-labelledby="cmp-g0" tabindex="0">
+        <table class="cmp__table">
+          <colgroup><col class="cmp__col-feat"><col><col><col><col></colgroup>
+          <thead><tr><th scope="col" id="cmp-g0" class="cmp__title">Условия сотрудничества</th><th scope="col"><span class="cmp__cap">Снаружи</span><span class="cmp__name">Внешний срез</span><span class="cmp__price">0 ₽</span></th><th scope="col"><span class="cmp__cap">Снаружи</span><span class="cmp__name">Мониторинг</span><span class="cmp__price">от 30 000 ₽ в месяц</span></th><th scope="col"><span class="cmp__cap">Изнутри</span><span class="cmp__name">Диагностика</span><span class="cmp__price">от 180 000 ₽</span></th><th scope="col"><span class="cmp__cap">Изнутри</span><span class="cmp__name">Кампания на 3 месяца</span><span class="cmp__price">от 490 000 ₽</span></th></tr></thead>
           <tbody>
-            <tr class="cmp__group"><th scope="colgroup" colspan="5"><span>Условия</span></th></tr>
-            <tr><th scope="row"><span class="cmp__feat">Как платим</span></th><td>Бесплатно</td><td>Помесячно, можно остановить в любой месяц</td><td>Разово, по счёту</td><td>Разово, по счёту</td></tr>
-            <tr><th scope="row"><span class="cmp__feat">Срок</span></th><td>3 рабочих дня</td><td>Обновление каждый месяц</td><td>Около 4 недель</td><td>3 месяца</td></tr>
-            <tr><th scope="row"><span class="cmp__feat">Результат</span></th><td>PDF-отчёт</td><td>PDF-отчёт каждый месяц</td><td>Отчёт и план на 90 дней</td><td>Дашборд и итоговый отчёт</td></tr>
-            <tr><th scope="row"><span class="cmp__feat">От вас нужно</span></th><td>Название компании и ссылка на hh.ru</td><td>То же, что для среза</td><td>Культурный код или документы о ценностях</td><td>То же и список подразделений</td></tr>
-            <tr><th scope="row"><span class="cmp__feat">Договор и закрывающие документы</span></th><td>Не нужны</td><td><span class="cmp__yes" role="img" aria-label="есть">{{svgc:check.svg}}</span></td><td><span class="cmp__yes" role="img" aria-label="есть">{{svgc:check.svg}}</span></td><td><span class="cmp__yes" role="img" aria-label="есть">{{svgc:check.svg}}</span></td></tr>
+            <tr><th scope="row">Как платим</th><td>Бесплатно</td><td>Помесячно, можно остановить в любой месяц</td><td>Разово, по счёту</td><td>Разово, по счёту</td></tr>
+            <tr><th scope="row">Срок</th><td>3 рабочих дня</td><td>Обновление каждый месяц</td><td>Около 4 недель</td><td>3 месяца</td></tr>
+            <tr><th scope="row">Результат</th><td>PDF-отчёт</td><td>PDF-отчёт каждый месяц</td><td>Отчёт и план на 90 дней</td><td>Дашборд и итоговый отчёт</td></tr>
+            <tr><th scope="row">От вас нужно</th><td>Название компании и ссылка на hh.ru</td><td>Название компании и ссылка на hh.ru</td><td>Культурный код или документы о ценностях</td><td>Культурный код или документы о ценностях и список подразделений</td></tr>
+            <tr><th scope="row">Договор и закрывающие документы</th><td><span class="cmp__ico cmp__ico--no" role="img" aria-label="Не нужен">{{svgc:circle-x.svg}}</span></td><td><span class="cmp__ico cmp__ico--yes" role="img" aria-label="Входит">{{svgc:circle-check.svg}}</span></td><td><span class="cmp__ico cmp__ico--yes" role="img" aria-label="Входит">{{svgc:circle-check.svg}}</span></td><td><span class="cmp__ico cmp__ico--yes" role="img" aria-label="Входит">{{svgc:circle-check.svg}}</span></td></tr>
           </tbody>
+        </table>
+      </div>
+      <div class="cmp" role="region" aria-labelledby="cmp-g1" tabindex="0">
+        <table class="cmp__table">
+          <colgroup><col class="cmp__col-feat"><col><col><col><col></colgroup>
+          <thead><tr><th scope="col" id="cmp-g1" class="cmp__title">Оценка HR-бренда</th><th scope="col"><span class="cmp__cap">Снаружи</span><span class="cmp__name">Внешний срез</span><span class="cmp__price">0 ₽</span></th><th scope="col"><span class="cmp__cap">Снаружи</span><span class="cmp__name">Мониторинг</span><span class="cmp__price">от 30 000 ₽ в месяц</span></th><th scope="col"><span class="cmp__cap">Изнутри</span><span class="cmp__name">Диагностика</span><span class="cmp__price">от 180 000 ₽</span></th><th scope="col"><span class="cmp__cap">Изнутри</span><span class="cmp__name">Кампания на 3 месяца</span><span class="cmp__price">от 490 000 ₽</span></th></tr></thead>
           <tbody>
-            <tr class="cmp__group"><th scope="colgroup" colspan="5"><span>Снаружи: оценка HR-бренда</span></th></tr>
-            <tr><th scope="row"><span class="cmp__feat">Индекс культуры и карта обещаний</span><span class="cmp__note">Насколько обещания в вакансиях и соцсетях совпадают с опытом людей</span></th><td><span class="cmp__yes" role="img" aria-label="есть">{{svgc:check.svg}}</span></td><td><span class="cmp__yes" role="img" aria-label="есть">{{svgc:check.svg}}</span></td><td>Из среза</td><td>Из среза</td></tr>
-            <tr><th scope="row"><span class="cmp__feat">Слепые зоны</span><span class="cmp__note">О чём люди говорят, а компания молчит</span></th><td><span class="cmp__yes" role="img" aria-label="есть">{{svgc:check.svg}}</span></td><td><span class="cmp__yes" role="img" aria-label="есть">{{svgc:check.svg}}</span></td><td>Из среза</td><td>Из среза</td></tr>
-            <tr><th scope="row"><span class="cmp__feat">Место в отрасли</span><span class="cmp__note">Как ваши условия выглядят на фоне рынка</span></th><td><span class="cmp__yes" role="img" aria-label="есть">{{svgc:check.svg}}</span></td><td><span class="cmp__yes" role="img" aria-label="есть">{{svgc:check.svg}}</span></td><td>Из среза</td><td>Из среза</td></tr>
-            <tr><th scope="row"><span class="cmp__feat">Конкуренты в сравнении</span></th><td>2–3</td><td>2–3, можно добавить до 5</td><td>Из среза</td><td>Из среза</td></tr>
-            <tr><th scope="row"><span class="cmp__feat">Что говорят нейросети</span></th><td><span class="cmp__yes" role="img" aria-label="есть">{{svgc:check.svg}}</span></td><td><span class="cmp__yes" role="img" aria-label="есть">{{svgc:check.svg}}</span></td><td>Из среза</td><td>Из среза</td></tr>
-            <tr><th scope="row"><span class="cmp__feat">Открытые источники</span><span class="cmp__note">hh.ru, Dreamjob, VK, Дзен, медиа</span></th><td><span class="cmp__yes" role="img" aria-label="есть">{{svgc:check.svg}}</span></td><td><span class="cmp__yes" role="img" aria-label="есть">{{svgc:check.svg}}</span></td><td>Из среза</td><td>Из среза</td></tr>
-            <tr><th scope="row"><span class="cmp__feat">Динамика индекса</span><span class="cmp__note">Просадки и подъёмы по месяцам</span></th><td><span class="cmp__no" role="img" aria-label="нет">—</span></td><td><span class="cmp__yes" role="img" aria-label="есть">{{svgc:check.svg}}</span></td><td><span class="cmp__no" role="img" aria-label="нет">—</span></td><td><span class="cmp__no" role="img" aria-label="нет">—</span></td></tr>
-            <tr><th scope="row"><span class="cmp__feat">Сигнал о резком росте темы</span></th><td><span class="cmp__no" role="img" aria-label="нет">—</span></td><td><span class="cmp__yes" role="img" aria-label="есть">{{svgc:check.svg}}</span></td><td><span class="cmp__no" role="img" aria-label="нет">—</span></td><td><span class="cmp__no" role="img" aria-label="нет">—</span></td></tr>
-            <tr><th scope="row"><span class="cmp__feat">Развёрнутый отчёт</span><span class="cmp__note">Позиционирование, вакансии, соцсети, персоны, конкуренты, SWOT</span></th><td>Краткая версия</td><td>Раз в квартал</td><td><span class="cmp__no" role="img" aria-label="нет">—</span></td><td><span class="cmp__no" role="img" aria-label="нет">—</span></td></tr>
+            <tr><th scope="row">Индекс культуры и карта обещаний</th><td><span class="cmp__ico cmp__ico--yes" role="img" aria-label="Входит">{{svgc:circle-check.svg}}</span></td><td><span class="cmp__ico cmp__ico--yes" role="img" aria-label="Входит">{{svgc:circle-check.svg}}</span></td><td>Из внешнего среза</td><td>Из внешнего среза</td></tr>
+            <tr><th scope="row">Слепые зоны</th><td><span class="cmp__ico cmp__ico--yes" role="img" aria-label="Входит">{{svgc:circle-check.svg}}</span></td><td><span class="cmp__ico cmp__ico--yes" role="img" aria-label="Входит">{{svgc:circle-check.svg}}</span></td><td>Из внешнего среза</td><td>Из внешнего среза</td></tr>
+            <tr><th scope="row">Место в отрасли</th><td><span class="cmp__ico cmp__ico--yes" role="img" aria-label="Входит">{{svgc:circle-check.svg}}</span></td><td><span class="cmp__ico cmp__ico--yes" role="img" aria-label="Входит">{{svgc:circle-check.svg}}</span></td><td>Из внешнего среза</td><td>Из внешнего среза</td></tr>
+            <tr><th scope="row">Конкуренты в сравнении</th><td>Два-три конкурента</td><td>До пяти конкурентов</td><td>Из внешнего среза</td><td>Из внешнего среза</td></tr>
+            <tr><th scope="row">Открытые источники</th><td><span class="cmp__ico cmp__ico--yes" role="img" aria-label="Входит">{{svgc:circle-check.svg}}</span></td><td><span class="cmp__ico cmp__ico--yes" role="img" aria-label="Входит">{{svgc:circle-check.svg}}</span></td><td>Из внешнего среза</td><td>Из внешнего среза</td></tr>
+            <tr><th scope="row">Динамика индекса</th><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит">{{svgc:minus.svg}}</span></td><td><span class="cmp__ico cmp__ico--yes" role="img" aria-label="Входит">{{svgc:circle-check.svg}}</span></td><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит">{{svgc:minus.svg}}</span></td><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит">{{svgc:minus.svg}}</span></td></tr>
+            <tr><th scope="row">Сигнал о резком росте темы</th><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит">{{svgc:minus.svg}}</span></td><td><span class="cmp__ico cmp__ico--yes" role="img" aria-label="Входит">{{svgc:circle-check.svg}}</span></td><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит">{{svgc:minus.svg}}</span></td><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит">{{svgc:minus.svg}}</span></td></tr>
+            <tr><th scope="row">Развёрнутый отчёт</th><td>Краткая версия</td><td>Раз в квартал</td><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит">{{svgc:minus.svg}}</span></td><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит">{{svgc:minus.svg}}</span></td></tr>
           </tbody>
+        </table>
+      </div>
+      <div class="cmp" role="region" aria-labelledby="cmp-g2" tabindex="0">
+        <table class="cmp__table">
+          <colgroup><col class="cmp__col-feat"><col><col><col><col></colgroup>
+          <thead><tr><th scope="col" id="cmp-g2" class="cmp__title">Здоровье корпоративной культуры</th><th scope="col"><span class="cmp__cap">Снаружи</span><span class="cmp__name">Внешний срез</span><span class="cmp__price">0 ₽</span></th><th scope="col"><span class="cmp__cap">Снаружи</span><span class="cmp__name">Мониторинг</span><span class="cmp__price">от 30 000 ₽ в месяц</span></th><th scope="col"><span class="cmp__cap">Изнутри</span><span class="cmp__name">Диагностика</span><span class="cmp__price">от 180 000 ₽</span></th><th scope="col"><span class="cmp__cap">Изнутри</span><span class="cmp__name">Кампания на 3 месяца</span><span class="cmp__price">от 490 000 ₽</span></th></tr></thead>
           <tbody>
-            <tr class="cmp__group"><th scope="colgroup" colspan="5"><span>Изнутри: здоровье культуры</span></th></tr>
-            <tr><th scope="row"><span class="cmp__feat">Описание культурного кода</span><span class="cmp__note">Какие нормы компания заявляет</span></th><td><span class="cmp__no" role="img" aria-label="нет">—</span></td><td><span class="cmp__no" role="img" aria-label="нет">—</span></td><td><span class="cmp__yes" role="img" aria-label="есть">{{svgc:check.svg}}</span></td><td><span class="cmp__yes" role="img" aria-label="есть">{{svgc:check.svg}}</span></td></tr>
-            <tr><th scope="row"><span class="cmp__feat">Ваши внутренние документы в анализе</span><span class="cmp__note">EVP, ценности, результаты прошлых опросов</span></th><td><span class="cmp__no" role="img" aria-label="нет">—</span></td><td><span class="cmp__no" role="img" aria-label="нет">—</span></td><td><span class="cmp__yes" role="img" aria-label="есть">{{svgc:check.svg}}</span></td><td><span class="cmp__yes" role="img" aria-label="есть">{{svgc:check.svg}}</span></td></tr>
-            <tr><th scope="row"><span class="cmp__feat">10 метрик культуры</span></th><td><span class="cmp__no" role="img" aria-label="нет">—</span></td><td><span class="cmp__no" role="img" aria-label="нет">—</span></td><td>Первый замер</td><td>3 замера</td></tr>
-            <tr><th scope="row"><span class="cmp__feat">Разрыв с культурным кодом</span></th><td><span class="cmp__no" role="img" aria-label="нет">—</span></td><td><span class="cmp__no" role="img" aria-label="нет">—</span></td><td><span class="cmp__yes" role="img" aria-label="есть">{{svgc:check.svg}}</span></td><td><span class="cmp__yes" role="img" aria-label="есть">{{svgc:check.svg}}</span></td></tr>
-            <tr><th scope="row"><span class="cmp__feat">Анонимные интервью с сотрудниками</span></th><td><span class="cmp__no" role="img" aria-label="нет">—</span></td><td><span class="cmp__no" role="img" aria-label="нет">—</span></td><td>До 12</td><td>До 12</td></tr>
-            <tr><th scope="row"><span class="cmp__feat">Пульс-опросы</span></th><td><span class="cmp__no" role="img" aria-label="нет">—</span></td><td><span class="cmp__no" role="img" aria-label="нет">—</span></td><td>1 волна</td><td>3 волны</td></tr>
-            <tr><th scope="row"><span class="cmp__feat">Анонимная обратная связь</span></th><td><span class="cmp__no" role="img" aria-label="нет">—</span></td><td><span class="cmp__no" role="img" aria-label="нет">—</span></td><td><span class="cmp__no" role="img" aria-label="нет">—</span></td><td>Все 3 месяца</td></tr>
-            <tr><th scope="row"><span class="cmp__feat">Дашборд</span><span class="cmp__note">Для команды культуры, руководителей и топов</span></th><td><span class="cmp__no" role="img" aria-label="нет">—</span></td><td><span class="cmp__no" role="img" aria-label="нет">—</span></td><td><span class="cmp__no" role="img" aria-label="нет">—</span></td><td><span class="cmp__yes" role="img" aria-label="есть">{{svgc:check.svg}}</span></td></tr>
-            <tr><th scope="row"><span class="cmp__feat">Страница «Решения по обратной связи»</span><span class="cmp__note">Какие решения приняли по отзывам сотрудников и что изменилось</span></th><td><span class="cmp__no" role="img" aria-label="нет">—</span></td><td><span class="cmp__no" role="img" aria-label="нет">—</span></td><td><span class="cmp__no" role="img" aria-label="нет">—</span></td><td><span class="cmp__yes" role="img" aria-label="есть">{{svgc:check.svg}}</span></td></tr>
-            <tr><th scope="row"><span class="cmp__feat">Сверка снаружи и изнутри</span><span class="cmp__note">Темы, которые звучат и в отзывах, и в опросах</span></th><td><span class="cmp__no" role="img" aria-label="нет">—</span></td><td><span class="cmp__no" role="img" aria-label="нет">—</span></td><td><span class="cmp__yes" role="img" aria-label="есть">{{svgc:check.svg}}</span></td><td><span class="cmp__yes" role="img" aria-label="есть">{{svgc:check.svg}}</span></td></tr>
+            <tr><th scope="row">Описание культурного кода</th><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит">{{svgc:minus.svg}}</span></td><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит">{{svgc:minus.svg}}</span></td><td><span class="cmp__ico cmp__ico--yes" role="img" aria-label="Входит">{{svgc:circle-check.svg}}</span></td><td><span class="cmp__ico cmp__ico--yes" role="img" aria-label="Входит">{{svgc:circle-check.svg}}</span></td></tr>
+            <tr><th scope="row">Ваши документы в анализе</th><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит">{{svgc:minus.svg}}</span></td><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит">{{svgc:minus.svg}}</span></td><td><span class="cmp__ico cmp__ico--yes" role="img" aria-label="Входит">{{svgc:circle-check.svg}}</span></td><td><span class="cmp__ico cmp__ico--yes" role="img" aria-label="Входит">{{svgc:circle-check.svg}}</span></td></tr>
+            <tr><th scope="row">10 метрик культуры</th><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит">{{svgc:minus.svg}}</span></td><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит">{{svgc:minus.svg}}</span></td><td>Первый замер</td><td>Три замера</td></tr>
+            <tr><th scope="row">Разрыв с культурным кодом</th><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит">{{svgc:minus.svg}}</span></td><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит">{{svgc:minus.svg}}</span></td><td><span class="cmp__ico cmp__ico--yes" role="img" aria-label="Входит">{{svgc:circle-check.svg}}</span></td><td><span class="cmp__ico cmp__ico--yes" role="img" aria-label="Входит">{{svgc:circle-check.svg}}</span></td></tr>
+            <tr><th scope="row">Анонимные интервью</th><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит">{{svgc:minus.svg}}</span></td><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит">{{svgc:minus.svg}}</span></td><td>До 12 интервью</td><td>До 12 интервью</td></tr>
+            <tr><th scope="row">Пульс-опросы</th><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит">{{svgc:minus.svg}}</span></td><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит">{{svgc:minus.svg}}</span></td><td>Одна волна</td><td>Три волны</td></tr>
+            <tr><th scope="row">Анонимная обратная связь</th><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит">{{svgc:minus.svg}}</span></td><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит">{{svgc:minus.svg}}</span></td><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит">{{svgc:minus.svg}}</span></td><td>Все 3 месяца</td></tr>
+            <tr><th scope="row">Дашборд для руководителей</th><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит">{{svgc:minus.svg}}</span></td><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит">{{svgc:minus.svg}}</span></td><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит">{{svgc:minus.svg}}</span></td><td><span class="cmp__ico cmp__ico--yes" role="img" aria-label="Входит">{{svgc:circle-check.svg}}</span></td></tr>
+            <tr><th scope="row">Страница «Решения по обратной связи»</th><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит">{{svgc:minus.svg}}</span></td><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит">{{svgc:minus.svg}}</span></td><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит">{{svgc:minus.svg}}</span></td><td><span class="cmp__ico cmp__ico--yes" role="img" aria-label="Входит">{{svgc:circle-check.svg}}</span></td></tr>
+            <tr><th scope="row">Сверка снаружи и изнутри</th><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит">{{svgc:minus.svg}}</span></td><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит">{{svgc:minus.svg}}</span></td><td><span class="cmp__ico cmp__ico--yes" role="img" aria-label="Входит">{{svgc:circle-check.svg}}</span></td><td><span class="cmp__ico cmp__ico--yes" role="img" aria-label="Входит">{{svgc:circle-check.svg}}</span></td></tr>
           </tbody>
+        </table>
+      </div>
+      <div class="cmp" role="region" aria-labelledby="cmp-g3" tabindex="0">
+        <table class="cmp__table">
+          <colgroup><col class="cmp__col-feat"><col><col><col><col></colgroup>
+          <thead><tr><th scope="col" id="cmp-g3" class="cmp__title">Эксперт и сопровождение</th><th scope="col"><span class="cmp__cap">Снаружи</span><span class="cmp__name">Внешний срез</span><span class="cmp__price">0 ₽</span></th><th scope="col"><span class="cmp__cap">Снаружи</span><span class="cmp__name">Мониторинг</span><span class="cmp__price">от 30 000 ₽ в месяц</span></th><th scope="col"><span class="cmp__cap">Изнутри</span><span class="cmp__name">Диагностика</span><span class="cmp__price">от 180 000 ₽</span></th><th scope="col"><span class="cmp__cap">Изнутри</span><span class="cmp__name">Кампания на 3 месяца</span><span class="cmp__price">от 490 000 ₽</span></th></tr></thead>
           <tbody>
-            <tr class="cmp__group"><th scope="colgroup" colspan="5"><span>Эксперт и сопровождение</span></th></tr>
-            <tr><th scope="row"><span class="cmp__feat">Разбор с экспертом</span></th><td>30 минут</td><td>Звонок раз в месяц</td><td>Итоговая встреча</td><td>С руководителями раз в 2 недели</td></tr>
-            <tr><th scope="row"><span class="cmp__feat">План улучшений</span></th><td>3 первых шага</td><td>Рекомендации к каждому отчёту</td><td>План на 90 дней</td><td>План и сопровождение изменений</td></tr>
-            <tr><th scope="row"><span class="cmp__feat">Индивидуальное сопровождение</span><span class="cmp__note">Один эксперт ведёт проект от начала до конца</span></th><td><span class="cmp__no" role="img" aria-label="нет">—</span></td><td><span class="cmp__no" role="img" aria-label="нет">—</span></td><td><span class="cmp__no" role="img" aria-label="нет">—</span></td><td><span class="cmp__yes" role="img" aria-label="есть">{{svgc:check.svg}}</span></td></tr>
+            <tr><th scope="row">Разбор с экспертом</th><td>30 минут</td><td>Звонок раз в месяц</td><td>Итоговая встреча</td><td>С руководителями раз в 2 недели</td></tr>
+            <tr><th scope="row">План улучшений</th><td>Три первых шага</td><td>Рекомендации к каждому отчёту</td><td>План на 90 дней</td><td>План и сопровождение изменений</td></tr>
+            <tr><th scope="row">Индивидуальное сопровождение</th><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит">{{svgc:minus.svg}}</span></td><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит">{{svgc:minus.svg}}</span></td><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит">{{svgc:minus.svg}}</span></td><td><span class="cmp__ico cmp__ico--yes" role="img" aria-label="Входит">{{svgc:circle-check.svg}}</span></td></tr>
           </tbody>
+        </table>
+      </div>
+      <div class="cmp" role="region" aria-labelledby="cmp-g4" tabindex="0">
+        <table class="cmp__table">
+          <colgroup><col class="cmp__col-feat"><col><col><col><col></colgroup>
+          <thead><tr><th scope="col" id="cmp-g4" class="cmp__title">Данные и конфиденциальность</th><th scope="col"><span class="cmp__cap">Снаружи</span><span class="cmp__name">Внешний срез</span><span class="cmp__price">0 ₽</span></th><th scope="col"><span class="cmp__cap">Снаружи</span><span class="cmp__name">Мониторинг</span><span class="cmp__price">от 30 000 ₽ в месяц</span></th><th scope="col"><span class="cmp__cap">Изнутри</span><span class="cmp__name">Диагностика</span><span class="cmp__price">от 180 000 ₽</span></th><th scope="col"><span class="cmp__cap">Изнутри</span><span class="cmp__name">Кампания на 3 месяца</span><span class="cmp__price">от 490 000 ₽</span></th></tr></thead>
           <tbody>
-            <tr class="cmp__group"><th scope="colgroup" colspan="5"><span>Данные и конфиденциальность</span></th></tr>
-            <tr><th scope="row"><span class="cmp__feat">Доступ к вашим системам</span></th><td>Не нужен</td><td>Не нужен</td><td>Только документы, которые передадите</td><td>Только документы, которые передадите</td></tr>
-            <tr><th scope="row"><span class="cmp__feat">Группы от 5 человек</span><span class="cmp__note">Не показываем малые группы и не ищем авторов</span></th><td><span class="cmp__no" role="img" aria-label="нет">—</span></td><td><span class="cmp__no" role="img" aria-label="нет">—</span></td><td><span class="cmp__yes" role="img" aria-label="есть">{{svgc:check.svg}}</span></td><td><span class="cmp__yes" role="img" aria-label="есть">{{svgc:check.svg}}</span></td></tr>
-            <tr><th scope="row"><span class="cmp__feat">Соглашение о конфиденциальности</span></th><td>По запросу</td><td><span class="cmp__yes" role="img" aria-label="есть">{{svgc:check.svg}}</span></td><td><span class="cmp__yes" role="img" aria-label="есть">{{svgc:check.svg}}</span></td><td><span class="cmp__yes" role="img" aria-label="есть">{{svgc:check.svg}}</span></td></tr>
-            <tr><th scope="row"><span class="cmp__feat">Договор на обработку данных сотрудников</span><span class="cmp__note">По 152-ФЗ, данные удаляем после проекта</span></th><td><span class="cmp__no" role="img" aria-label="нет">—</span></td><td><span class="cmp__no" role="img" aria-label="нет">—</span></td><td><span class="cmp__yes" role="img" aria-label="есть">{{svgc:check.svg}}</span></td><td><span class="cmp__yes" role="img" aria-label="есть">{{svgc:check.svg}}</span></td></tr>
-            <tr><th scope="row"><span class="cmp__feat">Данные хранятся в России</span></th><td><span class="cmp__yes" role="img" aria-label="есть">{{svgc:check.svg}}</span></td><td><span class="cmp__yes" role="img" aria-label="есть">{{svgc:check.svg}}</span></td><td><span class="cmp__yes" role="img" aria-label="есть">{{svgc:check.svg}}</span></td><td><span class="cmp__yes" role="img" aria-label="есть">{{svgc:check.svg}}</span></td></tr>
+            <tr><th scope="row">Доступ к вашим системам</th><td>Не нужен</td><td>Не нужен</td><td>Только переданные документы</td><td>Только переданные документы</td></tr>
+            <tr><th scope="row">Группы от 5 человек</th><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит">{{svgc:minus.svg}}</span></td><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит">{{svgc:minus.svg}}</span></td><td><span class="cmp__ico cmp__ico--yes" role="img" aria-label="Входит">{{svgc:circle-check.svg}}</span></td><td><span class="cmp__ico cmp__ico--yes" role="img" aria-label="Входит">{{svgc:circle-check.svg}}</span></td></tr>
+            <tr><th scope="row">Соглашение о конфиденциальности</th><td>По запросу</td><td><span class="cmp__ico cmp__ico--yes" role="img" aria-label="Входит">{{svgc:circle-check.svg}}</span></td><td><span class="cmp__ico cmp__ico--yes" role="img" aria-label="Входит">{{svgc:circle-check.svg}}</span></td><td><span class="cmp__ico cmp__ico--yes" role="img" aria-label="Входит">{{svgc:circle-check.svg}}</span></td></tr>
+            <tr><th scope="row">Договор на обработку данных сотрудников</th><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит">{{svgc:minus.svg}}</span></td><td><span class="cmp__ico cmp__ico--na" role="img" aria-label="Не входит">{{svgc:minus.svg}}</span></td><td><span class="cmp__ico cmp__ico--yes" role="img" aria-label="Входит">{{svgc:circle-check.svg}}</span></td><td><span class="cmp__ico cmp__ico--yes" role="img" aria-label="Входит">{{svgc:circle-check.svg}}</span></td></tr>
+            <tr><th scope="row">Данные хранятся в России</th><td><span class="cmp__ico cmp__ico--yes" role="img" aria-label="Входит">{{svgc:circle-check.svg}}</span></td><td><span class="cmp__ico cmp__ico--yes" role="img" aria-label="Входит">{{svgc:circle-check.svg}}</span></td><td><span class="cmp__ico cmp__ico--yes" role="img" aria-label="Входит">{{svgc:circle-check.svg}}</span></td><td><span class="cmp__ico cmp__ico--yes" role="img" aria-label="Входит">{{svgc:circle-check.svg}}</span></td></tr>
           </tbody>
-      </table>
+        </table>
+      </div>
     </div>
     <div class="cards cards--2" style="margin-top:24px">
       <article class="card card--white"><div><h3 class="card__title">Агентствам и консультантам</h3><p class="card__text">Делаем внешний аудит HR-бренда для ваших клиентов под вашим логотипом. Первые три отчёта — бесплатно.</p></div><a class="btn-link card__more" href="{{href:start?topic=other}}" data-topic="other">Обсудить пилот {{svgc:arrow-up-right.svg}}</a></article>
@@ -104,7 +122,7 @@
     </div>
   </section>
 
-  <!-- ============ ВОПРОСЫ: одна группа «Цены и договор» ============ -->
+  <!-- ============ ВОПРОСЫ: одна группа «Цены и договор» (в макете нет — оставлены по прошлой договорённости) ============ -->
   <section class="section" id="faq" aria-labelledby="faq-title">
     <div class="section__head">
       <span class="eyebrow">Вопросы · цены и договор</span>
