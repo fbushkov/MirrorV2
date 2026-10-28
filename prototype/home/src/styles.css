@@ -459,7 +459,10 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 .cmp__table tbody tr:last-child > *:last-child { border-bottom-right-radius: var(--r-inner); }
 /* Первая колонка: название Medium + «Подробнее» справа (макет 1029:14343). Пояснение — в подсказке */
 .cmp__table tbody th { font-weight: 500; }
-.cmp__rowhead { display: flex; align-items: center; justify-content: space-between; gap: 8px 16px; flex-wrap: wrap; }
+/* Длинное название переносится в своей колонке, «Подробнее» — справа в одну строку по центру высоты, зазор 24 (макет 1029:15434) */
+.cmp__rowhead { display: flex; align-items: center; gap: 24px; }
+.cmp__rowhead > span { flex: 1 1 0; min-width: 0; }
+.cmp__more { white-space: nowrap; }
 .cmp__more { flex: none; font: 400 var(--fs-body)/24px var(--font-mono); color: var(--c-ink-4); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; cursor: help; transition: color .2s; }
 .cmp__more:hover, .cmp__more[aria-expanded="true"] { color: var(--c-violet); }
 .cmp__more:active { color: var(--c-violet-press); }
@@ -489,10 +492,11 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
   .cmp__table th, .cmp__table td, .cmp__table thead th, .cmp--size thead th, .cmp--size tbody th, .cmp--size tbody td { padding: 16px; }
   .cmp__table { min-width: 760px; }
   .cmp__col-feat { width: 180px; }
+  .cmp__rowhead { flex-wrap: wrap; gap: 4px 16px; } /* колонка 180: ссылка уходит под название */
 }
 /* --- Подсказка (tooltip) — одна на страницу, позиционируется скриптом у кнопки, не обрезается прокруткой таблиц ---
    Тёмная плашка как у кнопок и подвала: #171717, текст 15/20 белый, радиус 8, поля 12 × 16, ширина до 320, стрелка 8 */
-.tip { position: fixed; z-index: 100; max-width: min(320px, calc(100vw - 32px)); padding: 12px 16px; border-radius: var(--r-inner); background: var(--c-dark); color: #fff; font: 400 var(--fs-sm)/var(--lh-sm) var(--font-sans); box-shadow: 0 12px 32px -12px rgba(23,20,43,.45); opacity: 0; visibility: hidden; transform: translateY(4px); transition: opacity .15s, transform .15s var(--ease), visibility 0s .15s; pointer-events: none; }
+.tip { position: fixed; z-index: 100; max-width: min(320px, calc(100vw - 32px)); padding: 12px 16px; border-radius: var(--r-inner); background: var(--c-dark); color: #fff; font: 400 var(--fs-xs)/20px var(--font-sans); box-shadow: 0 12px 32px -12px rgba(23,20,43,.45); opacity: 0; visibility: hidden; transform: translateY(4px); transition: opacity .15s, transform .15s var(--ease), visibility 0s .15s; pointer-events: none; }
 .tip.is-shown { opacity: 1; visibility: visible; transform: none; transition: opacity .15s, transform .15s var(--ease); }
 .tip::after { content: ""; position: absolute; left: var(--tip-arrow, 50%); top: 100%; width: 0; height: 0; margin-left: -8px; border: 8px solid transparent; border-top-color: var(--c-dark); }
 .tip[data-side="bottom"]::after { top: auto; bottom: 100%; border-top-color: transparent; border-bottom-color: var(--c-dark); }
