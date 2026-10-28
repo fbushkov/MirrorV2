@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Mirror — дизайн-система</title>
+<title>Mirror — дизайн-система v2</title>
 <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{--page:#f7f7fb;--ink:#17142b;--ink2:#5f5b76;--ink3:#807c93;--ink4:#8a86a0;--well:#ecebf1;--chrome:#eeedf4;--line:#dfdfe6;--dark:#171717;--violet:#7a2fd1}
@@ -44,244 +44,188 @@ pre .c{color:#8a86a0}
 .grid>*{min-width:0}
 td code{white-space:nowrap}
 @media(max-width:860px){table{display:block;overflow-x:auto}.toc a{font-size:12px}.g2,.g3,.g4{grid-template-columns:1fr}.type-row{grid-template-columns:1fr}h1{font-size:34px}}
+
+.sw2{display:grid;grid-template-columns:44px 170px 92px 1fr;gap:12px;align-items:center;padding:8px 0;border-bottom:1px solid #eeedf4;font-size:14.5px}
+.sw2 i{width:44px;height:32px;border-radius:8px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.06)}
+.sw2 code{font:400 12.5px "JetBrains Mono";background:#f1f0f6;padding:1px 6px;border-radius:5px}
+.rule{border-left:3px solid var(--violet);padding:4px 0 4px 14px;margin:10px 0}
+.dont{border-left-color:#db4f4f}
+.mini{font:400 12.5px/1.5 "JetBrains Mono";color:var(--ink4)}
+.spec{display:grid;grid-template-columns:220px 1fr;gap:6px 20px;font-size:14.5px;margin-top:8px}
+.spec dt{font:400 12.5px/22px "JetBrains Mono";color:var(--ink4)}
+.demo-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:12px}
+.b{display:inline-flex;align-items:center;height:24px;padding:0 8px;border-radius:99px;font:500 14px/16px Onest;border:1px solid rgba(0,0,0,.05)}
+@media(max-width:860px){.sw2{grid-template-columns:44px 1fr}.sw2 span:nth-child(3),.sw2 span:nth-child(4){grid-column:2}.spec{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <span class="eyebrow">Mirror · дизайн-система · v1 · по макету Figma «Elements»</span>
-  <h1><span>Дизайн-система Mirror.</span><br>Токены, композиция, компоненты</h1>
-  <p class="lead">Собрано из макета главной (кадр 1920 px), кадра «Ховер-состояния» и компонентов меню. Всё ниже — это источник правды для сборки страниц: размеры берём из макета, а не из умолчаний shadcn/ui.</p>
+  <span class="eyebrow">Mirror · дизайн-система · v2 · 2026-10-28</span>
+  <h1><span>Дизайн-система Mirror.</span><br>Справочник по текущему коду</h1>
+  <p class="lead">Источник правды — <code>prototype/home/src/styles.css</code> (токены и компоненты) и свёрстанные по макету страницы: главная, «Цены», «Оценка HR-бренда». Этот документ описывает, что там уже принято, и правила для новых страниц. Если код и документ расходятся — прав код, документ правим.</p>
   <nav class="toc">
-    <a href="#check">0. Что уточнить</a><a href="#color">1. Цвет</a><a href="#type">2. Типографика</a><a href="#grid">3. Сетка и ритм</a><a href="#controls">4. Контролы</a><a href="#blocks">5. Блоки и правила</a><a href="#hover">6. Ховеры</a><a href="#config">7. Конфигурация</a><a href="#shadcn">8. shadcn/ui</a><a href="#assets">9. Материалы</a><a href="#typograf">10. Переносы</a><a href="#arch">11. Многостраничность</a><a href="#pages">12. План страниц</a><a href="#inner">13. Внутренние страницы и таблицы</a>
+    <a href="#tokens">1. Цвет</a><a href="#type">2. Типографика</a><a href="#grid">3. Сетка и отступы</a><a href="#heads">4. Шапки секций</a><a href="#boxes">5. Контейнеры</a><a href="#comp">6. Компоненты</a><a href="#states">7. Состояния</a><a href="#charts">8. Графики</a><a href="#adapt">9. Адаптив</a><a href="#text">10. Тексты</a><a href="#pages">11. Страницы</a><a href="#config">П. Перенос в Next</a>
   </nav>
 
-  <!-- 0 -->
-  <h2 id="check"><small>00 · разбор ТЗ</small>Что в задаче стоит уточнить</h2>
-  <div class="card">
-    <h3 style="margin-top:0">Технически</h3>
-    <ul class="list">
-      <li><b>Tailwind CSS 4 не использует <code>tailwind.config.js</code>.</b> Тема задаётся в CSS через <code>@theme</code> в <code>src/app/globals.css</code> — конфигурация ниже написана в этом формате.</li>
-      <li><b>Дефолтная высота кнопки в shadcn — 36 px (<code>h-9</code>)</b>, не 38. В макете основная кнопка и поля — 48 px, ссылка-кнопка «Подробнее» — 36 px. Меняем размеры в самих файлах <code>src/components/ui/*</code> (их можно править, это не пакет), а не перебиваем классами на каждой странице.</li>
-      <li><b>В макете только десктоп 1920.</b> Адаптив (1440, 1280, 1024, 768, 390) я задал правилами в разделе 3 и проверил в браузере. Лучше, чтобы дизайнер подтвердил хотя бы 1440 и 390 для первого экрана, шагов, цен и формы.</li>
-      <li><b>Нет макетов состояний:</b> фокус с клавиатуры, ошибка поля, отправка и успех формы, мобильное меню, активный пункт меню, disabled. Я сделал их по логике системы (фиолетовый фокус, красная ошибка, экран «Заявка принята»).</li>
-      <li><b>Часть переменных Figma — дефолтные переменные shadcn</b> (<code>family/sans: Inter</code>, <code>radius-lg: 10</code>, <code>h-9</code>). Из-за этого «Все условия» в макете набрано Inter 14 px. Свёл к Onest, чтобы на сайте был один шрифт текста.</li>
-      <li><b>Шейдерный градиент.</b> Готовая библиотека <code>@shadergradient/react</code> тянет three.js и react-three-fiber (сотни килобайт) ради двух карточек. Я написал свой WebGL-шейдер без зависимостей (~3 КБ): та же «ткань» из шума, 3–4 цвета, зерно, реакция на курсор. Анимация идёт только при наведении, при <code>prefers-reduced-motion</code> — статичный кадр, без WebGL — CSS-градиент.</li>
-      <li><b>Шапка прилипает к верху при прокрутке</b> — это моё добавление, в макете не показано. Размеры и вид не меняются. Если не нужно — уберу одной строкой.</li>
-    </ul>
-    <h3>Ошибки в текстах макета (исправил на странице)</h3>
-    <ul class="list">
-      <li>Плашка над «Частые вопросы» — «Ценообразование · 2 направления» → «Вопросы · 4 темы». Над ценами — «Ценообразование» → «Цены».</li>
-      <li>Открытый вопрос «Срез правда бесплатный?» с ответом «Встреча с руководителями раз в 2 недели» → поставил правильный ответ.</li>
-      <li>Описание группы «Дашборд здоровья…» — «Результат» → «Приватность сотрудников, кто что видит и как быстро заметны изменения».</li>
-      <li>«пониторинг» → «мониторинг», «индекса-культуры» → «индекс культуры», «Оценка HR-бренда и индекса культуры» → «и индекс культуры».</li>
-      <li>Почта <code>mirrorcom@mail.com</code> в блоке «Не нашли ответ?» → <code>mirrorcom@mail.ru</code>, как везде.</li>
-      <li>В форме над чипами подпись «Имя» → «Что нужно»; «Кампания за 3 месяца» → «на 3 месяца»; поле «Почта» → «Почта или Телеграм» (форма принимает и то и другое).</li>
-      <li>В подвале в колонке «Оценка HR-бренда» пункт «Демо-дашборд» → «Демо-отчёт».</li>
-    </ul>
-  </div>
 
   <!-- 1 -->
-  <h2 id="color"><small>01 · цвет</small>Палитра</h2>
-  <p class="lead">Светлая нейтральная база с холодным фиолетовым подтоном, чёрный как главный акцент действий, фиолетовый — ховер и бренд, бирюзовый — направление «изнутри».</p>
-  <div class="grid g2">
-    <div class="card">
-      <h3 style="margin-top:0">Поверхности</h3>
-      <table><tr><th></th><th>токен</th><th>hex</th><th>где</th></tr>
-      <tr><td><span class="chip" style="display:block;background:#f7f7fb"></span></td><td><code>--color-page</code></td><td>#F7F7FB</td><td>фон страницы; плитки внутри серых блоков; пункты FAQ</td></tr>
-      <tr><td><span class="chip" style="display:block;background:#fff"></span></td><td><code>--color-surface</code></td><td>#FFFFFF</td><td>карточки тарифов, группы FAQ, форма</td></tr>
-      <tr><td><span class="chip" style="display:block;background:#f5f5f8"></span></td><td><code>--color-field</code></td><td>#F5F5F8</td><td>поля, списки «Что входит», «Что будет дальше»</td></tr>
-      <tr><td><span class="chip" style="display:block;background:#ecebf1"></span></td><td><code>--color-well</code></td><td>#ECEBF1</td><td>шаги, группы цен, открытый вопрос, блок «Не знаете…»</td></tr>
-      <tr><td><span class="chip" style="display:block;background:#eeedf4"></span></td><td><code>--color-chrome</code></td><td>#EEEDF4</td><td>шапка и меню, эйброу-плашки</td></tr>
-      <tr><td><span class="chip" style="display:block;background:#171717"></span></td><td><code>--color-dark</code></td><td>#171717</td><td>основная кнопка, карточки направлений, «Не нашли ответ?», подвал</td></tr>
-      <tr><td><span class="chip" style="display:block;background:#2c2c2c"></span></td><td><code>--color-dark-2</code></td><td>#2C2C2C</td><td>вложенное на тёмном, разделитель в подвале, фигуры</td></tr>
-      </table>
-    </div>
-    <div class="card">
-      <h3 style="margin-top:0">Текст и линии</h3>
-      <table><tr><th></th><th>токен</th><th>hex</th><th>где</th></tr>
-      <tr><td><span class="chip" style="display:block;background:#17142b"></span></td><td><code>--color-ink</code></td><td>#17142B</td><td>основной текст, заголовки</td></tr>
-      <tr><td><span class="chip" style="display:block;background:#5f5b76"></span></td><td><code>--color-ink-2</code></td><td>#5F5B76</td><td>подписи «От вас нужно», подзаголовки тарифов, описания</td></tr>
-      <tr><td><span class="chip" style="display:block;background:#807c93"></span></td><td><code>--color-ink-3</code></td><td>#807C93</td><td>приглушённая строка крупного заголовка</td></tr>
-      <tr><td><span class="chip" style="display:block;background:#8a86a0"></span></td><td><code>--color-ink-4</code></td><td>#8A86A0</td><td>моно-метки, плейсхолдеры, текст на тёмном</td></tr>
-      <tr><td><span class="chip" style="display:block;background:#dfdfe6"></span></td><td><code>--color-line</code></td><td>#DFDFE6</td><td>рамки полей, чекбокса</td></tr>
-      <tr><td><span class="chip" style="display:block;background:#e5e5e5"></span></td><td><code>--color-line-2</code></td><td>#E5E5E5</td><td>рамки чипов</td></tr>
-      <tr><td><span class="chip" style="display:block;background:#0a0a0a"></span></td><td><code>--foreground</code></td><td>#0A0A0A</td><td>подписи полей, текст ссылок-кнопок (переменная shadcn)</td></tr>
-      </table>
-    </div>
-    <div class="card">
-      <h3 style="margin-top:0">Бренд и направления</h3>
-      <table><tr><th></th><th>токен</th><th>hex</th><th>где</th></tr>
-      <tr><td><span class="chip" style="display:block;background:#7a2fd1"></span></td><td><code>--color-violet</code></td><td>#7A2FD1</td><td>ховер основной кнопки, ховер ссылок, фокус, «снаружи»</td></tr>
-      <tr><td><span class="chip" style="display:block;background:#5b21a8"></span></td><td><code>--color-violet-700</code></td><td>#5B21A8</td><td>конец градиента блока «данные»</td></tr>
-      <tr><td><span class="chip" style="display:block;background:#aa76cc"></span></td><td><code>--color-violet-num</code></td><td>#AA76CC</td><td>номера 01–04 в «Узнаёте свою ситуацию?»</td></tr>
-      <tr><td><span class="chip" style="display:block;background:#d1aee8"></span></td><td><code>--color-violet-soft</code></td><td>#D1AEE8</td><td>номера на фиолетовом фоне</td></tr>
-      <tr><td><span class="chip" style="display:block;background:#0e9384"></span></td><td><code>--color-teal</code></td><td>#0E9384</td><td>«изнутри»: ховер-градиент второй карточки</td></tr>
-      <tr><td><span class="chip" style="display:block;background:#0b7a6e"></span></td><td><code>--color-teal-700</code></td><td>#0B7A6E</td><td>конец бирюзового градиента</td></tr>
-      </table>
-    </div>
-    <div class="card">
-      <h3 style="margin-top:0">Бейджи (переменные из Figma)</h3>
-      <table><tr><th>вариант</th><th>фон</th><th>текст</th></tr>
-      <tr><td><span class="tag grey" style="background:#fff;box-shadow:inset 0 0 0 1px rgba(0,0,0,.05)">inverse</span></td><td>#FFFFFF, рамка rgba(0,0,0,.05)</td><td>#3D3D3D — на тёмных карточках</td></tr>
-      <tr><td><span class="tag grey">soft</span></td><td>rgba(0,0,0,.07)</td><td>#3D3D3D — «Бесплатно», «30 минут»</td></tr>
-      <tr><td><span class="tag">purple</span></td><td>rgba(119,69,168,.07)</td><td>#844DBB — «Платно»</td></tr>
-      </table>
-      <p style="margin-top:12px;color:var(--ink2);font-size:14.5px">По описанию компонента в Figma бейдж не интерактивен: без ховера, клика и закрытия.</p>
-    </div>
+  <h2 id="tokens"><small>01 · цвет</small>Палитра и где что используется</h2>
+  <p class="lead">Цвета только из токенов. Снаружи (HR-бренд) — фиолетовый, изнутри (здоровье культуры) — бирюзовый. Цвет статуса всегда продублирован иконкой и словом.</p>
+  <h3>Поверхности</h3><div class="card">
+  <div class="sw2"><i style="background:#f7f7fb"></i><span><code>--c-page</code></span><span class="mono">#f7f7fb</span><span>фон страницы</span></div><div class="sw2"><i style="background:#ffffff"></i><span><code>--c-surface</code></span><span class="mono">#ffffff</span><span>белые карточки</span></div><div class="sw2"><i style="background:#f7f7fb"></i><span><code>--c-surface-2</code></span><span class="mono">#f7f7fb</span><span>серые блоки внутри белой карточки, плашки вопросов, выделенная зона</span></div><div class="sw2"><i style="background:#f5f5f8"></i><span><code>--c-surface-3</code></span><span class="mono">#f5f5f8</span><span>поля ввода</span></div><div class="sw2"><i style="background:#ecebf1"></i><span><code>--c-well</code></span><span class="mono">#ecebf1</span><span>подложка-контейнер для групп белых карточек</span></div><div class="sw2"><i style="background:#eeedf4"></i><span><code>--c-chrome</code></span><span class="mono">#eeedf4</span><span>шапка, полоса разделов, эйброу, иконка в круге</span></div><div class="sw2"><i style="background:#171717"></i><span><code>--c-dark</code></span><span class="mono">#171717</span><span>тёмные карточки, основная кнопка, подвал</span></div>
   </div>
+  <h3>Текст и линии</h3><div class="card">
+  <div class="sw2"><i style="background:#17142b"></i><span><code>--c-ink</code></span><span class="mono">#17142b</span><span>основной текст</span></div><div class="sw2"><i style="background:#5f5b76"></i><span><code>--c-ink-2</code></span><span class="mono">#5f5b76</span><span>пояснения, подписи к блокам</span></div><div class="sw2"><i style="background:#807c93"></i><span><code>--c-ink-3</code></span><span class="mono">#807c93</span><span>вторая (серая) строка заголовков H1/H2</span></div><div class="sw2"><i style="background:#8a86a0"></i><span><code>--c-ink-4</code></span><span class="mono">#8a86a0</span><span>моно-метки, номера шагов, неактивные пункты полосы разделов</span></div><div class="sw2"><i style="background:#dfdfe6"></i><span><code>--c-line</code></span><span class="mono">#dfdfe6</span><span>рамки полей</span></div><div class="sw2"><i style="background:#e7e6eb"></i><span><code>--c-line-3</code></span><span class="mono">#e7e6eb</span><span>обводка шапки, полосы разделов, белой карточки «Проверка обещания»</span></div><div class="sw2"><i style="background:#c2c2cd"></i><span><code>--c-line-hover</code></span><span class="mono">#c2c2cd</span><span>рамка при наведении</span></div>
+  </div>
+  <h3>Бренд и направления</h3><div class="card">
+  <div class="sw2"><i style="background:#7a2fd1"></i><span><code>--c-violet</code></span><span class="mono">#7a2fd1</span><span>акцент снаружи: активное число, точка «Вы здесь», линия графика, наведение на кнопку</span></div><div class="sw2"><i style="background:#5b21a8"></i><span><code>--c-violet-700</code></span><span class="mono">#5b21a8</span><span>конец градиента фиолетовой ленты, нажатие</span></div><div class="sw2"><i style="background:#d1aee8"></i><span><code>--c-violet-soft</code></span><span class="mono">#d1aee8</span><span>номера на фиолетовом, пунктир событий на графике</span></div><div class="sw2"><i style="background:#e4d5f6"></i><span><code>—</code></span><span class="mono">#e4d5f6</span><span>рамка 4 px активной вкладки показателя</span></div><div class="sw2"><i style="background:#0e9384"></i><span><code>--c-teal</code></span><span class="mono">#0e9384</span><span>направление изнутри, дашборд</span></div><div class="sw2"><i style="background:linear-gradient(90deg,#7a2fd1,#5b21a8)"></i><span><code>градиент</code></span><span class="mono">linear-gradient(90deg,#7a2fd1,#5b21a8)</span><span>фиолетовая лента «Что проверяем»</span></div>
+  </div>
+  <h3>Статусы и зоны</h3><div class="card">
+  <div class="sw2"><i style="background:#3b9952"></i><span><code>--c-ok</code></span><span class="mono">#3b9952</span><span>подтверждается / в норме / сильная сторона</span></div><div class="sw2"><i style="background:#d08a1e"></i><span><code>warn</code></span><span class="mono">#d08a1e</span><span>частично / внимание (токена пока нет — завести --c-warn)</span></div><div class="sw2"><i style="background:#db4f4f"></i><span><code>--c-bad</code></span><span class="mono">#db4f4f</span><span>не подтверждается / риск</span></div><div class="sw2"><i style="background:#949494"></i><span><code>--c-na</code></span><span class="mono">#949494</span><span>нейтрально / нет данных</span></div>
+  <div class="sw2"><i style="background:#dbc6f2"></i><span><code>зона</code></span><span class="mono">#dbc6f2</span><span>матрица: «Обещаете не то»</span></div><div class="sw2"><i style="background:#bed8c6"></i><span><code>зона</code></span><span class="mono">#bed8c6</span><span>матрица: «Сильный и честный»</span></div><div class="sw2"><i style="background:#f4caca"></i><span><code>зона</code></span><span class="mono">#f4caca</span><span>матрица: «Переобещаете»</span></div><div class="sw2"><i style="background:#f1ddaa"></i><span><code>зона</code></span><span class="mono">#f1ddaa</span><span>матрица: «Честно, но слабо»</span></div>
+  </div>
+  <div class="rule">Статус = иконка + слово. В таблицах — только иконка и текст, без цветных плашек. Залитая плашка цвета статуса — только у вердикта в «Проверке обещания», текст на ней белый.</div>
+  <h3>Бейджи</h3>
+  <div class="card"><div class="demo-row">
+    <span class="b" style="background:rgba(0,0,0,.07);color:#3d3d3d">Бесплатно</span><span class="mini">soft — факты: сроки, цена</span>
+    <span class="b" style="background:rgba(119,69,168,.07);color:#844dbb">По желанию</span><span class="mini">purple — опции, «Популярный»</span>
+    <span class="b" style="background:#844dbb;color:#fff;font-weight:400">hh</span><span class="mini">hard — только на фиолетовом фоне</span>
+    <span class="b" style="background:#fff;color:#3d3d3d">Хит</span><span class="mini">inverse — на тёмном</span>
+  </div><p class="mini" style="margin-top:10px">Высота 24, 14/16 Medium, обводка rgba(0,0,0,.05). Бейдж не кликается и не реагирует на наведение.</p></div>
 
   <!-- 2 -->
-  <h2 id="type"><small>02 · типографика</small>Шрифты и шкала</h2>
-  <p class="lead"><b>Onest</b> — весь текст и заголовки (400 / 500 / 600). <b>JetBrains Mono</b> — служебные метки, номера шагов, эйброу, крупные числа в шагах. Отдельный шрифт для заголовков не используется. Размеры заданы через <code>clamp()</code>: на 1920 — ровно как в макете, на телефоне — минимум из колонки справа.</p>
+  <h2 id="type"><small>02 · типографика</small>Шрифты и пары «размер / интервал»</h2>
+  <p class="lead">Onest — весь текст. JetBrains Mono — только метки: эйброу, номера, подписи колонок таблиц, «Шаг №1», «Вы обещаете». Моно не используем для основного текста и цифр в таблицах.</p>
   <div class="card">
-    <div class="type-row"><div class="meta">display · 72/76 · 600<br>→ 38 на телефоне</div><div style="font:600 56px/1.06 Onest;letter-spacing:-.015em">Совпадают ли ваши обещания</div></div>
-    <div class="type-row"><div class="meta">h2 · 60/64 (60/60) · 500<br>→ 34</div><div style="font:500 46px/1.07 Onest"><span style="color:#807c93">От бесплатного среза</span><br>до изменений</div></div>
-    <div class="type-row"><div class="meta">card · 48/52 · 600<br>→ 28 · направления</div><div style="font:600 40px/1.08 Onest">Оценка HR-бренда</div></div>
-    <div class="type-row"><div class="meta">price · 48/48 · 600 · →36</div><div style="font:600 40px/1 Onest">490 000 ₽</div></div>
-    <div class="type-row"><div class="meta">cta · 40/44 · 500 · →26</div><div style="font:500 34px/1.1 Onest">Обсудим задачу за 30 минут.</div></div>
-    <div class="type-row"><div class="meta">h3 · 36/40 · 600 · →26</div><div style="font:600 32px/1.11 Onest">Как начать?</div></div>
-    <div class="type-row"><div class="meta">h4 · 32/32 · 500 · →24</div><div style="font:500 28px/1 Onest">Не знаете, с чего начать?</div></div>
-    <div class="type-row"><div class="meta">contact · 24/32 · 600 · →20</div><div style="font:600 24px/32px Onest">+7 912 702-30-30</div></div>
-    <div class="type-row"><div class="meta">title · 20/27 · 600<br>вопрос FAQ — 20/28</div><div style="font:600 20px/27px Onest">Объясняем цифры и отвечаем на вопросы</div></div>
-    <div class="type-row"><div class="meta">body · 17/27 · 400 (16/25 на телефоне)<br>кнопки, меню, поля — 17/20 · 500</div><div style="font:400 17px/27px Onest">Mirror сверяет то, что компания обещает, с отзывами и опытом сотрудников.</div></div>
-    <div class="type-row"><div class="meta">sm · 15/20 · меню-карточки<br>xs · 14/20 · мета на карточках<br>badge · 14/16 · 500</div><div style="font:400 15px/20px Onest;color:#5f5b76">Методика внешней оценки</div></div>
-    <div class="type-row"><div class="meta">mono · 15/24–27 · 400<br>→ 13 на телефоне</div><div class="mono" style="font-size:15px;color:#8a86a0">Внешний срез · Направление №1</div></div>
-    <div class="type-row"><div class="meta">stat · mono 80/84 · 500 · →56</div><div class="mono" style="font:500 72px/1 'JetBrains Mono';color:#8a86a0">10</div></div>
+    <div class="type-row"><span class="meta">H1 · 72/76 · 600<br>--fs-display</span><span style="font:600 44px/1.06 Onest">Оценка HR-бренда <span style="color:#807c93">и индекс</span></span></div>
+    <div class="type-row"><span class="meta">H2 секции · 60/64 · 500<br>--fs-h2</span><span style="font:500 38px/1.07 Onest">Ваши обещания <span style="color:#807c93">против опыта</span></span></div>
+    <div class="type-row"><span class="meta">Карточка направления · 48/52 · 600</span><span style="font:600 30px/1.08 Onest">Нужен взгляд изнутри?</span></div>
+    <div class="type-row"><span class="meta">Заголовок крупной карточки · 40/44 · 600<br>--fs-cta</span><span style="font:600 28px/1.1 Onest">Внешний срез</span></div>
+    <div class="type-row"><span class="meta">H3 панели · 36/40 · 600<br>--fs-h3</span><span style="font:600 24px/1.11 Onest">Совпадают ли слова и дела?</span></div>
+    <div class="type-row"><span class="meta">Число-показатель · 80/84 · Mono 500<br>--fs-stat</span><span style="font:500 52px/1.05 'JetBrains Mono';color:#7a2fd1">65</span></div>
+    <div class="type-row"><span class="meta">Заголовок карточки · 20/27 · 500–600<br>--fs-title</span><span style="font:600 20px/27px Onest">Что вы обещаете</span></div>
+    <div class="type-row"><span class="meta">Текст · 17/24 · 400<br>--fs-body / --lh-body</span><span style="font:400 17px/24px Onest">Mirror сверяет то, что компания обещает, с отзывами.</span></div>
+    <div class="type-row"><span class="meta">Контролы · 17/20 · 500<br>кнопки, поля, сегменты</span><span class="demo-btn">Бесплатный срез</span></div>
+    <div class="type-row"><span class="meta">Мелкий текст · 15/20<br>--fs-sm</span><span style="font:400 15px/20px Onest;color:#5f5b76">Пояснения в зонах матрицы, подписи графиков.</span></div>
+    <div class="type-row"><span class="meta">Метка · Mono 15/24–27 · 400<br>--fs-mono</span><span style="font:400 15px/24px 'JetBrains Mono';color:#8a86a0">Шаг №1 · направление 02</span></div>
+    <div class="type-row"><span class="meta">Ссылка «Подробнее» в таблице · Mono 14/20</span><span style="font:400 14px/20px 'JetBrains Mono';color:#8a86a0;text-decoration:underline">Подробнее</span></div>
   </div>
-  <p style="margin-top:12px;color:var(--ink2)">Правило двух тонов в заголовке: одна строка — <code>ink</code>, другая — <code>ink-3</code>. Какая приглушена, решает смысл: в «Начните / с бесплатного среза» приглушено продолжение, в «От бесплатного среза / до изменений» — начало.</p>
+  <div class="rule">Интервалы: 17 → 24, 20 → 27, 40 → 44. Телефон: 16/23, 18/25, крупные размеры — через clamp().</div>
+  <div class="rule">Заголовки H1/H2 — две строки: первая основным цветом, вторая <code>.dim</code> (#807c93) — или наоборот, если смысловой акцент во второй строке («<span style="color:#807c93">Первые два шага</span> ничего не стоят»).</div>
 
   <!-- 3 -->
-  <h2 id="grid"><small>03 · сетка и ритм</small>Композиция</h2>
-  <div class="grid g2">
-    <div class="card">
-      <h3 style="margin-top:0">Отступы страницы</h3>
-      <table><tr><th>токен</th><th>1920</th><th>правило</th></tr>
-      <tr><td><code>--page-x</code></td><td>48</td><td><code>clamp(16px, 2.5vw, 48px)</code> — поля слева и справа; контент 1824</td></tr>
-      <tr><td><code>--section-gap</code></td><td>220</td><td><code>clamp(96px, 11.46vw, 220px)</code> — между секциями</td></tr>
-      <tr><td><code>--head-gap</code></td><td>80</td><td>шапка секции → контент</td></tr>
-      <tr><td><code>--inset-x</code></td><td>32</td><td>заголовки и текстовые строки секций сдвинуты внутрь относительно карточек</td></tr>
-      <tr><td>шапка</td><td>32 / 141</td><td>сверху до шапки 32, от шапки до эйброу первого экрана 141</td></tr>
-      </table>
-    </div>
-    <div class="card">
-      <h3 style="margin-top:0">Шапка секции</h3>
-      <ul class="list">
-        <li><b>Split</b> («Как это работает», «Цены», «Вопросы»): две колонки, левая 36,6 % под эйброу, правая — заголовок h2, абзац 540 px, при необходимости ссылка-кнопка. Вертикальный шаг внутри — 40.</li>
-        <li><b>Stack</b> («Узнаёте свою ситуацию?», «Заявка»): эйброу → 32 → заголовок → 40 → абзац, всё слева.</li>
-        <li><b>Вопросы</b>: заголовок блока вопросов всегда начинается по левому краю плашек вопросов (<code>.section__head--faq</code>), эйброу — слева. На ≤1279 — друг под другом.</li>
-        <li><b>Интервалы</b>: текст 17 — интервал 24, 20 — 27, заголовки карточек 40 — 44. Шапка с обводкой <code>#e7e6eb</code>, без тени.</li>
-        <li><b>Hero</b>: эйброу → 40 → строка «h1 слева, абзац 450 px справа по нижнему краю».</li>
-        <li>Ниже 1024 split превращается в stack.</li>
-      </ul>
-    </div>
-    <div class="card">
-      <h3 style="margin-top:0">Внутренние отступы карточек</h3>
-      <table><tr><th>карточка</th><th>паддинг</th><th>радиус</th></tr>
-      <tr><td>направление (тёмная)</td><td>48 / 48 / 64, высота 480</td><td>12</td></tr>
-      <tr><td>шаг (well)</td><td>32; колонки 142 · 310 · текст, отступ до текста 152</td><td>12</td></tr>
-      <tr><td>плитка-число в шаге</td><td>24, ширина 310</td><td>8</td></tr>
-      <tr><td>фиолетовый блок «данные»</td><td>80; колонки 32 × 48</td><td>12</td></tr>
-      <tr><td>группа цен</td><td>24 / 16 / 16</td><td>12</td></tr>
-      <tr><td>тариф</td><td>24; внутри шаг 32</td><td>8</td></tr>
-      <tr><td>список «Что входит»</td><td>16 / 16 / 24</td><td>8</td></tr>
-      <tr><td>группа FAQ</td><td>32; колонка 524 + 112</td><td>12</td></tr>
-      <tr><td>вопрос FAQ</td><td>16 × 32, высота 76</td><td>12</td></tr>
-      <tr><td>форма</td><td>48 / 48 / 112; колонки 1fr + 838, шаг 112</td><td>12</td></tr>
-      <tr><td>подвал</td><td>112 / 48 / 48; секции через 144</td><td>12</td></tr>
-      </table>
-    </div>
-    <div class="card">
-      <h3 style="margin-top:0">Зазоры и адаптив</h3>
-      <ul class="list">
-        <li>Между крупными карточками в ряду — <b>24</b>, внутри группы — <b>12</b>, чипы — <b>16</b>, бейджи — <b>8</b>.</li>
-        <li>Радиусы: <b>12</b> — внешние карточки и пункты меню, <b>8</b> — вложенные, <b>10</b> — контролы, <b>999</b> — плашки, бейджи, чипы, <b>4</b> — чекбокс.</li>
-        <li><b>≤1440</b> — сужаются колонки шагов и подвала.</li>
-        <li><b>≤1600</b> — зазоры в меню сжимаются 32 → 12. <b>≤1365</b> — меню в бургер.</li>
-        <li><b>≤1279</b> — первый экран в колонку, группы цен и FAQ — по одной в строку.</li>
-        <li><b>≤1023</b> — направления друг под другом, «данные» в колонку.</li>
-        <li><b>≤767</b> — текст 16/25, всё в одну колонку, тарифы и поля по одному, чипы по два.</li>
-      </ul>
-    </div>
-  </div>
+  <h2 id="grid"><small>03 · сетка и отступы</small>Ширины, отступы, радиусы</h2>
+  <div class="card"><table>
+    <tr><th>токен</th><th>1920</th><th>смысл</th></tr>
+    <tr><td><code>--page-x</code></td><td>48</td><td>поля страницы (16 на телефоне)</td></tr>
+    <tr><td><code>--inset-x</code></td><td>32</td><td>заголовки и текст секций сдвинуты внутрь относительно карточек</td></tr>
+    <tr><td><code>--section-gap</code></td><td>220</td><td>между секциями (96 на телефоне)</td></tr>
+    <tr><td><code>--head-gap</code></td><td>80</td><td>шапка секции → контент</td></tr>
+    <tr><td><code>--content-gap</code></td><td>112</td><td>«описание | содержимое» внутри белого блока (вопросы, заявка)</td></tr>
+    <tr><td>подложка → карточки</td><td>16</td><td>поля серой подложки и зазор между белыми карточками в ней</td></tr>
+    <tr><td>заголовок → текст в карточке</td><td>16</td><td>карточки шагов, «Нужен взгляд изнутри?», «Агентствам»</td></tr>
+    <tr><td>поля карточки</td><td>48 / 32 / 16</td><td>крупная / обычная / компактная («Проверка обещания»)</td></tr>
+    <tr><td>радиусы</td><td>12 / 8 / 10 / 999</td><td>карточка и подложка / вложенный блок / контрол / пилюля</td></tr>
+  </table></div>
 
   <!-- 4 -->
-  <h2 id="controls"><small>04 · контролы</small>Размеры, отличающиеся от shadcn/ui</h2>
-  <div class="card">
-    <table>
-      <tr><th>компонент</th><th>shadcn по умолчанию</th><th>Mirror (макет)</th><th>пример</th></tr>
-      <tr><td>Button · default</td><td>h-9 (36), px-4, text-sm 14, radius-md</td><td><b>h 48, px 20, 17/20 Medium, radius 10</b>, иконка 20, gap 4</td><td><span class="demo-btn">Бесплатный срез</span></td></tr>
-      <tr><td>Button · hover</td><td>bg-primary/90</td><td><b>bg #7A2FD1</b>, стрелка ↗ поворачивается в →</td><td><span class="demo-btn v">Бесплатный срез</span></td></tr>
-      <tr><td>Button · link («Подробнее»)</td><td>h-9, underline</td><td>h 36, px 10, 17 Medium, без подчёркивания, ховер — фиолетовый</td><td>Подробнее ↗</td></tr>
-      <tr><td>Button · white / outline-dark</td><td>—</td><td>на тёмном: белая; контурная — рамка #8A86A0, текст белый</td><td></td></tr>
-      <tr><td>Input</td><td>h-9, px-3, text-sm, фон прозрачный</td><td><b>h 48, px 16, 17/20, фон #F5F5F8, рамка #DFDFE6, radius 10</b></td><td><span class="demo-in">Как к вам обращаться</span></td></tr>
-      <tr><td>Textarea</td><td>min-h-16</td><td>py 14, px 16, высота ~196</td><td></td></tr>
-      <tr><td>Label</td><td>14 Medium</td><td><b>17/20 Medium</b>, подпись «Необязательное поле» 17/20 #8A86A0</td><td></td></tr>
-      <tr><td>Checkbox</td><td>16, radius 4</td><td><b>20</b>, radius 4, фон #F5F5F8, выбран — #171717</td><td></td></tr>
-      <tr><td>Badge</td><td>h-5, text-xs 12</td><td><b>h 24</b>, px 6+2, <b>14/16</b> Medium, radius 999</td><td><span class="tag grey">Бесплатно</span><span class="tag">Платно</span></td></tr>
-      <tr><td>ToggleGroup (чипы)</td><td>h-9</td><td>py 12, px 24, 17/27 Medium, radius 999, рамка #E5E5E5; выбранный — чёрный; сетка 3 колонки, gap 16</td><td></td></tr>
-      <tr><td>Accordion item</td><td>py-4, border-b</td><td>карточка #F7F7FB, radius 12, 16 × 32, иконка-кнопка 44 (plus 24); открыт — фон #ECEBF1, иконка ×</td><td></td></tr>
-      <tr><td>NavigationMenu</td><td>выпадает под пунктом</td><td><b>панель на всю ширину шапки</b>: слева «/ название направления» 17/30, справа 3 карточки (980 px, gap 16, #F7F7FB, 20 × 12)</td><td></td></tr>
-    </table>
-  </div>
+  <h2 id="heads"><small>04 · шапки секций</small>Пять вариантов — и когда какой</h2>
+  <div class="card"><table>
+    <tr><th>класс</th><th>вид</th><th>когда</th></tr>
+    <tr><td><code>.section__head--center</code></td><td>заголовок и абзац по центру, без эйброу</td><td>смысловой поворот страницы: «Ваши обещания против опыта», «Честность и условия»</td></tr>
+    <tr><td><code>.section__head</code></td><td>слева, со сдвигом <code>--inset-x</code>; абзац узкий <code>.lead--narrow</code> (425)</td><td>содержательный блок: «Три вопроса», «Узнаёте свою ситуацию?»</td></tr>
+    <tr><td><code>.section__head--aside</code></td><td>заголовок слева, эйброу справа</td><td>процесс, шаги: «Первые два шага ничего не стоят»</td></tr>
+    <tr><td><code>.section__head--split</code></td><td>эйброу слева, заголовок с 36,6 %</td><td>главная: шаги, цены</td></tr>
+    <tr><td><code>.section__head--faq</code></td><td>эйброу слева, заголовок с края плашек вопросов</td><td>всегда для вопросов (правило 2026-10-28)</td></tr>
+  </table>
+  <div class="rule">На обзорных страницах варианты чередуем по смыслу блоков, а не по порядку. Два одинаковых варианта подряд — только если блоки продолжают одну мысль.</div>
+  <div class="rule">Внутри отчёта и дашборда больших шапок нет: это один контекст, карточки идут лентой с шагом 24 и номером 01, 02…</div></div>
 
   <!-- 5 -->
-  <h2 id="blocks"><small>05 · блоки</small>Правила сборки</h2>
-  <div class="grid g2">
-    <div class="card"><h3 style="margin-top:0">Шапка</h3><p>Контейнер #EEEDF4, radius 12, высота 80, паддинг 16 × 48. Слева логотип 137 × 26 (SVG из макета). Справа меню: пункты 17/27, px 10 py 8, шаг 32; два пункта с шевроном открывают панель на всю ширину; дальше через 48 — кнопка «Бесплатный срез». Открытое меню: пункт серый (#8A86A0), шеврон вверх, панель с радиусом 16 снизу накрывает страницу, не сдвигая её. Закрывается по клику вне, Esc, переходу. ≤1279 — бургер, в панели все пункты списком.</p></div>
-    <div class="card"><h3 style="margin-top:0">Подвал</h3><p>Тёмная карточка radius 12 в полях страницы. Сверху: двухтоновый CTA 40/44 и белая кнопка. Через 144 — ряд фигур (80 px) и слово «mirror» на всю ширину (SVG, прозрачность 50 %). Через 144 — описание 378 px слева и 4 колонки по 163 px через 112: заголовок моно 15 #8A86A0, ссылки 17/27 белые, шаг 12. Разделитель 1 px #2C2C2C, ниже © и юр. документы через 48. Ховер ссылки — светло-фиолетовый с подчёркиванием.</p></div>
-    <div class="card"><h3 style="margin-top:0">Карточки</h3><ul class="list">
-      <li><b>Направление</b> — ссылка на всю карточку; тёмная; сверху моно-метка, снизу заголовок 48, вопрос 450 px, бейджи inverse и мета 14 #8A86A0. Ховер — шейдерный градиент своего цвета и стрелка ↗.</li>
-      <li><b>Шаг</b> — well; колонки: номер 142 · число 310 · текст до 800 · ссылка внизу справа. Вся карточка кликабельна через ссылку «Подробнее».</li>
-      <li><b>Тариф</b> — белая; название, подзаголовок, цена, кнопка на всю ширину, список на #F5F5F8. Ховер — инверсия в тёмный, кнопка фиолетовая.</li>
-      <li><b>Группа FAQ</b> — белая, слева тег, h3 и описание, справа аккордеон; открыт один вопрос в группе.</li>
-    </ul></div>
-    <div class="card"><h3 style="margin-top:0">Текстовые секции и сторонние компоненты</h3><ul class="list">
-      <li>Любая новая секция начинается с эйброу-плашки и двухтонового заголовка h2 по схеме split или stack.</li>
-      <li>Внутри — только токены: фон из пяти поверхностей, радиус 12/8, отступы 24/32/48, текст 17/27.</li>
-      <li><b>Сторонние компоненты</b> (графики ECharts, календарь, слайдер и т. п.) оборачиваются в карточку системы (well или white, radius 12, паддинг 24–32), получают шрифт Onest, цвета из токенов; их собственные контролы приводятся к 48 / radius 10 / #F5F5F8. Тени не используем — глубину дают поверхности.</li>
-      <li>Иконки — lucide (как в shadcn), 20 px в кнопках, 24 в списках и аккордеоне, цвет — <code>currentColor</code>.</li>
-    </ul></div>
+  <h2 id="boxes"><small>05 · контейнеры</small>Вложенность: не больше двух уровней</h2>
+  <div class="card">
+  <div class="rule">Уровень 1 — серая подложка <code>.well</code> (#ecebf1, радиус 12, поля 16). Уровень 2 — белые карточки внутри (радиус 8–12, зазор 16). Внутри белой карточки допускаются только серые плитки <code>--c-surface-2</code> без своих подложек.</div>
+  <div class="rule dont">Не делать: серое в белом в сером; полоски-маркеры слева у цитат; прогресс-бар там, где хватает числа; тень у карточек в потоке страницы.</div>
+  <div class="rule">Пара карточек разного веса — пропорция из макета 1056 : 720 (≈ 59 : 41), не фиксированная ширина. Сетка из трёх — равные колонки.</div>
+  <div class="rule">Блок, который переключает содержимое (карусель, вкладки), не меняет высоту: высота — по самому высокому варианту.</div>
   </div>
 
   <!-- 6 -->
-  <h2 id="hover"><small>06 · интерактив</small>Состояния: наведение и нажатие</h2>
-  <p class="lead">Общее правило: <b>поля и карточки при наведении получают обводку, фон не меняется</b>; кнопки меняют фон; ховер срабатывает по области самого элемента, а не всей плашки вокруг.</p>
+  <h2 id="comp"><small>06 · компоненты</small>Что есть в styles.css</h2>
   <div class="card"><table>
-    <tr><th>элемент</th><th>по умолчанию</th><th>наведение</th><th>нажатие</th></tr>
-    <tr><td>Основная кнопка</td><td>#171717</td><td>#7A2FD1, стрелка ↗ поворачивается в →</td><td>#5B21A8</td></tr>
-    <tr><td>Кнопка в тарифе</td><td>#171717; при наведении на карточку — <b>белая, текст чёрный</b></td><td>на саму кнопку — #722BC6, текст белый</td><td>#5B21A8</td></tr>
-    <tr><td>Белая кнопка (на тёмном)</td><td>#FFFFFF, текст #171717</td><td>#7A2FD1, текст белый, стрелка ↗ → →</td><td>#5B21A8</td></tr>
-    <tr><td>Контурная на тёмном</td><td>рамка #8A86A0</td><td>рамка белая, фон +8 % белого</td><td>фон +16 % белого</td></tr>
-    <tr><td>Ссылка-кнопка «Подробнее», «Все условия»</td><td>#0A0A0A, ↗</td><td>#7A2FD1, стрелка → (только по самой ссылке)</td><td>#5B21A8</td></tr>
-    <tr><td>Пункт меню со стрелкой</td><td>#17142B</td><td><b>открывает панель</b>; пункт серый #8A86A0, шеврон вверх; панель закрывается, когда курсор уходит с шапки (задержка 180 мс). Клик и Enter тоже открывают — для клавиатуры и тача</td><td>—</td></tr>
-    <tr><td>Пункт меню без стрелки</td><td>#17142B</td><td>#7A2FD1</td><td>#5B21A8</td></tr>
-    <tr><td>Карточка в панели меню</td><td>#F7F7FB</td><td>фон #E1E0E8, заголовок #722BC6 (без обводки)</td><td>фон #DFDFE6</td></tr>
-    <tr><td>Переключение панелей меню</td><td colspan="3">обе панели лежат в одной ячейке сетки «подпись | карточки до 980»: карточки стоят на тех же координатах и одной высоты, высота выпадашки не меняется — ничего не «скачет»</td></tr>
-    <tr><td>Текущая страница в меню</td><td colspan="3">пункт #7A2FD1 + <code>aria-current="page"</code></td></tr>
-    <tr><td>Карточка направления</td><td>#171717</td><td>шейдерный градиент своего цвета, ↗</td><td>масштаб 99,5 %</td></tr>
-    <tr><td>Карточка тарифа</td><td>белая</td><td>тёмная #171717, список #2C2C2C, текст белый</td><td>—</td></tr>
-    <tr><td>Вопросы FAQ</td><td colspan="3">по умолчанию все закрыты; открыт максимум один в группе</td></tr>
-    <tr><td>Вопрос FAQ (закрыт)</td><td>#F7F7FB</td><td><b>обводка пункта 2 px #ECEBF1</b>; иконка — круг #F7F7FB с кольцом 2 px #E0DEE9, «+» фиолетовый</td><td>иконка на #EEEDF4</td></tr>
-    <tr><td>Вопрос FAQ (открыт)</td><td>#ECEBF1, ×</td><td>иконка в круге #F7F7FB с рамкой 2 px #E0DEE9, × фиолетовый</td><td>—</td></tr>
-    <tr><td>Поле, textarea</td><td>рамка #DFDFE6</td><td><b>рамка #C2C2CD</b>, фон тот же</td><td>фокус: рамка #7A2FD1 + кольцо 3 px</td></tr>
-    <tr><td>Чип</td><td>рамка #E5E5E5</td><td>рамка #C2C2CD</td><td>фон #F5F5F8; выбранный — #171717, наведение #2C2C2C</td></tr>
-    <tr><td>Чекбокс</td><td>рамка #DFDFE6</td><td>рамка #C2C2CD</td><td>фон #DFDFE6</td></tr>
-    <tr><td>Ссылки в подвале</td><td>белые</td><td>#B794F6 + подчёркивание</td><td>#D1AEE8</td></tr>
-    <tr><td>Фокус с клавиатуры (везде)</td><td colspan="3">обводка 2 px #7A2FD1 со смещением 3 px</td></tr>
+    <tr><th>компонент</th><th>класс</th><th>правила</th></tr>
+    <tr><td>Шапка</td><td><code>.header</code></td><td>прилипает (top 16), фон chrome, обводка 1 px <code>--c-line-3</code>, радиус 12, высота 80, <b>без тени</b>. Пункты: Оценка HR-бренда ▾, Дашборд ▾, Цены, О нас, кнопка «Бесплатный срез». «Методика» в меню нет: «Как считаем» внутри направлений</td></tr>
+    <tr><td>Полоса разделов</td><td><code>.anchors</code></td><td>на длинных страницах (больше 4 разделов). Стоит внизу первого экрана, при прокрутке прилипает под шапкой (top 98), получает тень, подсвечивает раздел на экране. Пункты 17/24, неактивные ink-4, активный и наведение — ink. Только разделы текущей страницы</td></tr>
+    <tr><td>Хлебные крошки</td><td><code>.crumbs</code></td><td>Mono 15/24, текущая страница ink-2</td></tr>
+    <tr><td>Эйброу</td><td><code>.eyebrow</code></td><td>пилюля chrome, Mono 15, ink-4, «Тема · уточнение»</td></tr>
+    <tr><td>Кнопки</td><td><code>.btn--primary</code>, <code>.btn--white</code>, <code>.btn-link</code></td><td>48 высота, 17/20 Medium, радиус 10. Основная — тёмная, наведение фиолетовое. <code>.btn-link</code> со стрелкой ↗ 20 px; без подчёркивания</td></tr>
+    <tr><td>Фиолетовая лента шагов</td><td><code>.vflow</code></td><td>градиент 90° #7a2fd1→#5b21a8, поля 80, три колонки: фигура 80 → номер Mono → заголовок 20/27 600 → текст 17/24 → бейджи hard</td></tr>
+    <tr><td>Вкладки-карточки показателей</td><td><code>.qtabs</code>, <code>.qtab</code>, <code>.qpanel</code></td><td>на подложке: три вкладки (иконка в круге 48, название 20/27, вопрос 17/24 ink-4, число 80/84 Mono). Активная — белая, рамка 4 px #e4d5f6, число и иконка фиолетовые. Панель: текст | блок графика на <code>--c-surface-2</code> радиус 16. Стрелки ←/→ переключают</td></tr>
+    <tr><td>Проверка обещания</td><td><code>.mirror--flat</code></td><td>белая карточка (обводка line-3, поля 16) → два серых блока «Вы обещаете» / «Люди видят» → плашка вердикта цвета статуса, белый текст, процент справа. Мельче первого экрана: 17/24, 15/20, Mono 13. Карусель: 3 примера раз в 5 с, пауза при наведении и фокусе, без движения при reduced-motion</td></tr>
+    <tr><td>Матрица</td><td><code>.qmap--page</code></td><td>белая карточка на подложке; колонки 1fr | график | 1fr; поле графика — квадрат <code>--plot</code> ровно по центру карточки; зоны: заголовок 17/24 600 + квадрат 20 цвета зоны, текст 15/20; своя зона — серый блок и «Вы здесь»</td></tr>
+    <tr><td>Карточка шага</td><td><code>.pstep</code></td><td>белая, поля 48, «Шаг №1» Mono ink-4 → 32 → заголовок 40/44 → 16 → текст → 32 → бейджи</td></tr>
+    <tr><td>Карточка направления</td><td><code>.dir</code> + <code>data-shader</code></td><td>тёмная; при наведении — перелив (фиолетовый снаружи, бирюзовый изнутри), появляется стрелка ↗. Так же на обзоре: «Нужен взгляд изнутри?»</td></tr>
+    <tr><td>Таблицы</td><td><code>.cmp</code></td><td>подложка well, шапка — подписи Mono, тело белое с «зеброй», без линий; строки 17/24, названия Medium; пояснения — в «Подробнее» с подсказкой <code>.tip</code></td></tr>
+    <tr><td>Вопросы</td><td><code>.faq</code>, <code>.faq-group</code></td><td>белый блок: слева название группы и описание, справа плашки вопросов 20/27 600 с «+» в круге. Шапка — <code>.section__head--faq</code></td></tr>
+    <tr><td>Список с галочками</td><td><code>.checks--ok</code></td><td>иконка circle-check 24 зелёная, текст 17/24, шаг 16</td></tr>
+    <tr><td>Отчёт / дашборд</td><td><code>.report-bar</code>, <code>.kpis</code>, <code>.panel</code></td><td>закреплённая панель с разделами, плитки показателей, панели с номером 01… и заголовком 20/27</td></tr>
   </table></div>
-  <h3>Карточка шага: как перестраивается</h3>
-  <div class="card"><ul class="list">
-    <li>Приоритет — два факта «От вас нужно» и «Результат» в одну строку. Сначала сжимаются колонки слева: номер 142 → 64, плитка с числом 310 → 240, зазоры 32 → 16, дополнительный отступ перед текстом 120 → 0.</li>
-    <li><b>≤1365</b> — «Шаг №…» уходит над карточкой, остаются две колонки «число | текст».</li>
-    <li><b>≤1180</b> — плитка с числом встаёт над текстом во всю ширину и становится горизонтальной (число слева, подпись справа).</li>
-    <li>Факты переносятся в столбик, только когда и так не помещаются (планшет, телефон).</li>
-    <li>«Подробнее» стоит в одной строке с бейджами, справа; кликабельна только сама ссылка.</li>
-    <li>Плитка с числом не растягивается на высоту строки: подпись идёт сразу под числом (отступ 24), без пустоты. В горизонтальном виде подпись стоит рядом с числом, через 32. На телефоне — снова столбиком.</li>
-    <li>Тексты в плитках и шагах — дословно из макета.</li>
-  </ul></div>
 
   <!-- 7 -->
-  <h2 id="config"><small>07 · конфигурация</small><code style="font:inherit">src/app/globals.css</code> для Tailwind 4 + shadcn</h2>
+  <h2 id="states"><small>07 · состояния</small>Наведение, нажатие, фокус</h2>
+  <div class="card"><ul class="list">
+    <li>Кнопка основная: наведение — фиолетовая, нажатие — #5b21a8. Ссылка со стрелкой: цвет фиолетовый, стрелка поворачивается.</li>
+    <li>Плашка вопроса: наведение — обводка 2 px well; открыта — фон well, «+» поворачивается в «×».</li>
+    <li>Вкладка показателя: наведение — белый фон; активная — белая с рамкой.</li>
+    <li>Карточка направления: перелив шейдера, стрелка выезжает; нажатие — scale(.995).</li>
+    <li>Фокус с клавиатуры — обводка 2 px фиолетовая (на бирюзовых страницах — бирюзовая). Не убирать.</li>
+    <li>Подсказка «Подробнее»: по наведению мышью и по фокусу с клавиатуры; на телефоне — по касанию.</li>
+  </ul></div>
+
+  <!-- 8 -->
+  <h2 id="charts"><small>08 · графики</small>ECharts: общие правила</h2>
+  <div class="card"><ul class="list">
+    <li>Тема — <code>src/charts.js</code>: Onest 14, подписи ink-3, сетка #ecebf1, рендер SVG, анимация 500 мс. В Next — <code>src/components/charts/theme.ts</code>.</li>
+    <li>Линия: снаружи фиолетовая 2,5 px с заливкой-градиентом сверху вниз; изнутри — бирюзовая.</li>
+    <li>События — как в Nivo: вертикальный пунктир <code>--c-violet-soft</code> и подпись сверху (<code>eventMarks</code>). На телефоне подписи короче.</li>
+    <li>Просадка — красная зона rgba(219,79,79,.07) с подписью «просадка».</li>
+    <li>Зоны «в норме / риск» на графиках здоровья культуры — зелёная и красная заливки по уровням 65 и 50.</li>
+    <li>Матрица: оси 10–90 × 40–80, пороги 50 и 60 делят поле на четыре равные части; поле квадратное; поля сетки слева и справа одинаковые, чтобы центр поля совпадал с центром карточки.</li>
+    <li>Тепловая карта: значения подписаны в ячейках; «нет данных» — серая ячейка с текстом, группы меньше 5 человек — «&lt;5».</li>
+    <li>Цвет никогда не единственный носитель смысла: подпись, иконка или значение рядом.</li>
+  </ul></div>
+
+  <!-- 9 -->
+  <h2 id="adapt"><small>09 · адаптив</small>Точки перестройки</h2>
+  <div class="card"><table>
+    <tr><th>ширина</th><th>что меняется</th></tr>
+    <tr><td>≤ 1279</td><td>пары и «текст | график» — в одну колонку; шапка вопросов — друг под другом; полоса отчёта не закреплена</td></tr>
+    <tr><td>≤ 1023</td><td>сетки из трёх — в одну колонку; первый экран без растягивания на окно</td></tr>
+    <tr><td>≤ 767</td><td>телефон: шрифты 16/23, поля 16, шапка 64 (top 8), полоса разделов листается вбок; таблицы и тепловые карты листаются внутри своей карточки</td></tr>
+  </table><div class="rule">Проверка перед коммитом: <code>node qa.js</code> — нет ошибок, нет горизонтальной прокрутки на 390.</div></div>
+
+  <!-- 10 -->
+  <h2 id="text"><small>10 · тексты</small>Правила пользователя</h2>
+  <div class="card"><ul class="list">
+    <li>Короткие слова (1–3 символа) не остаются в конце строки — <code>typograf()</code> (см. П4).</li>
+    <li>Без стрелок «→» в текстах, без штампов ИИ, без восклицательных знаков. Активный залог, коротко.</li>
+    <li>Не пишем про подбор, текучесть, стоимость найма. Название «Пульс культуры» не используем.</li>
+    <li>Условные значения (цены, сроки, числа без источника) помечаем и перечисляем в отчёте пользователю.</li>
+    <li>Тексты не копируем из макета, если они там явно скопированы из другого блока, — пишем по смыслу и говорим об этом.</li>
+  </ul></div>
+
+  <!-- 11 -->
+  <h2 id="pages"><small>11 · страницы</small>Что свёрстано</h2>
+  <div class="card"><table>
+    <tr><th>страница</th><th>статус</th></tr>
+    <tr><td>Главная <code>pages/index.html</code></td><td>по макету, в git</td></tr>
+    <tr><td>Цены <code>pages/pricing.html</code></td><td>по макету «Цена», в git</td></tr>
+    <tr><td>Оценка HR-бренда <code>pages/hr-brand.html</code></td><td>по макету «Оценка HR бренда» и «При скролле + ховер», в git</td></tr>
+    <tr><td>Демо-отчёт, «Как считаем», демо-дашборд</td><td>черновики, только локально (<code>.gitignore</code>), ждут макетов</td></tr>
+    <tr><td>О нас</td><td>убрана, вернётся позже</td></tr>
+  </table></div>
+
+  <h2 id="config"><small>П1 · перенос</small><code style="font:inherit">src/app/globals.css</code> для Tailwind 4 + shadcn</h2>
   <p class="lead">Заменяет текущие токены сайта. Переменные shadcn (<code>--primary</code>, <code>--radius</code>, <code>--input</code>…) указывают на значения макета, поэтому стандартные компоненты сразу берут нужные цвета. Размеры контролов меняются в файлах компонентов (раздел 8).</p>
 <pre><span class="c">@import "tailwindcss";
 @import "tw-animate-css";</span>
@@ -358,7 +302,7 @@ td code{white-space:nowrap}
   --text-stat: var(--text-stat);        --text-stat--line-height: 1.05;
   --text-price: var(--text-price);      --text-price--line-height: 1;
   --text-title: 20px;  --text-title--line-height: 27px;
-  --text-body: 17px;   --text-body--line-height: 27px;
+  --text-body: 17px;   --text-body--line-height: 24px;
   --text-control: 17px; --text-control--line-height: 20px;
   --text-sm: 15px;     --text-sm--line-height: 20px;
   --text-xs: 14px;     --text-xs--line-height: 20px;
@@ -376,7 +320,7 @@ td code{white-space:nowrap}
 }</pre>
 
   <!-- 8 -->
-  <h2 id="shadcn"><small>08 · shadcn/ui</small>Как кастомизируем компоненты</h2>
+  <h2 id="shadcn"><small>П2 · shadcn/ui</small>Как кастомизируем компоненты</h2>
   <div class="card">
     <p>Правим сами файлы в <code>src/components/ui</code> — они часть проекта. На страницах классы размеров не дописываем: если нужен новый размер, он появляется как вариант в компоненте.</p>
 <pre><span class="c">// src/components/ui/button.tsx — варианты и размеры по макету</span>
@@ -406,7 +350,7 @@ variants: {
   </div>
 
   <!-- 9 -->
-  <h2 id="assets"><small>09 · материалы</small>Что уже есть и что нужно</h2>
+  <h2 id="assets"><small>П3 · материалы</small>Что уже есть и что нужно</h2>
   <div class="grid g2">
     <div class="card"><h3 style="margin-top:0">Взял из Figma</h3><ul class="list">
       <li>Логотип (знак + слово), 137 × 26, SVG.</li>
@@ -426,7 +370,7 @@ variants: {
   </div>
 
   <!-- 10 -->
-  <h2 id="typograf"><small>10 · типографика текста</small>Короткие слова не остаются в конце строки</h2>
+  <h2 id="typograf"><small>П4 · типограф</small>Короткие слова не остаются в конце строки</h2>
   <p class="lead"><b>Правило для всех текстов сайта.</b> Слово из 1–3 символов — предлог, союз, частица, число, «№1» — переносится на новую строку вместе со следующим словом. Тире не начинает строку: оно привязано к предыдущему слову.</p>
   <div class="grid g2">
     <div class="card"><h3 style="margin-top:0">Как выглядит</h3><ul class="list">
@@ -443,7 +387,7 @@ variants: {
   </div>
 
   <!-- 11 -->
-  <h2 id="arch"><small>11 · архитектура</small>Сайт многостраничный: что общее, что у страницы</h2>
+  <h2 id="arch"><small>П5 · архитектура</small>Сайт многостраничный: что общее, что у страницы</h2>
   <p class="lead">Прототип уже разложен так же, как будет в Next.js. Шапка, подвал, стили и скрипты — общие. Каждая страница — только свой <code>&lt;main&gt;</code>. Ссылки берутся из одной карты маршрутов, ни одного <code>href</code> руками.</p>
   <div class="card"><table>
     <tr><th>прототип</th><th>Next.js 16</th><th>что внутри</th></tr>
@@ -468,75 +412,7 @@ variants: {
     <div class="card"><b>ChartCard</b><p style="color:var(--ink2)">обёртка для ECharts: карточка системы, шрифт Onest, цвета из <code>charts/theme.ts</code>.</p></div>
   </div>
 
-  <!-- 12 -->
-  <h2 id="pages"><small>12 · план</small>Страницы: что уже на главной и что переносим из первой версии</h2>
-  <p class="lead">Главная теперь — витрина: два направления, 4 шага, ситуации и приватность, цены, FAQ, заявка. Подробности из первой версии сайта (матрица, слепые зоны, 10 метрик, «Решения по обратной связи», перекрёстные проверки, калькулятор индекса) уходят на страницы направлений и в методику.</p>
-  <div class="card"><table>
-    <tr><th>#</th><th>страница</th><th>из чего собирается</th><th>сложность</th></tr>
-    <tr><td>1</td><td><b>О нас</b> <code>/about</code></td><td>PageHero · 2 принципа (well) · команда 3 карточки · контакты 3 карточки · подвал. Пока убрана из прототипа.</td><td><span class="tag green">простая</span></td></tr>
-    <tr><td>2</td><td><b>Документы</b> <code>/docs/*</code></td><td>PageHero без лида · текст 17/27 шириной 760 · оглавление слева, прилипает · дата редакции. Один шаблон на три документа.</td><td><span class="tag green">простая</span></td></tr>
-    <tr><td>3</td><td><b>404</b></td><td>PageHero «Такой страницы нет» + две карточки направлений с главной.</td><td><span class="tag green">простая</span></td></tr>
-    <tr><td>4</td><td><b>Заявка</b> <code>/start</code></td><td>Блок заявки с главной целиком + шаги «что будет дальше» (из блока «Что будет после заявки»). Тема — из <code>?topic=</code>.</td><td><span class="tag grey">средняя</span></td></tr>
-    <tr><td>5</td><td><b>Цены</b> <code>/pricing</code></td><td>Тарифы (общий блок с главной) · цена по численности · таблица сравнения по 5 группам, шапка прилипает, на телефоне прокрутка с закреплённой первой колонкой · агентствам и «больше 3000» · FAQ одним блоком «Цены и договор» (вопросы об оплате те же, что на главной). <b>Свёрстана тестово, правила — раздел 13.</b></td><td><span class="tag grey">средняя</span></td></tr>
-    <tr><td>6</td><td><b>Оценка HR-бренда</b> <code>/hr-brand</code></td><td>PageHero-direction (фиолетовый шейдер) · что проверяем: 4 источника · что в отчёте: индекс, слепые зоны, место в отрасли, матрица (карточки с мини-графиками) · шаги 1–2 · тарифы «снаружи» · FAQ «Снаружи».</td><td><span class="tag">сложная</span></td></tr>
-    <tr><td>7</td><td><b>Здоровье культуры</b> <code>/culture-health</code></td><td>PageHero-direction (бирюзовый) · 10 метрик · разрыв с культурным кодом · приватность (блок с главной в бирюзовом) · «Решения по обратной связи» · шаги 3–4 · тарифы · FAQ «Изнутри».</td><td><span class="tag">сложная</span></td></tr>
-    <tr><td>8</td><td><b>Демо</b> <code>/hr-brand/demo</code>, <code>/culture-health/demo</code></td><td>Дашборды ECharts в ChartCard: динамика, просадки и подъёмы, тепловая карта, тональность. Внутри — существующие графики, оформление по системе.</td><td><span class="tag">сложная</span></td></tr>
-    <tr><td>9</td><td><b>Методика</b> <code>/methodology</code></td><td>Две части с якорями <code>#brand</code> и <code>#health</code> (на них ведут «Как считаем» в меню) · формулы и веса · перекрёстные проверки · калькулятор индекса.</td><td><span class="tag">сложная</span></td></tr>
-  </table></div>
-  <p style="margin-top:16px;color:var(--ink2)">Порядок: сначала простые (1–3) — на них обкатываем общие компоненты. Потом 4–5: они почти целиком из блоков главной. Затем направления 6–7 и демо с методикой (8–9). Для 6–9 нужны макеты или хотя бы согласованная структура.</p>
 
-  <!-- 13 -->
-  <h2 id="inner"><small>13 · правила</small>Внутренние страницы, таблицы, тексты</h2>
-  <p class="lead">Выработано на странице «Цены» по замечаниям. Главная — витрина по макету; внутренние страницы собираются из тех же блоков по правилам ниже, без новых стилей.</p>
-  <div class="grid g2">
-    <div class="card"><h3 style="margin-top:0">Шапка внутренней страницы (макет «Цена»)</h3><ul class="list">
-      <li>Крошки → эйброу → <b>H1 = пункт меню</b> (72) → лид под заголовком, ширина 508. Шаг 40, отступ слева как у заголовков секций (32).</li>
-      <li>Первая секция идёт через 80 (<code>.section--first</code>), дальше — обычный ритм 220.</li>
-    </ul></div>
-    <div class="card"><h3 style="margin-top:0">Шапки секций</h3><ul class="list">
-      <li>Главная — схема split (эйброу слева, заголовок справа).</li>
-      <li>Внутренние страницы — stack (эйброу над заголовком) или center: заголовок и лид по центру, ширина 864, без эйброу («Что входит в каждый тариф»).</li>
-      <li>Подводка к таблице — блок в стиле «Не знаете, с чего начать?»: фигура 80, заголовок 32/32, текст 17/27 по центру. Кнопка — только если у блока есть действие.</li>
-    </ul></div>
-    <div class="card"><h3 style="margin-top:0">Таблицы (макет «Цена»)</h3><ul class="list">
-      <li>Подложка #ECEBF1, поля 16, радиус 12; шапка лежит на подложке, тело белое радиус 8.</li>
-      <li>Шапка: слева название группы 20/27 Medium; в колонках — направление моно 17/24 #8A86A0, тариф 20/27 Medium, цена 17/27 #5F5B76, шаг 8. Поля 16 / 32 / 32.</li>
-      <li>Строки: название и значение одного размера 17/24, название — Medium, значение — Regular; поля 24 × 32.</li>
-      <li>Пояснения к строкам не пишем серым под названием: справа в первой колонке ссылка «Подробнее» (моно 14/20, #8A86A0, подчёркнута), по наведению, фокусу с клавиатуры или нажатию на телефоне — подсказка: тёмная плашка #171717, текст 14/20 белый, радиус 8, ширина до 320, со стрелкой; закрывается уходом курсора, Esc, прокруткой. Подсказка одна на страницу и не обрезается прокруткой таблицы. «Зебра» белый / #FAF9FE, линий нет. Первая колонка — 540 из 1792 (30 %).</li>
-      <li>Короткая таблица цен: в шапке колонок только моно-подпись; строки 83. Стоит сразу под подводкой, через 24.</li>
-      <li>Иконки lucide 24: ✓ circle-check #3B9952 — входит; ✕ circle-x #DB4F4F — не нужно или не предусмотрено; «—» minus #949494 — не входит в тариф.</li>
-      <li>Длинное сравнение делим на смысловые группы — у каждой своя таблица и своя шапка, между таблицами 16. Шапку не закрепляем.</li>
-      <li>Никаких плашек и цветных выделений в ячейках, только текст и иконки.</li>
-      <li>≤1023: таблица прокручивается внутри подложки, первая колонка закреплена у края.</li>
-    </ul></div>
-    <div class="card"><h3 style="margin-top:0">Обзор направления — блоки по смыслам</h3><ul class="list">
-      <li>Перебивки-заголовки как на главной, но одна шапка на смысловой блок, не на каждую карточку.</li>
-      <li>Компоновку чередуем: split-шапка + ряд карточек → stack + строки с числом → центр + график → текст | визуал без шапки → split + шаги на подложке → асимметричная пара 2 : 1.</li>
-      <li>Два одинаковых типа шапки подряд не ставим; визуал (график, пример) — минимум в каждом втором блоке.</li>
-    </ul></div>
-    <div class="card"><h3 style="margin-top:0">Отчёты и дашборды — один контекст</h3><ul class="list">
-      <li>Без больших шапок разделов (60 px) и без отступов 220: карточки идут лентой с шагом 24.</li>
-      <li>Смысл блока — короткий заголовок внутри карточки: номер моно (#AA76CC), заголовок 20/27 Medium, пояснение 15/20.</li>
-      <li>Панель отчёта (направление, разделы, PDF) закреплена под шапкой сайта; на ≤1279 — обычная, без разделов.</li>
-      <li>Таблица в отчёте — заголовок и таблица на одной серой подложке, как в «Ценах».</li>
-    </ul></div>
-    <div class="card"><h3 style="margin-top:0">Карточка шага (главная)</h3><ul class="list">
-      <li>Номер 142 → 43 → плитка 286 → 164 → текст. Высота 321.</li>
-      <li>Плитка на всю высоту: метка и число сверху, подпись 14/16 прижата к низу.</li>
-      <li>Факты → бейджи 40; бейджи в шагах 17 (на карточках направлений — 14). «Подробнее» стоит по нижней линии карточки.</li>
-    </ul></div>
-    <div class="card"><h3 style="margin-top:0">Шрифты и тексты</h3><ul class="list">
-      <li>JetBrains Mono — только там, где он есть в макете: эйброу, номера, служебные метки, крошки, подписи колонок в шапке таблиц. Цены и значения — Onest.</li>
-      <li>В текстах нет стрелок «→» и штампов ИИ. Пишем простыми фразами: «Какие решения приняли по отзывам и что изменилось».</li>
-      <li>Условные цены и объёмы на страницах не подсвечиваем — их список ведём в документации до подтверждения.</li>
-      <li>Белые блоки «описание | содержимое» (вопросы, заявка) — одна вертикаль: правая колонка начинается на 32 + 524 + зазор от края карточки (716 px на 1920), как список вопросов. У заявки поля 48, поэтому левая колонка 508.</li>
-      <li>FAQ: номер-тег группы («04 · Оплата») — только когда на странице несколько групп. Одна группа — без тега, вопросы объединены в один блок.</li>
-    </ul></div>
-  </div>
-  <div class="card"><h3 style="margin-top:0">Условные значения на странице «Цены» (ждут подтверждения)</h3>
-    <p>Мониторинг от 30 000 ₽ в месяц · добавить конкурентов до 5 · развёрнутый отчёт раз в квартал · звонок эксперта раз в месяц · рекомендации к каждому отчёту · диагностика 180 000 / 260 000 ₽ · до 12 интервью · NDA для среза по запросу.</p>
-  </div>
-  <p style="margin-top:32px;color:var(--ink2)">Дальше, после вашего подтверждения: переносим эти токены в <code>globals.css</code>, правим компоненты в <code>src/components/ui</code> и собираем внутренние страницы из репозитория на них — без размеров «на глаз».</p>
 </div>
 </body>
 </html>
