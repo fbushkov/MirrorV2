@@ -19,7 +19,7 @@ ROUTES = {
     "about":               ("/about",                     "about.html"),
     "pricing":             ("/pricing",                   "pricing.html"),
     "start":               ("/start",                     "index.html#request"),   # пока форма на главной
-    "hr-brand":            ("/hr-brand",                  None),
+    "hr-brand":            ("/hr-brand",                  "hr-brand.html"),
     "hr-brand-demo":       ("/hr-brand/demo",             "hr-brand-demo.html"),
     "methodology-brand":   ("/methodology#brand",         None),
     "culture-health":      ("/culture-health",            None),
