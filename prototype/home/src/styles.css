@@ -1141,7 +1141,8 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 .pstep__no { font: 400 var(--fs-mono)/27px var(--font-mono); color: var(--c-ink-4); }
 .pstep__text { display: flex; flex-direction: column; gap: 16px; }
 .pstep__text h3, .pnext h3 { font: 600 var(--fs-cta)/var(--lh-cta) var(--font-sans); color: #171717; }
-.pnext { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 720px); gap: 16px; min-height: 380px; }
+.pnext { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; min-height: 380px; } /* та же сетка, что у шагов */
+.pnext__dark { grid-column: span 2; }
 .pnext__dark { display: flex; flex-direction: column; justify-content: space-between; gap: 48px; padding: clamp(24px, 2.5vw, 48px); border-radius: var(--r-card); background: var(--c-dark); color: #fff; transition: background .2s; }
 .pnext__dark h3 { color: #fff; }
 .pnext__dark div { display: flex; flex-direction: column; gap: 16px; max-width: 560px; }
@@ -1151,6 +1152,7 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 .pnext__card .btn-link { margin-left: -10px; }
 @media (max-width: 1279px) {
   .qpanel, .rsplit, .pnext { grid-template-columns: minmax(0, 1fr); }
+  .pnext__dark { grid-column: auto; }
   .qpanel__vis { margin: 0 24px 24px; }
   .qmap--page { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); padding: 24px; }
   .qmap--page .qmap__chart { justify-self: center; }

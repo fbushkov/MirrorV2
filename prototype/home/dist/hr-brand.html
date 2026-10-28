@@ -1151,7 +1151,8 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 .pstep__no { font: 400 var(--fs-mono)/27px var(--font-mono); color: var(--c-ink-4); }
 .pstep__text { display: flex; flex-direction: column; gap: 16px; }
 .pstep__text h3, .pnext h3 { font: 600 var(--fs-cta)/var(--lh-cta) var(--font-sans); color: #171717; }
-.pnext { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 720px); gap: 16px; min-height: 380px; }
+.pnext { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; min-height: 380px; } /* та же сетка, что у шагов */
+.pnext__dark { grid-column: span 2; }
 .pnext__dark { display: flex; flex-direction: column; justify-content: space-between; gap: 48px; padding: clamp(24px, 2.5vw, 48px); border-radius: var(--r-card); background: var(--c-dark); color: #fff; transition: background .2s; }
 .pnext__dark h3 { color: #fff; }
 .pnext__dark div { display: flex; flex-direction: column; gap: 16px; max-width: 560px; }
@@ -1161,6 +1162,7 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 .pnext__card .btn-link { margin-left: -10px; }
 @media (max-width: 1279px) {
   .qpanel, .rsplit, .pnext { grid-template-columns: minmax(0, 1fr); }
+  .pnext__dark { grid-column: auto; }
   .qpanel__vis { margin: 0 24px 24px; }
   .qmap--page { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); padding: 24px; }
   .qmap--page .qmap__chart { justify-self: center; }
@@ -1257,7 +1259,6 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 <path d="M14.4109 6.91089C14.7363 6.58547 15.2638 6.58546 15.5893 6.91089C15.9146 7.23633 15.9147 7.76386 15.5893 8.08928L10.5893 13.0893C10.2638 13.4147 9.73632 13.4147 9.41088 13.0893L4.41088 8.08928C4.08544 7.76384 4.08544 7.23633 4.41088 6.91089C4.73632 6.58547 5.26383 6.58546 5.58927 6.91089L10.0001 11.3217L14.4109 6.91089Z" fill="currentColor"/>
 </g>
 </svg></button></li>
-            <li><a class="nav__item" href="methodology.html">Методика</a></li>
             <li><a class="nav__item" href="pricing.html">Цены</a></li>
             <li><a class="nav__item" href="#">О нас</a></li>
           </ul>
@@ -1299,7 +1300,6 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
               <a class="mega__card" href="#"><b>Как считаем</b><span>Методика внутреннего замера</span></a>
             </div>
             <div class="mega__cards">
-              <a class="mega__card" href="methodology.html"><b>Методика</b></a>
               <a class="mega__card" href="pricing.html"><b>Цены</b></a>
               <a class="mega__card" href="#"><b>О нас</b></a>
             </div>
