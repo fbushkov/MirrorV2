@@ -6,3 +6,6 @@ pages/culture-health-demo.html
 dist/hr-brand-demo.html
 dist/methodology.html
 dist/culture-health-demo.html
+
+# Скриншоты qa.js — пересоздаются при каждом запуске, в git не храним
+shots/

@@ -1,9 +1,7 @@
-/* =========================================================
-   Общий скрипт всех страниц: меню, форма, шейдер, типограф.
+/* Общий скрипт всех страниц: меню, форма, шейдер, типограф.
    Скрипт страницы (например, FAQ на главной) идёт раньше — типограф
-   запускается последним и обрабатывает уже готовую разметку.
-   ========================================================= */
-/* ---------- Вопросы: группы из FAQ_GROUPS (src/content.js), один открытый на группу ----------
+   запускается последним и обрабатывает уже готовую разметку. */
+/* Вопросы: группы из FAQ_GROUPS (src/content.js), один открытый на группу
    data-groups="general,brand" — несколько блоков; "payment+plans" — один блок из нескольких групп
    (название и описание — первой группы или из data-desc). Номер-тег показываем, только если блоков больше одного. */
 const faqRoot = document.getElementById("faq-list");
@@ -36,7 +34,7 @@ if (faqRoot) {
   });
 }
 
-/* ---------- Мега-меню: клик, Esc, клик вне, одно открытое ---------- */
+/* Мега-меню: клик, Esc, клик вне, одно открытое */
 const header = document.querySelector(".header");
 const mega = document.getElementById("mega");
 const triggers = [...document.querySelectorAll("[data-panel]")];
@@ -62,14 +60,14 @@ document.addEventListener("click", (e) => { if (current && !header.contains(e.ta
 document.addEventListener("keydown", (e) => { if (e.key === "Escape" && current) { const t = triggers.find((x) => x.dataset.panel === current); setMenu(null); t && t.focus(); } });
 addEventListener("scroll", () => header.classList.toggle("is-stuck", scrollY > 40), { passive: true });
 
-/* ---------- Цены → предвыбор темы в форме ----------
+/* Цены → предвыбор темы в форме
    На той же странице — по клику, с другой страницы — через ?topic= в адресе (в Next: /start?topic=…) */
 const pickTopic = (topic) => { const r = document.querySelector(`input[name=topic][value="${topic}"]`); if (r) r.checked = true; };
 document.querySelectorAll("[data-topic]").forEach((a) => a.addEventListener("click", () => pickTopic(a.dataset.topic)));
 const urlTopic = new URLSearchParams(location.search).get("topic");
 if (urlTopic) pickTopic(urlTopic);
 
-/* ---------- Форма: проверка обязательных полей, экран успеха ---------- */
+/* Форма: проверка обязательных полей, экран успеха */
 const form = document.querySelector("form.form");
 if (form) form.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -83,7 +81,7 @@ if (form) form.addEventListener("submit", (e) => {
   if (ok) form.classList.add("is-sent");
 });
 
-/* ---------- Шейдерный градиент на карточках направлений (WebGL, без зависимостей) ----------
+/* Шейдерный градиент на карточках направлений (WebGL, без зависимостей)
    Логика как у shadergradient.co: плавная «ткань» из шума, 3 цвета, зерно.
    Анимация идёт только при наведении/фокусе; reduced-motion — статичный кадр. */
 const PALETTES = {
@@ -133,7 +131,7 @@ document.querySelectorAll(".dir[data-shader]").forEach((card) => {
   draw();
 });
 
-/* ---------- Подсказки: кнопка с data-tip ----------
+/* Подсказки: кнопка с data-tip
    Наведение и фокус показывают, уход и Esc прячут; на тач-экранах — по нажатию. Над кнопкой,
    если сверху мало места — под ней. Связь для скринридеров — aria-describedby. */
 const tip = document.createElement("div");
@@ -178,7 +176,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape") hideTip();
 addEventListener("scroll", hideTip, { passive: true });
 document.querySelectorAll(".cmp").forEach((c) => c.addEventListener("scroll", hideTip, { passive: true }));
 
-/* ---------- Типограф: короткие слова не висят в конце строки ----------
+/* Типограф: короткие слова не висят в конце строки
    Правило: слово из 1–3 символов (предлог, союз, частица, число, «№1») связываем
    неразрывным пробелом со следующим словом, а тире — с предыдущим.
    «в отчёте», «и ответы», «3 рабочих дня», «от 5 человек», «срез — бесплатно».

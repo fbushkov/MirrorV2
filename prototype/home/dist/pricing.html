@@ -8,9 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-/* =========================================================
-   1. ДИЗАЙН-ТОКЕНЫ (из макета Figma «Elements», кадр 1920)
-   ========================================================= */
+/* 1. Дизайн-токены (из макета Figma «Elements», кадр 1920) */
 :root {
   /* Цвет — нейтральные */
   --c-page: #f7f7fb;          /* фон страницы */
@@ -94,9 +92,7 @@
   --ease: cubic-bezier(.22,1,.36,1);
 }
 
-/* =========================================================
-   2. БАЗА
-   ========================================================= */
+/* 2. База */
 *, *::before, *::after { box-sizing: border-box; }
 * { margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
@@ -109,9 +105,7 @@ img, svg { display: block; }
 .mono { font-family: var(--font-mono); font-weight: 400; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
-/* =========================================================
-   3. КОМПОНЕНТЫ (кастомизация shadcn/ui под макет)
-   ========================================================= */
+/* 3. Компоненты (кастомизация shadcn/ui под макет) */
 /* Button — shadcn по умолчанию h-9; в макете 48px, радиус 10, текст 17 Medium */
 .btn { -webkit-tap-highlight-color: transparent; display: inline-flex; align-items: center; justify-content: center; gap: 4px; height: var(--h-ctl); padding: 0 var(--px-btn); border-radius: var(--r-ctl); font: 500 var(--fs-body)/var(--lh-tight) var(--font-sans); white-space: nowrap; transition: background .2s, color .2s, border-color .2s; }
 .btn svg { width: 20px; height: 20px; flex: none; transition: transform .25s var(--ease); }
@@ -144,7 +138,7 @@ img, svg { display: block; }
 /* Эйброу-плашка над заголовком: моно 15/27, px24 py10 */
 .eyebrow { display: inline-flex; align-items: center; width: fit-content; padding: 10px 24px; border-radius: var(--r-pill); background: var(--c-chrome); color: var(--c-ink-4); font: 400 var(--fs-mono)/27px var(--font-mono); white-space: nowrap; }
 
-/* Input / Textarea — shadcn h-9 → 48, фон #F5F5F8, рамка #DFDFE6, радиус 10 */
+/* Input / Textarea — shadcn h-9 → 48, фон #F5F5F8, рамка #dfdfe6, радиус 10 */
 .field { display: flex; flex-direction: column; gap: 8px; }
 .label { font: 500 var(--fs-body)/var(--lh-body) var(--font-sans); color: #0a0a0a; }
 .hint { font: 400 var(--fs-body)/var(--lh-body) var(--font-sans); color: var(--c-ink-4); margin-top: -2px; }
@@ -181,9 +175,7 @@ img, svg { display: block; }
 /* Иконки */
 .ico { width: 20px; height: 20px; }
 
-/* =========================================================
-   4. ШАПКА + МЕГА-МЕНЮ
-   ========================================================= */
+/* 4. Шапка + мега-меню */
 .header { position: sticky; top: 16px; z-index: 50; }
 .header__box { position: relative; background: var(--c-chrome); border: 1px solid var(--c-line-3); border-radius: var(--r-card); transition: border-radius .2s, box-shadow .2s; }
 .header__box:has(.mega.is-open) { border-radius: var(--r-card) var(--r-card) 0 0; }
@@ -231,9 +223,7 @@ img, svg { display: block; }
 .mega__card:hover b { color: var(--c-violet-hover); }
 .mega__card:active { background: var(--c-line); }
 
-/* =========================================================
-   5. СЕКЦИИ
-   ========================================================= */
+/* 5. Секции */
 .section { margin-top: var(--section-gap); scroll-margin-top: 120px; }
 .section__head { display: flex; flex-direction: column; gap: 40px; padding: 0 var(--inset-x); margin-bottom: var(--head-gap); }
 /* Центрированная шапка (макет «Цена», «Что входит»): ширина 864, заголовок → лид 40 */
@@ -247,7 +237,7 @@ img, svg { display: block; }
 .headline-block { display: flex; flex-direction: column; gap: 40px; max-width: 882px; }
 .lead { font: 400 var(--fs-body)/var(--lh-body) var(--font-sans); max-width: 540px; }
 
-/* --- 5.1 Первый экран --- */
+/* 5.1 Первый экран */
 .hero { margin-top: clamp(64px, 7.3vw, 141px); }
 .hero__head { display: flex; flex-direction: column; gap: 40px; padding: 0 clamp(0px, 2.5vw, 48px); }
 .hero__row { display: flex; align-items: flex-end; justify-content: space-between; gap: 32px; }
@@ -276,7 +266,7 @@ img, svg { display: block; }
 .dir--brand { --dir-grad: linear-gradient(115deg, #7a2fd1, #5b21a8); }
 .dir--health { --dir-grad: linear-gradient(115deg, #0e9384, #0b7a6e); }
 
-/* --- 5.2 Как это работает --- */
+/* 5.2 Как это работает */
 .steps { display: flex; flex-direction: column; gap: 24px; }
 .step { display: grid; grid-template-columns: var(--step-no) var(--step-stat) minmax(0, 1fr); column-gap: var(--step-gap); align-items: stretch; padding: 32px; border-radius: var(--r-card); background: var(--c-well);
   --step-no: clamp(64px, 7.4vw, 142px);           /* 142 на 1920 → 64 */
@@ -301,7 +291,7 @@ img, svg { display: block; }
 .step__foot .badges { gap: 10px; }
 .step__more { margin: -12px -10px 0 0; } /* ссылка h36 не раздвигает строку бейджей h24: низ ссылки на линии низа карточки, как в макете */
 
-/* --- 5.3 Ситуации + приватность --- */
+/* 5.3 Ситуации + приватность */
 .situations { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 25px; padding: 0 var(--inset-x); margin-bottom: 80px; }
 .sit { display: flex; flex-direction: column; gap: 16px; line-height: var(--lh-body); }
 .sit__no { font: 400 var(--fs-mono)/27px var(--font-mono); color: var(--c-ink-4); }
@@ -313,7 +303,7 @@ img, svg { display: block; }
 .trust__text { display: flex; flex-direction: column; gap: 8px; line-height: var(--lh-body); }
 .trust__title { font: 600 var(--fs-title)/var(--lh-title) var(--font-sans); }
 
-/* --- 5.4 Цены --- */
+/* 5.4 Цены */
 .groups { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
 .group { display: flex; flex-direction: column; gap: 24px; padding: 24px 16px 16px; border-radius: var(--r-card); background: var(--c-well); }
 
@@ -358,7 +348,7 @@ img, svg { display: block; }
 .help__text { display: flex; flex-direction: column; gap: 16px; }
 .help h3 { font: 500 var(--fs-h4)/var(--lh-h4) var(--font-sans); }
 
-/* --- 5.5 FAQ --- */
+/* 5.5 FAQ */
 .faq { display: flex; flex-direction: column; gap: 24px; }
 /* Сетка «описание | содержимое»: правая колонка начинается на одной вертикали во всех белых блоках
    (вопросы, заявка) — 32 + 524 + зазор от края карточки, на 1920 это 716 px от края страницы */
@@ -390,7 +380,7 @@ img, svg { display: block; }
 .ask p { margin-top: 16px; font: 400 var(--fs-body)/var(--lh-body) var(--font-sans); color: var(--c-ink-4); }
 .ask__actions { display: flex; gap: 16px; flex-wrap: wrap; }
 
-/* --- 5.6 Заявка --- */
+/* 5.6 Заявка */
 .request { display: grid; grid-template-columns: minmax(0, 508px) minmax(0, 1fr); gap: var(--content-gap); padding: 48px 48px 112px; /* 48 + 508 = 32 + 524: форма начинается там же, где вопросы */ border-radius: var(--r-card); background: #fff; }
 .contacts { display: flex; flex-direction: column; gap: 64px; }
 .contacts dl { display: flex; flex-direction: column; gap: 40px; }
@@ -408,7 +398,7 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 .form.is-sent > :not(.form__done) { display: none; }
 .form.is-sent .form__done { display: block; }
 
-/* --- 5.7 Внутренние страницы (общие блоки для всех, кроме главной) --- */
+/* 5.7 Внутренние страницы (общие блоки для всех, кроме главной) */
 /* Шапка страницы: крошки → эйброу → заголовок в два тона | лид. Та же сетка, что у hero главной */
 .page-hero { margin-top: clamp(48px, 5.2vw, 100px); }
 .page-hero__head { display: flex; flex-direction: column; align-items: flex-start; gap: 40px; padding: 0 var(--inset-x); }
@@ -426,27 +416,19 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 .card__no { font: 400 var(--fs-mono)/27px var(--font-mono); color: var(--c-violet-num); }
 .card__title { font: 600 var(--fs-title)/var(--lh-title) var(--font-sans); }
 .card__text { color: var(--c-ink-2); margin-top: 8px; }
-/* Команда */
-.person { gap: 32px; }
-.person__ava { width: 64px; height: 64px; border-radius: var(--r-pill); display: grid; place-items: center; background: var(--c-chrome); color: var(--c-violet); font: 500 var(--fs-body)/1 var(--font-mono); }
-.person__role { font: 400 var(--fs-sm)/var(--lh-sm) var(--font-sans); color: var(--c-ink-4); margin-top: 4px; }
 /* Условный текст (имена, цены, реквизиты) — в продакшене компонент <Ph> */
 .ph { background: rgba(122,47,209,.08); box-shadow: 0 0 0 1px rgba(122,47,209,.2) inset; border-radius: 4px; padding: 0 4px; }
 /* Карточки контактов: вся карточка — ссылка, ховер как у карточки меню */
 .contact { position: relative; display: flex; flex-direction: column; gap: 8px; padding: 32px; border-radius: var(--r-card); background: var(--c-surface); transition: background .2s; }
-.contact dt, .contact__label { font: 400 var(--fs-body)/var(--lh-body) var(--font-sans); color: var(--c-ink-2); }
-.contact__value { font: 600 var(--fs-contact)/var(--lh-contact) var(--font-sans); transition: color .2s; }
-.contact__arrow { position: absolute; top: 32px; right: 32px; width: 20px; height: 20px; color: var(--c-ink-4); transition: transform .25s var(--ease), color .2s; }
+.contact dt { font: 400 var(--fs-body)/var(--lh-body) var(--font-sans); color: var(--c-ink-2); }
 .contact:hover { background: var(--c-menu-hover); }
-.contact:hover .contact__value, .contact:hover .contact__arrow { color: var(--c-violet-hover); }
-.contact:hover .contact__arrow { transform: rotate(45deg); }
 .contact:active { background: var(--c-line); }
 @media (max-width: 1023px) { .cards { --cols: 1; } .cards--2 { --cols: 1; } }
 
-/* --- 5.8 Таблицы (макет «Цена»: 1027:4242, 1027:4293, 1027:4369) ---
-   Подложка #ECEBF1, поля 16, радиус 12. Шапка лежит на подложке: слева название группы (20/27 Medium),
+/* 5.8 Таблицы (макет «Цена»: 1027:4242, 1027:4293, 1027:4369)
+   Подложка #ecebf1, поля 16, радиус 12. Шапка лежит на подложке: слева название группы (20/27 Medium),
    по колонкам — направление (моно 17/24 #8A86A0), тариф (20/27 Medium), цена (17/27 #5F5B76), шаг 8.
-   Тело белое радиус 8, строки «зеброй» белый / #FAF9FE без линий. Название строки и значение — один стиль 17/24 Regular.
+   Тело белое радиус 8, строки «зеброй» белый / #faf9fe без линий. Название строки и значение — один стиль 17/24 Regular.
    Иконки 24: ✓ входит (#3B9952), ✕ не нужно (#DB4F4F), — не входит (#949494). Длинное сравнение
    разбито на группы — у каждой своя таблица и своя шапка, поэтому шапка не прилипает. */
 .cmp-stack { display: flex; flex-direction: column; gap: 16px; }
@@ -506,14 +488,13 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
   .cmp__col-feat { width: 180px; }
   .cmp__rowhead { flex-wrap: wrap; gap: 4px 16px; } /* колонка 180: ссылка уходит под название */
 }
-/* --- 5.9 Отчёт и дашборд (демо-отчёт HR-бренда) --- */
+/* 5.9 Отчёт и дашборд (демо-отчёт HR-бренда) */
 /* Панель отчёта: переключатель направления, мета, PDF — на серой подложке, как шапка таблиц */
 .report-bar { display: flex; align-items: center; gap: 16px 32px; flex-wrap: wrap; padding: 16px; border-radius: var(--r-card); background: var(--c-well); }
 .seg { display: inline-flex; padding: 4px; border-radius: var(--r-pill); background: var(--c-chrome); }
 .seg__item { padding: 10px 20px; border-radius: var(--r-pill); font: 500 var(--fs-body)/var(--lh-tight) var(--font-sans); color: var(--c-ink-2); transition: color .2s, background .2s; }
 .seg__item:hover { color: var(--c-ink); }
 .seg__item.is-active { background: var(--c-surface); color: var(--c-ink); box-shadow: 0 1px 2px rgba(23,20,43,.06); }
-.report-bar__meta { font: 400 var(--fs-mono)/24px var(--font-mono); color: var(--c-ink-4); }
 .report-bar__pdf { margin-left: auto; }
 /* Отчёт — один контекст: без больших шапок разделов, карточки идут лентой с шагом 24.
    Панель отчёта закреплена под шапкой сайта и ведёт по разделам */
@@ -553,13 +534,8 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 .chart--tall { height: 420px; }
 .chart--heat { height: 440px; }
 /* Слепые зоны: тема, доля, полоса, цитата */
-.blinds { list-style: none; display: flex; flex-direction: column; gap: 24px; }
-.blind__head { display: flex; justify-content: space-between; gap: 16px; }
-.blind__head b { font-weight: 500; }
-.blind__head span { font: 400 var(--fs-sm)/var(--lh-sm) var(--font-sans); color: var(--c-ink-2); }
 .blind__bar { height: 8px; margin-top: 10px; border-radius: var(--r-pill); background: var(--c-surface-2); overflow: hidden; }
 .blind__bar i { display: block; height: 100%; border-radius: inherit; background: var(--c-violet-soft); }
-.blind p { margin-top: 10px; font: 400 var(--fs-sm)/var(--lh-sm) var(--font-sans); color: var(--c-ink-2); }
 /* Матрица: график + описание зон */
 .matrix { display: grid; grid-template-columns: minmax(0, 1fr) 420px; gap: 32px; align-items: center; }
 /* Матрица «честность × условия»: описания зон по бокам, напротив своих четвертей; график по центру */
@@ -612,7 +588,7 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
   .chart, .chart--tall { height: 320px; }
 }
 
-/* --- 5.10 Обзор направления (/hr-brand) — разные компоновки блоков --- */
+/* 5.10 Обзор направления (/hr-brand) — разные компоновки блоков */
 /* Первый экран: текст | пример «зеркала» */
 .dir-hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 820px); gap: 48px; align-items: center; }
 .dir-hero .page-hero__lead { max-width: 560px; }
@@ -638,54 +614,25 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 .mirror__dots button:focus-visible { outline: 2px solid var(--c-violet); outline-offset: 2px; border-radius: 4px; }
 .mirror__vacancy { display: flex; flex-direction: column; gap: 6px; margin-top: auto; padding: 16px; border-radius: var(--r-inner); background: var(--c-surface-2); font: 400 var(--fs-sm)/var(--lh-sm) var(--font-sans); color: var(--c-ink-2); }
 .mirror__vacancy span:first-child { font: 400 var(--fs-xs)/18px var(--font-mono); color: var(--c-ink-4); }
-.mirror__track { height: 8px; border-radius: var(--r-pill); background: var(--c-surface-2); overflow: hidden; }
-.mirror__track i { display: block; height: 100%; border-radius: inherit; transition: width .5s var(--ease), background .3s; }
-.mirror__track i.is-ok { background: var(--c-ok); }
-.mirror__track i.is-warn { background: var(--c-warn); }
-.mirror__track i.is-bad { background: var(--c-bad); }
 .mirror__pct { font: 400 var(--fs-sm)/var(--lh-sm) var(--font-sans); color: var(--c-ink-2); white-space: nowrap; }
 .mirror__pct b { font: 500 var(--fs-body)/1 var(--font-mono); color: var(--c-ink); }
-/* Навигация по разделам обзора — та же закреплённая панель, что в отчёте */
-.anchor-bar { margin-top: 24px; }
-/* Что проверяем: три шага в ряд на серых карточках, последний — белый результат */
-.flow { list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
-.flow__item { display: flex; flex-direction: column; gap: 16px; padding: 32px; border-radius: var(--r-card); background: var(--c-well); }
-.flow__item > p { color: var(--c-ink-2); }
-.flow__item .badges { margin-top: auto; padding-top: 8px; }
-.flow__item--result { background: var(--c-surface); }
-.flow__statuses { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-top: auto; padding-top: 8px; }
-.flow__statuses li { display: flex; align-items: center; gap: 10px; }
 /* Три показателя: строки с большим числом слева */
-.metric-rows { display: flex; flex-direction: column; gap: 16px; }
-.metric-row { display: grid; grid-template-columns: var(--step-stat, 286px) minmax(0, 1fr); gap: clamp(24px, 6vw, 120px); align-items: center; padding: 16px 48px 16px 16px; border-radius: var(--r-card); background: var(--c-well); --step-stat: clamp(240px, 14.9vw, 286px); }
-.metric-row__num { display: flex; flex-direction: column; gap: 4px; padding: 24px; border-radius: var(--r-inner); background: var(--c-surface); }
-.metric-row__num span { font: 500 var(--fs-stat)/var(--lh-stat) var(--font-mono); color: var(--c-violet); }
-.metric-row__num small { font: 400 var(--fs-mono)/24px var(--font-mono); color: var(--c-ink-4); }
-.metric-row__body { display: flex; flex-direction: column; gap: 12px; max-width: 760px; }
 .metric-row__q { font: 500 var(--fs-h4)/1.2 var(--font-sans); }
-.metric-row__body p { color: var(--c-ink-2); }
 /* Отчёт: текст | визуал, без отдельной шапки */
 .split { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: clamp(32px, 5.8vw, 112px); align-items: center; padding-left: var(--inset-x); }
 .split__text { display: flex; flex-direction: column; align-items: flex-start; gap: 32px; }
-.split__visual { margin-top: 0; }
 .checks { list-style: none; display: flex; flex-direction: column; gap: 12px; }
 .checks li { display: flex; gap: 12px; align-items: flex-start; }
 .checks svg { width: 24px; height: 24px; flex: none; color: var(--c-violet); }
-/* Как проходит: шаги на серой подложке, как группы тарифов */
-.track { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; padding: 16px; border-radius: var(--r-card); background: var(--c-well); }
-.track__step { display: flex; flex-direction: column; gap: 16px; padding: 24px; border-radius: var(--r-inner); background: var(--c-surface); }
-.track__step > p { color: var(--c-ink-2); }
-.track__step .badges { margin-top: auto; padding-top: 8px; }
 /* Дальше: асимметричная пара — тёмная карточка направления 2/3 и белая 1/3 */
 .section--tight { margin-top: var(--head-gap); }
 .pair { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 24px; }
 .dir--compact { min-height: 360px; }
-.pair__side { justify-content: space-between; }
-@media (max-width: 1279px) { .dir-hero, .split { grid-template-columns: minmax(0, 1fr); } .split { padding-left: 0; } .metric-row { grid-template-columns: 1fr; padding: 16px; } }
-@media (max-width: 1023px) { .flow, .track, .pair { grid-template-columns: 1fr; } }
-@media (max-width: 767px) { .mirror { grid-template-columns: minmax(0, 1fr); } .flow__item { padding: 24px; } .mirror__verdict { grid-template-columns: minmax(0, 1fr); gap: 10px; padding: 16px; } .mirror__pct { white-space: normal; } }
+@media (max-width: 1279px) { .dir-hero, .split { grid-template-columns: minmax(0, 1fr); } .split { padding-left: 0; }  }
+@media (max-width: 1023px) { .pair { grid-template-columns: 1fr; } }
+@media (max-width: 767px) { .mirror { grid-template-columns: minmax(0, 1fr); }  .mirror__verdict { grid-template-columns: minmax(0, 1fr); gap: 10px; padding: 16px; } .mirror__pct { white-space: normal; } }
 
-/* --- 5.11 Методика («Как считаем») --- */
+/* 5.11 Методика («Как считаем») */
 /* Формула — тёмная карточка, как блок «Есть вопрос?» и подвал: главный объект страницы */
 .dir-hero--method { grid-template-columns: minmax(0, 1fr) minmax(0, 720px); align-items: end; }
 .formula { display: flex; flex-direction: column; gap: 24px; padding: 40px; border-radius: var(--r-card); background: var(--c-dark); color: #fff; }
@@ -721,7 +668,7 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 @media (max-width: 1279px) { .ladder__step { grid-template-columns: 64px minmax(0, 1fr); } .ladder__aside { grid-column: 2; } .split--tight { grid-template-columns: 1fr; } }
 @media (max-width: 767px) { .formula { padding: 24px; } .formula__legend { grid-template-columns: 1fr; } .ladder__step { grid-template-columns: 1fr; padding: 20px; } .ladder__aside { grid-column: 1; } .pair--even { grid-template-columns: 1fr; } }
 
-/* --- 5.12 Методика: карточки показателей, шкалы рынка, калькулятор --- */
+/* 5.12 Методика: карточки показателей, шкалы рынка, калькулятор */
 .mcards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
 .mcard { display: flex; flex-direction: column; align-items: flex-start; gap: 20px; padding: 32px; border-radius: var(--r-card); background: var(--c-well); }
 .mcard__q { margin-top: 4px; color: var(--c-ink-2); }
@@ -744,28 +691,6 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 .blind__bar i.is-mix { background: color-mix(in srgb, var(--c-warn) 55%, transparent); }
 .spots__tone--neu { color: var(--c-ink-2); }
 .blind__bar i.is-neu { background: var(--c-line-hover); }
-/* Три показателя: вкладки-карточки и панель «текст | визуал» */
-.mtabs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; padding: 8px; border-radius: var(--r-card) var(--r-card) 0 0; background: var(--c-well); }
-.mtab { display: grid; grid-template-columns: auto 1fr; grid-template-areas: "ico val" "name name" "q q"; align-items: center; gap: 4px 16px; padding: 20px 24px; border: 1px solid transparent; border-radius: var(--r-inner); background: transparent; text-align: left; cursor: pointer; font: inherit; color: inherit; transition: background .2s, border-color .2s; }
-.mtab:hover { background: rgba(255,255,255,.6); }
-.mtab:focus-visible { outline: 2px solid var(--c-violet); outline-offset: 2px; }
-.mtab.is-active { background: var(--c-surface); border-color: var(--c-violet-soft); }
-.mtab__ico { grid-area: ico; width: 48px; height: 48px; display: grid; place-items: center; margin-bottom: 12px; border-radius: var(--r-pill); background: var(--c-chrome); color: var(--c-ink-2); transition: background .2s, color .2s; }
-.mtab__ico svg { width: 24px; height: 24px; }
-.mtab.is-active .mtab__ico { background: var(--c-violet); color: #fff; }
-.mtab__val { grid-area: val; justify-self: end; margin-bottom: 12px; font: 400 var(--fs-sm)/var(--lh-sm) var(--font-sans); color: var(--c-ink-4); }
-.mtab__val b { font: 500 32px/1 var(--font-mono); color: var(--c-ink); }
-.mtab.is-active .mtab__val b { color: var(--c-violet); }
-.mtab__name { grid-area: name; font: 500 var(--fs-title)/var(--lh-title) var(--font-sans); }
-.mtab__q { grid-area: q; font: 400 var(--fs-sm)/var(--lh-sm) var(--font-sans); color: var(--c-ink-2); }
-.mpanel { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; padding: 0 8px 8px; border-radius: 0 0 var(--r-card) var(--r-card); background: var(--c-well); }
-.mpanel[hidden] { display: none; }
-.mfoot { margin-top: 16px; font: 400 var(--fs-sm)/var(--lh-sm) var(--font-sans); color: var(--c-ink-4); }
-.mpanel__text { display: flex; flex-direction: column; align-items: flex-start; gap: 20px; padding: 40px; border-radius: var(--r-inner); background: var(--c-surface); }
-.mpanel__text p { color: var(--c-ink-2); max-width: 520px; }
-.mpanel__text .card__more { margin-top: auto; }
-.mpanel__q { font: 500 var(--fs-h4)/1.15 var(--font-sans); }
-.mpanel__vis { display: flex; flex-direction: column; justify-content: center; gap: 8px; min-height: 380px; padding: 32px; border-radius: var(--r-inner); background: var(--c-surface); }
 /* Место в отрасли: шкала «хуже — медиана — лучше рынка», точка — ваш перцентиль */
 .tracks { list-style: none; display: flex; flex-direction: column; gap: 18px; }
 .tracks li { display: grid; grid-template-columns: 120px minmax(0, 1fr) 32px; align-items: center; gap: 16px; }
@@ -793,7 +718,7 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 @media (max-width: 1279px) { .mcards { grid-template-columns: minmax(0, 1fr); } .calc { grid-template-columns: 1fr; } .calc__result { position: static; } }
 @media (max-width: 767px) { .mcard { padding: 20px; } .tracks li { grid-template-columns: 96px minmax(0, 1fr) 28px; gap: 10px; } .tracks__scale { margin-left: 106px; margin-right: 38px; } }
 
-/* --- Подсказка (tooltip) — одна на страницу, позиционируется скриптом у кнопки, не обрезается прокруткой таблиц ---
+/* Подсказка (tooltip) — одна на страницу, позиционируется скриптом у кнопки, не обрезается прокруткой таблиц
    Тёмная плашка как у кнопок и подвала: #171717, текст 15/20 белый, радиус 8, поля 12 × 16, ширина до 320, стрелка 8 */
 .tip { position: fixed; z-index: 100; max-width: min(320px, calc(100vw - 32px)); padding: 12px 16px; border-radius: var(--r-inner); background: var(--c-dark); color: #fff; font: 400 var(--fs-xs)/20px var(--font-sans); box-shadow: 0 12px 32px -12px rgba(23,20,43,.45); opacity: 0; visibility: hidden; transform: translateY(4px); transition: opacity .15s, transform .15s var(--ease), visibility 0s .15s; pointer-events: none; }
 .tip.is-shown { opacity: 1; visibility: visible; transform: none; transition: opacity .15s, transform .15s var(--ease); }
@@ -804,9 +729,7 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 .section--first { margin-top: var(--head-gap); }
 .card__more { margin: auto 0 0 -10px; width: fit-content; }
 
-/* =========================================================
-   6. ПОДВАЛ
-   ========================================================= */
+/* 6. Подвал */
 .footer { margin-top: 80px; display: flex; flex-direction: column; gap: clamp(64px, 7.5vw, 144px); padding: clamp(48px, 5.8vw, 112px) clamp(20px, 2.5vw, 48px) 48px; border-radius: var(--r-card); background: var(--c-dark); color: #fff; overflow: hidden; }
 .footer__cta { display: flex; align-items: center; justify-content: space-between; gap: 32px; }
 .footer__cta p { font: 500 var(--fs-cta)/var(--lh-cta) var(--font-sans); letter-spacing: -0.01em; }
@@ -827,9 +750,7 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 .footer__legal a:hover { color: #fff; }
 .footer__bottom { display: flex; flex-direction: column; gap: 48px; }
 
-/* =========================================================
-   7. АДАПТИВ (в макете только 1920 — правила ниже наши)
-   ========================================================= */
+/* 7. Адаптив (в макете только 1920 — правила ниже наши) */
 @media (max-width: 1440px) {
   .footer__cols { grid-template-columns: repeat(4, auto); }
 }
@@ -913,10 +834,10 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
   *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
   html { scroll-behavior: auto; }
 }
-@media (max-width: 1279px) { .mpanel { grid-template-columns: 1fr; } .mpanel__vis { min-height: 0; } }
-@media (max-width: 767px) { .mtabs { grid-template-columns: 1fr; } .mtab { grid-template-areas: "ico val" "name name"; padding: 16px; } .mtab__q { display: none; } .mtab__ico { width: 40px; height: 40px; margin-bottom: 4px; } .mtab__val { margin-bottom: 4px; } .mpanel__text, .mpanel__vis { padding: 24px; } .mirror__bar { padding-left: 8px; } }
 
-/* --- 5.13 Демо-дашборд здоровья культуры — та же лента, что в отчёте, акцент бирюзовый --- */
+@media (max-width: 767px) {       .mirror__bar { padding-left: 8px; } }
+
+/* 5.13 Демо-дашборд здоровья культуры — та же лента, что в отчёте, акцент бирюзовый */
 .is-health { --c-acc: var(--c-teal); --c-acc-num: #4fb3a7; --c-acc-soft: #9fd6cf; }
 .is-health .kpi__num { color: var(--c-acc); }
 .is-health .panel__no, .is-health .summary__tag { color: var(--c-acc-num); }
@@ -1074,7 +995,7 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 .overall p { font: 400 var(--fs-sm)/var(--lh-sm) var(--font-sans); color: var(--c-ink-2); }
 .bridge__link { margin-top: 24px; }
 
-/* --- 5.14 Обзор направления по макету «Оценка HR бренда» (2026-10-28) --- */
+/* 5.14 Обзор направления по макету «Оценка HR бренда» (2026-10-28) */
 /* Первый экран занимает окно, полоса разделов — у его нижнего края */
 .dir-intro { min-height: calc(100svh - 114px - 61px - 48px - 32px - clamp(48px, 5.2vw, 100px)); }
 .dir-intro .page-hero__lead { max-width: 568px; color: var(--c-ink); }
@@ -1156,7 +1077,6 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 .pnext__dark { display: flex; flex-direction: column; justify-content: space-between; gap: 48px; padding: clamp(24px, 2.5vw, 48px); border-radius: var(--r-card); background: var(--c-dark); color: #fff; transition: background .2s; }
 .pnext__dark h3 { color: #fff; }
 .pnext__dark div { display: flex; flex-direction: column; gap: 16px; max-width: 560px; }
-.pnext__label { font: 400 var(--fs-mono)/30px var(--font-mono); color: var(--c-ink-4); }
 .pnext__card { display: flex; flex-direction: column; justify-content: space-between; align-items: flex-start; gap: 32px; padding: clamp(24px, 2.5vw, 48px) clamp(24px, 2.5vw, 48px) 32px; border-radius: var(--r-card); background: var(--c-surface); }
 .pnext__card div { display: flex; flex-direction: column; gap: 16px; max-width: 520px; }
 .pnext__card .btn-link { margin-left: -10px; }
@@ -1310,7 +1230,7 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
   </header>
 
   <main>
-  <!-- ============ ШАПКА СТРАНИЦЫ (макет «Цена» 1027:4031) ============ -->
+  <!-- Шапка страницы (макет «Цена» 1027:4031) -->
   <section class="page-hero" aria-labelledby="page-title">
     <ol class="crumbs" aria-label="Хлебные крошки">
       <li><a href="index.html">Главная</a></li>
@@ -1323,7 +1243,7 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
     </div>
   </section>
 
-  <!-- ============ ТАРИФЫ (общий блок с главной) + подводка к цене по численности ============ -->
+  <!-- Тарифы (общий блок с главной) + подводка к цене по численности -->
   <section class="section section--first" aria-label="Тарифы">
 <!-- Тарифы: общий блок для главной и страницы «Цены». Кнопки ведут на заявку с выбранной темой -->
     <div class="groups">
@@ -1464,7 +1384,7 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
     </div>
   </section>
 
-  <!-- ============ ЧТО ВХОДИТ (1027:4288): по таблице на группу ============ -->
+  <!-- Что входит (1027:4288): по таблице на группу -->
   <section class="section" id="compare" aria-labelledby="compare-title">
     <div class="section__head section__head--center">
       <h2 class="headline" id="compare-title">Что входит<br><span class="dim">в каждый тариф</span></h2>
@@ -1853,7 +1773,7 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
     </div>
   </section>
 
-  <!-- ============ ВОПРОСЫ: одна группа «Цены и договор» (в макете нет — оставлены по прошлой договорённости) ============ -->
+  <!-- Вопросы: одна группа «Цены и договор» (в макете нет — оставлены по прошлой договорённости) -->
   <section class="section" id="faq" aria-labelledby="faq-title">
     <div class="section__head section__head--faq">
       <span class="eyebrow">Вопросы · цены и договор</span>
@@ -1900,11 +1820,9 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 </g>
 </svg></template>
 <script>
-/* =========================================================
-   Контент прототипа (в Next — src/content/faq.ts).
+/* Контент прототипа (в Next — src/content/faq.ts).
    Страница выбирает группы через data-groups у #faq-list, поэтому вопросы
-   про цены на главной и на странице «Цены» берутся из одного места.
-   ========================================================= */
+   про цены на главной и на странице «Цены» берутся из одного места. */
 const FAQ_GROUPS = {
   general: { tag: "01 · Общее", title: "Как начать?", desc: "Что нужно от вас, сколько ждать и чем Mirror отличается от опроса.", items: [
     ["Нужен доступ к вашим системам?", "Для среза — нет. Нужны название компании и ссылка на страницу работодателя на hh.ru. Для диагностики вы сами выбираете, какие документы передать."],
@@ -1942,12 +1860,10 @@ const FAQ_GROUPS = {
     ["А если отзывов мало?", "Обещание с числом упоминаний меньше 10 получает статус «нет данных» и не входит в индекс. Такие обещания проверяем изнутри, в диагностике."]]},
 };
 
-/* =========================================================
-   Общий скрипт всех страниц: меню, форма, шейдер, типограф.
+/* Общий скрипт всех страниц: меню, форма, шейдер, типограф.
    Скрипт страницы (например, FAQ на главной) идёт раньше — типограф
-   запускается последним и обрабатывает уже готовую разметку.
-   ========================================================= */
-/* ---------- Вопросы: группы из FAQ_GROUPS (src/content.js), один открытый на группу ----------
+   запускается последним и обрабатывает уже готовую разметку. */
+/* Вопросы: группы из FAQ_GROUPS (src/content.js), один открытый на группу
    data-groups="general,brand" — несколько блоков; "payment+plans" — один блок из нескольких групп
    (название и описание — первой группы или из data-desc). Номер-тег показываем, только если блоков больше одного. */
 const faqRoot = document.getElementById("faq-list");
@@ -1980,7 +1896,7 @@ if (faqRoot) {
   });
 }
 
-/* ---------- Мега-меню: клик, Esc, клик вне, одно открытое ---------- */
+/* Мега-меню: клик, Esc, клик вне, одно открытое */
 const header = document.querySelector(".header");
 const mega = document.getElementById("mega");
 const triggers = [...document.querySelectorAll("[data-panel]")];
@@ -2006,14 +1922,14 @@ document.addEventListener("click", (e) => { if (current && !header.contains(e.ta
 document.addEventListener("keydown", (e) => { if (e.key === "Escape" && current) { const t = triggers.find((x) => x.dataset.panel === current); setMenu(null); t && t.focus(); } });
 addEventListener("scroll", () => header.classList.toggle("is-stuck", scrollY > 40), { passive: true });
 
-/* ---------- Цены → предвыбор темы в форме ----------
+/* Цены → предвыбор темы в форме
    На той же странице — по клику, с другой страницы — через ?topic= в адресе (в Next: /start?topic=…) */
 const pickTopic = (topic) => { const r = document.querySelector(`input[name=topic][value="${topic}"]`); if (r) r.checked = true; };
 document.querySelectorAll("[data-topic]").forEach((a) => a.addEventListener("click", () => pickTopic(a.dataset.topic)));
 const urlTopic = new URLSearchParams(location.search).get("topic");
 if (urlTopic) pickTopic(urlTopic);
 
-/* ---------- Форма: проверка обязательных полей, экран успеха ---------- */
+/* Форма: проверка обязательных полей, экран успеха */
 const form = document.querySelector("form.form");
 if (form) form.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -2027,7 +1943,7 @@ if (form) form.addEventListener("submit", (e) => {
   if (ok) form.classList.add("is-sent");
 });
 
-/* ---------- Шейдерный градиент на карточках направлений (WebGL, без зависимостей) ----------
+/* Шейдерный градиент на карточках направлений (WebGL, без зависимостей)
    Логика как у shadergradient.co: плавная «ткань» из шума, 3 цвета, зерно.
    Анимация идёт только при наведении/фокусе; reduced-motion — статичный кадр. */
 const PALETTES = {
@@ -2077,7 +1993,7 @@ document.querySelectorAll(".dir[data-shader]").forEach((card) => {
   draw();
 });
 
-/* ---------- Подсказки: кнопка с data-tip ----------
+/* Подсказки: кнопка с data-tip
    Наведение и фокус показывают, уход и Esc прячут; на тач-экранах — по нажатию. Над кнопкой,
    если сверху мало места — под ней. Связь для скринридеров — aria-describedby. */
 const tip = document.createElement("div");
@@ -2122,7 +2038,7 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape") hideTip();
 addEventListener("scroll", hideTip, { passive: true });
 document.querySelectorAll(".cmp").forEach((c) => c.addEventListener("scroll", hideTip, { passive: true }));
 
-/* ---------- Типограф: короткие слова не висят в конце строки ----------
+/* Типограф: короткие слова не висят в конце строки
    Правило: слово из 1–3 символов (предлог, союз, частица, число, «№1») связываем
    неразрывным пробелом со следующим словом, а тире — с предыдущим.
    «в отчёте», «и ответы», «3 рабочих дня», «от 5 человек», «срез — бесплатно».
