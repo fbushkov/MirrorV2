@@ -11,7 +11,7 @@ python3 build.py        # pages/*.html → dist/*.html (самодостаточ
 node qa.js              # Playwright: ошибки консоли, горизонтальная прокрутка, скриншоты в shots/
 ```
 
-Открыть без сборки: `dist/index.html`, `dist/about.html`, `dist/pricing.html`.
+Открыть без сборки: `dist/index.html`, `dist/pricing.html`. Черновики остальных страниц в git не хранятся (`prototype/home/.gitignore`).
 Общие блоки: `partials/pricing-plans.html` (тарифы), `src/content.js` (вопросы — страница выбирает группы через `data-groups`). Правила и токены: `design-system.html`.
 
 | Прототип | Next.js |

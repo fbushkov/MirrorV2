@@ -4,14 +4,12 @@ const base = 'file://' + __dirname + '/dist/'; // запуск: node prototype/h
   const b = await chromium.launch();
   const out = {};
   for (const [w, h] of [[1920, 1080], [1440, 900], [1280, 800], [1024, 768], [390, 844]]) {
-    for (const p of ['index.html', 'about.html', 'pricing.html']) {
+    for (const p of ['index.html', 'pricing.html']) {
       const pg = await b.newPage({ viewport: { width: w, height: h } });
       const errs = []; pg.on('pageerror', e => errs.push(e.message)); pg.on('console', m => m.type() === 'error' && errs.push(m.text()));
       await pg.goto(base + p); await pg.waitForTimeout(400);
       const sw = await pg.evaluate(() => document.documentElement.scrollWidth - innerWidth);
       out[`${p}@${w}`] = { overflow: sw, errs };
-      if (w === 1920 && p === 'about.html') await pg.screenshot({ path: 'shots/about-1920.png', fullPage: true });
-      if (w === 390 && p === 'about.html') await pg.screenshot({ path: 'shots/about-390.png', fullPage: true });
       if (w === 1920 && p === 'index.html') {
         // меню: позиция карточек в обеих панелях
         const pos = {};

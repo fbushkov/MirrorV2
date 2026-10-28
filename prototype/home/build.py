@@ -16,14 +16,14 @@ DIST = root / "dist"
 # Карта маршрутов. Ключ — id страницы, значение — путь в Next и файл прототипа (None — ещё не свёрстана)
 ROUTES = {
     "home":                ("/",                          "index.html"),
-    "about":               ("/about",                     "about.html"),
+    "about":               ("/about",                     None),   # страница убрана, вернётся позже
     "pricing":             ("/pricing",                   "pricing.html"),
     "start":               ("/start",                     "index.html#request"),   # пока форма на главной
     "hr-brand":            ("/hr-brand",                  "hr-brand.html"),
     "hr-brand-demo":       ("/hr-brand/demo",             "hr-brand-demo.html"),
     "methodology-brand":   ("/methodology#brand",         "methodology.html#brand"),
     "culture-health":      ("/culture-health",            None),
-    "culture-health-demo": ("/culture-health/demo",       None),
+    "culture-health-demo": ("/culture-health/demo",       "culture-health-demo.html"),
     "methodology-health":  ("/methodology#health",        None),
     "methodology":         ("/methodology",               "methodology.html"),
     "privacy":             ("/docs/privacy-policy",       None),
