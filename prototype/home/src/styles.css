@@ -7,6 +7,7 @@
   --c-surface-3: #f5f5f8;     /* поля, списки в тарифах */
   --c-well: #ecebf1;          /* серые контейнеры: шаги, группы цен, открытый FAQ */
   --c-chrome: #eeedf4;        /* шапка, плашки-эйброу */
+  --c-seg: #e3e3ee;           /* подложка сегментов в меню отчёта */
   --c-ink: #17142b;           /* основной текст */
   --c-ink-2: #5f5b76;         /* подписи, подзаголовки */
   --c-ink-3: #807c93;         /* вторая строка крупных заголовков */
@@ -154,7 +155,7 @@ img, svg { display: block; }
 
 /* Чипы выбора (ToggleGroup) — px24 py12, рамка #E5E5E5, выбранный — чёрный */
 .chips { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; border: 0; }
-.chip { position: relative; display: flex; align-items: center; justify-content: center; padding: 12px 24px; border-radius: var(--r-pill); border: 1px solid var(--c-line-2); background: #fff; font: 500 var(--fs-body)/var(--lh-body) var(--font-sans); cursor: pointer; text-align: center; transition: background .2s, color .2s; }
+.chip { position: relative; display: flex; align-items: center; justify-content: center; padding: 12px 24px; border-radius: var(--r-ctl); border: 1px solid var(--c-line-2); background: #fff; font: 500 var(--fs-body)/var(--lh-body) var(--font-sans); cursor: pointer; text-align: center; transition: background .2s, color .2s; }
 .chip input { position: absolute; opacity: 0; inset: 0; cursor: pointer; }
 .chip:hover { border-color: var(--c-line-hover); }
 .chip:active { background: var(--c-surface-3); }
@@ -481,10 +482,11 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 /* 5.9 Отчёт и дашборд (демо-отчёт HR-бренда) */
 /* Панель отчёта: переключатель направления, мета, PDF — на серой подложке, как шапка таблиц */
 .report-bar { display: flex; align-items: center; gap: 16px 32px; flex-wrap: wrap; padding: 16px; border-radius: var(--r-card); background: var(--c-well); }
-.seg { display: inline-flex; padding: 4px; border-radius: var(--r-pill); background: var(--c-chrome); }
-.seg__item { padding: 10px 20px; border-radius: var(--r-pill); font: 500 var(--fs-body)/var(--lh-tight) var(--font-sans); color: var(--c-ink-2); transition: color .2s, background .2s; }
-.seg__item:hover { color: var(--c-ink); }
-.seg__item.is-active { background: var(--c-surface); color: var(--c-ink); box-shadow: 0 1px 2px rgba(23,20,43,.06); }
+/* Сегменты (макет additionalmenu): подложка #e3e3ee радиус 10, поля 4, активный — светлый блок радиус 8 */
+.seg { display: inline-flex; gap: 8px; padding: 4px; border-radius: var(--r-ctl); background: var(--c-seg); }
+.seg__item { display: flex; align-items: center; padding: 8px 24px; border-radius: var(--r-inner); font: 500 var(--fs-body)/var(--lh-body) var(--font-sans); color: var(--c-ink); white-space: nowrap; transition: background .2s; }
+.seg__item:hover { background: rgba(255,255,255,.5); }
+.seg__item.is-active { background: var(--c-surface-2); }
 .report-bar__pdf { margin-left: auto; }
 /* Отчёт — один контекст: без больших шапок разделов, карточки идут лентой с шагом 24.
    Панель отчёта закреплена под шапкой сайта и ведёт по разделам */
@@ -995,10 +997,10 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 /* Полоса разделов: при прокрутке прилипает к шапке (98 = 16 + 82), раздел на экране подсвечен */
 .anchors { position: sticky; top: 98px; z-index: 45; display: flex; gap: 32px; margin-top: 32px; padding: 8px 48px; border: 1px solid var(--c-line-3); border-radius: var(--r-card); background: var(--c-chrome); overflow-x: auto; scrollbar-width: none; transition: box-shadow .2s; }
 .anchors::-webkit-scrollbar { display: none; }
-.anchors a { flex: none; padding: 10px; border-radius: var(--r-inner); font: 400 var(--fs-body)/var(--lh-body) var(--font-sans); color: var(--c-ink-4); white-space: nowrap; transition: color .2s, background .2s; }
-.anchors a:hover { color: var(--c-ink); }
-.anchors a.is-active { color: var(--c-ink); }
-.anchors a:focus-visible { outline: 2px solid var(--c-violet); outline-offset: -2px; }
+.anchors > a:not(.btn), .anchors__links a { flex: none; padding: 10px; border-radius: var(--r-inner); font: 400 var(--fs-body)/var(--lh-body) var(--font-sans); color: var(--c-ink-4); white-space: nowrap; transition: color .2s, background .2s; }
+.anchors > a:not(.btn):hover, .anchors__links a:hover { color: var(--c-ink); }
+.anchors > a.is-active, .anchors__links a.is-active { color: var(--c-ink); }
+.anchors > a:not(.btn):focus-visible, .anchors__links a:focus-visible { outline: 2px solid var(--c-violet); outline-offset: -2px; }
 .anchors.is-stuck { box-shadow: 0 12px 32px -18px rgba(23,20,43,.35); }
 .section--anchors { scroll-margin-top: 190px; }
 .section--anchors:first-of-type { margin-top: clamp(48px, 4.17vw, 80px); }
@@ -1134,4 +1136,30 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 /* Тёмная карточка «Нужен взгляд изнутри?» — как направления на главной: бирюзовый перелив при наведении */
 .pnext__dark.dir { min-height: 0; padding: clamp(24px, 2.5vw, 48px); }
 .pnext__dark .dir__top { display: flex; justify-content: space-between; align-items: center; }
+
+/* Меню отчёта (макет additionalmenu): сегменты направления, якоря, «Скачать PDF» справа */
+.anchors--report { align-items: center; gap: 48px; padding: 8px 48px; }
+.anchors__links { display: flex; gap: 32px; }
+.anchors__pdf { margin-left: auto; flex: none; }
+.anchors__pdf svg { width: 20px; height: 20px; }
+.rsec--first { margin-top: 24px; }
+/* Итоги отчёта: четыре числа на подложке */
+.kpis--report { margin-top: 0; gap: 16px; }
+.kpis--report .kpi { gap: 16px; padding: 32px; border-radius: var(--r-inner); }
+.kpis--report .kpi__label { font: 400 var(--fs-mono)/24px var(--font-mono); }
+.kpis--report .kpi__num { display: flex; align-items: flex-end; gap: 6px; }
+.kpis--report .kpi__num small { margin-bottom: 6px; font: 400 var(--fs-mono)/24px var(--font-mono); color: var(--c-ink-4); }
+.kpi__num--ink { color: var(--c-ink); }
+.summary .cmp__status { font-weight: 500; }
+.summary__ico { color: var(--c-violet); }
+.summary__ico svg { width: 20px; height: 20px; }
+/* Матрица внутри панели отчёта — без своих полей и фона */
+.qmap--flush { padding: 0; background: none; }
+/* Компактная карточка шага: длинный заголовок — 20/27 */
+.pstep--sm { gap: 24px; padding: 32px; }
+.pstep--sm .pstep__text h3 { font: 600 var(--fs-title)/var(--lh-title) var(--font-sans); }
+.pstep--sm .pstep__text p { color: var(--c-ink-2); }
+.panel--well .pstep-row { margin-top: 8px; }
+@media (max-width: 1279px) { .anchors__links { display: none; } .anchors--report { gap: 16px; padding: 8px 16px; } }
+@media (max-width: 767px) { .seg__more, .anchors__pdf-text { display: none; } .seg__item { padding: 8px 14px; } .anchors--report { gap: 8px; padding: 8px; } .anchors--report .anchors__pdf { width: 48px; padding: 0; } .kpis--report .kpi { padding: 20px; } }
 
