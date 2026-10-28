@@ -503,6 +503,22 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 .seg__item.is-active { background: var(--c-surface); color: var(--c-ink); box-shadow: 0 1px 2px rgba(23,20,43,.06); }
 .report-bar__meta { font: 400 var(--fs-mono)/24px var(--font-mono); color: var(--c-ink-4); }
 .report-bar__pdf { margin-left: auto; }
+/* Отчёт — один контекст: без больших шапок разделов, карточки идут лентой с шагом 24.
+   Панель отчёта закреплена под шапкой сайта и ведёт по разделам */
+.report-bar { position: sticky; top: 104px; z-index: 40; }
+.report-nav { display: flex; flex-wrap: wrap; gap: 4px; }
+.report-nav a { padding: 10px 14px; border-radius: var(--r-ctl); font: 400 var(--fs-body)/var(--lh-tight) var(--font-sans); color: var(--c-ink-2); transition: color .2s, background .2s; }
+.report-nav a:hover { color: var(--c-violet); background: rgba(23,20,43,.04); }
+.rsec { margin-top: 24px; scroll-margin-top: 200px; }
+.rsec > .panel:first-child, .rsec > .cards:first-child { margin-top: 0; }
+.panel__no { font: 400 var(--fs-mono)/24px var(--font-mono); color: var(--c-violet-num); }
+/* Таблица в отчёте: заголовок и таблица на одной серой подложке, как в «Цены» */
+.panel.panel--table { padding: 16px; background: var(--c-well); }
+.panel--table .panel__head { padding: 16px 16px 0; margin-bottom: 8px; }
+.panel--table .cmp { padding: 0; }
+.cards.cards--steps { --cols: 3; }
+@media (max-width: 1023px) { .cards.cards--steps { --cols: 1; } }
+.cards--steps .card { padding: 24px; }
 /* Показатели: как плитка с числом в шагах главной — метка моно, число моно 80, подпись снизу */
 .kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; margin-top: 24px; }
 .kpi { display: flex; flex-direction: column; gap: 12px; padding: 24px; border-radius: var(--r-card); background: var(--c-surface); }
@@ -548,7 +564,7 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 .toc-list { list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 48px; flex: 1; max-width: 900px; }
 .toc-list li { display: flex; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--c-line); }
 .toc-list span { font: 400 var(--fs-mono)/27px var(--font-mono); color: var(--c-violet-num); }
-@media (max-width: 1279px) { .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); } .matrix { grid-template-columns: 1fr; } .help--left { flex-direction: column; } }
+@media (max-width: 1279px) { .report-bar { position: static; } .report-nav { display: none; } .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); } .matrix { grid-template-columns: 1fr; } .help--left { flex-direction: column; } }
 @media (max-width: 767px) {
   .kpis, .summary, .toc-list { grid-template-columns: 1fr; }
   .report-bar__pdf { margin-left: 0; }

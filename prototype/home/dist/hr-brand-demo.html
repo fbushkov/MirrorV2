@@ -513,6 +513,22 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 .seg__item.is-active { background: var(--c-surface); color: var(--c-ink); box-shadow: 0 1px 2px rgba(23,20,43,.06); }
 .report-bar__meta { font: 400 var(--fs-mono)/24px var(--font-mono); color: var(--c-ink-4); }
 .report-bar__pdf { margin-left: auto; }
+/* Отчёт — один контекст: без больших шапок разделов, карточки идут лентой с шагом 24.
+   Панель отчёта закреплена под шапкой сайта и ведёт по разделам */
+.report-bar { position: sticky; top: 104px; z-index: 40; }
+.report-nav { display: flex; flex-wrap: wrap; gap: 4px; }
+.report-nav a { padding: 10px 14px; border-radius: var(--r-ctl); font: 400 var(--fs-body)/var(--lh-tight) var(--font-sans); color: var(--c-ink-2); transition: color .2s, background .2s; }
+.report-nav a:hover { color: var(--c-violet); background: rgba(23,20,43,.04); }
+.rsec { margin-top: 24px; scroll-margin-top: 200px; }
+.rsec > .panel:first-child, .rsec > .cards:first-child { margin-top: 0; }
+.panel__no { font: 400 var(--fs-mono)/24px var(--font-mono); color: var(--c-violet-num); }
+/* Таблица в отчёте: заголовок и таблица на одной серой подложке, как в «Цены» */
+.panel.panel--table { padding: 16px; background: var(--c-well); }
+.panel--table .panel__head { padding: 16px 16px 0; margin-bottom: 8px; }
+.panel--table .cmp { padding: 0; }
+.cards.cards--steps { --cols: 3; }
+@media (max-width: 1023px) { .cards.cards--steps { --cols: 1; } }
+.cards--steps .card { padding: 24px; }
 /* Показатели: как плитка с числом в шагах главной — метка моно, число моно 80, подпись снизу */
 .kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; margin-top: 24px; }
 .kpi { display: flex; flex-direction: column; gap: 12px; padding: 24px; border-radius: var(--r-card); background: var(--c-surface); }
@@ -558,7 +574,7 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 .toc-list { list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 48px; flex: 1; max-width: 900px; }
 .toc-list li { display: flex; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--c-line); }
 .toc-list span { font: 400 var(--fs-mono)/27px var(--font-mono); color: var(--c-violet-num); }
-@media (max-width: 1279px) { .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); } .matrix { grid-template-columns: 1fr; } .help--left { flex-direction: column; } }
+@media (max-width: 1279px) { .report-bar { position: static; } .report-nav { display: none; } .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); } .matrix { grid-template-columns: 1fr; } .help--left { flex-direction: column; } }
 @media (max-width: 767px) {
   .kpis, .summary, .toc-list { grid-template-columns: 1fr; }
   .report-bar__pdf { margin-left: 0; }
@@ -793,7 +809,9 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
         <a class="seg__item is-active" aria-current="page" href="hr-brand-demo.html">Снаружи · HR-бренд</a>
         <a class="seg__item" href="#">Изнутри · здоровье культуры</a>
       </nav>
-      <span class="report-bar__meta">Банк N · банки, Урал · янв–окт 2026</span>
+      <nav class="report-nav" aria-label="Разделы отчёта">
+        <a href="#r-dyn">Динамика</a><a href="#r-prom">Обещания</a><a href="#r-market">Рынок</a><a href="#r-comp">Конкуренты</a><a href="#r-plan">План</a>
+      </nav>
       <a class="btn btn--white report-bar__pdf" href="#">Скачать PDF <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g>
 <path d="M14.8327 14.1641C14.8327 14.5323 14.5342 14.8307 14.166 14.8307C13.7978 14.8307 13.4993 14.5323 13.4993 14.1641V7.4401L6.30404 14.6354C6.04369 14.8958 5.62168 14.8958 5.36133 14.6354C5.10098 14.3751 5.10098 13.9531 5.36133 13.6927L12.5566 6.4974H5.83268C5.46449 6.4974 5.16602 6.19892 5.16602 5.83073C5.16602 5.46254 5.46449 5.16406 5.83268 5.16406H14.166C14.5342 5.16406 14.8327 5.46254 14.8327 5.83073V14.1641Z" fill="currentColor"/>
@@ -819,20 +837,13 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
   </section>
 
   <!-- ============ ДИНАМИКА ============ -->
-  <section class="section" aria-labelledby="dyn-title">
-    <div class="section__head">
-      <span class="eyebrow">01 · Динамика</span>
-      <div class="headline-block"><h2 class="headline" id="dyn-title">Просадки<br><span class="dim">и подъёмы</span></h2><p class="lead">Индекс культуры по месяцам. Пунктир — события, которые на него повлияли.</p></div>
-    </div>
-    <div class="panel"><div class="chart chart--tall" id="ch-dynamics" role="img" aria-label="Индекс культуры по месяцам: от 58 в январе до 65 в октябре, просадка до 54 в марте"></div></div>
+  <section class="rsec" id="r-dyn" aria-label="Динамика">
+    <div class="panel"><div class="panel__head"><span class="panel__no">01</span><h2 class="panel__title">Динамика индекса</h2><p class="panel__hint">По месяцам. Пунктир — события, которые повлияли на индекс.</p></div><div class="chart chart--tall" id="ch-dynamics" role="img" aria-label="Индекс культуры по месяцам: от 58 в январе до 65 в октябре, просадка до 54 в марте"></div></div>
   </section>
 
   <!-- ============ ОБЕЩАНИЯ ============ -->
-  <section class="section" aria-labelledby="prom-title">
-    <div class="section__head">
-      <span class="eyebrow">02 · Обещания</span>
-      <div class="headline-block"><h2 class="headline" id="prom-title">Что обещаете<br><span class="dim">и что подтверждают люди</span></h2><p class="lead">Вес — доля обещания в ваших текстах. Подтверждено — доля упоминаний, где опыт совпадает с обещанием.</p></div>
-    </div>
+  <section class="rsec" id="r-prom" aria-label="Обещания">
+    <div class="panel panel--table"><div class="panel__head"><span class="panel__no">02</span><h2 class="panel__title">Обещания</h2><p class="panel__hint">Вес — доля обещания в ваших текстах. Подтверждено — доля упоминаний, где опыт совпадает с обещанием.</p></div>
     <div class="cmp" role="region" aria-labelledby="prom-t" tabindex="0">
       <table class="cmp__table">
         <colgroup><col class="cmp__col-feat"><col><col><col><col></colgroup>
@@ -877,21 +888,18 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
         </tbody>
       </table>
     </div>
-    <div class="panel" style="margin-top:16px">
-      <div class="panel__head"><h3 class="panel__title">Откуда подтверждения</h3><p class="panel__hint">Доля подтверждений по источникам. «Нет» — тема в источнике не встречается.</p></div>
+    </div>
+    <div class="panel">
+      <div class="panel__head"><span class="panel__no">03</span><h3 class="panel__title">Откуда подтверждения</h3><p class="panel__hint">Доля подтверждений по источникам. «Нет» — тема в источнике не встречается.</p></div>
       <div class="chart chart--heat" id="ch-heat" role="img" aria-label="Тепловая карта подтверждения обещаний по источникам"></div>
     </div>
   </section>
 
   <!-- ============ СЛЕПЫЕ ЗОНЫ И МЕСТО В ОТРАСЛИ ============ -->
-  <section class="section" aria-labelledby="blind-title">
-    <div class="section__head">
-      <span class="eyebrow">03 · Рынок</span>
-      <div class="headline-block"><h2 class="headline" id="blind-title">Слепые зоны<br><span class="dim">и место в отрасли</span></h2></div>
-    </div>
+  <section class="rsec" id="r-market" aria-label="Рынок">
     <div class="cards cards--2">
       <div class="panel">
-        <div class="panel__head"><h3 class="panel__title">Слепые зоны</h3><p class="panel__hint">О чём люди пишут, а в ваших текстах нет ни слова</p></div>
+        <div class="panel__head"><span class="panel__no">04</span><h3 class="panel__title">Слепые зоны</h3><p class="panel__hint">О чём люди пишут, а в ваших текстах нет ни слова</p></div>
         <ul class="blinds">
           <li class="blind"><div class="blind__head"><b>Переработки</b><span>18% упоминаний</span></div><div class="blind__bar"><i style="width:72%"></i></div><p>«Уходим в восемь, если сдаём отчётность.»</p></li>
           <li class="blind"><div class="blind__head"><b>Руководители</b><span>14% упоминаний</span></div><div class="blind__bar"><i style="width:56%"></i></div><p>«Всё зависит от того, к какому начальнику попадёшь.»</p></li>
@@ -900,12 +908,12 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
         </ul>
       </div>
       <div class="panel">
-        <div class="panel__head"><h3 class="panel__title">Место в отрасли</h3><p class="panel__hint">Перцентиль по темам среди банков Урала. Пунктир — середина рынка</p></div>
+        <div class="panel__head"><span class="panel__no">05</span><h3 class="panel__title">Место в отрасли</h3><p class="panel__hint">Перцентиль по темам среди банков Урала. Пунктир — середина рынка</p></div>
         <div class="chart" id="ch-industry" role="img" aria-label="Место в отрасли по темам: коллектив 82, зарплата 34"></div>
       </div>
     </div>
-    <div class="panel" style="margin-top:24px">
-      <div class="panel__head"><h3 class="panel__title">Где вы на карте</h3><p class="panel__hint">Честность (индекс культуры) против условий (место в отрасли)</p></div>
+    <div class="panel">
+      <div class="panel__head"><span class="panel__no">06</span><h3 class="panel__title">Где вы на карте</h3><p class="panel__hint">Честность (индекс культуры) против условий (место в отрасли)</p></div>
       <div class="matrix">
         <div class="chart chart--tall" id="ch-matrix" role="img" aria-label="Матрица: Банк N в зоне «Сильный и честный»"></div>
         <ul class="zones">
@@ -919,11 +927,8 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
   </section>
 
   <!-- ============ КОНКУРЕНТЫ ============ -->
-  <section class="section" aria-labelledby="comp-title">
-    <div class="section__head">
-      <span class="eyebrow">04 · Конкуренты</span>
-      <div class="headline-block"><h2 class="headline" id="comp-title">Одни правила<br><span class="dim">для всех</span></h2><p class="lead">Те же обещания у двух конкурентов, посчитанные по той же методике.</p></div>
-    </div>
+  <section class="rsec" id="r-comp" aria-label="Конкуренты">
+    <div class="panel panel--table"><div class="panel__head"><span class="panel__no">07</span><h2 class="panel__title">Конкуренты</h2><p class="panel__hint">Те же обещания у двух конкурентов, по той же методике.</p></div>
     <div class="cmp" role="region" aria-labelledby="comp-t" tabindex="0">
       <table class="cmp__table">
         <colgroup><col class="cmp__col-feat"><col><col><col></colgroup>
@@ -985,23 +990,22 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
         </tbody>
       </table>
     </div>
+    </div>
   </section>
 
   <!-- ============ ШАГИ ============ -->
-  <section class="section" aria-labelledby="steps-title">
-    <div class="section__head">
-      <span class="eyebrow">05 · План</span>
-      <div class="headline-block"><h2 class="headline" id="steps-title">Три первых шага</h2></div>
+  <section class="rsec" id="r-plan" aria-label="План">
+    <div class="panel"><div class="panel__head"><span class="panel__no">08</span><h2 class="panel__title">Три первых шага</h2><p class="panel__hint">Кто делает и за какой срок.</p></div>
+    <div class="cards cards--steps">
+      <article class="card"><span class="card__no">01</span><div><h3 class="card__title">Указать зарплатные вилки во всех вакансиях</h3><p class="card__text">Руководитель подбора · 2 недели</p></div></article>
+      <article class="card"><span class="card__no">02</span><div><h3 class="card__title">Убрать «справедливую зарплату» из текстов до пересмотра окладов</h3><p class="card__text">HR-бренд · 2 недели</p></div></article>
+      <article class="card"><span class="card__no">03</span><div><h3 class="card__title">Описать правила гибридной работы</h3><p class="card__text">Директор по персоналу · 1 месяц</p></div></article>
     </div>
-    <div class="cards">
-      <article class="card card--white"><span class="card__no">01</span><div><h3 class="card__title">Указать зарплатные вилки во всех вакансиях</h3><p class="card__text">Руководитель подбора · 2 недели</p></div></article>
-      <article class="card card--white"><span class="card__no">02</span><div><h3 class="card__title">Убрать «справедливую зарплату» из текстов до пересмотра окладов</h3><p class="card__text">HR-бренд · 2 недели</p></div></article>
-      <article class="card card--white"><span class="card__no">03</span><div><h3 class="card__title">Описать правила гибридной работы</h3><p class="card__text">Директор по персоналу · 1 месяц</p></div></article>
     </div>
   </section>
 
   <!-- ============ РАЗВЁРНУТЫЙ ОТЧЁТ ============ -->
-  <section class="section" aria-labelledby="full-title">
+  <section class="rsec" aria-labelledby="full-title">
     <div class="help help--left">
       <div class="help__text"><h3 id="full-title">Развёрнутый отчёт — 14 разделов</h3><p>В срезе — краткая версия. Полная приходит в PDF раз в квартал в мониторинге.</p></div>
       <ol class="toc-list"><li><span>01</span>Резюме для руководства</li><li><span>02</span>Метод и охват данных</li><li><span>03</span>Как компания себя позиционирует</li><li><span>04</span>Как компанию воспринимают</li><li><span>05</span>Карта обещаний: что подтверждается</li><li><span>06</span>Вакансии на hh.ru</li><li><span>07</span>Соцсети и контент</li><li><span>08</span>Портреты аудитории</li><li><span>09</span>Конкуренты</li><li><span>10</span>Контент и каналы</li><li><span>11</span>SWOT HR-бренда</li><li><span>12</span>План улучшений</li><li><span>13</span>Метрики и мониторинг</li><li><span>14</span>Приложения</li></ol>
