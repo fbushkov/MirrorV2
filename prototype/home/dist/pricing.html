@@ -444,7 +444,7 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 /* --- 5.8 Таблицы (макет «Цена»: 1027:4242, 1027:4293, 1027:4369) ---
    Подложка #ECEBF1, поля 16, радиус 12. Шапка лежит на подложке: слева название группы (20/27 Medium),
    по колонкам — направление (моно 17/24 #8A86A0), тариф (20/27 Medium), цена (17/27 #5F5B76), шаг 8.
-   Тело белое радиус 8, строки «зеброй» белый / #FAF9FE без линий. Название строки 20/27, значение 17/24.
+   Тело белое радиус 8, строки «зеброй» белый / #FAF9FE без линий. Название строки и значение — один стиль 17/24 Regular.
    Иконки 24: ✓ входит (#3B9952), ✕ не нужно (#DB4F4F), — не входит (#949494). Длинное сравнение
    разбито на группы — у каждой своя таблица и своя шапка, поэтому шапка не прилипает. */
 .cmp-stack { display: flex; flex-direction: column; gap: 16px; }
@@ -452,7 +452,6 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 .cmp__table { width: 100%; border-collapse: separate; border-spacing: 0; table-layout: fixed; color: var(--c-ink); }
 .cmp__col-feat { width: 30.1%; }   /* 540 из 1792 */
 .cmp__table th, .cmp__table td { padding: 24px 32px; text-align: left; vertical-align: middle; font: 400 var(--fs-body)/24px var(--font-sans); }
-.cmp__table tbody th { font: 400 var(--fs-title)/var(--lh-title) var(--font-sans); }
 .cmp__table tr > * { background: inherit; }
 /* Шапка */
 .cmp__table thead tr { background: var(--c-well); }
@@ -477,7 +476,6 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 .cmp--size thead th { padding: 20px 32px 32px; }
 .cmp--size .cmp__cap { white-space: nowrap; }
 .cmp--size tbody th, .cmp--size tbody td { padding: 28px 32px; }
-.cmp--size tbody th { font: 400 var(--fs-body)/var(--lh-body) var(--font-sans); }
 .cmp:focus-visible { outline-offset: 4px; }
 @media (max-width: 1440px) { .cmp__table th, .cmp__table td, .cmp__table thead th, .cmp--size thead th, .cmp--size tbody th, .cmp--size tbody td { padding-left: 24px; padding-right: 24px; } }
 @media (max-width: 1023px) {
@@ -492,7 +490,6 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 }
 @media (max-width: 767px) {
   .cmp__table th, .cmp__table td, .cmp__table thead th, .cmp--size thead th, .cmp--size tbody th, .cmp--size tbody td { padding: 16px; }
-  .cmp__table tbody th { font-size: var(--fs-body); line-height: 24px; }
   .cmp__table { min-width: 760px; }
   .cmp__col-feat { width: 180px; }
 }
