@@ -37,6 +37,7 @@
   --c-menu-hover: #e1e0e8;    /* карточка в панели меню при наведении */
   --c-zebra: #faf9fe;         /* чётные строки таблиц (макет «Цена») */
   --c-ok: #3b9952;            /* иконка «входит» в таблицах */
+  --c-warn: #d08a1e;           /* «частично», «внимание», тон «по-разному» */
   --c-bad: #db4f4f;           /* иконка «не нужно / не предусмотрено» */
   --c-na: #949494;            /* иконка «не входит» (минус) */
   /* Бейджи (переменные из макета) */
@@ -586,7 +587,7 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 .zones p { margin-top: 4px; font: 400 var(--fs-sm)/var(--lh-sm) var(--font-sans); color: var(--c-ink-2); }
 /* Статус в таблице: иконка + слово */
 .cmp__status { display: inline-flex; align-items: center; gap: 8px; }
-.cmp__ico--warn { color: #d08a1e; }
+.cmp__ico--warn { color: var(--c-warn); }
 /* Развёрнутый отчёт: подводка слева, оглавление справа */
 .help--left { flex-direction: row; align-items: flex-start; justify-content: space-between; text-align: left; gap: 48px; margin-top: 0; }
 .help--left .help__text { max-width: 420px; }
@@ -630,7 +631,7 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 .mirror__track { height: 8px; border-radius: var(--r-pill); background: var(--c-surface-2); overflow: hidden; }
 .mirror__track i { display: block; height: 100%; border-radius: inherit; transition: width .5s var(--ease), background .3s; }
 .mirror__track i.is-ok { background: var(--c-ok); }
-.mirror__track i.is-warn { background: #d08a1e; }
+.mirror__track i.is-warn { background: var(--c-warn); }
 .mirror__track i.is-bad { background: var(--c-bad); }
 .mirror__pct { font: 400 var(--fs-sm)/var(--lh-sm) var(--font-sans); color: var(--c-ink-2); white-space: nowrap; }
 .mirror__pct b { font: 500 var(--fs-body)/1 var(--font-mono); color: var(--c-ink); }
@@ -728,9 +729,9 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 .spots__tone { display: inline-flex; align-items: center; gap: 6px; font-weight: 500; }
 .spots__tone svg { width: 18px; height: 18px; }
 .spots__tone--neg { color: var(--c-bad); }
-.spots__tone--mix { color: #d08a1e; }
+.spots__tone--mix { color: var(--c-warn); }
 .blind__bar i.is-neg { background: rgba(219,79,79,.55); }
-.blind__bar i.is-mix { background: rgba(208,138,30,.55); }
+.blind__bar i.is-mix { background: color-mix(in srgb, var(--c-warn) 55%, transparent); }
 .spots__tone--neu { color: var(--c-ink-2); }
 .blind__bar i.is-neu { background: var(--c-line-hover); }
 /* Три показателя: вкладки-карточки и панель «текст | визуал» */
@@ -979,7 +980,7 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 .spark path { fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .spark circle { stroke: #fff; stroke-width: 1.5; }
 .spark--ok path { stroke: var(--c-teal); } .spark--ok circle { fill: var(--c-teal); }
-.spark--warn path { stroke: #d08a1e; } .spark--warn circle { fill: #d08a1e; }
+.spark--warn path { stroke: var(--c-warn); } .spark--warn circle { fill: var(--c-warn); }
 .spark--bad path { stroke: var(--c-bad); } .spark--bad circle { fill: var(--c-bad); }
 /* Тепловая карта: на узком экране листается вбок внутри панели */
 .chart--map { height: 560px; }
@@ -1038,7 +1039,7 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 .hbars b { font: 500 var(--fs-sm)/1 var(--font-mono); text-align: right; }
 .hbars__bar { height: 8px; border-radius: var(--r-pill); background: var(--c-surface-2); overflow: hidden; }
 .hbars__bar i { display: block; height: 100%; border-radius: inherit; }
-.hbars__bar i.is-ok { background: var(--c-teal); } .hbars__bar i.is-warn { background: #d08a1e; } .hbars__bar i.is-bad { background: var(--c-bad); }
+.hbars__bar i.is-ok { background: var(--c-teal); } .hbars__bar i.is-warn { background: var(--c-warn); } .hbars__bar i.is-bad { background: var(--c-bad); }
 .drivers { list-style: none; display: flex; flex-direction: column; gap: 8px; }
 .drivers li { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px 16px; padding: 12px 16px; border-radius: var(--r-inner); background: var(--c-surface-2); font: 400 var(--fs-sm)/var(--lh-sm) var(--font-sans); }
 .drivers .cmp__status { color: var(--c-ink-2); white-space: nowrap; }
@@ -1200,7 +1201,7 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 .mirror--flat cite { font: 400 13px/18px var(--font-mono); }
 .mirror--flat .mirror__verdict { display: flex; align-items: center; justify-content: space-between; gap: 4px 12px; flex-wrap: wrap; padding: 10px 16px; border-radius: var(--r-inner); color: #fff; transition: background .3s; }
 .mirror__verdict.is-ok { background: var(--c-ok); }
-.mirror__verdict.is-warn { background: #d08a1e; }
+.mirror__verdict.is-warn { background: var(--c-warn); }
 .mirror__verdict.is-bad { background: var(--c-bad); }
 .mirror__status { display: inline-flex; align-items: center; gap: 8px; font: 500 var(--fs-sm)/var(--lh-sm) var(--font-sans); }
 .mirror__status .cmp__ico { color: #fff; }

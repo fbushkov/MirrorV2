@@ -7,7 +7,7 @@
 const CH = {
   violet: "#7a2fd1", violetSoft: "#d1aee8", violetBg: "#eee5fa", teal: "#0e9384",
   ink: "#17142b", ink2: "#5f5b76", ink3: "#807c93", ink4: "#8a86a0",
-  grid: "#ecebf1", field: "#f5f5f8", page: "#f7f7fb", ok: "#3b9952", bad: "#db4f4f",
+  grid: "#ecebf1", field: "#f5f5f8", page: "#f7f7fb", ok: "#3b9952", warn: "#d08a1e", bad: "#db4f4f",
   font: "Onest, sans-serif",
 };
 const chAxis = {
