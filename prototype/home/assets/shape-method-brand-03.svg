@@ -1,0 +1,27 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Shapes">
+<g id="Variant=33" clip-path="url(#shape-method-brand-03-clip0_0_1)">
+<g id="Clip path group">
+<mask id="shape-method-brand-03-mask0_0_1" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="0" y="0" width="200" height="200">
+<g id="shape-method-brand-03-clip0_119_243">
+<path id="Vector" d="M200 0H0V200H200V0Z" fill="white"/>
+</g>
+</mask>
+<g mask="url(#shape-method-brand-03-mask0_0_1)">
+<g id="Group">
+<path id="Vector_2" d="M99.995 200V143.969L0 99.995H56.0313L99.995 0V56.0313L200 99.995H143.969L99.995 200Z" fill="url(#shape-method-brand-03-paint0_linear_0_1)"/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<defs>
+<linearGradient id="shape-method-brand-03-paint0_linear_0_1" x1="177" y1="-1.00277e-05" x2="39.5" y2="152.5" gradientUnits="userSpaceOnUse">
+<stop stop-color="#B0B9FF"/>
+<stop offset="1" stop-color="#E7E9FF"/>
+</linearGradient>
+<clipPath id="shape-method-brand-03-clip0_0_1">
+<rect width="200" height="200" fill="white"/>
+</clipPath>
+</defs>
+</svg>

@@ -1,0 +1,27 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Shapes">
+<g id="Variant=84" clip-path="url(#shape-method-health-03-clip0_0_1)">
+<g id="Clip path group">
+<mask id="shape-method-health-03-mask0_0_1" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="0" y="0" width="200" height="200">
+<g id="shape-method-health-03-clip0_105_315">
+<path id="Vector" d="M200 0H0V200H200V0Z" fill="white"/>
+</g>
+</mask>
+<g mask="url(#shape-method-health-03-mask0_0_1)">
+<g id="Group">
+<path id="Vector_2" fill-rule="evenodd" clip-rule="evenodd" d="M135.714 0H64.2857V64.2857H3.12224e-06L0 135.714H64.2857V200H135.714V135.714H200V64.2857H135.714V0Z" fill="url(#shape-method-health-03-paint0_linear_0_1)"/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<defs>
+<linearGradient id="shape-method-health-03-paint0_linear_0_1" x1="177" y1="-1.00277e-05" x2="39.5" y2="152.5" gradientUnits="userSpaceOnUse">
+<stop stop-color="#A3FEE4"/>
+<stop offset="1" stop-color="#E7FFF3"/>
+</linearGradient>
+<clipPath id="shape-method-health-03-clip0_0_1">
+<rect width="200" height="200" fill="white"/>
+</clipPath>
+</defs>
+</svg>
