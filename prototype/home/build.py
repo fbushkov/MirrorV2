@@ -6,6 +6,7 @@
   partials/footer.html  → src/components/site/footer.tsx
   src/styles.css        → src/app/globals.css (+ классы компонентов)
   src/app.js            → клиентские компоненты (меню, форма, шейдер) + typograf
+  vendor/echarts.mirror.min.js → своя сборка ECharts (tools/echarts-entry.js, пересборка: node tools/echarts-build.mjs)
   ROUTES                → NAV / ROUTES в src/content/site.ts
   pages/*.html          → src/app/**/page.tsx
 """
@@ -71,4 +72,6 @@ DIST.mkdir(exist_ok=True)
 for page in sorted((root / "pages").glob("*.html")):
     html = render(page)
     (DIST / page.name).write_text(html)
-    print(f"dist/{page.name}  {len(html)//1024} КБ")
+    size = len(html.encode()) // 1024
+    # Страница больше ~1,3 МБ может не открыться в просмотрщике целиком (скрипты в конце не выполнятся)
+    print(f"dist/{page.name}  {size} КБ" + ("  ВНИМАНИЕ: больше 1200 КБ, облегчите страницу" if size > 1200 else ""))
