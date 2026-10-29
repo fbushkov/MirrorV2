@@ -17,7 +17,7 @@
   --c-surface-3: #f5f5f8;     /* поля, списки в тарифах */
   --c-well: #ecebf1;          /* серые контейнеры: шаги, группы цен, открытый FAQ */
   --c-chrome: #eeedf4;        /* шапка, плашки-эйброу */
-  --c-seg: #e3e3ee;           /* подложка сегментов в меню отчёта */
+  --c-seg: #e0dfe5;           /* подложка сегментов в меню отчёта (макет «Демо-отчет») */
   --c-ink: #17142b;           /* основной текст */
   --c-ink-2: #5f5b76;         /* подписи, подзаголовки */
   --c-ink-3: #807c93;         /* вторая строка крупных заголовков */
@@ -405,7 +405,7 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 .page-hero__head { display: flex; flex-direction: column; align-items: flex-start; gap: 40px; padding: 0 var(--inset-x); }
 .page-hero__lead { max-width: 508px; }
 .crumbs { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 0 var(--inset-x); margin-bottom: 32px; font: 400 var(--fs-mono)/24px var(--font-mono); color: var(--c-ink-4); list-style: none; }
-.crumbs li + li::before { content: "/"; margin-right: 8px; color: var(--c-line-hover); }
+.crumbs li + li::before { content: "·"; margin-right: 8px; color: var(--c-ink-4); } /* разделитель как в макетах: «Главная · Оценка HR-бренда» */
 .crumbs a { transition: color .2s; }
 .crumbs a:hover { color: var(--c-violet); }
 .crumbs [aria-current] { color: var(--c-ink-2); }
@@ -1173,6 +1173,95 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 @media (max-width: 1279px) { .anchors__links { display: none; } .anchors--report { gap: 16px; padding: 8px 16px; } }
 @media (max-width: 767px) { .seg__more, .anchors__pdf-text { display: none; } .seg__item { padding: 8px 14px; } .anchors--report { gap: 8px; padding: 8px; } .anchors--report .anchors__pdf { width: 48px; padding: 0; } .kpis--report .kpi { padding: 20px; } }
 
+/* Демо-отчёт по макету «Демо-отчет» (2026-10-29) */
+.report-hero { min-height: calc(100svh - 114px - 64px - 48px - 32px - clamp(48px, 5.2vw, 100px)); }
+/* Меню отчёта: сегменты и якоря листаются внутри полосы; маска по краю — только если там есть скрытые пункты */
+.rmenu { position: sticky; top: 98px; z-index: 45; display: flex; align-items: center; gap: 24px; margin-top: 32px; padding: 8px; border: 1px solid var(--c-line-3); border-radius: var(--r-card); background: var(--c-chrome); transition: box-shadow .2s; }
+.rmenu.is-stuck { box-shadow: 0 12px 32px -18px rgba(23,20,43,.35); }
+.rmenu__scroll { --fl: 0px; --fr: 0px; display: flex; align-items: center; gap: 48px; flex: 1; min-width: 0; overflow-x: auto; scrollbar-width: none; scroll-behavior: smooth;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 var(--fl), #000 calc(100% - var(--fr)), transparent 100%); mask-image: linear-gradient(90deg, transparent 0, #000 var(--fl), #000 calc(100% - var(--fr)), transparent 100%); }
+.rmenu__scroll::-webkit-scrollbar { display: none; }
+.rmenu__scroll.is-fade-l { --fl: 48px; }
+.rmenu__scroll.is-fade-r { --fr: 48px; }
+.rmenu .seg { flex: none; }
+.rmenu__links { display: flex; gap: 12px; flex: none; padding-right: 8px; }
+.rmenu__links a { padding: 10px; border-radius: var(--r-inner); font: 400 var(--fs-body)/var(--lh-body) var(--font-sans); color: var(--c-ink-4); white-space: nowrap; transition: color .2s; }
+.rmenu__links a:hover, .rmenu__links a.is-active { color: var(--c-ink); }
+.rmenu__links a:focus-visible { outline: 2px solid var(--c-violet); outline-offset: -2px; }
+.rmenu__pdf { flex: none; }
+.rmenu__pdf svg { width: 20px; height: 20px; }
+/* Блоки отчёта: серая подложка, заголовок «N. Название» 20/27 и пояснение, внутри белые карточки */
+.rblocks { display: flex; flex-direction: column; gap: 32px; margin-top: 32px; }
+.rblock { padding: 16px; border-radius: var(--r-card); background: var(--c-well); scroll-margin-top: 190px; min-width: 0; }
+.rblock__head { display: flex; flex-direction: column; gap: 4px; padding: 8px 8px 0; margin-bottom: 24px; }
+.rblock__title { font: 500 var(--fs-title)/var(--lh-title) var(--font-sans); }
+.rblock__no { font-variant-numeric: tabular-nums; }
+.rblock__hint { font: 400 var(--fs-body)/var(--lh-body) var(--font-sans); color: var(--c-ink-4); }
+.rblock__card { padding: 24px; border-radius: var(--r-inner); background: var(--c-surface); min-width: 0; }
+.rblock__link { margin: 16px 0 0 -2px; }
+.rblock .cmp { padding: 0; border-radius: var(--r-inner); background: var(--c-surface); overflow-x: auto; } /* таблица целиком в белой карточке, как в макете */
+.rblock .cmp__table thead tr { background: var(--c-surface); }
+.rblock .chart--tall { height: 480px; }
+/* 1. Итоги: четыре числа и три цветные карточки */
+.rkpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+.rkpi { display: flex; flex-direction: column; justify-content: space-between; gap: 24px; min-height: 230px; padding: 24px; border-radius: var(--r-inner); background: var(--c-surface-2); }
+.rkpi__label { font: 400 var(--fs-mono)/24px var(--font-mono); color: var(--c-ink-4); }
+.rkpi__num { display: flex; align-items: flex-end; gap: 12px; margin-top: 12px; font: 500 var(--fs-stat)/var(--lh-stat) var(--font-mono); color: var(--c-ink); }
+.rkpi__num small { margin-bottom: 6px; font: 400 var(--fs-mono)/24px var(--font-mono); color: var(--c-ink-4); }
+.rkpi__cap { font: 400 var(--fs-xs)/20px var(--font-sans); color: var(--c-ink); }
+.rsum { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 16px; }
+.rsum__card { display: flex; flex-direction: column; gap: 40px; padding: clamp(24px, 2.5vw, 48px); border-radius: var(--r-inner); color: #f7f7fb; }
+.rsum__card img { width: 80px; height: 80px; }
+.rsum__card div { display: flex; flex-direction: column; gap: 8px; }
+.rsum__card h3 { font: 600 var(--fs-title)/var(--lh-title) var(--font-sans); }
+.rsum__card--ok { background: linear-gradient(90deg, #69ac6c, #3f9655); }
+.rsum__card--risk { background: linear-gradient(90deg, #aa5a5c, #b24564); }
+.rsum__card--start { background: linear-gradient(90deg, #a74aaf, #9c4794); }
+/* 5–6: пара блоков, второй шире (716 : 1084 в макете) */
+.rpair { display: grid; grid-template-columns: minmax(0, 716fr) minmax(0, 1084fr); gap: 24px; align-items: stretch; }
+.rpair .rblock { display: flex; flex-direction: column; }
+.rpair .rblock__card { flex: 1; }
+/* 10. Снаружи и изнутри: две колонки без цветных подложек, пояснение серым 14 */
+.xcards { list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.xcard { display: flex; flex-direction: column; gap: 16px; padding: 24px; border-radius: var(--r-inner); background: var(--c-surface); min-width: 0; }
+.xcard__status { font-weight: 500; }
+.xcard__pair { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+.xcard__side { display: flex; flex-direction: column; gap: 2px; padding-right: 16px; }
+.xcard__side + .xcard__side { padding: 0 0 0 16px; border-left: 1px solid var(--c-line-3); }
+.xcard__side b { font: 500 var(--fs-body)/var(--lh-body) var(--font-sans); }
+.xcard__side > span:last-child { font: 400 var(--fs-xs)/20px var(--font-sans); color: var(--c-ink-2); }
+.xcard__lbl { display: inline-flex; align-items: center; gap: 6px; margin-bottom: 4px; font: 400 13px/18px var(--font-mono); color: var(--c-ink-4); }
+.xcard__lbl::before { content: ""; width: 8px; height: 8px; border-radius: 50%; }
+.xcard__lbl--out::before { background: var(--c-violet); }
+.xcard__lbl--in::before { background: var(--c-teal); }
+.xcard__note { font: 400 var(--fs-xs)/20px var(--font-sans); color: var(--c-ink-4); }
+/* Развёрнутый отчёт и призыв */
+.rfull { margin-top: 32px; }
+.rfull__toc { display: grid; grid-template-columns: minmax(0, 524px) minmax(0, 1fr); gap: var(--content-gap); padding: 32px; border-radius: var(--r-card); background: var(--c-surface); }
+.rfull__text { display: flex; flex-direction: column; gap: 16px; }
+.rfull__text h2 { font: 600 var(--fs-h3)/var(--lh-h3) var(--font-sans); }
+.rfull__text p { color: var(--c-ink-2); }
+.rfull .toc-list { gap: 23px 47px; max-width: none; grid-auto-flow: column; grid-template-rows: repeat(7, auto); }
+.rfull .toc-list li { gap: 25px; padding: 0; border: 0; }
+.rfull .toc-list span { font: 400 var(--fs-mono)/24px var(--font-mono); color: var(--c-ink-4); }
+.rfull .help { margin-top: 32px; }
+@media (max-width: 1279px) {
+  .rpair, .rfull__toc { grid-template-columns: minmax(0, 1fr); }
+  .rkpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .rsum { grid-template-columns: minmax(0, 1fr); }
+  .report-hero { min-height: 0; }
+}
+@media (max-width: 767px) {
+  .rmenu { top: 74px; gap: 8px; }
+  .rmenu__scroll { gap: 16px; }
+  .rmenu__pdf-text { display: none; }
+  .rmenu__pdf { width: 48px; padding: 0; }
+  .rkpis, .xcards, .xcard__pair { grid-template-columns: minmax(0, 1fr); }
+  .xcard__side + .xcard__side { padding: 12px 0 0; border-left: 0; border-top: 1px solid var(--c-line-3); margin-top: 12px; }
+  .rblock__card { padding: 16px; }
+  .rfull__toc { padding: 20px; }
+  .rfull .toc-list { grid-auto-flow: row; grid-template-rows: none; grid-template-columns: minmax(0, 1fr); }
+}
 
 </style>
 </head>
