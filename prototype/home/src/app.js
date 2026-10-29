@@ -142,7 +142,7 @@ function showTip(btn) {
   tipFor = btn;
   tip.textContent = btn.dataset.tip;
   if (typeof typograf === "function") typograf(tip);
-  btn.setAttribute("aria-describedby", "tip"); btn.setAttribute("aria-expanded", "true");
+  btn.setAttribute("aria-describedby", "tip"); if (btn.matches("button")) btn.setAttribute("aria-expanded", "true");
   tip.classList.add("is-shown");
   const b = btn.getBoundingClientRect(), t = tip.getBoundingClientRect(), gap = 12;
   const left = Math.min(Math.max(16, b.left + b.width / 2 - t.width / 2), innerWidth - t.width - 16);
@@ -154,24 +154,24 @@ function showTip(btn) {
 }
 function hideTip() {
   if (!tipFor) return;
-  tipFor.removeAttribute("aria-describedby"); tipFor.setAttribute("aria-expanded", "false");
+  tipFor.removeAttribute("aria-describedby"); if (tipFor.matches("button")) tipFor.setAttribute("aria-expanded", "false");
   tip.classList.remove("is-shown"); tipFor = null;
 }
-document.querySelectorAll("[data-tip]").forEach((btn) => {
-  btn.setAttribute("aria-expanded", "false");
-  btn.addEventListener("pointerenter", (e) => { if (e.pointerType === "mouse") showTip(btn); });
-  btn.addEventListener("pointerleave", (e) => { if (e.pointerType === "mouse") hideTip(); });
-  btn.addEventListener("focus", () => { if (btn.matches(":focus-visible")) showTip(btn); }); // только с клавиатуры: нажатие обработает click
-  btn.addEventListener("blur", hideTip);
-  let lastPointer = "mouse";
-  btn.addEventListener("pointerdown", (e) => { lastPointer = e.pointerType; });
-  btn.addEventListener("click", (e) => {
-    e.stopPropagation();
-    if (lastPointer === "mouse") { showTip(btn); return; } // мышью подсказка уже открыта наведением
-    tipFor === btn ? hideTip() : showTip(btn);
-  });
+// Делегирование: подсказки работают и у элементов, которые страница дорисовала позже (бейджи статуса в дашборде)
+document.querySelectorAll("button[data-tip]").forEach((btn) => btn.setAttribute("aria-expanded", "false"));
+const tipTarget = (e) => (e.target instanceof Element ? e.target.closest("[data-tip]") : null);
+let lastPointer = "mouse";
+document.addEventListener("pointerdown", (e) => { lastPointer = e.pointerType; }, true);
+document.addEventListener("pointerover", (e) => { const t = tipTarget(e); if (e.pointerType === "mouse" && t && t !== tipFor) showTip(t); });
+document.addEventListener("pointerout", (e) => { if (e.pointerType === "mouse" && tipFor && !tipFor.contains(e.relatedTarget)) hideTip(); });
+document.addEventListener("focusin", (e) => { const t = tipTarget(e); if (t && t.matches(":focus-visible")) showTip(t); }); // только с клавиатуры: нажатие обработает click
+document.addEventListener("focusout", (e) => { if (tipTarget(e)) hideTip(); });
+document.addEventListener("click", (e) => {
+  const t = tipTarget(e);
+  // кнопка «i» — сама подсказка; бейдж внутри карточки-кнопки клик не перехватывает
+  if (t && t.matches("button")) { if (lastPointer !== "mouse" && tipFor === t) hideTip(); else showTip(t); return; }
+  hideTip();
 });
-document.addEventListener("click", hideTip);
 document.addEventListener("keydown", (e) => { if (e.key === "Escape") hideTip(); });
 addEventListener("scroll", hideTip, { passive: true });
 document.querySelectorAll(".cmp").forEach((c) => c.addEventListener("scroll", hideTip, { passive: true }));
