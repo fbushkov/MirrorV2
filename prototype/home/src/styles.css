@@ -129,6 +129,7 @@ img, svg { display: block; }
 .badge--inverse { background: #fff; color: var(--badge-soft-text); }
 .badge--soft { background: var(--badge-soft-bg); color: var(--badge-soft-text); }
 .badge--purple { background: var(--badge-purple-bg); color: var(--badge-purple-text); }
+.badge--teal { background: rgba(14,147,132,.08); color: var(--c-teal-700); }
 
 /* Эйброу-плашка над заголовком: моно 15/27, px24 py10 */
 .eyebrow { display: inline-flex; align-items: center; width: fit-content; padding: 10px 24px; border-radius: var(--r-pill); background: var(--c-chrome); color: var(--c-ink-4); font: 400 var(--fs-mono)/27px var(--font-mono); white-space: nowrap; }
@@ -1278,3 +1279,51 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 
 .rpair .rblock__card { display: flex; flex-direction: column; }
 .rpair .spots--lite { flex: 1; justify-content: space-around; }
+
+/* Демо-дашборд на компонентах отчёта (2026-10-29): те же rmenu, rblock, rkpi и xcard, акцент бирюзовый */
+.rblock__head--row { flex-direction: row; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px 24px; }
+.rblock__head--row > div:first-child { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+button.seg__item { border: 0; background: none; cursor: pointer; }
+button.seg__item.is-active { background: var(--c-surface-2); }
+/* Срез: три списка в белой карточке */
+.rfilters { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap-inner); padding: 24px; border-radius: var(--r-inner); background: var(--c-surface); }
+.rfilters .field { min-width: 0; }
+.rblock .privacy { margin-top: var(--gap-inner); border-radius: var(--r-inner); }
+.rfilters ~ .rkpis { margin-top: var(--gap-inner); }
+.rkpi__cap .cmp__status { margin-right: 12px; font-weight: 500; }
+.rkpi__cap .cmp__ico svg, .ralert .cmp__ico svg, .dcard .cmp__ico svg { width: 20px; height: 20px; }
+.rkpi__cap .delta { font-size: var(--fs-xs); }
+/* Требует внимания: белые карточки, статус и где — сверху, событие — главное */
+.rattn { margin-top: var(--gap-inner); }
+.rattn__title { padding: 8px 8px 0; margin-bottom: 16px; font: 500 var(--fs-body)/var(--lh-body) var(--font-sans); }
+.ralerts { list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap-inner); }
+.ralert { display: flex; flex-direction: column; gap: 8px; padding: 24px; border-radius: var(--r-inner); background: var(--c-surface); min-width: 0; }
+.ralert__where { font-weight: 500; }
+.ralert__text { margin-top: 8px; font: 500 var(--fs-title)/var(--lh-title) var(--font-sans); }
+.ralert__ctx { font: 400 var(--fs-sm)/var(--lh-sm) var(--font-sans); color: var(--c-ink-2); }
+.ralert--none { grid-column: 1 / -1; }
+/* 10 метрик: плитки прямо на серой подложке блока */
+.rblock .mgroups { gap: var(--gap-inner); }
+.rblock .mgroup__name { padding: 0 8px 4px; }
+.rblock .mtile { padding: 24px; }
+/* Расхождения: как xcard — статус, вывод серым блоком, факт ниже */
+.dcards { list-style: none; display: flex; flex-direction: column; gap: var(--gap-inner); flex: 1; }
+.dcard { display: flex; flex-direction: column; gap: 16px; flex: 1; padding: 24px; border-radius: var(--r-inner); background: var(--c-surface); }
+.dcard__status { font-weight: 500; }
+.dcard__note { padding: 16px; border-radius: var(--r-inner); background: var(--c-surface-2); font: 400 var(--fs-sm)/var(--lh-sm) var(--font-sans); }
+.dcard__text { color: var(--c-ink-2); }
+/* Лента сигналов: цитата и строка метаданных, между цитатами — линия */
+.rfeed { list-style: none; display: flex; flex-direction: column; }
+.rfeed li { display: flex; flex-direction: column; gap: 8px; padding: 16px 0; border-bottom: 1px solid var(--c-line-3); }
+.rfeed li:first-child { padding-top: 0; }
+.rfeed li:last-child { padding-bottom: 0; border-bottom: 0; }
+.rfeed__meta { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 16px; font: 400 var(--fs-xs)/20px var(--font-sans); color: var(--c-ink-4); }
+.rfeed__metric { font-weight: 500; color: var(--c-teal-700); }
+.spot__tone--pos { color: var(--c-ok); }
+.is-health .rmenu__links a:focus-visible { outline-color: var(--c-teal); }
+@media (max-width: 1023px) { .ralerts { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 767px) {
+  .rfilters { grid-template-columns: minmax(0, 1fr); padding: 16px; }
+  .ralert, .dcard, .rblock .mtile { padding: 16px; }
+  .rkpi { min-height: 0; gap: 16px; }
+}
