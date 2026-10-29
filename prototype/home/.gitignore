@@ -1,15 +1,4 @@
-# Черновики страниц: в git главная, «Цены» и обзор HR-бренда (свёрстан по макету 2026-10-28).
-# Демо-отчёт, демо-дашборд, обзор дашборда здоровья и обе методики «Как считаем» — пока локально.
-pages/hr-brand-demo.html
-pages/methodology-brand.html
-pages/methodology-health.html
-pages/culture-health-demo.html
-dist/hr-brand-demo.html
-dist/methodology-brand.html
-dist/methodology-health.html
-dist/culture-health-demo.html
+# В git все страницы прототипа (кроме «О нас» — её пока нет) и сайт одним файлом dist/mirror-site.html.
 
 # Скриншоты qa.js — пересоздаются при каждом запуске, в git не храним
 shots/
-pages/culture-health.html
-dist/culture-health.html

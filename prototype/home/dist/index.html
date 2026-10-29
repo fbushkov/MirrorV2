@@ -1503,14 +1503,21 @@ button.seg__item.is-active { background: var(--c-surface-2); }
 .rpair .xcard { flex: 1; }
 .isnot--flush { margin-top: 0; }
 /* Как читать балл: четыре карточки; строки зон и уровней доказанности */
-.dlevels--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); margin: 0; } /* карточки с пояснениями статусов — в первом ряду, списки на одной линии */
+.dlevels--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 0; }
 .rblock .mabout__note { margin-top: var(--gap-inner); }
-@media (max-width: 1279px) { .pstep-row--method { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 1279px) { .pstep-row--method, .dlevels--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 767px) { .pstep-row--method, .dlevels--4 { grid-template-columns: minmax(0, 1fr); } .fcard__expr { padding: 16px; } }
 .rpair--rev { grid-template-columns: minmax(0, 1084fr) minmax(0, 716fr); } /* график шире, вывод уже */
 @media (max-width: 1279px) { .rpair--rev { grid-template-columns: minmax(0, 1fr); } }
 .prule dd { white-space: nowrap; }
 .nowrap { white-space: nowrap; }
+/* Список с точками внутри текста карточки: то же начертание, что у абзаца */
+.dots { list-style: none; display: flex; flex-direction: column; gap: 4px; margin-top: -8px; color: var(--c-ink-2); }
+.dots li { position: relative; padding-left: 18px; }
+.dots li::before { content: ""; position: absolute; left: 4px; top: 10px; width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+/* Карточки сверки в ряду: статус, вывод и пара сторон стоят на одних строках (subgrid) */
+.xcards { grid-auto-rows: auto; }
+.xcards .xcard { display: grid; grid-row: span 3; grid-template-rows: subgrid; row-gap: 16px; }
 
 </style>
 </head>
@@ -1651,7 +1658,7 @@ button.seg__item.is-active { background: var(--c-surface-2); }
       <span class="eyebrow">Как это работает · 4 шага · 2 направления</span>
       <div class="headline-block">
         <h2 class="headline" id="how-title"><span class="dim">От бесплатного среза</span><br>до изменений</h2>
-        <p class="lead">Первые два шага — внешняя оценка, они ничего не стоят. Взгляд изнутри — только если увидите в этом смысл.</p>
+        <p class="lead">Первые два шага относятся к внешней оценке и ничего не стоят. Взгляд изнутри подключаем, только если увидите в этом смысл.</p>
       </div>
     </div>
     <ol class="steps" role="list">
@@ -1870,7 +1877,7 @@ button.seg__item.is-active { background: var(--c-surface-2); }
     </div>
 
     <div class="help">
-      <img src="data:image/svg+xml;base64,PHN2ZyBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIiBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjIwMCIgaGVpZ2h0PSIyMDAiIHZpZXdCb3g9IjAgMCAyMDAgMjAwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8ZyBpZD0iR3JvdXAiPgo8cGF0aCBpZD0iVmVjdG9yIiBkPSJNNTAgMEgwVjEwMEg1MEMyMi4zODU4IDEwMCAwIDEyMi4zODYgMCAxNTBWMjAwSDEwMFYxNTBDMTAwIDE3Ny42MTQgMTIyLjM4NiAyMDAgMTUwIDIwMEgyMDBWMTAwSDE1MEMxNzcuNjE0IDEwMCAyMDAgNzcuNjE0MiAyMDAgNTBWMEgxMDBWNTBDMTAwIDIyLjM4NTggNzcuNjE0MiAwIDUwIDBaTTEwMCAxMDBINTBDNzcuNjE0MiAxMDAgMTAwIDEyMi4zODYgMTAwIDE1MFYxMDBaTTEwMCAxMDBWNTBDMTAwIDc3LjYxNDIgMTIyLjM4NiAxMDAgMTUwIDEwMEgxMDBaIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZmlsbD0idXJsKCNwYWludDBfbGluZWFyXzBfODYpIi8+CjwvZz4KPGRlZnM+CjxsaW5lYXJHcmFkaWVudCBpZD0icGFpbnQwX2xpbmVhcl8wXzg2IiB4MT0iMTAwIiB5MT0iMCIgeDI9IjEwMCIgeTI9IjIwMCIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgo8c3RvcCBzdG9wLWNvbG9yPSIjQTdCNUZGIi8+CjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI0YzQUNGRiIvPgo8L2xpbmVhckdyYWRpZW50Pgo8L2RlZnM+Cjwvc3ZnPgo=" alt="">
+      <img src="data:image/svg+xml;base64,PHN2ZyBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIiBvdmVyZmxvdz0idmlzaWJsZSIgc3R5bGU9ImRpc3BsYXk6IGJsb2NrOyIgd2lkdGg9IjIwMCIgaGVpZ2h0PSIyMDAiIHZpZXdCb3g9IjAgMCAyMDAgMjAwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8ZyBpZD0iR3JvdXAiPgo8cGF0aCBpZD0iVmVjdG9yIiBkPSJNNTAgMEgwVjEwMEg1MEMyMi4zODU4IDEwMCAwIDEyMi4zODYgMCAxNTBWMjAwSDEwMFYxNTBDMTAwIDE3Ny42MTQgMTIyLjM4NiAyMDAgMTUwIDIwMEgyMDBWMTAwSDE1MEMxNzcuNjE0IDEwMCAyMDAgNzcuNjE0MiAyMDAgNTBWMEgxMDBWNTBDMTAwIDIyLjM4NTggNzcuNjE0MiAwIDUwIDBaTTEwMCAxMDBINTBDNzcuNjE0MiAxMDAgMTAwIDEyMi4zODYgMTAwIDE1MFYxMDBaTTEwMCAxMDBWNTBDMTAwIDc3LjYxNDIgMTIyLjM4NiAxMDAgMTUwIDEwMEgxMDBaIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZmlsbD0idXJsKCNwYWludDBfbGluZWFyXzBfODYpIi8+CjwvZz4KPGRlZnM+CjxsaW5lYXJHcmFkaWVudCBpZD0icGFpbnQwX2xpbmVhcl8wXzg2IiB4MT0iMTAwIiB5MT0iMCIgeDI9IjEwMCIgeTI9IjIwMCIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgo8c3RvcCBzdG9wLWNvbG9yPSIjNzA4N0ZGIi8+CjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI0VBNzBGRiIvPgo8L2xpbmVhckdyYWRpZW50Pgo8L2RlZnM+Cjwvc3ZnPgo=" alt="">
       <div class="help__text"><h3>Не знаете, с чего начать?</h3><p>Начните с бесплатного среза. На 30-минутном разборе эксперт поможет решить, нужен ли взгляд изнутри.</p></div>
       <a class="btn btn--primary" href="#request" data-topic="scan">Получить бесплатный срез <svg aria-hidden="true" focusable="false" class="ico-arrow" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g>
@@ -1891,7 +1898,7 @@ button.seg__item.is-active { background: var(--c-surface-2); }
     </div>
     <div class="faq" id="faq-list" data-groups="general,brand,health,payment"></div>
     <div class="ask" style="margin-top:24px">
-      <div><h3>Не нашли ответ?</h3><p>Напишите нам — ответим в течение рабочего дня.</p></div>
+      <div><h3>Не нашли ответ?</h3><p>Напишите нам, и мы ответим в течение рабочего дня.</p></div>
       <div class="ask__actions">
         <a class="btn btn--outline-dark" href="mailto:mirrorcom@mail.ru">mirrorcom@mail.ru</a>
         <a class="btn btn--outline-dark" href="https://t.me/mirror_diary" target="_blank" rel="noreferrer">@mirror_diary</a>
@@ -1911,7 +1918,7 @@ button.seg__item.is-active { background: var(--c-surface-2); }
         <span class="eyebrow">Заявка · ответим за рабочий день</span>
         <h2 class="headline" id="req-title">Начните<br><span class="dim">с бесплатного среза</span></h2>
       </div>
-      <p class="lead">Оставьте компанию и контакт. Остальное уточним сами: конкурентов, сроки и формат.</p>
+      <p class="lead">Оставьте компанию и контакт. Конкурентов, сроки и формат уточним сами.</p>
     </div>
     <div class="request">
       <div class="contacts">
@@ -1952,7 +1959,7 @@ button.seg__item.is-active { background: var(--c-surface-2); }
 <path d="M14.8327 14.1641C14.8327 14.5323 14.5342 14.8307 14.166 14.8307C13.7978 14.8307 13.4993 14.5323 13.4993 14.1641V7.4401L6.30404 14.6354C6.04369 14.8958 5.62168 14.8958 5.36133 14.6354C5.10098 14.3751 5.10098 13.9531 5.36133 13.6927L12.5566 6.4974H5.83268C5.46449 6.4974 5.16602 6.19892 5.16602 5.83073C5.16602 5.46254 5.46449 5.16406 5.83268 5.16406H14.166C14.5342 5.16406 14.8327 5.46254 14.8327 5.83073V14.1641Z" fill="currentColor"/>
 </g>
 </svg></button>
-        <div class="form__done" role="status"><h3>Заявка принята</h3><p>Ответим в течение рабочего дня. Это прототип: данные никуда не отправляются.</p></div>
+        <div class="form__done" role="status"><h3>Заявка принята</h3><p>Ответим в течение рабочего дня. Это прототип, данные никуда не отправляются.</p></div>
       </form>
     </div>
   </section>
@@ -1998,14 +2005,14 @@ button.seg__item.is-active { background: var(--c-surface-2); }
    про цены на главной и на странице «Цены» берутся из одного места. */
 const FAQ_GROUPS = {
   general: { tag: "01 · Общее", title: "Как начать?", desc: "Что нужно от вас, сколько ждать и чем Mirror отличается от опроса.", items: [
-    ["Нужен доступ к вашим системам?", "Для среза — нет. Нужны название компании и ссылка на страницу работодателя на hh.ru. Для диагностики вы сами выбираете, какие документы передать."],
-    ["Срез правда бесплатный?", "Да. Внешний срез и 30 минут разбора с экспертом — бесплатно и без обязательств. Платите, только если решите идти дальше."],
-    ["Сколько ждать результат?", "Срез — 3 рабочих дня. Диагностика — около 4 недель. Кампания идёт 3 месяца."],
+    ["Нужен доступ к вашим системам?", "Для среза не нужен. Нужны название компании и ссылка на страницу работодателя на hh.ru. Для диагностики вы сами выбираете, какие документы передать."],
+    ["Срез правда бесплатный?", "Да. Внешний срез и 30 минут разбора с экспертом бесплатны и ни к чему не обязывают. Платите, только если решите идти дальше."],
+    ["Сколько ждать результат?", "Срез готовим за 3 рабочих дня, диагностику примерно за 4 недели. Кампания идёт 3 месяца."],
     ["Чем это отличается от опроса вовлечённости?", "Опрос показывает, что думают сотрудники. Mirror сверяет это с тем, что вы обещаете и что видят люди снаружи. Видно, где слова расходятся с делом."]]},
   brand: { tag: "02 · Снаружи", title: "Оценка HR-бренда и индекс культуры", desc: "Откуда данные и как считаем индекс, слепые зоны и место в отрасли.", items: [
-    ["Откуда вы берёте данные?", "Из открытых источников: hh.ru, Dreamjob, VK, Дзен, медиа и ответы нейросетей. Имена авторов отзывов в отчёт не попадают."],
+    ["Откуда вы берёте данные?", "Из открытых источников, таких как hh.ru, Dreamjob, VK, Дзен, медиа и ответы нейросетей. Имена авторов отзывов в отчёт не попадают."],
     ["Можно поднять индекс, если просто меньше обещать?", "Индекс вырастет, но вырастут и слепые зоны. Поэтому мы всегда показываем оба показателя рядом."],
-    ["Почему не свести всё в одну оценку?", "У показателей разная точка отсчёта: ваши обещания, разговоры людей и рынок. В одной цифре они смешаются, и станет непонятно, что исправлять."],
+    ["Почему не свести всё в одну оценку?", "Точки отсчёта у показателей разные, это ваши обещания, разговоры людей и рынок. В одной цифре они смешаются, и станет непонятно, что исправлять."],
     ["А если отзывов о нас мало?", "Обещание с числом упоминаний меньше 10 получает статус «нет данных» и не входит в индекс. Такие темы можно проверить изнутри."]]},
   health: { tag: "03 · Изнутри", title: "Дашборд здоровья корпоративной культуры", desc: "Приватность сотрудников, кто что видит и как быстро заметны изменения.", items: [
     ["Это слежка за сотрудниками?", "Нет. Мы показываем только группы от 5 человек, не определяем авторов сообщений и не оцениваем людей. Правила одинаковы для всех ролей."],
@@ -2014,29 +2021,29 @@ const FAQ_GROUPS = {
     ["Как быстро видны изменения?", "Данные обновляются примерно раз в 2 недели. Решения и их результат сотрудники видят на странице «Решения по обратной связи»."]]},
   payment: { tag: "04 · Оплата", title: "Цены и договор", desc: "Как платить, что разовое, а что помесячно.", items: [
     ["Как оплатить?", "По счёту и договору. Работу начинаем после оплаты."],
-    ["Это подписка?", "Срез, диагностика и кампания — разовые. Помесячно оплачивается только мониторинг HR-бренда, его можно остановить в любой месяц."],
+    ["Это подписка?", "Срез, диагностика и кампания разовые. Помесячно оплачивается только мониторинг HR-бренда, его можно остановить в любой месяц."],
     ["От чего зависит цена?", "От численности компании и числа подразделений. Цену фиксируем до начала работы."]]},
   plans: { tag: "05 · Тарифы", title: "Что входит и как выбрать", desc: "Состав тарифов, конкуренты, численность и документы.", items: [
     ["Почему внешний срез бесплатный?", "Это первый шаг к сотрудничеству. Срез показывает масштаб разрывов, а на разборе эксперт поможет решить, нужен ли следующий шаг. Обязательств он не создаёт."],
-    ["Чем срез отличается от мониторинга?", "Срез — один снимок на сегодня. Мониторинг обновляет индекс, слепые зоны и место в отрасли каждый месяц: видны просадки и подъёмы, а если тема резко выросла, придёт сигнал."],
+    ["Чем срез отличается от мониторинга?", "Срез показывает один снимок на сегодня. Мониторинг обновляет индекс, слепые зоны и место в отрасли каждый месяц. Так видны просадки и подъёмы, а если тема резко выросла, придёт сигнал."],
     ["Можно добавить конкурентов?", "В срезе сравниваем с 2–3 конкурентами. В мониторинге список можно расширить, цену назовём до начала работы."],
     ["Диагностика входит в кампанию?", "Да. Кампания на 3 месяца начинается с диагностики, отдельно платить за неё не нужно."],
-    ["Что если у нас больше 3000 сотрудников?", "Посчитаем отдельно: цена зависит от числа подразделений и срезов. Напишите, пришлём расчёт."],
-    ["Какие документы вы даёте?", "Договор, счёт и закрывающие документы. Для проверки изнутри — ещё договор на обработку данных сотрудников по 152-ФЗ."],
-    ["Работаете с агентствами и консультантами?", "Да. Делаем внешний аудит HR-бренда для ваших клиентов под вашим логотипом. Первые три отчёта — бесплатно."]]},
+    ["Что если у нас больше 3000 сотрудников?", "Посчитаем отдельно. Цена зависит от числа подразделений и срезов. Напишите, пришлём расчёт."],
+    ["Какие документы вы даёте?", "Договор, счёт и закрывающие документы. Для проверки изнутри добавляем договор на обработку данных сотрудников по 152-ФЗ."],
+    ["Работаете с агентствами и консультантами?", "Да. Делаем внешний аудит HR-бренда для ваших клиентов под вашим логотипом. Первые три отчёта бесплатны."]]},
   healthPage: { tag: "О дашборде", title: "Вопросы сотрудников", desc: "Приватность, авторы сообщений и как быстро видны изменения.", items: [
     ["Кто видит мои ответы?", "Никто не видит ответы отдельного человека. Руководители и команда культуры видят только группы от 5 человек и обезличенные темы."],
     ["Можно ли понять, кто что написал?", "Нет. Мы не определяем авторов, проверяем цитаты на узнаваемые детали и показываем данные с задержкой."],
-    ["Что будет, если сообщение критическое?", "Оно станет сигналом по одной из метрик. Критика — это данные для решений, а не повод искать автора."],
+    ["Что будет, если сообщение критическое?", "Оно станет сигналом по одной из метрик. Критика даёт данные для решений, а не повод искать автора."],
     ["Это оценка меня или моего руководителя?", "Нет. Дашборд показывает состояние культуры в группах, а не эффективность людей. Для оценки сотрудников он не используется."],
     ["Почему здесь нет вопросов про зарплату и безопасность?", "Физическая, юридическая, финансовая и информационная безопасность и размер зарплат не входят в метрики. Ими занимаются отдельные службы."],
     ["Как быстро появятся изменения после обратной связи?", "Данные обновляются с задержкой, обычно раз в 2 недели. Решения и их результат публикуются на странице «Решения по обратной связи»."]]},
   brandPage: { tag: "Об оценке", title: "Оценка HR-бренда", desc: "Сроки, доступы и как устроен индекс.", items: [
-    ["Срез правда бесплатный?", "Да. Внешний срез и 30 минут разбора с экспертом — бесплатно и без обязательств. Платите, только если решите продолжить с диагностикой."],
-    ["Нужен доступ к нашим системам?", "Для среза — нет. Нужны название компании и ссылка на страницу работодателя на hh.ru. Для диагностики вы сами выбираете, какие документы передать."],
-    ["Сколько ждать результат?", "Срез — 3 рабочих дня. Диагностика — около 4 недель."],
-    ["Можно поднять индекс, если просто меньше обещать?", "Индекс вырастет, но вырастут и слепые зоны: темы, которые люди обсуждают, а вы молчите. Поэтому мы всегда показываем оба показателя рядом."],
-    ["Почему не свести всё в одну оценку?", "У показателей разная точка отсчёта: ваши обещания, разговоры людей и рынок. В одной цифре они смешаются, и станет непонятно, что исправлять."],
+    ["Срез правда бесплатный?", "Да. Внешний срез и 30 минут разбора с экспертом бесплатны и ни к чему не обязывают. Платите, только если решите продолжить с диагностикой."],
+    ["Нужен доступ к нашим системам?", "Для среза не нужен. Нужны название компании и ссылка на страницу работодателя на hh.ru. Для диагностики вы сами выбираете, какие документы передать."],
+    ["Сколько ждать результат?", "Срез готовим за 3 рабочих дня, диагностику примерно за 4 недели."],
+    ["Можно поднять индекс, если просто меньше обещать?", "Индекс вырастет, но вырастут и слепые зоны, то есть темы, которые люди обсуждают, а вы молчите. Поэтому мы всегда показываем оба показателя рядом."],
+    ["Почему не свести всё в одну оценку?", "Точки отсчёта у показателей разные, это ваши обещания, разговоры людей и рынок. В одной цифре они смешаются, и станет непонятно, что исправлять."],
     ["А если отзывов мало?", "Обещание с числом упоминаний меньше 10 получает статус «нет данных» и не входит в индекс. Такие обещания проверяем изнутри, в диагностике."]]},
 };
 
@@ -2106,7 +2113,7 @@ addEventListener("scroll", () => header.classList.toggle("is-stuck", scrollY > 4
    На той же странице — по клику, с другой страницы — через ?topic= в адресе (в Next: /start?topic=…) */
 const pickTopic = (topic) => { const r = document.querySelector(`input[name=topic][value="${topic}"]`); if (r) r.checked = true; };
 document.querySelectorAll("[data-topic]").forEach((a) => a.addEventListener("click", () => pickTopic(a.dataset.topic)));
-const urlTopic = new URLSearchParams(location.search).get("topic");
+const urlTopic = new URLSearchParams(window.__QS ?? location.search).get("topic"); // __QS — параметры страницы в сборке сайта одним файлом (tools/bundle.py)
 if (urlTopic) pickTopic(urlTopic);
 
 /* Форма: проверка обязательных полей, экран успеха */

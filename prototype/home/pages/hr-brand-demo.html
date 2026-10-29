@@ -1,0 +1,209 @@
+<!-- page: route=hr-brand-demo; title=Демо-отчёт — Оценка HR-бренда — Mirror -->
+  <main>
+  <!-- Первый экран (макет «Демо-отчет» 1048:4848) -->
+  <section class="page-hero report-hero" aria-labelledby="page-title">
+    <ol class="crumbs" aria-label="Хлебные крошки">
+      <li><a href="{{href:home}}">Главная</a></li>
+      <li><a href="{{href:hr-brand}}">Оценка HR-бренда</a></li>
+      <li><span aria-current="page">Демо-отчёт</span></li>
+    </ol>
+    <div class="page-hero__head">
+      <h1 class="hero__title" id="page-title">Демо-отчёт<br><span class="dim">по условной компании</span></h1>
+      <p class="page-hero__lead">Так выглядит внешний срез. Индекс, слепые зоны и место в отрасли есть уже в бесплатной версии, остальное входит в мониторинг.</p>
+      <div class="badges"><span class="badge badge--soft">~680 сотрудников</span><span class="badge badge--soft">январь–октябрь</span><span class="badge badge--soft">банки Урала</span><span class="badge badge--purple">данные условные</span></div>
+    </div>
+  </section>
+
+  <!-- Меню отчёта: якоря листаются внутри полосы с маской по краям, PDF справа -->
+  <nav class="rmenu" id="rmenu" aria-label="Отчёт">
+    <div class="rmenu__scroll" id="rmenu-scroll"><div class="rmenu__links"><a href="#r-sum">1. Итоги</a><a href="#r-dyn">2. Динамика</a><a href="#r-prom">3. Обещания</a><a href="#r-src">4. Источники</a><a href="#r-blind">5. Слепые зоны</a><a href="#r-ind">6. Место в отрасли</a><a href="#r-map">7. Карта</a><a href="#r-comp">8. Конкуренты</a><a href="#r-plan">9. Шаги</a><a href="#r-bridge">10. Снаружи и изнутри</a></div></div>
+    <a class="btn btn--white rmenu__pdf" href="#" download aria-label="Скачать PDF"><span class="rmenu__pdf-text">Скачать PDF</span>{{svgc:lucide-download.svg}}</a>
+  </nav>
+
+  <div class="rblocks">
+  <!-- 1. Итоги -->
+  <section class="rblock" id="r-sum" aria-labelledby="r-sum-t">
+    <div class="rblock__head"><h2 class="rblock__title" id="r-sum-t"><span class="rblock__no">1.</span> Итоги</h2><p class="rblock__hint">Четыре числа среза и что из них следует.</p></div>
+    <div class="rkpis">
+      <div class="rkpi"><div><p class="rkpi__label">Индекс культуры</p><p class="rkpi__num">65<small>из 100</small></p></div><p class="rkpi__cap rkpi__cap--delta"><span class="badge badge--ok" data-tip="Индекс вырос на 2 балла за квартал"><span class="sr-only">Индекс вырос на 2 балла за квартал. </span><span aria-hidden="true">+2</span></span><span>за квартал</span></p></div>
+      <div class="rkpi"><div><p class="rkpi__label">Обещаний подтверждено</p><p class="rkpi__num">5<small>из 8</small></p></div><p class="rkpi__cap">Зарплата и гибкий формат не подтверждаются</p></div>
+      <div class="rkpi"><div><p class="rkpi__label">Слепые зоны</p><p class="rkpi__num">4<small>темы</small></p></div><p class="rkpi__cap">Чаще всего пишут о переработках, 18% упоминаний</p></div>
+      <div class="rkpi"><div><p class="rkpi__label">Место в отрасли</p><p class="rkpi__num">62<small>перцентиль</small></p></div><p class="rkpi__cap">Среди банков Урала</p></div>
+    </div>
+    <div class="rsum">
+      <div class="rsum__card rsum__card--ok"><img src="{{uri:shape-sum-ok.svg}}" alt="" width="80" height="80"><div><h3>Работает</h3><p>Коллектив, обучение, ДМС и оформление подтверждаются во всех источниках. Об этом можно говорить громче.</p></div></div>
+      <div class="rsum__card rsum__card--risk"><img src="{{uri:shape-sum-risk.svg}}" alt="" width="80" height="80"><div><h3>Риск</h3><p>«Справедливая зарплата» чаще всего встречается в текстах и хуже всего подтверждается в отзывах, всего 27%.</p></div></div>
+      <div class="rsum__card rsum__card--start"><img src="{{uri:shape-sum-start.svg}}" alt="" width="80" height="80"><div><h3>С чего начать</h3><p>Вилки зарплат в вакансиях уже подняли индекс в августе. Следующим шагом стоит описать правила гибридной работы.</p></div></div>
+    </div>
+  </section>
+
+  <!-- 2. Динамика -->
+  <section class="rblock" id="r-dyn" aria-label="Динамика">
+    <div class="rblock__head"><h2 class="rblock__title"><span class="rblock__no">2.</span> Динамика</h2><p class="rblock__hint">Индекс по месяцам. Красной областью выделена просадка, пунктиром отмечены события, которые на неё повлияли.</p></div>
+    <div class="rblock__card"><div class="chart chart--tall" id="ch-dynamics" role="img" aria-label="Индекс культуры по месяцам: от 58 в январе до 65 в октябре, просадка до 54 в марте"></div></div>
+  </section>
+
+  <!-- 3. Обещания -->
+  <section class="rblock rblock--table" id="r-prom" aria-label="Обещания">
+    <div class="rblock__head"><h2 class="rblock__title"><span class="rblock__no">3.</span> Обещания</h2><p class="rblock__hint">Вес показывает долю обещания в ваших текстах. «Подтверждено» показывает долю упоминаний, где опыт совпадает с обещанием.</p></div>
+    <div class="cmp" role="region" aria-labelledby="prom-t" tabindex="0">
+      <table class="cmp__table">
+        <colgroup><col class="cmp__col-feat"><col><col><col><col></colgroup>
+        <thead><tr><th scope="col" id="prom-t" class="cmp__title">Обещание</th><th scope="col"><span class="cmp__cap">Вес в текстах</span></th><th scope="col"><span class="cmp__cap">Упоминаний</span></th><th scope="col"><span class="cmp__cap">Подтверждено</span></th><th scope="col"><span class="cmp__cap">Статус</span></th></tr></thead>
+        <tbody>
+            <tr><th scope="row"><div class="cmp__rowhead"><span>Официальное оформление</span></div></th><td>10%</td><td>64</td><td>95%</td><td><span class="cmp__status"><span class="cmp__ico cmp__ico--yes">{{svgc:circle-check.svg}}</span>Подтверждается</span></td></tr>
+            <tr><th scope="row"><div class="cmp__rowhead"><span>Справедливая зарплата</span></div></th><td>22%</td><td>118</td><td>27%</td><td><span class="cmp__status"><span class="cmp__ico cmp__ico--no">{{svgc:circle-x.svg}}</span>Не подтверждается</span></td></tr>
+            <tr><th scope="row"><div class="cmp__rowhead"><span>Карьерный рост</span></div></th><td>15%</td><td>47</td><td>80%</td><td><span class="cmp__status"><span class="cmp__ico cmp__ico--yes">{{svgc:circle-check.svg}}</span>Подтверждается</span></td></tr>
+            <tr><th scope="row"><div class="cmp__rowhead"><span>Дружный коллектив</span></div></th><td>14%</td><td>89</td><td>91%</td><td><span class="cmp__status"><span class="cmp__ico cmp__ico--yes">{{svgc:circle-check.svg}}</span>Подтверждается</span></td></tr>
+            <tr><th scope="row"><div class="cmp__rowhead"><span>Гибкий формат</span></div></th><td>9%</td><td>31</td><td>22%</td><td><span class="cmp__status"><span class="cmp__ico cmp__ico--no">{{svgc:circle-x.svg}}</span>Не подтверждается</span></td></tr>
+            <tr><th scope="row"><div class="cmp__rowhead"><span>Ежегодная индексация</span></div></th><td>10%</td><td>26</td><td>48%</td><td><span class="cmp__status"><span class="cmp__ico cmp__ico--warn">{{svgc:circle-alert.svg}}</span>Частично</span></td></tr>
+            <tr><th scope="row"><div class="cmp__rowhead"><span>Обучение за счёт компании</span></div></th><td>12%</td><td>22</td><td>88%</td><td><span class="cmp__status"><span class="cmp__ico cmp__ico--yes">{{svgc:circle-check.svg}}</span>Подтверждается</span></td></tr>
+            <tr><th scope="row"><div class="cmp__rowhead"><span>ДМС</span></div></th><td>8%</td><td>18</td><td>92%</td><td><span class="cmp__status"><span class="cmp__ico cmp__ico--yes">{{svgc:circle-check.svg}}</span>Подтверждается</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 4. Источники -->
+  <section class="rblock" id="r-src" aria-label="Источники подтверждения">
+    <div class="rblock__head"><h2 class="rblock__title"><span class="rblock__no">4.</span> Источники подтверждения</h2><p class="rblock__hint">Доля подтверждений по источникам. «Нет» значит, что тема в источнике не встречается.</p></div>
+    <div class="rblock__card"><div class="chart chart--heat" id="ch-heat" role="img" aria-label="Тепловая карта подтверждения обещаний по источникам"></div></div>
+  </section>
+
+  <!-- 5–6. Слепые зоны и место в отрасли: второй блок шире -->
+  <div class="rpair">
+    <section class="rblock" id="r-blind" aria-label="Слепые зоны">
+      <div class="rblock__head"><h2 class="rblock__title"><span class="rblock__no">5.</span> Слепые зоны</h2><p class="rblock__hint">О чём люди пишут, а в ваших текстах нет ни слова.</p></div>
+      <div class="rblock__card">{{include:partials/bspots.html}}</div>
+    </section>
+    <section class="rblock" id="r-ind" aria-label="Место в отрасли">
+      <div class="rblock__head"><h2 class="rblock__title"><span class="rblock__no">6.</span> Место в отрасли</h2><p class="rblock__hint">Базовые темы в сравнении с работодателями отрасли и региона.</p></div>
+      <div class="rblock__card"><div class="overall"><span class="overall__num">62</span><p>условия лучше, чем у 62% работодателей<br>среди банков Урала</p></div><ul class="tracks"><li><span>Коллектив</span><div class="tracks__bar"><i style="left:82%"></i></div><b>82</b></li><li><span>Стабильность</span><div class="tracks__bar"><i style="left:77%"></i></div><b>77</b></li><li><span>Развитие</span><div class="tracks__bar"><i style="left:71%"></i></div><b>71</b></li><li><span>Руководство</span><div class="tracks__bar"><i style="left:58%"></i></div><b>58</b></li><li><span>Нагрузка</span><div class="tracks__bar"><i style="left:41%"></i></div><b>41</b></li><li><span>Зарплата</span><div class="tracks__bar"><i style="left:34%"></i></div><b>34</b></li></ul><div class="tracks__scale"><span>хуже рынка</span><span>медиана</span><span>лучше рынка</span></div></div>
+    </section>
+  </div>
+
+  <!-- 7. Где вы на карте -->
+  <section class="rblock" id="r-map" aria-label="Где вы на карте">
+    <div class="rblock__head"><h2 class="rblock__title"><span class="rblock__no">7.</span> Где вы на карте</h2><p class="rblock__hint">Честность (индекс культуры) против условий (место в отрасли).</p></div>
+    <div class="rblock__card"><div class="qmap qmap--page qmap--flush">
+        <ul class="qmap__side qmap__side--left">
+          <li class="qzone qzone--lilac"><b><i></i>Обещаете не то</b><p>Условия хорошие, но в текстах есть то, что не подтверждается.</p></li>
+          <li class="qzone qzone--red"><b><i></i>Переобещаете</b><p>Условия ниже рынка, обещания не подтверждаются. Главный риск для доверия.</p></li>
+        </ul>
+        <div class="qmap__chart" id="ch-matrix" role="img" aria-label="Матрица: Банк N в зоне «Сильный и честный»"></div>
+        <ul class="qmap__side">
+          <li class="qzone qzone--green is-you"><b><i></i>Сильный и честный</b><p>Условия выше рынка, обещания подтверждаются. Рассказывайте громче.</p><span class="qzone__you">Вы здесь</span></li>
+          <li class="qzone qzone--yellow"><b><i></i>Честно, но слабо</b><p>Обещания честные, но условия хуже рынка. Улучшайте условия.</p></li>
+        </ul>
+      </div></div>
+  </section>
+
+  <!-- 8. Конкуренты -->
+  <section class="rblock rblock--table" id="r-comp" aria-label="Конкуренты">
+    <div class="rblock__head"><h2 class="rblock__title"><span class="rblock__no">8.</span> Конкуренты</h2><p class="rblock__hint">Те же обещания у двух конкурентов, по той же методике.</p></div>
+    <div class="cmp" role="region" aria-labelledby="comp-t" tabindex="0">
+      <table class="cmp__table">
+        <colgroup><col class="cmp__col-feat"><col><col><col></colgroup>
+        <thead><tr><th scope="col" id="comp-t" class="cmp__title">Обещание</th><th scope="col"><span class="cmp__cap">Вы</span><span class="cmp__name">Банк N</span></th><th scope="col"><span class="cmp__cap">Конкурент</span><span class="cmp__name">Банк А</span></th><th scope="col"><span class="cmp__cap">Конкурент</span><span class="cmp__name">Банк Б</span></th></tr></thead>
+        <tbody>
+            <tr><th scope="row"><div class="cmp__rowhead"><span>Официальное оформление</span></div></th><td><span class="cmp__status"><span class="cmp__ico cmp__ico--yes">{{svgc:circle-check.svg}}</span>Подтверждается</span></td><td><span class="cmp__status"><span class="cmp__ico cmp__ico--yes">{{svgc:circle-check.svg}}</span>Подтверждается</span></td><td><span class="cmp__status"><span class="cmp__ico cmp__ico--yes">{{svgc:circle-check.svg}}</span>Подтверждается</span></td></tr>
+            <tr><th scope="row"><div class="cmp__rowhead"><span>Справедливая зарплата</span></div></th><td><span class="cmp__status"><span class="cmp__ico cmp__ico--no">{{svgc:circle-x.svg}}</span>Не подтверждается</span></td><td><span class="cmp__status"><span class="cmp__ico cmp__ico--yes">{{svgc:circle-check.svg}}</span>Подтверждается</span></td><td><span class="cmp__status"><span class="cmp__ico cmp__ico--warn">{{svgc:circle-alert.svg}}</span>Частично</span></td></tr>
+            <tr><th scope="row"><div class="cmp__rowhead"><span>Карьерный рост</span></div></th><td><span class="cmp__status"><span class="cmp__ico cmp__ico--yes">{{svgc:circle-check.svg}}</span>Подтверждается</span></td><td><span class="cmp__status"><span class="cmp__ico cmp__ico--warn">{{svgc:circle-alert.svg}}</span>Частично</span></td><td><span class="cmp__status"><span class="cmp__ico cmp__ico--yes">{{svgc:circle-check.svg}}</span>Подтверждается</span></td></tr>
+            <tr><th scope="row"><div class="cmp__rowhead"><span>Дружный коллектив</span></div></th><td><span class="cmp__status"><span class="cmp__ico cmp__ico--yes">{{svgc:circle-check.svg}}</span>Подтверждается</span></td><td><span class="cmp__status"><span class="cmp__ico cmp__ico--no">{{svgc:circle-x.svg}}</span>Не подтверждается</span></td><td><span class="cmp__status"><span class="cmp__ico cmp__ico--warn">{{svgc:circle-alert.svg}}</span>Частично</span></td></tr>
+            <tr><th scope="row"><div class="cmp__rowhead"><span>Гибкий формат</span></div></th><td><span class="cmp__status"><span class="cmp__ico cmp__ico--no">{{svgc:circle-x.svg}}</span>Не подтверждается</span></td><td><span class="cmp__status"><span class="cmp__ico cmp__ico--yes">{{svgc:circle-check.svg}}</span>Подтверждается</span></td><td><span class="cmp__status"><span class="cmp__ico cmp__ico--yes">{{svgc:circle-check.svg}}</span>Подтверждается</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 9. Три первых шага -->
+  <section class="rblock" id="r-plan" aria-label="Три первых шага">
+    <div class="rblock__head"><h2 class="rblock__title"><span class="rblock__no">9.</span> Три первых шага</h2><p class="rblock__hint">Кто делает и за какой срок.</p></div>
+    <ol class="pstep-row" role="list">
+      <li class="pstep"><span class="pstep__no">Шаг №1</span><div class="pstep__text"><h3>Указать зарплатные вилки во всех вакансиях</h3><p>Сейчас вилок нет в 8 из 28 вакансий, включая все роли в ИТ.</p></div><div class="badges"><span class="badge badge--soft">Руководитель подбора</span><span class="badge badge--soft">2 недели</span></div></li>
+      <li class="pstep"><span class="pstep__no">Шаг №2</span><div class="pstep__text"><h3>Убрать «справедливую зарплату» из текстов до пересмотра окладов</h3><p>Обещание, которое не подтверждается, бьёт по доверию сильнее, чем его отсутствие.</p></div><div class="badges"><span class="badge badge--soft">HR-бренд</span><span class="badge badge--soft">2 недели</span></div></li>
+      <li class="pstep"><span class="pstep__no">Шаг №3</span><div class="pstep__text"><h3>Описать правила гибридной работы</h3><p>Кому, сколько дней и как договориться. Опубликовать в вакансиях и на карьерном сайте.</p></div><div class="badges"><span class="badge badge--soft">Директор по персоналу</span><span class="badge badge--soft">1 месяц</span></div></li>
+    </ol>
+  </section>
+
+  <!-- 10. Снаружи и изнутри (в макете нет): одна строка сверки на тему -->
+  <section class="rblock" id="r-bridge" aria-label="Снаружи и изнутри">
+    <div class="rblock__head"><h2 class="rblock__title"><span class="rblock__no">10.</span> Снаружи и изнутри</h2><p class="rblock__hint">Если подключён дашборд здоровья культуры. Шкалы не смешиваем и сверяем только темы.</p></div>
+    <ul class="xcards">
+      <li class="xcard xcard--bad"><span class="cmp__status xcard__status"><span class="cmp__ico cmp__ico--no">{{svgc:circle-x.svg}}</span>Видно с двух сторон</span><p class="xcard__note">Проблему видят и кандидаты, и сотрудники. Это не шум в отзывах, начинать стоит с нагрузки.</p><div class="xcard__pair"><div class="xcard__side"><span class="xcard__lbl xcard__lbl--out">снаружи</span><b>Слепая зона «Переработки»</b><span>18% упоминаний</span></div><div class="xcard__side"><span class="xcard__lbl xcard__lbl--in">изнутри</span><b>Энергия и ресурс</b><span>44 · риск</span></div></div></li>
+      <li class="xcard xcard--bad"><span class="cmp__status xcard__status"><span class="cmp__ico cmp__ico--no">{{svgc:circle-x.svg}}</span>Видно с двух сторон</span><p class="xcard__note">Опыт сильно зависит от руководителя. Изнутри это видно по тому, что людей не слышат.</p><div class="xcard__pair"><div class="xcard__side"><span class="xcard__lbl xcard__lbl--out">снаружи</span><b>Слепая зона «Руководители»</b><span>14% упоминаний</span></div><div class="xcard__side"><span class="xcard__lbl xcard__lbl--in">изнутри</span><b>Обратная связь и голос</b><span>48 · риск</span></div></div></li>
+      <li class="xcard xcard--ok"><span class="cmp__status xcard__status"><span class="cmp__ico cmp__ico--yes">{{svgc:circle-check.svg}}</span>Сильная сторона</span><p class="xcard__note">Обещание подтверждается и изнутри. Его можно ставить в центр коммуникаций.</p><div class="xcard__pair"><div class="xcard__side"><span class="xcard__lbl xcard__lbl--out">снаружи</span><b>Обещание «Дружный коллектив»</b><span>91% подтверждений</span></div><div class="xcard__side"><span class="xcard__lbl xcard__lbl--in">изнутри</span><b>Принадлежность и инклюзия</b><span>74 · в норме</span></div></div></li>
+      <li class="xcard xcard--warn"><span class="cmp__status xcard__status"><span class="cmp__ico cmp__ico--warn">{{svgc:circle-alert.svg}}</span>Ранний сигнал</span><p class="xcard__note">Снаружи обещание выглядит убедительно, изнутри слабее. Через полгода это может дойти до отзывов.</p><div class="xcard__pair"><div class="xcard__side"><span class="xcard__lbl xcard__lbl--out">снаружи</span><b>Обещание «Карьерный рост»</b><span>80% подтверждений</span></div><div class="xcard__side"><span class="xcard__lbl xcard__lbl--in">изнутри</span><b>Развитие и рост</b><span>57 · внимание</span></div></div></li>
+    </ul>
+    <a class="btn-link rblock__link" href="{{href:culture-health-demo}}">Открыть демо-дашборд здоровья культуры {{svgc:arrow-up-right.svg}}</a>
+  </section>
+  </div>
+
+  <!-- Развёрнутый отчёт и призыв -->
+  <section class="rsec rfull" aria-labelledby="full-title">
+    <div class="rfull__toc">
+      <div class="rfull__text"><h2 id="full-title">Развёрнутый отчёт из 14 разделов</h2><p>В срезе только краткая версия. Полная приходит в PDF раз в квартал в мониторинге.</p></div>
+      <ol class="toc-list"><li><span>01</span>Резюме для руководства</li><li><span>02</span>Метод и охват данных</li><li><span>03</span>Как компания себя позиционирует</li><li><span>04</span>Как компанию воспринимают</li><li><span>05</span>Карта подтверждения обещаний</li><li><span>06</span>Вакансии на hh.ru</li><li><span>07</span>Соцсети и контент</li><li><span>08</span>Портреты аудитории</li><li><span>09</span>Конкуренты</li><li><span>10</span>Контент и каналы</li><li><span>11</span>SWOT HR-бренда</li><li><span>12</span>План улучшений</li><li><span>13</span>Метрики и мониторинг</li><li><span>14</span>Приложения</li></ol>
+    </div>
+    <div class="help">
+      <img src="{{uri:shape-cta-report.svg}}" alt="" width="80" height="80">
+      <div class="help__text"><h3>Получите такой срез по своей компании</h3><p>Пришлём внешний срез за 3 рабочих дня. Доступ к вашим системам не нужен.</p></div>
+      <a class="btn btn--primary" href="{{href:start?topic=scan}}" data-topic="scan">Получить бесплатный срез {{svgc:arrow-up-right-white.svg}}</a>
+    </div>
+  </section>
+  </main>
+<script>
+{{include:vendor/echarts.mirror.min.js}}
+</script>
+<script>
+{{include:src/charts.js}}
+const MONTHS = ["Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт"];
+mountChart(document.getElementById("ch-dynamics"), {
+  grid: { left: 40, right: 24, top: 56, bottom: 32 },
+  tooltip: { ...chTooltip, trigger: "axis", axisPointer: { type: "line", lineStyle: { color: CH.violetSoft } }, formatter: (p) => `${p[0].name}: индекс ${p[0].value}` },
+  xAxis: { type: "category", data: MONTHS, boundaryGap: false, ...chAxis, splitLine: { show: false } },
+  yAxis: { type: "value", min: 40, max: 80, interval: 10, ...chAxis, axisLine: { show: false } },
+  series: [{
+    type: "line", data: [58, 60, 54, 57, 61, 62, 63, 66, 65, 65], smooth: 0.35, symbol: "circle", symbolSize: 8, showSymbol: false,
+    lineStyle: { color: CH.violet, width: 2.5 }, itemStyle: { color: CH.violet, borderColor: "#fff", borderWidth: 2 },
+    areaStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: "rgba(122,47,209,.16)" }, { offset: 1, color: "rgba(122,47,209,0)" }]) },
+    markArea: { silent: true, itemStyle: { color: "rgba(219,79,79,.07)" }, label: { color: CH.bad, fontFamily: CH.font, fontSize: 13, position: "insideTop", distance: 8 }, data: [[{ name: "просадка", xAxis: "Фев" }, { xAxis: "Апр" }]] },
+    markLine: eventMarks(innerWidth < 768 ? [{ x: "Мар", text: "Отзывы" }, { x: "Авг", text: "Вилки" }] : [{ x: "Мар", text: "Волна отзывов о задержке индексации" }, { x: "Авг", text: "Вилки зарплат во всех вакансиях" }]),
+  }],
+});
+const SOURCES = ["hh.ru", "Dreamjob", "VK", "Дзен и медиа", "Нейросети"];
+const PROM = ["Официальное оформление", "Справедливая зарплата", "Карьерный рост", "Дружный коллектив", "Гибкий формат", "Ежегодная индексация", "Обучение за счёт компании", "ДМС"];
+const HEAT = [[96, 93, 97, null, 94], [31, 22, 30, 35, 24], [84, 74, 82, 79, 76], [92, 89, 93, 88, 90], [25, 18, 26, null, 21], [50, 44, 52, 46, null], [90, 85, 89, 87, 84], [93, 90, null, null, 92]];
+mountChart(document.getElementById("ch-heat"), {
+  grid: { left: 232, right: 8, top: 8, bottom: 32 },
+  tooltip: { ...chTooltip, formatter: (p) => p.value[2] === 0 ? `${PROM[p.value[1]]} · ${SOURCES[p.value[0]]}: тема не встречается` : `${PROM[p.value[1]]} · ${SOURCES[p.value[0]]}: ${p.value[2]}%` },
+  xAxis: { type: "category", data: SOURCES, ...chAxis, axisLabel: { ...chAxis.axisLabel, interval: 0 }, axisLine: { show: false } },
+  yAxis: { type: "category", data: PROM, inverse: true, ...chAxis, axisLabel: { ...chAxis.axisLabel, interval: 0, color: CH.ink, fontSize: 15 }, axisLine: { show: false } },
+  visualMap: { show: false, min: 15, max: 100, inRange: { color: [CH.violetBg, CH.violet] }, outOfRange: { color: CH.field } },
+  series: [{
+    type: "heatmap", data: HEAT.flatMap((r, y) => r.map((v, x) => [x, y, v ?? 0])),
+    label: { show: true, fontFamily: CH.font, fontSize: 14, color: CH.ink, formatter: (p) => (p.value[2] === 0 ? "нет" : p.value[2]) },
+    itemStyle: { borderColor: "#fff", borderWidth: 4, borderRadius: 8 },
+  }],
+});
+const MX = [{ name: "Банк N", x: 62, y: 65, you: true }, { name: "Банк А", x: 74, y: 72 }, { name: "Банк Б", x: 38, y: 54 }];
+const Q = (x1, y1, x2, y2, color) => [{ coord: [x1, y1], itemStyle: { color } }, { coord: [x2, y2] }];
+const MXS = innerWidth < 768 ? 44 : 64;
+mountChart(document.getElementById("ch-matrix"), {
+  grid: { left: MXS, right: MXS, top: 16, bottom: 56 },
+  xAxis: { type: "value", min: 10, max: 90, interval: 10, name: "честность · индекс культуры", nameLocation: "middle", nameGap: 36, nameTextStyle: { color: CH.ink3, fontSize: 14, fontFamily: CH.font }, ...chAxis, splitLine: { show: false } },
+  yAxis: { type: "value", min: 40, max: 80, interval: 5, name: "условия · место в отрасли", nameLocation: "middle", nameGap: 36, nameTextStyle: { color: CH.ink3, fontSize: 14, fontFamily: CH.font }, ...chAxis, splitLine: { show: false }, axisLabel: { ...chAxis.axisLabel, formatter: (v) => (v % 10 ? "" : v) } },
+  tooltip: { ...chTooltip, formatter: (p) => `${MX[p.dataIndex].name}: честность ${MX[p.dataIndex].x}, условия ${MX[p.dataIndex].y}` },
+  series: [{
+    type: "scatter", symbolSize: (v, p) => (MX[p.dataIndex].you ? 22 : 14), z: 3,
+    data: MX.map((m) => ({ value: [m.x, m.y], itemStyle: { color: m.you ? CH.violet : CH.ink4, borderColor: "#fff", borderWidth: 3, shadowBlur: m.you ? 12 : 0, shadowColor: "rgba(122,47,209,.35)" } })),
+    label: { show: true, position: "right", distance: 10, formatter: (p) => MX[p.dataIndex].name, color: CH.ink, fontSize: 15, fontWeight: (p) => 500, fontFamily: CH.font },
+    markLine: { silent: true, symbol: "none", lineStyle: { color: CH.ink4, type: [4, 4], width: 1 }, label: { show: false }, data: [{ xAxis: 50 }, { yAxis: 60 }] },
+    markArea: { silent: true, data: [
+      Q(10, 60, 50, 80, "rgba(122,47,209,.11)"), Q(50, 60, 90, 80, "rgba(59,153,82,.09)"),
+      Q(10, 40, 50, 60, "rgba(219,79,79,.08)"), Q(50, 40, 90, 60, "rgba(214,178,40,.14)"),
+    ] },
+  }],
+});
+{{include:src/rmenu.js}}
+</script>

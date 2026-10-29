@@ -17,8 +17,8 @@
 </g>
 <defs>
 <linearGradient id="shape-cta-method-brand-paint0_linear_0_1" x1="177" y1="-1.00277e-05" x2="39.5" y2="152.5" gradientUnits="userSpaceOnUse">
-<stop stop-color="#B0B9FF"/>
-<stop offset="1" stop-color="#E7E9FF"/>
+<stop stop-color="#7080FF"/>
+<stop offset="1" stop-color="#707CFF"/>
 </linearGradient>
 <clipPath id="shape-cta-method-brand-clip0_0_1">
 <rect width="200" height="200" fill="white"/>

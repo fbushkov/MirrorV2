@@ -1,0 +1,289 @@
+<!-- page: route=methodology-brand; title=Как считаем индекс культуры — Оценка HR-бренда — Mirror -->
+  <main>
+  <!-- Первый экран: текст | формула индекса в карточке (как «Проверка обещания» на обзоре) -->
+  <section class="page-hero dir-intro" aria-labelledby="page-title">
+    <ol class="crumbs" aria-label="Хлебные крошки">
+      <li><a href="{{href:home}}">Главная</a></li>
+      <li><a href="{{href:hr-brand}}">Оценка HR-бренда</a></li>
+      <li><span aria-current="page">Как считаем</span></li>
+    </ol>
+    <div class="dir-hero">
+      <div class="page-hero__head">
+        <h1 class="hero__title" id="page-title">Как считаем<br><span class="dim">индекс культуры</span></h1>
+        <p class="page-hero__lead">Методика открыта, и любой результат можно проверить по таблице. Веса следуют из ваших же текстов, а не из мнения эксперта. Для вас и для конкурентов правила одни.</p>
+        <div class="badges"><span class="badge badge--soft">методика · версия 1.0</span></div>
+        <div class="dir-hero__actions">
+          <a class="btn btn--primary" href="{{href:start?topic=scan}}" data-topic="scan">Бесплатный срез</a>
+          <a class="btn-link" href="{{href:hr-brand-demo}}">Демо-отчёт {{svgc:arrow-up-right.svg}}</a>
+        </div>
+      </div>
+      <figure class="mirror mirror--flat fcard" aria-label="Формула индекса культуры">
+        <div class="mirror__bar"><span class="mirror__label">Формула индекса</span></div>
+        <p class="fcard__expr">Индекс = Σ (<span>вес</span> × <span>%&nbsp;подтверждения</span>)</p>
+        <div class="mirror__cols">
+          <div class="mirror__side"><span class="mirror__label">Вес</span><p class="fcard__text">Доля обещания среди всех ваших обещаний. Сумма весов равна 1.</p></div>
+          <div class="mirror__side"><span class="mirror__label">% подтверждения</span><p class="fcard__text">Доля упоминаний, где опыт людей совпадает с обещанием.</p></div>
+        </div>
+        <figcaption class="mirror__verdict is-ok"><span class="mirror__status"><span class="cmp__ico">{{svgc:circle-check.svg}}</span>Пример «Банка N»</span><span class="mirror__pct"><b>65</b> из 100, подтверждено 5 из 8 обещаний</span></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <nav class="rmenu rmenu--page" id="rmenu" aria-label="Разделы страницы">
+    <div class="rmenu__scroll" id="rmenu-scroll"><div class="rmenu__links"><a href="#why">Зачем</a><a href="#metrics">Три показателя</a><a href="#matrix">Матрица</a><a href="#steps">6 шагов расчёта</a><a href="#example">Калькулятор</a><a href="#limits">Границы</a><a href="#faq">Частые вопросы</a></div></div>
+  </nav>
+
+  <!-- Зачем: фиолетовая лента из трёх пунктов -->
+  <section class="section section--anchors" id="why" aria-labelledby="why-title">
+    <div class="section__head section__head--center">
+      <h2 class="headline" id="why-title">Зачем сверять<br><span class="dim">слова и опыт людей</span></h2>
+      <p class="lead">Индекс показывает, где обещания работают на вас, а где подрывают доверие.</p>
+    </div>
+    <ol class="vflow" role="list">
+      <li class="vflow__item"><img src="{{uri:shape-method-brand-01.svg}}" alt="" width="80" height="80"><span class="vflow__no">01</span><div class="vflow__text"><h3>Бренд</h3><p>Люди верят людям. Когда сотрудники подтверждают ваши слова, коммуникации работают сильнее и дешевле.</p></div></li>
+      <li class="vflow__item"><img src="{{uri:shape-method-brand-02.svg}}" alt="" width="80" height="80"><span class="vflow__no">02</span><div class="vflow__text"><h3>Доверие</h3><p>Если обещание расходится с опытом, это считают показной заботой. Страдает доверие и к остальным словам компании.</p></div></li>
+      <li class="vflow__item"><img src="{{uri:shape-method-brand-03.svg}}" alt="" width="80" height="80"><span class="vflow__no">03</span><div class="vflow__text"><h3>Скорость</h3><p>Когда сотрудники верят руководству, решения внедряются быстрее. Индекс показывает, где это доверие под вопросом.</p></div></li>
+    </ol>
+  </section>
+
+  <!-- Три показателя: те же вкладки, что на обзоре, но с правилами расчёта -->
+  <section class="section section--anchors" id="metrics" aria-labelledby="metrics-title">
+    <div class="section__head">
+      <div class="headline-block">
+        <h2 class="headline" id="metrics-title">У каждого показателя<br><span class="dim">своя точка отсчёта</span></h2>
+        <p class="lead lead--narrow">Индекс культуры меряет честность. Но честно можно обещать и мало. Поэтому рядом стоят ещё два показателя. В одну цифру мы их не смешиваем.</p>
+      </div>
+    </div>
+    <div class="qtabs">
+      <div class="qtabs__list" role="tablist" aria-label="Показатели">
+        <button class="qtab is-active" type="button" role="tab" aria-selected="true" aria-controls="mp-index" id="mt-index"><span class="qtab__ico">{{svgc:lucide-scale.svg}}</span><span class="qtab__foot"><span class="qtab__text"><span class="qtab__name">Индекс культуры</span><span class="qtab__q">Совпадают ли слова и дела?</span></span><span class="qtab__val"><b>65</b>из 100</span></span></button>
+        <button class="qtab" type="button" role="tab" aria-selected="false" aria-controls="mp-blind" id="mt-blind" tabindex="-1"><span class="qtab__ico">{{svgc:lucide-eye-off.svg}}</span><span class="qtab__foot"><span class="qtab__text"><span class="qtab__name">Слепые зоны</span><span class="qtab__q">О чём говорят, а вы молчите?</span></span><span class="qtab__val"><b>4</b>темы</span></span></button>
+        <button class="qtab" type="button" role="tab" aria-selected="false" aria-controls="mp-industry" id="mt-industry" tabindex="-1"><span class="qtab__ico">{{svgc:lucide-trophy.svg}}</span><span class="qtab__foot"><span class="qtab__text"><span class="qtab__name">Место в отрасли</span><span class="qtab__q">Насколько хороши условия?</span></span><span class="qtab__val"><b>62</b>перцентиль</span></span></button>
+      </div>
+      <div class="qpanel" role="tabpanel" id="mp-index" aria-labelledby="mt-index">
+        <div class="qpanel__text"><div><span class="qpanel__eyebrow">Относительно ваших обещаний</span><h3 class="qpanel__title">Совпадают ли слова и дела?</h3><p>Доля обещаний, которые подтверждает опыт людей в отзывах, соцсетях, медиа и ответах нейросетей. Для каждого обещания умножаем вес на долю подтверждений и складываем результаты.</p></div><a class="btn-link" href="#steps">Шесть шагов расчёта {{svgc:arrow-up-right.svg}}</a></div>
+        <div class="qpanel__vis"><div class="gauge gauge--big" id="g-index" role="img" aria-label="Индекс культуры 65 из 100"></div><p class="mcard__cap">Подтверждено 5 из 8 обещаний</p></div>
+      </div>
+      <div class="qpanel" role="tabpanel" id="mp-blind" aria-labelledby="mt-blind" hidden>
+        <div class="qpanel__text"><div><span class="qpanel__eyebrow">Относительно того, что обсуждают люди</span><h3 class="qpanel__title">О чём говорят, а вы молчите?</h3><p>Темы, которых нет в ваших текстах, хотя люди обсуждают их постоянно. Закрывают лазейку «пообещать поменьше, чтобы индекс был выше». Долю считаем от всех упоминаний компании, тон определяем по большинству упоминаний.</p></div><a class="btn-link" href="{{href:hr-brand-demo}}">Слепые зоны в демо-отчёте {{svgc:arrow-up-right.svg}}</a></div>
+        <div class="qpanel__vis">{{include:partials/bspots.html}}</div>
+      </div>
+      <div class="qpanel" role="tabpanel" id="mp-industry" aria-labelledby="mt-industry" hidden>
+        <div class="qpanel__text"><div><span class="qpanel__eyebrow">Относительно рынка</span><h3 class="qpanel__title">Насколько хороши условия?</h3><p>Сравниваем зарплату, развитие, руководство и нагрузку с работодателями отрасли и региона. Перцентиль показывает долю работодателей, у которых условия хуже. Считаем, когда в базе отрасли 30 и больше компаний.</p></div><a class="btn-link" href="{{href:hr-brand-demo}}">Место в отрасли в демо-отчёте {{svgc:arrow-up-right.svg}}</a></div>
+        <div class="qpanel__vis"><ul class="tracks"><li><span>Коллектив</span><div class="tracks__bar"><i style="left:82%"></i></div><b>82</b></li><li><span>Стабильность</span><div class="tracks__bar"><i style="left:77%"></i></div><b>77</b></li><li><span>Развитие</span><div class="tracks__bar"><i style="left:71%"></i></div><b>71</b></li><li><span>Руководство</span><div class="tracks__bar"><i style="left:58%"></i></div><b>58</b></li><li><span>Нагрузка</span><div class="tracks__bar"><i style="left:41%"></i></div><b>41</b></li><li><span>Зарплата</span><div class="tracks__bar"><i style="left:34%"></i></div><b>34</b></li></ul><div class="tracks__scale"><span>хуже рынка</span><span>медиана</span><span>лучше рынка</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Матрица: как на обзоре, зоны с подсказкой, что делать -->
+  <section class="section section--anchors" id="matrix" aria-labelledby="matrix-title">
+    <div class="section__head section__head--center">
+      <h2 class="headline" id="matrix-title"><span class="dim">Честность и условия</span><br>на одном поле</h2>
+      <p class="lead">По горизонтали отложен индекс культуры, по вертикали место в отрасли. Где вы стоите, подсказывает, что делать дальше.</p>
+    </div>
+    <div class="well">
+      <div class="qmap qmap--page">
+        <ul class="qmap__side qmap__side--left">
+          <li class="qzone qzone--lilac"><b><i></i>Обещаете не то</b><p>Условия хорошие, но в текстах есть то, что не подтверждается. Перестройте обещания вокруг сильных сторон.</p></li>
+          <li class="qzone qzone--red"><b><i></i>Переобещаете</b><p>Условия ниже рынка, обещания не подтверждаются. Главный риск для доверия.</p></li>
+        </ul>
+        <div class="qmap__chart" id="ch-matrix" role="img" aria-label="Матрица: Банк N в зоне «Сильный и честный»"></div>
+        <ul class="qmap__side">
+          <li class="qzone qzone--green is-you"><b><i></i>Сильный и честный</b><p>Условия выше рынка, обещания подтверждаются. Рассказывайте громче.</p><span class="qzone__you">Пример</span></li>
+          <li class="qzone qzone--yellow"><b><i></i>Честно, но слабо</b><p>Обещания честные, но условия хуже рынка. Улучшайте условия.</p></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Шесть шагов: карточки шагов на подложке, у шагов 3 и 4 — правила -->
+  <section class="section section--anchors" id="steps" aria-labelledby="steps-title">
+    <div class="section__head section__head--aside">
+      <div class="headline-block">
+        <h2 class="headline" id="steps-title">От ваших текстов<br><span class="dim">до одной цифры</span></h2>
+      </div>
+      <span class="eyebrow">Расчёт · 6 шагов</span>
+    </div>
+    <div class="well">
+      <ol class="pstep-row pstep-row--method" role="list">
+        <li class="pstep"><span class="pstep__no">Шаг №1</span><div class="pstep__text"><h3>Собираем обещания</h3><p>Из вакансий, карьерного сайта и соцсетей. Похожие формулировки объединяем.</p></div></li>
+        <li class="pstep"><span class="pstep__no">Шаг №2</span><div class="pstep__text"><h3>Взвешиваем</h3><p>Вес обещания равен его доле среди всех ваших обещаний. Если «карьерный рост» есть в каждой вакансии, он весит больше, чем «ДМС» в каждой пятой.</p></div></li>
+        <li class="pstep"><span class="pstep__no">Шаг №3</span><div class="pstep__text"><h3>Проверяем</h3><p>Ищем упоминания темы в отзывах, соцсетях, медиа и ответах нейросетей и считаем долю, где опыт совпадает с обещанием.</p></div>
+          <dl class="prule"><div><dt>до 12 месяцев</dt><dd>вес 1</dd></div><div><dt>12–24 месяца</dt><dd>вес 0,5</dd></div><div><dt>старше 2 лет</dt><dd>не учитываем</dd></div></dl></li>
+        <li class="pstep"><span class="pstep__no">Шаг №4</span><div class="pstep__text"><h3>Ставим статус</h3><p>По доле подтверждений. Если упоминаний мало, оценку не ставим.</p></div>
+          <dl class="prule"><div><dt><span class="cmp__status"><span class="cmp__ico cmp__ico--yes">{{svgc:circle-check.svg}}</span>Подтверждается</span></dt><dd>от 60%</dd></div><div><dt><span class="cmp__status"><span class="cmp__ico cmp__ico--warn">{{svgc:circle-alert.svg}}</span>Частично</span></dt><dd>40–59%</dd></div><div><dt><span class="cmp__status"><span class="cmp__ico cmp__ico--no">{{svgc:circle-x.svg}}</span>Не подтверждается</span></dt><dd>до 40%</dd></div><div><dt><span class="cmp__status"><span class="cmp__ico cmp__ico--na">{{svgc:minus.svg}}</span>Нет данных</span></dt><dd>меньше 10 упоминаний</dd></div></dl></li>
+        <li class="pstep"><span class="pstep__no">Шаг №5</span><div class="pstep__text"><h3>Сводим в индекс</h3><p>Складываем вклады всех обещаний по формуле. Для конкурентов правила те же.</p></div></li>
+        <li class="pstep"><span class="pstep__no">Шаг №6</span><div class="pstep__text"><h3>Привязываем к действию</h3><p>У каждого спорного обещания есть ответственный, срок и показатель, по которому видно результат.</p></div></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- Калькулятор: таблица отчёта с галочками | индекс; ниже недобор и вывод -->
+  <section class="section section--anchors" id="example" aria-labelledby="ex-title">
+    <div class="section__head section__head--center">
+      <h2 class="headline" id="ex-title">Что будет, если<br><span class="dim">перестать обещать лишнее</span></h2>
+      <p class="lead">Условный «Банк N». Если снять галочку, обещание уйдёт из расчёта, а веса остальных пересчитаются.</p>
+    </div>
+    <div class="rblocks">
+      <div class="rblock">
+        <div class="calc">
+          <div class="cmp" role="region" aria-labelledby="ex-t" tabindex="0">
+            <table class="cmp__table">
+              <colgroup><col style="width:31%"><col style="width:11%"><col style="width:16%"><col style="width:27%"><col></colgroup>
+              <thead><tr><th scope="col" id="ex-t" class="cmp__title">Обещания «Банка N»</th><th scope="col"><span class="cmp__cap">Вес</span></th><th scope="col"><span class="cmp__cap">Подтверждают</span></th><th scope="col"><span class="cmp__cap">Статус</span></th><th scope="col"><span class="cmp__cap">Вклад</span></th></tr></thead>
+              <tbody>
+                <tr data-w="10" data-v="95"><th scope="row"><label class="calc__item"><input type="checkbox" checked><span>Официальное оформление</span></label></th><td>10%</td><td>95%</td><td class="calc__st"></td><td class="calc__c"></td></tr>
+                <tr data-w="22" data-v="27"><th scope="row"><label class="calc__item"><input type="checkbox" checked><span>Справедливая зарплата</span></label></th><td>22%</td><td>27%</td><td class="calc__st"></td><td class="calc__c"></td></tr>
+                <tr data-w="15" data-v="80"><th scope="row"><label class="calc__item"><input type="checkbox" checked><span>Карьерный рост</span></label></th><td>15%</td><td>80%</td><td class="calc__st"></td><td class="calc__c"></td></tr>
+                <tr data-w="14" data-v="91"><th scope="row"><label class="calc__item"><input type="checkbox" checked><span>Дружный коллектив</span></label></th><td>14%</td><td>91%</td><td class="calc__st"></td><td class="calc__c"></td></tr>
+                <tr data-w="9" data-v="22"><th scope="row"><label class="calc__item"><input type="checkbox" checked><span>Гибкий формат</span></label></th><td>9%</td><td>22%</td><td class="calc__st"></td><td class="calc__c"></td></tr>
+                <tr data-w="10" data-v="48"><th scope="row"><label class="calc__item"><input type="checkbox" checked><span>Ежегодная индексация</span></label></th><td>10%</td><td>48%</td><td class="calc__st"></td><td class="calc__c"></td></tr>
+                <tr data-w="12" data-v="88"><th scope="row"><label class="calc__item"><input type="checkbox" checked><span>Обучение за счёт компании</span></label></th><td>12%</td><td>88%</td><td class="calc__st"></td><td class="calc__c"></td></tr>
+                <tr data-w="8" data-v="92"><th scope="row"><label class="calc__item"><input type="checkbox" checked><span>ДМС</span></label></th><td>8%</td><td>92%</td><td class="calc__st"></td><td class="calc__c"></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <aside class="calc__result" aria-live="polite">
+            <p class="rkpi__label">Индекс культуры</p>
+            <div class="gauge gauge--big" id="g-calc" role="img" aria-label="Индекс культуры"></div>
+            <p class="mcard__cap" id="calc-conf">Подтверждено 5 из 8</p>
+            <button class="btn-link calc__reset" type="button" id="calc-reset">Вернуть все обещания</button>
+          </aside>
+        </div>
+      </div>
+      <div class="rpair rpair--rev">
+        <section class="rblock" aria-label="Откуда недобор до 100">
+          <div class="rblock__head"><h3 class="rblock__title">Откуда недобор до 100</h3><p class="rblock__hint">Сколько баллов индекса теряет каждое обещание. Считаем как вес, умноженный на долю, которая не подтвердилась.</p></div>
+          <div class="rblock__card"><div class="chart" id="ch-short" role="img" aria-label="Недобор индекса по обещаниям: справедливая зарплата 16 баллов из 35"></div></div>
+        </section>
+        <section class="rblock" aria-label="Вывод">
+          <div class="rblock__head"><h3 class="rblock__title">Вывод</h3><p class="rblock__hint">Что делать с самым дорогим обещанием.</p></div>
+          <div class="xcard xcard--bad"><span class="cmp__status xcard__status"><span class="cmp__ico cmp__ico--no">{{svgc:circle-x.svg}}</span>Почти половину недобора даёт одно обещание</span><p class="xcard__note">«Справедливая зарплата» даёт 16 из 35 баллов недобора.</p><p class="xcard__text">Его можно исправить вилками в вакансиях и системой грейдов или временно убрать из текстов, пока оклады не пересмотрены. Убрать обещание честнее, чем держать неподтверждённое.</p></div>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <!-- Границы: это / это не, затем соседнее направление -->
+  <section class="section section--anchors" id="limits" aria-labelledby="limits-title">
+    <div class="section__head">
+      <div class="headline-block">
+        <h2 class="headline" id="limits-title">Границы методики<br><span class="dim">и с чем сравнивать</span></h2>
+      </div>
+    </div>
+    <div class="well well--stack">
+      <div class="isnot isnot--flush">
+        <div class="isnot__card"><p class="isnot__title">Чего индекс не делает</p><ul class="checks checks--no"><li>{{svgc:circle-x.svg|checks__ico}}Не решает, хорошая ли компания</li><li>{{svgc:circle-x.svg|checks__ico}}Не заменяет опрос сотрудников</li><li>{{svgc:circle-x.svg|checks__ico}}Не ставит оценку, если данных мало</li></ul></div>
+        <div class="isnot__card"><p class="isnot__title">С чем сравнивать</p><ul class="checks checks--ok"><li>{{svgc:circle-check.svg|checks__ico}}С собой — раз в квартал</li><li>{{svgc:circle-check.svg|checks__ico}}С конкурентами — по тем же правилам</li><li>{{svgc:circle-check.svg|checks__ico}}С отраслью — когда в базе будет 30 и больше компаний</li></ul></div>
+      </div>
+      <div class="pnext">
+        <a class="pnext__dark dir dir--health" href="{{href:methodology-health}}" data-shader="health"><canvas aria-hidden="true"></canvas><span class="dir__fallback" aria-hidden="true"></span><span class="dir__top"><span class="dir__label">направление 02 · изнутри</span>{{svgc:arrow-up-right-white.svg|dir__arrow}}</span><div><h3>Как считаем изнутри</h3><p>10 метрик переживаемой культуры, источники, зоны балла и уверенность данных. Группы от 5 человек.</p></div></a>
+        <article class="pnext__card"><div><h3>Посмотрите на примере</h3><p>Демо-отчёт по условной компании с индексом, слепыми зонами, местом в отрасли и первыми шагами.</p></div><a class="btn-link" href="{{href:hr-brand-demo}}">Открыть демо-отчёт {{svgc:arrow-up-right.svg}}</a></article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Вопросы -->
+  <section class="section section--anchors" id="faq" aria-labelledby="faq-title">
+    <div class="section__head section__head--faq">
+      <span class="eyebrow">Вопросы · об индексе</span>
+      <div class="headline-block">
+        <h2 class="headline" id="faq-title"><span class="dim">Частые вопросы</span><br>о методике</h2>
+        <p class="lead">Откуда данные и почему показатели не сводим в одну цифру.</p>
+      </div>
+    </div>
+    <div class="faq" id="faq-list" data-groups="brand"></div>
+  </section>
+
+  <section class="rsec rfull" aria-labelledby="cta-title">
+    <div class="help">
+      <img src="{{uri:shape-cta-method-brand.svg}}" alt="" width="80" height="80">
+      <div class="help__text"><h3 id="cta-title">Узнайте свой индекс культуры</h3><p>Пришлём внешний срез за 3 рабочих дня. Доступ к вашим системам не нужен.</p></div>
+      <a class="btn btn--primary" href="{{href:start?topic=scan}}" data-topic="scan">Получить бесплатный срез {{svgc:arrow-up-right-white.svg}}</a>
+    </div>
+  </section>
+  </main>
+<template id="tpl-ok"><span class="cmp__ico cmp__ico--yes">{{svgc:circle-check.svg}}</span></template><template id="tpl-warn"><span class="cmp__ico cmp__ico--warn">{{svgc:circle-alert.svg}}</span></template><template id="tpl-bad"><span class="cmp__ico cmp__ico--no">{{svgc:circle-x.svg}}</span></template>
+<script>
+{{include:vendor/echarts.mirror.min.js}}
+</script>
+<script>
+{{include:src/charts.js}}
+function gauge(el, value) {
+  return mountChart(el, { series: [{
+    type: "gauge", startAngle: 215, endAngle: -35, min: 0, max: 100, radius: "92%", center: ["50%", "56%"],
+    progress: { show: true, width: 16, roundCap: true, itemStyle: { color: CH.violet } },
+    axisLine: { roundCap: true, lineStyle: { width: 16, color: [[1, CH.grid]] } },
+    axisTick: { show: false }, splitLine: { show: false }, axisLabel: { show: false }, pointer: { show: false }, anchor: { show: false },
+    title: { show: true, offsetCenter: [0, "34%"], color: CH.ink3, fontFamily: CH.font, fontSize: 14 },
+    detail: { valueAnimation: true, offsetCenter: [0, "-2%"], color: CH.ink, fontFamily: "JetBrains Mono, monospace", fontWeight: 500, fontSize: 64, formatter: (v) => Math.round(v) },
+    data: [{ value, name: "индекс культуры" }],
+  }] });
+}
+/* Три показателя: вкладки (стрелки ←/→ переключают) */
+const tabs = [...document.querySelectorAll(".qtab")];
+let gIndex = null;
+function showTab(t) {
+  tabs.forEach((x) => { const on = x === t; x.classList.toggle("is-active", on); x.setAttribute("aria-selected", on); x.tabIndex = on ? 0 : -1; document.getElementById(x.getAttribute("aria-controls")).hidden = !on; });
+  if (t.id === "mt-index" && !gIndex) gIndex = gauge(document.getElementById("g-index"), 65);
+}
+tabs.forEach((t, i) => {
+  t.addEventListener("click", () => showTab(t));
+  t.addEventListener("keydown", (e) => { const d = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0; if (d) { const n = tabs[(i + d + tabs.length) % tabs.length]; n.focus(); showTab(n); } });
+});
+showTab(tabs[0]);
+/* Матрица — как на обзоре HR-бренда */
+const MX = [{ name: "Банк N", x: 62, y: 65, you: true }, { name: "Банк А", x: 74, y: 72 }, { name: "Банк Б", x: 38, y: 54 }];
+const Q = (x1, y1, x2, y2, color) => [{ coord: [x1, y1], itemStyle: { color } }, { coord: [x2, y2] }];
+const MXS = innerWidth < 768 ? 44 : 64;
+mountChart(document.getElementById("ch-matrix"), {
+  grid: { left: MXS, right: MXS, top: 16, bottom: 56 },
+  xAxis: { type: "value", min: 10, max: 90, interval: 10, name: "честность · индекс культуры", nameLocation: "middle", nameGap: 36, nameTextStyle: { color: CH.ink3, fontSize: 14, fontFamily: CH.font }, ...chAxis, splitLine: { show: false } },
+  yAxis: { type: "value", min: 40, max: 80, interval: 5, name: "условия · место в отрасли", nameLocation: "middle", nameGap: 36, nameTextStyle: { color: CH.ink3, fontSize: 14, fontFamily: CH.font }, ...chAxis, splitLine: { show: false }, axisLabel: { ...chAxis.axisLabel, formatter: (v) => (v % 10 ? "" : v) } },
+  tooltip: { ...chTooltip, formatter: (p) => `${MX[p.dataIndex].name}: честность ${MX[p.dataIndex].x}, условия ${MX[p.dataIndex].y}` },
+  series: [{
+    type: "scatter", symbolSize: (v, p) => (MX[p.dataIndex].you ? 22 : 14), z: 3,
+    data: MX.map((m) => ({ value: [m.x, m.y], itemStyle: { color: m.you ? CH.violet : CH.ink4, borderColor: "#fff", borderWidth: 3, shadowBlur: m.you ? 12 : 0, shadowColor: "rgba(122,47,209,.35)" } })),
+    label: { show: true, position: "right", distance: 10, formatter: (p) => MX[p.dataIndex].name, color: CH.ink, fontSize: 15, fontWeight: 500, fontFamily: CH.font },
+    markLine: { silent: true, symbol: "none", lineStyle: { color: CH.ink4, type: [4, 4], width: 1 }, label: { show: false }, data: [{ xAxis: 50 }, { yAxis: 60 }] },
+    markArea: { silent: true, data: [
+      Q(10, 60, 50, 80, "rgba(122,47,209,.11)"), Q(50, 60, 90, 80, "rgba(59,153,82,.09)"),
+      Q(10, 40, 50, 60, "rgba(219,79,79,.08)"), Q(50, 40, 90, 60, "rgba(214,178,40,.14)"),
+    ] },
+  }],
+});
+/* Недобор до 100: вес × доля, которая не подтвердилась */
+const SH = [["Справедливая зарплата", 16.06], ["Гибкий формат", 7.02], ["Ежегодная индексация", 5.2], ["Карьерный рост", 3], ["Обучение за счёт компании", 1.44], ["Дружный коллектив", 1.26], ["ДМС", 0.64], ["Официальное оформление", 0.5]];
+mountChart(document.getElementById("ch-short"), {
+  grid: { left: innerWidth < 768 ? 150 : 216, right: 56, top: 8, bottom: 32 },
+  tooltip: { ...chTooltip, formatter: (p) => `${p.name}: −${String(p.value).replace(".", ",")} балла` },
+  xAxis: { type: "value", min: 0, max: 20, interval: 5, ...chAxis },
+  yAxis: { type: "category", data: SH.map((d) => d[0]), inverse: true, ...chAxis, axisLabel: { ...chAxis.axisLabel, color: CH.ink, fontSize: innerWidth < 768 ? 13 : 15, width: innerWidth < 768 ? 140 : 210, overflow: "break" }, axisLine: { show: false } },
+  series: [{ type: "bar", barWidth: 18, data: SH.map((d, i) => ({ value: d[1], itemStyle: { color: i === 0 ? CH.violet : CH.violetSoft, borderRadius: [0, 6, 6, 0] } })),
+    label: { show: true, position: "right", color: CH.ink, fontFamily: CH.font, fontSize: 14, formatter: (p) => "−" + String(p.value).replace(".", ",") } }],
+});
+/* Калькулятор: индекс = Σ (вес / Σ весов выбранных) × % подтверждения */
+const gCalc = gauge(document.getElementById("g-calc"), 65);
+const ICO = { ok: document.querySelector("#tpl-ok").innerHTML, warn: document.querySelector("#tpl-warn").innerHTML, bad: document.querySelector("#tpl-bad").innerHTML };
+const calcRows = [...document.querySelectorAll(".calc tbody tr")];
+function recalc() {
+  const on = calcRows.filter((r) => r.querySelector("input").checked);
+  const total = on.reduce((s, r) => s + +r.dataset.w, 0);
+  let idx = 0, conf = 0;
+  calcRows.forEach((r) => {
+    const w = +r.dataset.w, v = +r.dataset.v, active = r.querySelector("input").checked;
+    const st = v >= 60 ? ["ok", "Подтверждается"] : v >= 40 ? ["warn", "Частично"] : ["bad", "Не подтверждается"];
+    r.querySelector(".calc__st").innerHTML = `<span class="cmp__status">${ICO[st[0]]}${st[1]}</span>`;
+    const c = active && total ? (w / total) * v : 0;
+    r.querySelector(".calc__c").textContent = active ? c.toFixed(1).replace(".", ",") : "—";
+    r.classList.toggle("is-off", !active);
+    if (active) { idx += c; if (v >= 60) conf++; }
+  });
+  gCalc.setOption({ series: [{ data: [{ value: Math.round(idx), name: "индекс культуры" }] }] });
+  document.getElementById("calc-conf").textContent = `Подтверждено ${conf} из ${on.length}`;
+}
+calcRows.forEach((r) => r.querySelector("input").addEventListener("change", recalc));
+document.getElementById("calc-reset").addEventListener("click", () => { calcRows.forEach((r) => (r.querySelector("input").checked = true)); recalc(); });
+recalc();
+{{include:src/rmenu.js}}
+</script>

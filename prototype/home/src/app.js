@@ -64,7 +64,7 @@ addEventListener("scroll", () => header.classList.toggle("is-stuck", scrollY > 4
    На той же странице — по клику, с другой страницы — через ?topic= в адресе (в Next: /start?topic=…) */
 const pickTopic = (topic) => { const r = document.querySelector(`input[name=topic][value="${topic}"]`); if (r) r.checked = true; };
 document.querySelectorAll("[data-topic]").forEach((a) => a.addEventListener("click", () => pickTopic(a.dataset.topic)));
-const urlTopic = new URLSearchParams(location.search).get("topic");
+const urlTopic = new URLSearchParams(window.__QS ?? location.search).get("topic"); // __QS — параметры страницы в сборке сайта одним файлом (tools/bundle.py)
 if (urlTopic) pickTopic(urlTopic);
 
 /* Форма: проверка обязательных полей, экран успеха */

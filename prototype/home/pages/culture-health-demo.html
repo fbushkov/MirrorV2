@@ -1,0 +1,310 @@
+<!-- page: route=culture-health-demo; title=Демо-дашборд — Здоровье корпоративной культуры — Mirror -->
+  <main class="is-health">
+  <!-- Первый экран: как у демо-отчёта HR-бренда -->
+  <section class="page-hero report-hero" aria-labelledby="page-title">
+    <ol class="crumbs" aria-label="Хлебные крошки">
+      <li><a href="{{href:home}}">Главная</a></li>
+      <li><a href="{{href:culture-health}}">Дашборд здоровья культуры</a></li>
+      <li><span aria-current="page">Демо-дашборд</span></li>
+    </ol>
+    <div class="page-hero__head">
+      <h1 class="hero__title" id="page-title">Демо-дашборд<br><span class="dim">по условной компании</span></h1>
+      <p class="page-hero__lead">Так культуру изнутри видят команда культуры, руководители и топ-менеджмент. Меняйте срез и открывайте метрики.</p>
+      <div class="badges"><span class="badge badge--soft">~680 сотрудников</span><span class="badge badge--soft">ноябрь–октябрь</span><span class="badge badge--soft">10 метрик</span><span class="badge badge--soft">группы от 5 человек</span><span class="badge badge--teal">данные условные</span></div>
+    </div>
+  </section>
+
+  <!-- Меню отчёта: якоря листаются внутри полосы с маской по краям, PDF справа -->
+  <nav class="rmenu" id="rmenu" aria-label="Дашборд">
+    <div class="rmenu__scroll" id="rmenu-scroll"><div class="rmenu__links"><a href="#d-sum">1. Итоги</a><a href="#d-dyn">2. Динамика</a><a href="#d-metrics">3. Метрики</a><a href="#d-map">4. Где просаживается</a><a href="#d-code">5. Культурный код</a><a href="#d-disc">6. Расхождения</a><a href="#d-feed">7. Сигналы</a><a href="#d-bridge">8. Снаружи и изнутри</a></div></div>
+    <a class="btn btn--white rmenu__pdf" href="#" download aria-label="Скачать PDF"><span class="rmenu__pdf-text">Скачать PDF</span>{{svgc:lucide-download.svg}}</a>
+  </nav>
+
+  <div class="rblocks">
+  <!-- 1. Срез и итоги -->
+  <section class="rblock" id="d-sum" aria-labelledby="d-sum-t">
+    <div class="rblock__head"><h2 class="rblock__title" id="d-sum-t"><span class="rblock__no">1.</span> Итоги</h2><p class="rblock__hint">Выберите срез, и числа, метрики и графики ниже пересчитаются.</p></div>
+    <div class="rfilters">
+      <label class="field"><span class="label">Период</span><select class="select" id="f-period"></select></label>
+      <label class="field"><span class="label">Подразделение</span><select class="select" id="f-dept"></select></label>
+      <label class="field"><span class="label">Этап жизненного цикла</span><select class="select" id="f-stage"></select></label>
+    </div>
+    <p class="privacy" id="privacy" role="status" hidden><span class="privacy__ico">{{svgc:lucide-lock.svg}}</span><span id="privacy-text"></span></p>
+    <div class="rkpis">
+      <div class="rkpi"><div><p class="rkpi__label">Индекс культуры</p><p class="rkpi__num"><span id="k-index">59</span><small>из 100</small></p></div><p class="rkpi__cap" id="k-index-cap"></p></div>
+      <div class="rkpi"><div><p class="rkpi__label">Разрыв с кодом</p><p class="rkpi__num"><span id="k-gap">2</span><small id="k-gap-of">из 5 норм</small></p></div><p class="rkpi__cap">Нормы, которые расходятся с опытом людей</p></div>
+      <div class="rkpi"><div><p class="rkpi__label">Тренд за 30 дней <button class="info" type="button" data-tip="Среднее изменение по 10 метрикам" aria-label="Как считаем тренд">{{svgc:lucide-info.svg}}</button></p><p class="rkpi__num"><span id="k-d30">0</span><small>баллов</small></p></div><p class="rkpi__cap rkpi__cap--delta" id="k-d90"></p></div>
+      <div class="rkpi"><div><p class="rkpi__label">Группа в срезе</p><p class="rkpi__num"><span id="k-size">680</span><small>человек</small></p></div><p class="rkpi__cap">Группы меньше 5 человек не показываем</p></div>
+    </div>
+    <div class="rattn">
+      <p class="rattn__title">Требует внимания</p>
+      <ul class="ralerts" id="alerts"></ul>
+    </div>
+  </section>
+
+  <!-- 2. Динамика -->
+  <section class="rblock" id="d-dyn" aria-label="Динамика">
+    <div class="rblock__head"><h2 class="rblock__title"><span class="rblock__no">2.</span> Динамика</h2><p class="rblock__hint">Индекс почти не меняется, а две метрики за месяц ушли в зону риска. Пунктиром отмечено событие.</p></div>
+    <div class="rblock__card">
+      <div class="chart chart--tall" id="ch-dyn" role="img" aria-label="Индекс переживаемой культуры по месяцам и две метрики, которые упали в октябре"></div>
+      <ul class="legend"><li><i class="legend__line"></i>Индекс</li><li><i class="legend__line legend__line--bad"></i>Энергия и ресурс</li><li><i class="legend__line legend__line--dash"></i>Психологическая безопасность</li><li><i class="legend__zone legend__zone--ok"></i>в норме, от 65</li><li><i class="legend__zone legend__zone--bad"></i>риск, ниже 50</li></ul>
+    </div>
+  </section>
+
+  <!-- 3. Метрики -->
+  <section class="rblock" id="d-metrics" aria-label="Метрики">
+    <div class="rblock__head"><h2 class="rblock__title"><span class="rblock__no">3.</span> 10 метрик</h2><p class="rblock__hint">В норме от 65, внимание от 50 до 64, риск ниже 50. Нажмите на метрику, чтобы открыть динамику, срезы и источники.</p></div>
+    <div class="mgroups" id="mgroups"></div>
+  </section>
+
+  <!-- 4. Где просаживается -->
+  <section class="rblock" id="d-map" aria-label="Где просаживается">
+    <div class="rblock__head rblock__head--row"><div><h2 class="rblock__title"><span class="rblock__no">4.</span> Где просаживается</h2><p class="rblock__hint">Балл метрик по группам. Где стоит «&lt;5», в группе меньше пяти человек, и данные не показываем.</p></div>
+      <div class="seg" role="tablist" aria-label="Разрез"><button class="seg__item is-active" type="button" role="tab" aria-selected="true" data-map="depts">Подразделения</button><button class="seg__item" type="button" role="tab" aria-selected="false" data-map="life">Этапы</button></div></div>
+    <div class="rblock__card"><div class="chart-scroll"><div class="chart chart--map" id="ch-map" role="img" aria-label="Тепловая карта: 10 метрик по группам"></div></div></div>
+  </section>
+
+  <!-- 5. Культурный код -->
+  <section class="rblock rblock--table" id="d-code" aria-label="Культурный код">
+    <div class="rblock__head"><h2 class="rblock__title"><span class="rblock__no">5.</span> Разрыв с культурным кодом</h2><p class="rblock__hint" id="code-hint">Заявленные нормы против опыта людей.</p></div>
+    <div class="cmp" role="region" aria-labelledby="code-t" tabindex="0">
+      <table class="cmp__table">
+        <colgroup><col style="width:26%"><col style="width:40%"><col style="width:12%"><col></colgroup>
+        <thead><tr><th scope="col" id="code-t" class="cmp__title">Норма из кода</th><th scope="col"><span class="cmp__cap">Опыт людей по метрикам</span></th><th scope="col"><span class="cmp__cap">Балл</span></th><th scope="col"><span class="cmp__cap">Разрыв</span></th></tr></thead>
+        <tbody id="code-rows"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 6–7. Расхождения и сигналы: второй блок шире -->
+  <div class="rpair">
+    <section class="rblock" id="d-disc" aria-label="Расхождения">
+      <div class="rblock__head"><h2 class="rblock__title"><span class="rblock__no">6.</span> Расхождения</h2><p class="rblock__hint">Где разные каналы говорят разное.</p></div>
+      <ul class="dcards" id="discs"></ul>
+    </section>
+    <section class="rblock" id="d-feed" aria-label="Лента сигналов">
+      <div class="rblock__head"><h2 class="rblock__title"><span class="rblock__no">7.</span> Лента сигналов</h2><p class="rblock__hint">Цитаты обезличены и проверены на узнаваемые детали.</p></div>
+      <div class="rblock__card"><ul class="rfeed" id="feed"></ul></div>
+    </section>
+  </div>
+
+  <!-- 8. Снаружи и изнутри -->
+  <section class="rblock" id="d-bridge" aria-label="Снаружи и изнутри">
+    <div class="rblock__head"><h2 class="rblock__title"><span class="rblock__no">8.</span> Снаружи и изнутри</h2><p class="rblock__hint">Если подключена оценка HR-бренда. Шкалы не смешиваем и сверяем только темы.</p></div>
+    <ul class="xcards" id="bridge"></ul>
+    <a class="btn-link rblock__link" href="{{href:hr-brand-demo}}">Открыть демо-отчёт HR-бренда {{svgc:arrow-up-right.svg}}</a>
+  </section>
+  </div>
+
+  <section class="rsec rfull" aria-labelledby="cta-title">
+    <div class="help">
+      <img src="{{uri:shape-cta-dashboard.svg}}" alt="" width="80" height="80">
+      <div class="help__text"><h3 id="cta-title">Запустите дашборд в своей компании</h3><p>Начнём с диагностики и первого замера. Кампания длится 3 месяца.</p></div>
+      <a class="btn btn--primary" href="{{href:start?topic=health}}" data-topic="health">Обсудить запуск {{svgc:arrow-up-right-white.svg}}</a>
+    </div>
+  </section>
+
+  <!-- Карточка метрики -->
+  <dialog class="mdlg" id="mdlg" aria-labelledby="mdlg-title">
+    <div class="mdlg__box">
+      <button class="mdlg__close" type="button" aria-label="Закрыть">{{svgc:x.svg}}</button>
+      <p class="mdlg__group" id="mdlg-group"></p>
+      <h2 class="mdlg__title" id="mdlg-title"></h2>
+      <p class="mdlg__detail" id="mdlg-detail"></p>
+      <div class="mdlg__score" id="mdlg-score"></div>
+      <div class="mdlg__sec"><p class="mdlg__h">Динамика за 12 месяцев</p><div class="chart chart--dlg" id="ch-dlg" role="img" aria-label="Динамика метрики за 12 месяцев"></div></div>
+      <div class="mdlg__sec"><p class="mdlg__h">Вклад каналов</p><div class="mix" id="mdlg-mix"></div></div>
+      <div class="mdlg__cols"><div class="mdlg__sec"><p class="mdlg__h">По подразделениям</p><ul class="hbars" id="mdlg-depts"></ul></div><div class="mdlg__sec"><p class="mdlg__h">По этапам</p><ul class="hbars" id="mdlg-life"></ul></div></div>
+      <div class="mdlg__sec"><p class="mdlg__h">Что влияет</p><ul class="drivers" id="mdlg-drivers"></ul></div>
+      <div class="mdlg__sec"><p class="mdlg__h">Откуда данные</p><dl class="srcs" id="mdlg-src"></dl></div>
+      <p class="mdlg__note">Данные демонстрационные</p>
+    </div>
+  </dialog>
+<template id="ico-compass">{{svgc:lucide-compass.svg}}</template><template id="ico-house">{{svgc:lucide-house.svg}}</template><template id="ico-sprout">{{svgc:lucide-sprout.svg}}</template><template id="ico-shield">{{svgc:lucide-shield.svg}}</template><template id="ico-handshake">{{svgc:lucide-handshake.svg}}</template><template id="ico-megaphone">{{svgc:lucide-megaphone.svg}}</template><template id="ico-battery-medium">{{svgc:lucide-battery-medium.svg}}</template><template id="ico-target">{{svgc:lucide-target.svg}}</template><template id="ico-scale">{{svgc:lucide-scale.svg}}</template><template id="ico-award">{{svgc:lucide-award.svg}}</template><template id="st-ok"><span class="cmp__ico cmp__ico--yes">{{svgc:circle-check.svg}}</span></template><template id="st-warn"><span class="cmp__ico cmp__ico--warn">{{svgc:circle-alert.svg}}</span></template><template id="st-bad"><span class="cmp__ico cmp__ico--no">{{svgc:circle-x.svg}}</span></template><template id="st-na"><span class="cmp__ico cmp__ico--na">{{svgc:minus.svg}}</span></template>
+  </main>
+<script>
+{{include:vendor/echarts.mirror.min.js}}
+</script>
+<script>
+{{include:src/charts.js}}
+const D = {"metrics":[{"id":"clarity","group":"meaning","name":"Ясность смысла и направления","icon":"compass","detail":"Насколько люди понимают стратегию, видят связь своей работы с целями компании и не страдают от постоянной смены приоритетов.","sources":{"o":"пульс про стратегию и ценности, вопросы после общих встреч","t":"вопросы на открытых встречах с руководством, комментарии к новостям","p":"охват стратегических материалов, число смен приоритетов в трекере"},"score":68,"delta30":2,"trend":[62,63,63,65,64,66,66,67,66,68,66,68],"confidence":"высокая","drivers":[{"text":"Ежемесячные встречи с руководством и ответы на вопросы","level":"коррелирует"},{"text":"Реже меняются приоритеты в квартале","level":"гипотеза"}]},{"id":"belonging","group":"meaning","name":"Принадлежность и инклюзия","icon":"home","detail":"Чувствуют ли сотрудники себя частью команды и компании, независимо от роли, стажа и формата работы.","sources":{"o":"вопросы про принадлежность и инклюзию","t":"комментарии, чаты по интересам","p":"участие в общих событиях, удержание в первые 90 дней"},"score":74,"delta30":1,"trend":[71,72,71,73,72,73,74,73,74,73,73,74],"confidence":"высокая","drivers":[{"text":"Наставник у каждого новичка в первый месяц","level":"подтверждено пилотом"}]},{"id":"growth","group":"meaning","name":"Развитие и рост","icon":"sprout","detail":"Есть ли понятный путь роста, доступно ли обучение, получают ли люди новые задачи и роли.","sources":{"o":"опрос про карьеру и обучение","t":"интервью при уходе, комментарии после ревью","p":"внутренние переводы, повышения, прохождение обучения"},"score":57,"delta30":-1,"trend":[59,60,59,58,59,58,57,58,58,57,58,57],"confidence":"средняя","drivers":[{"text":"Нет описанных карьерных треков для специалистов","level":"гипотеза"},{"text":"Внутренние вакансии публикуются после внешних","level":"коррелирует"}]},{"id":"safety","group":"relations","name":"Психологическая безопасность","icon":"shield","detail":"Психологическая безопасность означает уверенность, что за вопрос, ошибку или несогласие не накажут и не высмеют.","sources":{"o":"пульсы, опросы команд, ретроспективы","t":"анонимная линия, комментарии в опросах, чаты команд в агрегате","p":"число разборов ошибок без поиска виноватых, обращения в комплаенс"},"score":50,"delta30":-8,"trend":[58,59,58,59,60,59,60,59,58,57,58,50],"confidence":"средняя","drivers":[{"text":"Смена руководителя в двух командах ИТ в этом месяце","level":"коррелирует"},{"text":"Разборы ошибок проходят с поиском виноватых","level":"гипотеза"}]},{"id":"collab","group":"relations","name":"Сотрудничество и связи","icon":"handshake","detail":"Насколько легко договориться внутри команды и с соседними командами, есть ли регулярный контакт с руководителем.","sources":{"o":"опросы по взаимодействию, оценка 360","t":"итоги кросс-функциональных групп","p":"время ответа на запросы, регулярность встреч один на один"},"score":72,"delta30":3,"trend":[67,68,68,69,69,70,69,70,71,70,69,72],"confidence":"высокая","drivers":[{"text":"Регулярные встречи один на один у 80% руководителей","level":"подтверждено пилотом"}]},{"id":"voice","group":"relations","name":"Обратная связь и голос","icon":"megaphone","detail":"Есть ли у людей канал, чтобы сказать о проблеме, и видят ли они реакцию. Закрытая петля означает, что сотрудник узнаёт, что сделали с его сигналом.","sources":{"o":"вопросы про обратную связь","t":"платформа идей, анонимные сообщения","p":"доля ответов, время реакции, доля закрытых петель"},"score":48,"delta30":-3,"trend":[52,53,52,52,51,52,51,50,51,50,51,48],"confidence":"высокая","drivers":[{"text":"Только 34% сигналов получают ответ","level":"коррелирует"},{"text":"Нет публичной страницы «Решения по обратной связи»","level":"гипотеза"}]},{"id":"energy","group":"work","name":"Энергия и ресурс","icon":"battery","detail":"Соответствует ли нагрузка ресурсу людей, успевают ли они восстанавливаться, нет ли хронических переработок.","sources":{"o":"пульс про нагрузку и стресс","t":"комментарии, интервью при уходе","p":"сверхурочные и неиспользованные отпуска в агрегате"},"score":44,"delta30":-11,"trend":[56,55,56,57,56,55,56,55,56,55,55,44],"confidence":"средняя","drivers":[{"text":"Квартальный план продаж вырос на 18% без изменения штата","level":"коррелирует"},{"text":"Отпуска переносят на конец года","level":"гипотеза"}]},{"id":"influence","group":"work","name":"Влияние и ответственность","icon":"target","detail":"Могут ли люди принимать решения в своей зоне и отвечать за результат, а не согласовывать каждую мелочь.","sources":{"o":"вопросы про свободу решений","t":"комментарии про микроменеджмент и согласования","p":"число уровней и время согласований, инициативы сотрудников"},"score":55,"delta30":0,"trend":[56,55,56,55,54,55,56,55,55,54,55,55],"confidence":"средняя","drivers":[{"text":"Четыре уровня согласования для закупок от 50 000 ₽","level":"коррелирует"}]},{"id":"fairness","group":"work","name":"Справедливость и прозрачность","icon":"scale","detail":"Понимают ли люди, как устроены оценка, повышения и правила оплаты, и считают ли их честными. Размер зарплат сюда не входит.","sources":{"o":"опрос про оценку, повышения и правила оплаты","t":"жалобы, комментарии к итогам ревью","p":"распределение оценок и повышений по группам, обращения к омбудсмену"},"score":59,"delta30":1,"trend":[57,58,57,58,58,59,58,59,58,59,58,59],"confidence":"низкая","drivers":[{"text":"Критерии ревью опубликованы только для части отделов","level":"гипотеза"}]},{"id":"recognition","group":"work","name":"Признание","icon":"award","detail":"Говорят ли людям спасибо, отмечают ли вклад публично, видят ли руководители результат работы.","sources":{"o":"опрос про признание","t":"платформы благодарностей","p":"частота и распределение благодарностей"},"score":63,"delta30":2,"trend":[59,60,60,61,60,61,62,61,62,62,61,63],"confidence":"высокая","drivers":[{"text":"Ежемесячные благодарности на общих встречах","level":"коррелирует"}]}],"groups":{"meaning":"Смысл и принадлежность","relations":"Отношения","work":"Работа и ресурсы"},"code":[{"norm":"Открытость","metrics":["voice","safety"]},{"norm":"Забота о людях","metrics":["energy"]},{"norm":"Свобода и ответственность","metrics":["influence"]},{"norm":"Командность","metrics":["collab"]},{"norm":"Развитие","metrics":["growth"]}],"alerts":[{"metric":"energy","text":"Энергия и ресурс −11 за 2 недели","where":"Продажи","context":"Вырос квартальный план"},{"metric":"safety","text":"Психологическая безопасность −8 за 2 недели","where":"ИТ","context":"Смена руководителя в двух командах"},{"metric":"voice","text":"Ответ получают только 34% сигналов","where":"Вся компания","context":"Норма от 70%"}],"disc":[{"kind":"Анонимные темы против данных подразделений","text":"В анонимных сообщениях чаще всего пишут о переработках. В пульсах подразделений нагрузку оценивают как нормальную.","hint":"Возможно, о нагрузке боятся говорить открыто. Стоит проверить на встрече с командами."},{"kind":"Декларация против опыта","text":"В культурном коде заявлена «Открытость», а обратная связь и психологическая безопасность в зоне риска и внимания.","hint":"Норма заявлена громко, а опыт её не подтверждает. Это главный разрыв квартала."}],"signals":[{"metric":"energy","tone":"negative","text":"Третью неделю закрываем задачи по вечерам. Об этом не принято говорить вслух.","channel":"анонимная форма"},{"metric":"collab","tone":"positive","text":"С соседней командой наконец договорились о едином трекере, стало проще.","channel":"ретроспектива"},{"metric":"voice","tone":"negative","text":"Писали про парковку полгода назад. Ответа так и нет.","channel":"платформа идей"},{"metric":"safety","tone":"negative","text":"После смены руководителя на планёрках стали меньше спорить.","channel":"пульс-опрос"},{"metric":"recognition","tone":"positive","text":"Приятно, что результат проекта отметили на общей встрече.","channel":"комментарий"},{"metric":"clarity","tone":"neutral","text":"Хотелось бы понимать, как наш отдел влияет на цели года.","channel":"вопрос на встрече с руководством"}],"depts":[{"id":"all","name":"Вся компания","offset":0,"size":680},{"id":"sales","name":"Продажи","offset":-6,"size":210},{"id":"it","name":"ИТ","offset":-3,"size":85},{"id":"ops","name":"Операции","offset":2,"size":240},{"id":"back","name":"Бэк-офис","offset":5,"size":145}],"life":[{"id":"all","name":"Все этапы","offset":0,"share":1},{"id":"prehire","name":"До найма","offset":6,"share":0.03},{"id":"onboarding","name":"Онбординг","offset":4,"share":0.08},{"id":"work","name":"Работа","offset":0,"share":0.62},{"id":"review","name":"Ревью","offset":-5,"share":0.1},{"id":"growth","name":"Рост","offset":3,"share":0.05},{"id":"rolechange","name":"Смена роли","offset":-2,"share":0.04},{"id":"return","name":"Возврат после отсутствия","offset":-4,"share":0.02},{"id":"crisis","name":"Кризис","offset":-9,"share":0.02},{"id":"leaving","name":"Уход","offset":-12,"share":0.02},{"id":"after","name":"После ухода","offset":-7,"share":0.02}],"periods":[{"id":"30","name":"30 дней"},{"id":"90","name":"90 дней"},{"id":"365","name":"12 месяцев"}],"months":["Ноя","Дек","Янв","Фев","Мар","Апр","Май","Июн","Июл","Авг","Сен","Окт"]};
+const MIN = 5, CLAMP = (v) => Math.max(5, Math.min(98, v));
+const LEVEL = (s) => (s >= 65 ? "ok" : s >= 50 ? "warn" : "bad");
+const LEVEL_WORD = { ok: "в норме", warn: "внимание", bad: "риск" };
+const GAP_WORD = { ok: "совпадает", warn: "частичный разрыв", bad: "разрыв" };
+const ICON = { compass: "compass", home: "house", sprout: "sprout", shield: "shield", handshake: "handshake", megaphone: "megaphone", battery: "battery-medium", target: "target", scale: "scale", award: "award" };
+const tpl = (id) => document.getElementById(id).innerHTML;
+const status = (lvl, word) => `<span class="cmp__status">${tpl("st-" + lvl)}${word}</span>`;
+const sign = (v) => (v > 0 ? "+" + v : v < 0 ? "−" + Math.abs(v) : "0");
+const LEVEL_TIP = { ok: "В норме, балл от 65", warn: "Внимание, балл от 50 до 64", bad: "Риск, балл ниже 50" };
+// Статус одним бейджем: иконка и изменение; слово статуса и пояснение — в подсказке
+const chip = (lvl, value, tip, icon = true) => `<span class="badge badge--${lvl}${icon ? " badge--ico" : ""}" data-tip="${tip}"><span class="sr-only">${tip}. </span>${icon ? tpl("st-" + lvl) : ""}<span aria-hidden="true">${value}</span></span>`;
+const trendLvl = (v) => (v > 0 ? "ok" : v < 0 ? "bad" : "na");
+const avg = (a) => Math.round(a.reduce((s, x) => s + x, 0) / a.length);
+const $ = (id) => document.getElementById(id);
+const HC = { teal: "#0e9384", tealSoft: "#9fd6cf", tealBg: "rgba(14,147,132,.14)", okBg: "rgba(59,153,82,.08)", badBg: "rgba(219,79,79,.08)" };
+
+/* Фильтры */
+const fill = (sel, list) => (sel.innerHTML = list.map((o) => `<option value="${o.id}">${o.name}</option>`).join(""));
+fill($("f-period"), D.periods); fill($("f-dept"), D.depts); fill($("f-stage"), D.life);
+const state = { period: "30", dept: "all", stage: "all", map: "depts" };
+["period", "dept", "stage"].forEach((k) => $("f-" + k).addEventListener("change", (e) => { state[k] = e.target.value; render(); }));
+
+let view = null;
+function compute() {
+  const dept = D.depts.find((d) => d.id === state.dept), asked = D.life.find((l) => l.id === state.stage);
+  const merged = Math.round(dept.size * asked.share) < MIN;
+  const stage = merged ? D.life[0] : asked, off = dept.offset + stage.offset;
+  const metrics = D.metrics.map((m) => {
+    const score = CLAMP(m.score + off), trend = m.trend.map((v) => CLAMP(v + off));
+    const d = state.period === "30" ? m.delta30 : state.period === "90" ? score - trend[8] : score - trend[0];
+    return { ...m, score, trend, delta: d, d90: score - trend[8] };
+  });
+  return { dept, asked, stage, merged, off, metrics, size: Math.round(dept.size * stage.share) };
+}
+
+function sparkline(values) {
+  const w = 112, h = 32, min = Math.min(...values) - 2, max = Math.max(...values) + 2;
+  const pts = values.map((v, i) => [(i / (values.length - 1)) * w, h - ((v - min) / (max - min)) * h]);
+  const [lx, ly] = pts[pts.length - 1];
+  return `<svg class="spark spark--${LEVEL(values[values.length - 1])}" viewBox="0 0 ${w} ${h}" aria-hidden="true"><path d="${pts.map(([x, y], i) => (i ? "L" : "M") + x.toFixed(1) + "," + y.toFixed(1)).join(" ")}"/><circle cx="${lx}" cy="${ly}" r="3.5"/></svg>`;
+}
+
+function render() {
+  view = compute();
+  const { dept, asked, merged, metrics, size } = view;
+  const periodName = D.periods.find((p) => p.id === state.period).name;
+  $("privacy").hidden = !merged;
+  $("privacy-text").textContent = `В группе «${dept.name} · ${asked.name}» меньше ${MIN} человек. Чтобы сохранить анонимность, показываем уровень выше: «${dept.name} · все этапы».`;
+
+  const index = avg(metrics.map((m) => m.score)), lvl = LEVEL(index);
+  $("k-index").textContent = index;
+  // Статус — только иконкой (слово — в подсказке), рядом изменение: число цветом, период серым
+  $("k-index-cap").classList.add("rkpi__cap--delta");
+  const dIdx = avg(metrics.map((m) => m.delta));
+  $("k-index-cap").innerHTML = `${chip(lvl, sign(dIdx), `${LEVEL_TIP[lvl]}. За ${periodName} ${sign(dIdx)}`)}<span>за ${periodName}</span>`;
+  $("k-d30").textContent = sign(avg(metrics.map((m) => m.delta30)));
+  const d90 = avg(metrics.map((m) => m.d90));
+  $("k-d90").innerHTML = `${chip(trendLvl(d90), sign(d90), `Среднее изменение по 10 метрикам за 90 дней ${sign(d90)}`, false)}<span>за 90 дней</span>`;
+  $("k-size").textContent = size;
+
+  const norms = D.code.map((c) => { const ms = metrics.filter((m) => c.metrics.includes(m.id)); const s = avg(ms.map((m) => m.score)); return { ...c, names: ms.map((m) => m.name), score: s, level: LEVEL(s) }; });
+  const diverge = norms.filter((n) => n.level === "bad").length, partial = norms.filter((n) => n.level === "warn").length;
+  $("k-gap").textContent = diverge; $("k-gap-of").textContent = `из ${norms.length} норм`;
+  $("code-hint").textContent = `Заявленные нормы против опыта людей. ${diverge} из ${norms.length} расходятся, ещё ${partial} расходятся частично. Балл нормы считаем как среднее по связанным метрикам.`;
+  $("code-rows").innerHTML = norms.map((n) => `<tr><th scope="row"><div class="cmp__rowhead"><span>«${n.norm}»</span></div></th><td>${n.names.join(", ")}</td><td>${n.score}</td><td>${status(n.level, GAP_WORD[n.level])}</td></tr>`).join("");
+
+  const alerts = D.alerts.filter((a) => state.dept === "all" || a.where === dept.name || a.where === "Вся компания");
+  $("alerts").innerHTML = alerts.length ? alerts.map((a) => `<li class="ralert ralert--bad"><span class="cmp__status ralert__where">${tpl("st-bad")}${a.where}</span><p class="ralert__text">${a.text.replace(/ -(\d)/, " −$1")}</p><p class="ralert__ctx">${a.context}</p></li>`).join("") : `<li class="ralert ralert--ok ralert--none"><span class="cmp__status">${tpl("st-ok")}В этом срезе тревожных изменений нет</span></li>`;
+
+  $("mgroups").innerHTML = Object.entries(D.groups).map(([g, name]) => `<div class="mgroup"><p class="mgroup__name">${name}</p>${metrics.filter((m) => m.group === g).map((m) => {
+    const l = LEVEL(m.score);
+    return `<button class="mtile" type="button" data-id="${m.id}" aria-label="${m.name}: ${m.score}, ${LEVEL_WORD[l]}. Открыть карточку"><span class="mtile__head"><span class="mtile__ico">${tpl("ico-" + ICON[m.icon])}</span><span class="mtile__name">${m.name}</span></span><span class="mtile__body"><span class="mtile__num">${m.score}</span>${sparkline(m.trend)}</span><span class="mtile__foot">${chip(l, sign(m.delta), `${LEVEL_TIP[l]}. За ${periodName} ${sign(m.delta)}`)}</span></button>`;
+  }).join("")}</div>`).join("");
+  document.querySelectorAll(".mtile").forEach((b) => b.addEventListener("click", () => openMetric(b.dataset.id)));
+
+  drawDyn(); drawMap();
+  if (typeof typograf === "function") typograf(document.querySelector("main"));
+}
+
+/* 01 Динамика: индекс + две упавшие метрики, зоны «в норме» и «риск» */
+let chDyn;
+function drawDyn() {
+  const { metrics } = view, m = (id) => metrics.find((x) => x.id === id);
+  const index = D.months.map((_, i) => avg(metrics.map((x) => x.trend[i])));
+  const line = (name, data, color, extra = {}) => ({ name, type: "line", data, smooth: 0.3, showSymbol: false, symbol: "circle", symbolSize: 8, lineStyle: { color, width: 2 }, itemStyle: { color, borderColor: "#fff", borderWidth: 2 }, ...extra });
+  const opt = {
+    grid: { left: 40, right: 24, top: 56, bottom: 32 },
+    tooltip: { ...chTooltip, trigger: "axis", axisPointer: { type: "line", lineStyle: { color: HC.tealSoft } }, formatter: (p) => `${p[0].name}<br>` + p.map((s) => `${s.seriesName}: ${s.value}`).join("<br>") },
+    xAxis: { type: "category", data: D.months, boundaryGap: false, ...chAxis, splitLine: { show: false } },
+    yAxis: { type: "value", min: 30, max: 90, interval: 10, ...chAxis, axisLine: { show: false } },
+    series: [
+      line("Индекс", index, HC.teal, {
+        lineStyle: { color: HC.teal, width: 3 },
+        areaStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: "rgba(14,147,132,.16)" }, { offset: 1, color: "rgba(14,147,132,0)" }]) },
+        markArea: { silent: true, data: [[{ yAxis: 65, itemStyle: { color: HC.okBg } }, { yAxis: 90 }], [{ yAxis: 30, itemStyle: { color: HC.badBg } }, { yAxis: 50 }]] },
+        markLine: { silent: true, symbol: "none", lineStyle: { color: HC.tealSoft, type: [4, 4], width: 1 }, label: { show: true, position: "end", distance: 8, color: CH.ink, fontFamily: CH.font, fontSize: 14, align: "right", formatter: (p) => p.name }, data: [{ name: innerWidth < 768 ? "План и руководители" : "Рост плана и смена руководителей", xAxis: "Окт" }] },
+      }),
+      line("Энергия и ресурс", m("energy").trend, CH.bad),
+      line("Психологическая безопасность", m("safety").trend, CH.ink4, { lineStyle: { color: CH.ink4, width: 2, type: [6, 4] } }),
+    ],
+  };
+  chDyn ? chDyn.setOption(opt) : (chDyn = mountChart($("ch-dyn"), opt));
+}
+
+/* 03 Тепловая карта: метрики × подразделения или этапы; цвет — зона балла */
+let chMap;
+function drawMap() {
+  const { dept, metrics } = view;
+  const cols = state.map === "depts" ? D.depts.slice(1) : D.life.slice(1);
+  const base = state.map === "depts" ? 0 : dept.offset;
+  const cells = [];
+  metrics.forEach((m, y) => cols.forEach((c, x) => {
+    const small = state.map === "life" && Math.round(dept.size * c.share) < MIN;
+    const raw = D.metrics[y].score;
+    cells.push([x, y, small ? -1 : CLAMP(raw + base + c.offset)]);
+  }));
+  const opt = {
+    grid: { left: 248, right: 8, top: 8, bottom: 72 }, // одна сетка для обоих разрезов: ячейки не прыгают при переключении
+    tooltip: { ...chTooltip, formatter: (p) => `${metrics[p.value[1]].name} · ${cols[p.value[0]].name}: ${p.value[2] < 0 ? "группа меньше 5 человек" : p.value[2]}` },
+    xAxis: { type: "category", data: cols.map((c) => c.name), position: "bottom", ...chAxis, axisLine: { show: false }, axisLabel: { ...chAxis.axisLabel, interval: 0, fontSize: 13, lineHeight: 16, formatter: (v) => v.split(" ").join("\n") } },
+    yAxis: { type: "category", data: metrics.map((m) => m.name), inverse: true, ...chAxis, axisLine: { show: false }, axisLabel: { ...chAxis.axisLabel, interval: 0, color: CH.ink, fontSize: 15 } },
+    visualMap: { show: false, type: "piecewise", dimension: 2, pieces: [{ lt: 0, color: CH.field }, { gte: 0, lt: 50, color: "rgba(219,79,79,.2)" }, { gte: 50, lt: 65, color: "rgba(208,138,30,.18)" }, { gte: 65, color: "rgba(14,147,132,.2)" }] },
+    series: [{ type: "heatmap", data: cells, label: { show: true, fontFamily: CH.font, fontSize: 14, color: CH.ink, formatter: (p) => (p.value[2] < 0 ? "<5" : p.value[2]) }, itemStyle: { borderColor: "#fff", borderWidth: 4, borderRadius: 8 } }],
+  };
+  $("ch-map").parentElement.classList.toggle("is-wide", state.map === "life");
+  if (chMap) { chMap.setOption(opt, true); chMap.resize(); } else chMap = mountChart($("ch-map"), opt);
+}
+document.querySelectorAll("[data-map]").forEach((b) => b.addEventListener("click", () => {
+  state.map = b.dataset.map;
+  document.querySelectorAll("[data-map]").forEach((x) => { const on = x === b; x.classList.toggle("is-active", on); x.setAttribute("aria-selected", on); });
+  drawMap();
+}));
+
+/* 05–07 статичные блоки */
+$("discs").innerHTML = D.disc.map((d) => `<li class="dcard"><span class="cmp__status dcard__status">${tpl("st-warn")}${d.kind}</span><p class="dcard__note">${d.hint}</p><p class="dcard__text">${d.text}</p></li>`).join("");
+const TONE = { negative: ["bad", "негатив"], positive: ["ok", "позитив"], neutral: ["na", "нейтрально"] };
+$("feed").innerHTML = D.signals.map((s) => { const m = D.metrics.find((x) => x.id === s.metric), [t, w] = TONE[s.tone]; return `<li><p class="rfeed__quote">«${s.text}»</p><p class="rfeed__meta"><span class="badge badge--${t}">${w}</span><span class="rfeed__metric">${m.name}</span><span>${s.channel}</span></p></li>`; }).join("");
+const mt = (id) => D.metrics.find((m) => m.id === id);
+const BRIDGE = [
+  { kind: ["bad", "Видно с двух сторон"], out: ["Слепая зона «Переработки»", "18% упоминаний"], ins: mt("energy"), verdict: "Проблему видят и кандидаты, и сотрудники. Это не шум в отзывах, начинать стоит с нагрузки." },
+  { kind: ["bad", "Видно с двух сторон"], out: ["Слепая зона «Руководители»", "14% упоминаний"], ins: mt("voice"), verdict: "Опыт сильно зависит от руководителя. Изнутри это видно по тому, что людей не слышат." },
+  { kind: ["ok", "Сильная сторона"], out: ["Обещание «Дружный коллектив»", "91% подтверждений"], ins: mt("belonging"), verdict: "Обещание подтверждается и изнутри. Его можно ставить в центр коммуникаций." },
+  { kind: ["warn", "Ранний сигнал"], out: ["Обещание «Карьерный рост»", "80% подтверждений"], ins: mt("growth"), verdict: "Снаружи обещание выглядит убедительно, изнутри слабее. Через полгода это может дойти до отзывов." },
+];
+$("bridge").innerHTML = BRIDGE.map((b) => { const l = LEVEL(b.ins.score); return `<li class="xcard xcard--${b.kind[0]}">${status(b.kind[0], b.kind[1]).replace("cmp__status", "cmp__status xcard__status")}<p class="xcard__note">${b.verdict}</p><div class="xcard__pair"><div class="xcard__side"><span class="xcard__lbl">снаружи</span><b>${b.out[0]}</b><span>${b.out[1]}</span></div><div class="xcard__side"><span class="xcard__lbl">изнутри</span><b>${b.ins.name}</b><span>${b.ins.score} · ${LEVEL_WORD[l]}</span></div></div></li>`; }).join("");
+
+/* Карточка метрики */
+const dlg = $("mdlg"); let chDlg;
+const EVID = { "гипотеза": "na", "коррелирует": "warn", "подтверждено пилотом": "ok" };
+function mix(id) { const n = id.length, o = 45 + (n % 4) * 5, t = 30 - (n % 3) * 5; return { o, t, p: 100 - o - t }; }
+const hbars = (items) => items.map((it) => `<li><span>${it.name}</span>${it.value === null ? `<em>в группе меньше ${MIN} человек, не показываем</em>` : `<div class="hbars__bar"><i class="is-${LEVEL(it.value)}" style="width:${it.value}%"></i></div><b>${it.value}</b>`}</li>`).join("");
+function openMetric(id) {
+  const m = view.metrics.find((x) => x.id === id), base = D.metrics.find((x) => x.id === id), l = LEVEL(m.score), x = mix(id);
+  $("mdlg-group").innerHTML = `<span class="mtile__ico">${tpl("ico-" + ICON[m.icon])}</span>${D.groups[m.group]}`;
+  $("mdlg-title").textContent = m.name; $("mdlg-detail").textContent = m.detail;
+  $("mdlg-score").innerHTML = `<span class="mdlg__num">${m.score}</span>${chip(l, sign(m.delta30), `${LEVEL_TIP[l]}. За 30 дней ${sign(m.delta30)}`)}<span class="mdlg__meta">за 30 дней</span><span class="mtile__conf">уверенность данных ${m.confidence}</span>`;
+  $("mdlg-mix").innerHTML = `<div class="mix__bar"><i style="width:${x.o}%"></i><i style="width:${x.t}%"></i><i style="width:${x.p}%"></i></div><ul class="mix__legend"><li><i></i>опросы ${x.o}%</li><li><i></i>тексты ${x.t}%</li><li><i></i>поведенческие сигналы ${x.p}%</li></ul>`;
+  $("mdlg-depts").innerHTML = hbars(D.depts.slice(1).map((d) => ({ name: d.name, value: CLAMP(base.score + d.offset) })));
+  $("mdlg-life").innerHTML = hbars(D.life.slice(1).map((s) => ({ name: s.name, value: D.depts[0].size * s.share < MIN ? null : CLAMP(base.score + s.offset) })));
+  $("mdlg-drivers").innerHTML = m.drivers.map((d) => `<li><span>${d.text}</span>${status(EVID[d.level], d.level)}</li>`).join("");
+  $("mdlg-src").innerHTML = [["О", "Опросы", m.sources.o], ["Т", "Тексты", m.sources.t], ["П", "Поведение и HR-события в агрегате", m.sources.p]].map(([k, n, v]) => `<div><dt title="${n}">${k}</dt><dd><span>${n}:</span> ${v}</dd></div>`).join("");
+  if (typeof typograf === "function") typograf(dlg);
+  dlg.showModal();
+  const opt = {
+    grid: { left: 36, right: 16, top: 16, bottom: 28 },
+    tooltip: { ...chTooltip, trigger: "axis", formatter: (p) => `${p[0].name}: ${p[0].value}` },
+    xAxis: { type: "category", data: D.months, boundaryGap: false, ...chAxis, splitLine: { show: false } },
+    yAxis: { type: "value", min: 30, max: 90, interval: 20, ...chAxis, axisLine: { show: false } },
+    series: [{ type: "line", data: m.trend, smooth: 0.3, showSymbol: false, lineStyle: { color: HC.teal, width: 2.5 }, itemStyle: { color: HC.teal },
+      areaStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: "rgba(14,147,132,.16)" }, { offset: 1, color: "rgba(14,147,132,0)" }]) },
+      markArea: { silent: true, data: [[{ yAxis: 65, itemStyle: { color: HC.okBg } }, { yAxis: 90 }], [{ yAxis: 30, itemStyle: { color: HC.badBg } }, { yAxis: 50 }]] } }],
+  };
+  if (!chDlg) chDlg = mountChart($("ch-dlg"), opt); else { chDlg.setOption(opt, true); chDlg.resize(); }
+}
+dlg.querySelector(".mdlg__close").addEventListener("click", () => dlg.close());
+dlg.addEventListener("click", (e) => { if (e.target === dlg) dlg.close(); });
+
+render();
+{{include:src/rmenu.js}}
+</script>

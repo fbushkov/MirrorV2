@@ -1,0 +1,337 @@
+<!-- page: route=culture-health; title=Дашборд здоровья корпоративной культуры — Mirror -->
+  <main class="is-health">
+  <!-- Первый экран: текст | живой пример сверки с культурным кодом (как «зеркало» на обзоре HR-бренда) -->
+  <section class="page-hero dir-intro" aria-labelledby="page-title">
+    <ol class="crumbs" aria-label="Хлебные крошки">
+      <li><a href="{{href:home}}">Главная</a></li>
+      <li><span aria-current="page">Дашборд здоровья культуры</span></li>
+    </ol>
+    <div class="dir-hero">
+      <div class="page-hero__head">
+        <h1 class="hero__title" id="page-title">Дашборд здоровья<br><span class="dim">корпоративной культуры</span></h1>
+        <p class="page-hero__lead">Как в компании живут и работают на самом деле. Дашборд показывает, где заявленные ценности совпадают с опытом людей, а где расходятся.</p>
+        <div class="dir-hero__actions">
+          <a class="btn btn--primary" href="{{href:start?topic=health}}" data-topic="health">Обсудить запуск</a>
+          <a class="btn-link" href="{{href:culture-health-demo}}">Демо-дашборд {{svgc:arrow-up-right.svg}}</a>
+        </div>
+      </div>
+      <figure class="mirror mirror--flat" id="mirror-demo" aria-label="Сверка с культурным кодом: пример">
+        <div class="mirror__bar"><span class="mirror__label">Сверка с культурным кодом</span><div class="mirror__dots" role="tablist" aria-label="Примеры норм"><button type="button" role="tab" aria-selected="true" aria-label="Открытость"></button><button type="button" role="tab" aria-selected="false" aria-label="Командность"></button><button type="button" role="tab" aria-selected="false" aria-label="Свобода и ответственность"></button></div></div>
+        <div class="mirror__cols">
+          <div class="mirror__side">
+            <span class="mirror__label">Заявлено в коде</span>
+            <div class="mirror__promise-block"><p class="mirror__promise" data-m="promise">«Открытость»</p><p class="mirror__vacancy" data-m="vacancy">По метрикам «Обратная связь и голос» и «Психологическая безопасность»</p></div>
+          </div>
+          <div class="mirror__side mirror__side--people" data-m="quotes">
+            <span class="mirror__label">Люди переживают</span>
+            <blockquote><p>Писали про парковку полгода назад. Ответа так и нет.</p><cite>платформа идей</cite></blockquote>
+            <blockquote><p>После смены руководителя на планёрках стали меньше спорить.</p><cite>пульс-опрос</cite></blockquote>
+          </div>
+        </div>
+        <figcaption class="mirror__verdict is-bad" data-m="verdict"><span class="mirror__status" data-m="status"><span class="cmp__ico">{{svgc:circle-x.svg}}</span>Разрыв</span><span class="mirror__pct"><b data-m="value">49</b> из 100, балл нормы</span></figcaption>
+      </figure>
+<template id="tpl-st-ok"><span class="cmp__ico">{{svgc:circle-check.svg}}</span>Совпадает</template><template id="tpl-st-warn"><span class="cmp__ico">{{svgc:circle-alert.svg}}</span>Частичный разрыв</template><template id="tpl-st-bad"><span class="cmp__ico">{{svgc:circle-x.svg}}</span>Разрыв</template>
+    </div>
+  </section>
+
+  <!-- Полоса разделов: внизу первого экрана, прилипает под шапкой; листается внутри себя (колесо, маска по краям), как меню отчёта -->
+  <nav class="rmenu rmenu--page" id="rmenu" aria-label="Разделы страницы">
+    <div class="rmenu__scroll" id="rmenu-scroll"><div class="rmenu__links"><a href="#why">Зачем</a><a href="#questions">9 вопросов</a><a href="#how">Как работает</a><a href="#layers">Два слоя</a><a href="#metrics">10 метрик</a><a href="#data">Данные</a><a href="#privacy">Приватность</a><a href="#roles">Кто что видит</a><a href="#demo">Дашборд</a><a href="#results">Результат</a><a href="#faq">Частые вопросы</a></div></div>
+  </nav>
+
+  <!-- Зачем: центр, бирюзовая лента из трёх пунктов, ниже «это / это не» -->
+  <section class="section section--anchors" id="why" aria-labelledby="why-title">
+    <div class="section__head section__head--center">
+      <h2 class="headline" id="why-title">Общая картина культуры,<br><span class="dim">на которой строятся решения</span></h2>
+      <p class="lead">Где культура работает, где расходится с заявленным кодом и куда направить усилия.</p>
+    </div>
+    <ol class="vflow vflow--health" role="list">
+      <li class="vflow__item"><img src="{{uri:shape-health-01.svg}}" alt="" width="80" height="80"><span class="vflow__no">01</span><div class="vflow__text"><h3>Видеть культуру по данным</h3><p>А не по ощущениям и громким историям.</p></div></li>
+      <li class="vflow__item"><img src="{{uri:shape-health-02.svg}}" alt="" width="80" height="80"><span class="vflow__no">02</span><div class="vflow__text"><h3>Находить расхождения</h3><p>Между тем, что заявлено в культурном коде, и тем, как живут люди.</p></div></li>
+      <li class="vflow__item"><img src="{{uri:shape-health-03.svg}}" alt="" width="80" height="80"><span class="vflow__no">03</span><div class="vflow__text"><h3>Принимать решения и показывать результат</h3><p>Люди видят, что их обратная связь привела к действиям.</p></div></li>
+    </ol>
+    <div class="well isnot">
+      <div class="isnot__card"><p class="isnot__title">Это</p><ul class="checks checks--ok"><li>{{svgc:circle-check.svg|checks__ico}}Замер переживаемой культуры</li><li>{{svgc:circle-check.svg|checks__ico}}Разрыв между заявленным и реальным</li><li>{{svgc:circle-check.svg|checks__ico}}Помощь в решениях для руководства и команды культуры</li></ul></div>
+      <div class="isnot__card"><p class="isnot__title">Это не</p><ul class="checks checks--no"><li>{{svgc:circle-x.svg|checks__ico}}Проверка лояльности</li><li>{{svgc:circle-x.svg|checks__ico}}Оценка людей и руководителей</li><li>{{svgc:circle-x.svg|checks__ico}}Слежка и поиск авторов сообщений</li></ul></div>
+    </div>
+  </section>
+
+  <!-- Девять вопросов: сетка на подложке, последний — главный, во всю ширину -->
+  <section class="section section--anchors" id="questions" aria-labelledby="questions-title">
+    <div class="section__head">
+      <div class="headline-block">
+        <h2 class="headline" id="questions-title">Девять вопросов,<br><span class="dim">которые обычно остаются без ответа</span></h2>
+      </div>
+    </div>
+    <ol class="well qgrid" role="list">
+      <li><span class="qgrid__no">01</span><p>Понимают ли люди, зачем мы это делаем?</p></li>
+      <li><span class="qgrid__no">02</span><p>Можно ли у нас говорить, ошибаться и спорить без страха?</p></li>
+      <li><span class="qgrid__no">03</span><p>Как мы общаемся и помогаем друг другу?</p></li>
+      <li><span class="qgrid__no">04</span><p>Слышат ли обратную связь и реагируют ли на неё?</p></li>
+      <li><span class="qgrid__no">05</span><p>Честно ли устроены правила и оценка?</p></li>
+      <li><span class="qgrid__no">06</span><p>Чувствуют ли люди, что их вклад замечают?</p></li>
+      <li><span class="qgrid__no">07</span><p>Чувствуют ли люди принадлежность и перспективу роста?</p></li>
+      <li><span class="qgrid__no">08</span><p>Хватает ли людям ресурса, чтобы работать в таком ритме?</p></li>
+      <li><span class="qgrid__no">09</span><p>Где проходит разрыв между тем, что мы декларируем, и тем, как живём?</p></li>
+    </ol>
+  </section>
+
+  <!-- Как работает: четыре шага на подложке -->
+  <section class="section section--anchors" id="how" aria-labelledby="how-title">
+    <div class="section__head section__head--aside">
+      <div class="headline-block">
+        <h2 class="headline" id="how-title"><span class="dim">Четыре шага</span><br>от сигнала до решения</h2>
+        <p class="lead lead--narrow">Любой балл можно проследить до исходных обезличенных сообщений. Баллы не выдумываются.</p>
+      </div>
+      <span class="eyebrow">Как работает · 4 шага</span>
+    </div>
+    <div class="well well--stack">
+      <ol class="pstep-row pstep-row--4" role="list">
+        <li class="pstep"><span class="pstep__no">Шаг №1</span><div class="pstep__text"><h3>Собираем</h3><p>Обратную связь из каналов, которые уже есть, например опросов, анонимных форм и ретроспектив.</p></div></li>
+        <li class="pstep"><span class="pstep__no">Шаг №2</span><div class="pstep__text"><h3>Обезличиваем</h3><p>Убираем имена и персональные сведения до того, как данные попадут в анализ.</p></div></li>
+        <li class="pstep"><span class="pstep__no">Шаг №3</span><div class="pstep__text"><h3>Соотносим</h3><p>Привязываем сигналы к метрикам культуры по прозрачным правилам.</p></div></li>
+        <li class="pstep"><span class="pstep__no">Шаг №4</span><div class="pstep__text"><h3>Показываем</h3><p>Картину, разрывы и динамику. И обсуждаем действия с руководителями.</p></div></li>
+      </ol>
+      <!-- Как на обзоре HR-бренда: тёмная карточка ведёт на соседнее направление, светлая — на методику -->
+      <div class="pnext">
+        <a class="pnext__dark dir dir--brand" href="{{href:hr-brand}}" data-shader="brand"><canvas aria-hidden="true"></canvas><span class="dir__fallback" aria-hidden="true"></span><span class="dir__top"><span class="dir__label">направление 01 · снаружи</span>{{svgc:arrow-up-right-white.svg|dir__arrow}}</span><div><h3>Нужен взгляд снаружи?</h3><p>Оценка HR-бренда и индекс культуры. Совпадает ли то, что вы обещаете, с тем, что видят кандидаты и сотрудники.</p></div></a>
+        <article class="pnext__card"><div><h3>Как считаем</h3><p>10 метрик, источники, зоны балла и уверенность данных. Как считаем разрыв с культурным кодом.</p></div><a class="btn-link" href="{{href:methodology-health}}">Открыть методику {{svgc:arrow-up-right.svg}}</a></article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Два слоя: таблица «норма — метрики — балл — разрыв» на подложке -->
+  <section class="section section--anchors" id="layers" aria-labelledby="layers-title">
+    <div class="section__head">
+      <div class="headline-block">
+        <h2 class="headline" id="layers-title">Два слоя культуры<br><span class="dim">и разрыв между ними</span></h2>
+        <p class="lead">Заявленная культура складывается из ценностей и норм культурного кода. Переживаемая показывает, что люди испытывают каждый день. Разрыв между ними подсказывает, куда направить усилия.</p>
+      </div>
+    </div>
+    <div class="rblock">
+      <div class="rblock__head"><p class="rblock__title">2 из 5 норм расходятся с опытом, ещё 2 расходятся частично</p><p class="rblock__hint">Пример на демо-данных. Балл нормы считаем как среднее по связанным метрикам.</p></div>
+      <div class="cmp" role="region" aria-labelledby="layers-t" tabindex="0">
+        <table class="cmp__table">
+          <colgroup><col style="width:26%"><col style="width:40%"><col style="width:12%"><col></colgroup>
+          <thead><tr><th scope="col" id="layers-t" class="cmp__title">Заявленная культура</th><th scope="col"><span class="cmp__cap">Переживаемая культура по метрикам</span></th><th scope="col"><span class="cmp__cap">Балл</span></th><th scope="col"><span class="cmp__cap">Разрыв</span></th></tr></thead>
+          <tbody>
+            <tr><th scope="row"><div class="cmp__rowhead"><span>«Открытость»</span></div></th><td>Психологическая безопасность, обратная связь и голос</td><td>49</td><td><span class="cmp__status"><span class="cmp__ico cmp__ico--no">{{svgc:circle-x.svg}}</span>разрыв</span></td></tr>
+            <tr><th scope="row"><div class="cmp__rowhead"><span>«Забота о людях»</span></div></th><td>Энергия и ресурс</td><td>44</td><td><span class="cmp__status"><span class="cmp__ico cmp__ico--no">{{svgc:circle-x.svg}}</span>разрыв</span></td></tr>
+            <tr><th scope="row"><div class="cmp__rowhead"><span>«Свобода и ответственность»</span></div></th><td>Влияние и ответственность</td><td>55</td><td><span class="cmp__status"><span class="cmp__ico cmp__ico--warn">{{svgc:circle-alert.svg}}</span>частичный разрыв</span></td></tr>
+            <tr><th scope="row"><div class="cmp__rowhead"><span>«Командность»</span></div></th><td>Сотрудничество и связи</td><td>72</td><td><span class="cmp__status"><span class="cmp__ico cmp__ico--yes">{{svgc:circle-check.svg}}</span>совпадает</span></td></tr>
+            <tr><th scope="row"><div class="cmp__rowhead"><span>«Развитие»</span></div></th><td>Развитие и рост</td><td>57</td><td><span class="cmp__status"><span class="cmp__ico cmp__ico--warn">{{svgc:circle-alert.svg}}</span>частичный разрыв</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 метрик: три группы, описание метрики — в подсказке «i» -->
+  <section class="section section--anchors" id="metrics" aria-labelledby="metrics-title">
+    <div class="section__head">
+      <div class="headline-block">
+        <h2 class="headline" id="metrics-title">10 метрик,<br><span class="dim">из которых складывается переживаемая культура</span></h2>
+        <p class="lead">Что измеряет метрика и откуда данные, подскажет значок у названия.</p>
+      </div>
+    </div>
+    <div class="well">
+      <div class="mgroups mgroups--about" id="mabout"></div>
+      <p class="mabout__note">{{svgc:lucide-info.svg}}Физическая, юридическая, финансовая и информационная безопасность, а также размер зарплат в метрики не входят. Ими занимаются отдельные службы.</p>
+    </div>
+  </section>
+
+  <!-- Данные: три уровня и чего в них нет -->
+  <section class="section section--anchors" id="data" aria-labelledby="data-title">
+    <div class="section__head">
+      <div class="headline-block">
+        <h2 class="headline" id="data-title">Три уровня данных,<br><span class="dim">и чётко сказано, чего в них нет</span></h2>
+      </div>
+    </div>
+    <div class="well well--stack">
+      <ol class="dlevels" role="list">
+        <li><span class="qgrid__no">Уровень 1</span><h3>Основа балла</h3><p>Опросы (пульсы, eNPS, опросы команд, онбординг, интервью при уходе) и тексты (анонимные формы, комментарии, вопросы на встречах с руководством, платформа идей, ретроспективы, обезличенные данные чатов).</p></li>
+        <li><span class="qgrid__no">Уровень 2</span><h3>Подтверждающие сигналы</h3><p>Агрегированные HR-данные, например абсентеизм и доля закрытых петель обратной связи. Они подтверждают или опровергают сигнал, но баллом не становятся.</p></li>
+        <li><span class="qgrid__no">Уровень 3</span><h3>Контекст</h3><p>Реорганизации, смены руководителей, релизы, изменения в системе оценки. Помогают понять, почему сдвинулся балл.</p></li>
+      </ol>
+      <div class="dnot"><p class="dnot__title"><span class="dnot__ico">{{svgc:lucide-eye-off.svg}}</span>Чего нет в данных</p><ul class="checks checks--no dnot__list"><li>{{svgc:circle-x.svg|checks__ico}}Личных переписок</li><li>{{svgc:circle-x.svg|checks__ico}}Имён авторов</li><li>{{svgc:circle-x.svg|checks__ico}}Оценки конкретных людей</li></ul></div>
+    </div>
+  </section>
+
+  <!-- Приватность: заголовок и цифра 5 слева, восемь правил справа -->
+  <section class="section section--anchors" id="privacy" aria-labelledby="privacy-title">
+    <div class="psplit">
+      <div class="psplit__text">
+        <h2 class="headline" id="privacy-title">Смотрим на группы,<br><span class="dim">а не на людей</span></h2>
+        <p class="lead">Правила одинаковые для всех ролей, включая топ-менеджмент.</p>
+        <div class="pfive"><span class="pfive__num">5</span><p>человек в минимальной группе, которую видит руководитель</p></div>
+      </div>
+      <ol class="well prules" role="list">
+        <li><span class="qgrid__no">01</span><p>Минимальная группа показа составляет 5 человек. Меньшие группы объединяются с уровнем выше.</p></li>
+        <li><span class="qgrid__no">02</span><p>Фильтры нельзя комбинировать так, чтобы получилась группа меньше 5 человек.</p></li>
+        <li><span class="qgrid__no">03</span><p>Анонимные сообщения остаются на уровне компании и не приписываются подразделениям.</p></li>
+        <li><span class="qgrid__no">04</span><p>Мы не определяем авторов. Стилометрию и похожие методы не используем.</p></li>
+        <li><span class="qgrid__no">05</span><p>До показа проверяем цитаты на узнаваемые детали, например проекты и должности.</p></li>
+        <li><span class="qgrid__no">06</span><p>Данные публикуются с задержкой, а не по каждому сообщению.</p></li>
+        <li><span class="qgrid__no">07</span><p>Календари, связи и чаты используем только в агрегате и по согласованию с юристами.</p></li>
+        <li><span class="qgrid__no">08</span><p>У каждого балла виден уровень уверенности данных.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- Кто что видит: таблица ролей -->
+  <section class="section section--anchors" id="roles" aria-labelledby="roles-title">
+    <div class="section__head">
+      <div class="headline-block">
+        <h2 class="headline" id="roles-title">У каждой роли<br><span class="dim">свой срез и свой ритм</span></h2>
+      </div>
+    </div>
+    <div class="rblock">
+      <div class="cmp" role="region" aria-labelledby="roles-t" tabindex="0">
+        <table class="cmp__table">
+          <colgroup><col style="width:30%"><col><col style="width:24%"></colgroup>
+          <thead><tr><th scope="col" id="roles-t" class="cmp__title">Роль</th><th scope="col"><span class="cmp__cap">Что видит</span></th><th scope="col"><span class="cmp__cap">Как часто</span></th></tr></thead>
+          <tbody>
+            <tr><th scope="row"><div class="cmp__rowhead"><span>Команда культуры и HRBP</span></div></th><td>Детальный разбор, сигналы, расхождения</td><td>Еженедельно</td></tr>
+            <tr><th scope="row"><div class="cmp__rowhead"><span>Руководители</span></div></th><td>Срез своей группы, от 5 человек</td><td>Раз в 2 недели</td></tr>
+            <tr><th scope="row"><div class="cmp__rowhead"><span>Топ-менеджмент</span></div></th><td>Общая картина, разрывы, тренды</td><td>Раз в месяц или квартал</td></tr>
+            <tr><th scope="row"><div class="cmp__rowhead"><span>Сотрудники</span></div></th><td>Публичная страница «Решения по обратной связи»</td><td>По мере обновления</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Дашборд: что внутри | превью графика, ведёт на демо -->
+  <section class="section section--anchors" id="demo" aria-labelledby="demo-title">
+    <div class="rsplit">
+      <div class="rsplit__text">
+        <h2 class="headline" id="demo-title">Что будет<br><span class="dim">в дашборде</span></h2>
+        <ul class="checks checks--ok"><li>{{svgc:circle-check.svg|checks__ico}}Индекс переживаемой культуры и его динамика</li><li>{{svgc:circle-check.svg|checks__ico}}10 метрик с карточкой: срезы, вклад каналов, что влияет</li><li>{{svgc:circle-check.svg|checks__ico}}Где просаживается: подразделения и этапы жизненного цикла</li><li>{{svgc:circle-check.svg|checks__ico}}Разрыв с культурным кодом по каждой норме</li><li>{{svgc:circle-check.svg|checks__ico}}Расхождения между каналами и лента обезличенных сигналов</li><li>{{svgc:circle-check.svg|checks__ico}}Правило пяти человек на любом срезе</li></ul>
+        <a class="btn btn--primary" href="{{href:culture-health-demo}}">Открыть демо-дашборд {{svgc:arrow-up-right-white.svg}}</a>
+      </div>
+      <div class="well rsplit__vis">
+        <div class="panel">
+          <div class="panel__head"><h3 class="panel__title">Индекс почти не меняется</h3><p class="panel__hint">А две метрики за месяц ушли в зону риска. Пунктиром отмечено событие.</p></div>
+          <div class="chart" id="ch-dyn" role="img" aria-label="Индекс переживаемой культуры по месяцам и две метрики, которые упали в октябре"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Результат: решения по обратной связи и критерии успеха -->
+  <section class="section section--anchors" id="results" aria-labelledby="results-title">
+    <div class="section__head">
+      <div class="headline-block">
+        <h2 class="headline" id="results-title">Решения по обратной связи<br><span class="dim">видят сотрудники</span></h2>
+        <p class="lead">На публичной странице видно, какой сигнал пришёл, что решили и что изменилось. Без неё обратная связь превращается в пустую формальность.</p>
+      </div>
+    </div>
+    <div class="well well--stack">
+      <ul class="fdec">
+        <li><span class="fdec__lbl">Тема</span><h3>Переработки в отделе продаж</h3><span class="fdec__lbl">Решение</span><p>Пересчитали план с учётом штата и ввели «тихие часы» без встреч</p><p class="fdec__res"><span class="cmp__ico cmp__ico--yes">{{svgc:circle-check.svg}}</span>Энергия и ресурс +9 за квартал</p></li>
+        <li><span class="fdec__lbl">Тема</span><h3>Сигналы остаются без ответа</h3><span class="fdec__lbl">Решение</span><p>Отвечать на каждый сигнал в течение 10 рабочих дней</p><p class="fdec__res"><span class="cmp__ico cmp__ico--yes">{{svgc:circle-check.svg}}</span>Доля закрытых петель выросла с 34% до 71%</p></li>
+        <li><span class="fdec__lbl">Тема</span><h3>Непонятные критерии ревью</h3><span class="fdec__lbl">Решение</span><p>Опубликовали критерии для всех отделов</p><p class="fdec__res"><span class="cmp__ico cmp__ico--yes">{{svgc:circle-check.svg}}</span>Справедливость и прозрачность +6</p></li>
+      </ul>
+      <div class="success">
+        <div><span class="fdec__lbl">Как поймём, что это работает</span><h3>Критерии успеха первого квартала</h3></div>
+        <ul class="checks checks--ok"><li>{{svgc:circle-check.svg|checks__ico}}Первая версия показывает расхождение минимум по трём метрикам</li><li>{{svgc:circle-check.svg|checks__ico}}Любой балл прослеживается до исходных сигналов</li><li>{{svgc:circle-check.svg|checks__ico}}За первый квартал принято хотя бы одно решение по культуре на основе дашборда</li><li>{{svgc:circle-check.svg|checks__ico}}Нет ни одного случая деанонимизации</li><li>{{svgc:circle-check.svg|checks__ico}}Сотрудники видят результат своей обратной связи</li></ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Вопросы сотрудников -->
+  <section class="section section--anchors" id="faq" aria-labelledby="faq-title">
+    <div class="section__head section__head--faq">
+      <span class="eyebrow">Вопросы · сотрудников</span>
+      <div class="headline-block">
+        <h2 class="headline" id="faq-title"><span class="dim">Частые вопросы</span><br>сотрудников</h2>
+        <p class="lead">Эти ответы можно использовать в рассылке перед запуском дашборда.</p>
+      </div>
+    </div>
+    <div class="faq" id="faq-list" data-groups="healthPage"></div>
+  </section>
+
+  <section class="rsec rfull" aria-labelledby="cta-title">
+    <div class="help">
+      <img src="{{uri:shape-cta-dashboard.svg}}" alt="" width="80" height="80">
+      <div class="help__text"><h3 id="cta-title">Запустите дашборд в своей компании</h3><p>Начнём с диагностики и первого замера. Расскажите о компании, и мы предложим план кампании.</p></div>
+      <a class="btn btn--primary" href="{{href:start?topic=health}}" data-topic="health">Обсудить кампанию {{svgc:arrow-up-right-white.svg}}</a>
+      <a class="btn-link" href="{{href:privacy}}">Политика обработки данных</a>
+    </div>
+  </section>
+<template id="ico-compass">{{svgc:lucide-compass.svg}}</template><template id="ico-house">{{svgc:lucide-house.svg}}</template><template id="ico-sprout">{{svgc:lucide-sprout.svg}}</template><template id="ico-shield">{{svgc:lucide-shield.svg}}</template><template id="ico-handshake">{{svgc:lucide-handshake.svg}}</template><template id="ico-megaphone">{{svgc:lucide-megaphone.svg}}</template><template id="ico-battery-medium">{{svgc:lucide-battery-medium.svg}}</template><template id="ico-target">{{svgc:lucide-target.svg}}</template><template id="ico-scale">{{svgc:lucide-scale.svg}}</template><template id="ico-award">{{svgc:lucide-award.svg}}</template><template id="ico-info">{{svgc:lucide-info.svg}}</template>
+  </main>
+<script>
+{{include:vendor/echarts.mirror.min.js}}
+</script>
+<script>
+{{include:src/charts.js}}
+/* 10 метрик: из src/content/pulse.ts (name, short, detail) */
+const GROUPS = { meaning: "Смысл и принадлежность", relations: "Отношения", work: "Работа и ресурсы" };
+const METRICS = [
+  ["meaning", "compass", "Ясность смысла и направления", "Понимают ли люди, зачем мы это делаем, и согласованы ли приоритеты", "Насколько люди понимают стратегию, видят связь своей работы с целями компании и не страдают от постоянной смены приоритетов."],
+  ["meaning", "house", "Принадлежность и инклюзия", "Чувствуют ли люди, что они свои", "Чувствуют ли сотрудники себя частью команды и компании, независимо от роли, стажа и формата работы."],
+  ["meaning", "sprout", "Развитие и рост", "Видят ли люди перспективу и движение", "Есть ли понятный путь роста, доступно ли обучение, получают ли люди новые задачи и роли."],
+  ["relations", "shield", "Психологическая безопасность", "Можно ли говорить, ошибаться и спрашивать без страха наказания", "Уверенность, что за вопрос, ошибку или несогласие не накажут и не высмеют."],
+  ["relations", "handshake", "Сотрудничество и связи", "Как мы работаем вместе в команде, между командами и с руководителем", "Насколько легко договориться внутри команды и с соседними командами, есть ли регулярный контакт с руководителем."],
+  ["relations", "megaphone", "Обратная связь и голос", "Слышат ли людей и закрывается ли цикл «сказал — услышали — отреагировали»", "Есть ли у людей канал, чтобы сказать о проблеме, и видят ли они реакцию. Закрытая петля означает, что сотрудник узнаёт, что сделали с его сигналом."],
+  ["work", "battery-medium", "Энергия и ресурс", "Хватает ли сил, нагрузки и восстановления", "Соответствует ли нагрузка ресурсу людей, успевают ли они восстанавливаться, нет ли хронических переработок."],
+  ["work", "target", "Влияние и ответственность", "Баланс свободы решений и ответственности за результат", "Могут ли люди принимать решения в своей зоне и отвечать за результат, а не согласовывать каждую мелочь."],
+  ["work", "scale", "Справедливость и прозрачность", "Понятны ли и честны ли правила, оценка и оплата", "Понимают ли люди, как устроены оценка, повышения и правила оплаты, и считают ли их честными. Размер зарплат сюда не входит."],
+  ["work", "award", "Признание", "Замечают ли вклад, и не только деньгами", "Говорят ли людям спасибо, отмечают ли вклад публично, видят ли руководители результат работы."],
+];
+const tplHTML = (id) => document.getElementById(id).innerHTML;
+document.getElementById("mabout").innerHTML = Object.entries(GROUPS).map(([g, name]) => `<div class="mgroup"><p class="mgroup__name">${name}</p>${METRICS.filter((m) => m[0] === g).map(([, ico, nm, short, detail]) => `<div class="mabout"><span class="mtile__ico">${tplHTML("ico-" + ico)}</span><div class="mabout__text"><p class="mabout__name">${nm}<button class="info" type="button" data-tip="${detail}" aria-label="Что измеряет: ${nm}">${tplHTML("ico-info")}</button></p><p class="mabout__short">${short}</p></div></div>`).join("")}</div>`).join("");
+
+/* Превью динамики: индекс и две упавшие метрики (данные демо-дашборда) */
+const MONTHS = ["Ноя", "Дек", "Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт"];
+const IDX = [61, 62, 61, 62, 62, 62, 62, 62, 62, 62, 61, 59], ENERGY = [56, 55, 56, 57, 56, 55, 56, 55, 56, 55, 55, 44], SAFETY = [58, 59, 58, 59, 60, 59, 60, 59, 58, 57, 58, 50];
+const TEAL = "#0e9384", line = (name, data, color, extra = {}) => ({ name, type: "line", data, smooth: 0.3, showSymbol: false, lineStyle: { color, width: 2 }, itemStyle: { color }, ...extra });
+mountChart(document.getElementById("ch-dyn"), {
+  grid: { left: 40, right: 16, top: 48, bottom: 32 },
+  tooltip: { ...chTooltip, trigger: "axis", axisPointer: { type: "line", lineStyle: { color: "#9fd6cf" } }, formatter: (p) => `${p[0].name}<br>` + p.map((s) => `${s.seriesName}: ${s.value}`).join("<br>") },
+  xAxis: { type: "category", data: MONTHS, boundaryGap: false, ...chAxis, splitLine: { show: false } },
+  yAxis: { type: "value", min: 30, max: 80, interval: 10, ...chAxis, axisLine: { show: false } },
+  series: [
+    line("Индекс", IDX, TEAL, { lineStyle: { color: TEAL, width: 3 },
+      areaStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: "rgba(14,147,132,.16)" }, { offset: 1, color: "rgba(14,147,132,0)" }]) },
+      markLine: (() => { const m = eventMarks([{ x: "Окт", text: "План и руководители" }]); m.label = { ...m.label, align: "right" }; return m; })() }), // событие у правого края: подпись левее линии
+    line("Энергия и ресурс", ENERGY, CH.bad),
+    line("Психологическая безопасность", SAFETY, CH.ink4, { lineStyle: { color: CH.ink4, width: 2, type: [6, 4] } }),
+  ],
+});
+
+/* Сверка с культурным кодом: три примера, листаются раз в 5 секунд; пауза при наведении и фокусе, без движения при reduced-motion */
+const MIRROR = [
+  { promise: "Открытость", vacancy: "По метрикам «Обратная связь и голос» и «Психологическая безопасность»", quotes: [["платформа идей", "Писали про парковку полгода назад. Ответа так и нет."], ["пульс-опрос", "После смены руководителя на планёрках стали меньше спорить."]], status: "bad", value: 49 },
+  { promise: "Командность", vacancy: "По метрике «Сотрудничество и связи»", quotes: [["ретроспектива", "С соседней командой наконец договорились о едином трекере, стало проще."]], status: "ok", value: 72 },
+  { promise: "Свобода и ответственность", vacancy: "По метрике «Влияние и ответственность»", quotes: [["анонимная форма", "Для закупки от 50 000 ₽ нужны четыре согласования."]], status: "warn", value: 55 },
+];
+const mirrorEl = document.getElementById("mirror-demo"), dots = [...mirrorEl.querySelectorAll(".mirror__dots button")];
+const $m = (k) => mirrorEl.querySelector(`[data-m="${k}"]`);
+let mi = 0, paused = false;
+function showMirror(n) {
+  mi = n; const ex = MIRROR[n];
+  $m("promise").textContent = `«${ex.promise}»`; $m("vacancy").textContent = ex.vacancy;
+  $m("quotes").innerHTML = '<span class="mirror__label">Люди переживают</span>' + ex.quotes.map(([src, t]) => `<blockquote><p>${t}</p><cite>${src}</cite></blockquote>`).join("");
+  $m("status").innerHTML = document.getElementById("tpl-st-" + ex.status).innerHTML;
+  $m("verdict").className = "mirror__verdict is-" + ex.status;
+  $m("value").textContent = ex.value;
+  dots.forEach((d, i) => d.setAttribute("aria-selected", i === n));
+  if (typeof typograf === "function") typograf(mirrorEl);
+}
+dots.forEach((d, i) => d.addEventListener("click", () => showMirror(i)));
+/* Карточка не прыгает при смене примера: высота колонок — по самому высокому примеру */
+const mirrorCols = mirrorEl.querySelector(".mirror__cols");
+function lockMirror() {
+  const keep = mi; mirrorCols.style.minHeight = ""; let h = 0;
+  MIRROR.forEach((_, i) => { showMirror(i); h = Math.max(h, mirrorCols.offsetHeight); });
+  showMirror(keep); mirrorCols.style.minHeight = h + "px";
+}
+lockMirror(); addEventListener("resize", lockMirror); document.fonts && document.fonts.ready.then(lockMirror);
+mirrorEl.addEventListener("pointerenter", () => (paused = true)); mirrorEl.addEventListener("pointerleave", () => (paused = false));
+mirrorEl.addEventListener("focusin", () => (paused = true)); mirrorEl.addEventListener("focusout", () => (paused = false));
+if (!matchMedia("(prefers-reduced-motion: reduce)").matches) setInterval(() => { if (!paused && !document.hidden) showMirror((mi + 1) % MIRROR.length); }, 5000);
+
+{{include:src/rmenu.js}}
+</script>

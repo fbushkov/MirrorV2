@@ -1493,11 +1493,18 @@ button.seg__item.is-active { background: var(--c-surface-2); }
 .rpair .xcard { flex: 1; }
 .isnot--flush { margin-top: 0; }
 /* Как читать балл: четыре карточки; строки зон и уровней доказанности */
-.dlevels--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); margin: 0; } /* карточки с пояснениями статусов — в первом ряду, списки на одной линии */
+.dlevels--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 0; }
 .rblock .mabout__note { margin-top: var(--gap-inner); }
-@media (max-width: 1279px) { .pstep-row--method { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 1279px) { .pstep-row--method, .dlevels--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 767px) { .pstep-row--method, .dlevels--4 { grid-template-columns: minmax(0, 1fr); } .fcard__expr { padding: 16px; } }
 .rpair--rev { grid-template-columns: minmax(0, 1084fr) minmax(0, 716fr); } /* график шире, вывод уже */
 @media (max-width: 1279px) { .rpair--rev { grid-template-columns: minmax(0, 1fr); } }
 .prule dd { white-space: nowrap; }
 .nowrap { white-space: nowrap; }
+/* Список с точками внутри текста карточки: то же начертание, что у абзаца */
+.dots { list-style: none; display: flex; flex-direction: column; gap: 4px; margin-top: -8px; color: var(--c-ink-2); }
+.dots li { position: relative; padding-left: 18px; }
+.dots li::before { content: ""; position: absolute; left: 4px; top: 10px; width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+/* Карточки сверки в ряду: статус, вывод и пара сторон стоят на одних строках (subgrid) */
+.xcards { grid-auto-rows: auto; }
+.xcards .xcard { display: grid; grid-row: span 3; grid-template-rows: subgrid; row-gap: 16px; }

@@ -6,6 +6,7 @@
   partials/footer.html  → src/components/site/footer.tsx
   src/styles.css        → src/app/globals.css (+ классы компонентов)
   src/app.js            → клиентские компоненты (меню, форма, шейдер) + typograf
+  tools/bundle.py       → сайт одним файлом dist/mirror-site.html (запуск после build.py)
   vendor/echarts.mirror.min.js → своя сборка ECharts (tools/echarts-entry.js, пересборка: node tools/echarts-build.mjs)
   ROUTES                → NAV / ROUTES в src/content/site.ts
   pages/*.html          → src/app/**/page.tsx
