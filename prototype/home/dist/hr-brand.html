@@ -1422,7 +1422,7 @@ button.seg__item.is-active { background: var(--c-surface-2); }
 .mabout__note svg { flex: none; width: 20px; height: 20px; color: var(--c-ink-4); }
 /* Данные: три уровня и чего в них нет */
 .dlevels { list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap-inner); }
-.dlevels li { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; padding: clamp(24px, 2.5vw, 48px); border-radius: var(--r-card); background: var(--c-surface); }
+.dlevels > li { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; padding: clamp(24px, 2.5vw, 48px); border-radius: var(--r-card); background: var(--c-surface); }
 .dlevels h3 { font: 600 var(--fs-title)/var(--lh-title) var(--font-sans); }
 .dlevels p { color: var(--c-ink-2); }
 .dnot { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); align-items: center; gap: 16px 48px; padding: 24px clamp(24px, 2.5vw, 48px); border-radius: var(--r-card); background: var(--c-surface); }
@@ -1480,6 +1480,41 @@ button.seg__item.is-active { background: var(--c-surface-2); }
 @media (max-width: 1279px) { .mgroups--about { grid-template-columns: minmax(0, 1fr); } }
 @media (max-width: 1023px) { .dnot { grid-template-columns: minmax(0, 1fr); } .dnot__list { flex-direction: column; } }
 
+/* Методики «Как считаем» (2026-10-29): те же компоненты, что у обзоров; формула — в карточке как «Проверка обещания» */
+.fcard__expr { padding: 20px; border-radius: var(--r-inner); background: var(--c-surface-2); font: 500 clamp(20px, 1.6vw, 28px)/1.3 var(--font-mono); letter-spacing: -.01em; text-wrap: balance; }
+.fcard__expr span { color: var(--c-violet); }
+.is-health .fcard__expr span { color: var(--c-teal); }
+.fcard__text { font: 400 var(--fs-sm)/var(--lh-sm) var(--font-sans); color: var(--c-ink-2); }
+/* Шесть шагов: три в ряд; правила шага — строки «условие — значение» на сером */
+.pstep-row--method { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.pstep-row--method .pstep { gap: 24px; }
+.pstep-row--method .pstep__text h3 { font: 600 var(--fs-title)/var(--lh-title) var(--font-sans); }
+.pstep-row--method .pstep__text p { color: var(--c-ink-2); }
+.prule { align-self: stretch; display: flex; flex-direction: column; gap: 8px; margin-top: auto; padding: 16px; border-radius: var(--r-inner); background: var(--c-surface-2); font: 400 var(--fs-sm)/var(--lh-sm) var(--font-sans); }
+.prule div { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.prule dt { color: var(--c-ink-2); }
+.prule dt .cmp__status { color: var(--c-ink); }
+.prule dt .cmp__ico svg { width: 18px; height: 18px; }
+.prule dd { font-weight: 500; text-align: right; }
+/* Калькулятор внутри блока отчёта: таблица | индекс в белой карточке */
+.rblock .calc__result { padding: 24px; border-radius: var(--r-inner); background: var(--c-surface); top: 200px; }
+.rblock .calc__result .rkpi__label { align-self: flex-start; }
+.xcard__text { color: var(--c-ink-2); }
+.rpair .xcard { flex: 1; }
+.isnot--flush { margin-top: 0; }
+/* Как читать балл: четыре карточки; строки зон и уровней доказанности */
+.dlevels--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 0; }
+.zrows { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.zrows li { display: flex; align-items: center; gap: 12px; color: var(--c-ink-2); }
+.zrows .cmp__ico svg { width: 20px; height: 20px; }
+.cmp__table--src td { font-size: var(--fs-sm); line-height: var(--lh-sm); color: var(--c-ink-2); vertical-align: top; }
+.cmp__table--src tbody th { vertical-align: top; }
+.rblock .mabout__note { margin-top: var(--gap-inner); }
+@media (max-width: 1279px) { .pstep-row--method, .dlevels--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 767px) { .pstep-row--method, .dlevels--4 { grid-template-columns: minmax(0, 1fr); } .fcard__expr { padding: 16px; } }
+.rpair--rev { grid-template-columns: minmax(0, 1084fr) minmax(0, 716fr); } /* график шире, вывод уже */
+@media (max-width: 1279px) { .rpair--rev { grid-template-columns: minmax(0, 1fr); } }
+
 </style>
 </head>
 <body>
@@ -1528,7 +1563,7 @@ button.seg__item.is-active { background: var(--c-surface-2); }
             <div class="mega__cards">
               <a class="mega__card" href="hr-brand.html"><b>Обзор</b><span>Что проверяем и что находится в отчёте</span></a>
               <a class="mega__card" href="hr-brand-demo.html"><b>Демо-отчёт</b><span>Индекс · Слепые зоны · Место в отрасли</span></a>
-              <a class="mega__card" href="methodology.html#brand"><b>Как считаем</b><span>Методика внешней оценки</span></a>
+              <a class="mega__card" href="methodology-brand.html"><b>Как считаем</b><span>Методика внешней оценки</span></a>
             </div>
           </div>
           <div class="mega__panel" data-id="health">
@@ -1536,7 +1571,7 @@ button.seg__item.is-active { background: var(--c-surface-2); }
             <div class="mega__cards">
               <a class="mega__card" href="culture-health.html"><b>Обзор</b><span>10 метрик и приватность сотрудников</span></a>
               <a class="mega__card" href="culture-health-demo.html"><b>Демо-дашборд</b><span>Срезы · Сигналы · Расхождения</span></a>
-              <a class="mega__card" href="#"><b>Как считаем</b><span>Методика внутреннего замера</span></a>
+              <a class="mega__card" href="methodology-health.html"><b>Как считаем</b><span>Методика внутреннего замера</span></a>
             </div>
           </div>
           <div class="mega__panel" data-id="mobile">
@@ -1544,13 +1579,13 @@ button.seg__item.is-active { background: var(--c-surface-2); }
             <div class="mega__cards">
               <a class="mega__card" href="hr-brand.html"><b>Обзор</b><span>Что проверяем и что в отчёте</span></a>
               <a class="mega__card" href="hr-brand-demo.html"><b>Демо-отчёт</b><span>Индекс · Слепые зоны · Место в отрасли</span></a>
-              <a class="mega__card" href="methodology.html#brand"><b>Как считаем</b><span>Методика внешней оценки</span></a>
+              <a class="mega__card" href="methodology-brand.html"><b>Как считаем</b><span>Методика внешней оценки</span></a>
             </div>
             <p class="mega__title">/ дашборд здоровья корпоративной культуры</p>
             <div class="mega__cards">
               <a class="mega__card" href="culture-health.html"><b>Обзор</b><span>10 метрик и приватность</span></a>
               <a class="mega__card" href="culture-health-demo.html"><b>Демо-дашборд</b><span>Срезы · Сигналы · Расхождения</span></a>
-              <a class="mega__card" href="#"><b>Как считаем</b><span>Методика внутреннего замера</span></a>
+              <a class="mega__card" href="methodology-health.html"><b>Как считаем</b><span>Методика внутреннего замера</span></a>
             </div>
             <div class="mega__cards">
               <a class="mega__card" href="pricing.html"><b>Цены</b></a>
@@ -1614,9 +1649,9 @@ button.seg__item.is-active { background: var(--c-surface-2); }
     </div>
   </section>
 
-  <!-- Полоса разделов: внизу первого экрана, при прокрутке прилипает под шапкой -->
-  <nav class="anchors" id="anchors" aria-label="Разделы страницы">
-    <a href="#check" class="is-active">Что проверяем</a><a href="#metrics">Три показателя</a><a href="#matrix">Матрица</a><a href="#report">Отчёт</a><a href="#process">Как проходит</a><a href="#faq">Вопросы</a>
+  <!-- Полоса разделов: внизу первого экрана, прилипает под шапкой; листается внутри себя (колесо, маска по краям), как меню отчёта -->
+  <nav class="rmenu rmenu--page" id="rmenu" aria-label="Разделы страницы">
+    <div class="rmenu__scroll" id="rmenu-scroll"><div class="rmenu__links"><a href="#check">Что проверяем</a><a href="#metrics">Три показателя</a><a href="#matrix">Матрица</a><a href="#report">Отчёт</a><a href="#process">Как проходит</a><a href="#faq">Вопросы</a></div></div>
   </nav>
 
   <!-- Что проверяем: центр + фиолетовая лента из трёх шагов -->
@@ -1647,7 +1682,7 @@ button.seg__item.is-active { background: var(--c-surface-2); }
         <button class="qtab" type="button" role="tab" aria-selected="false" aria-controls="mp-industry" id="mt-industry" tabindex="-1"><span class="qtab__ico"><svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 14.66V17a1 1 0 0 1-1 1 2 2 0 0 0-2 2v2"/><path d="M14 14.66V17a1 1 0 0 0 1 1 2 2 0 0 1 2 2v2"/><path d="M17.916 10H19.5A2.5 2.5 0 0 0 22 7.5V5a1 1 0 0 0-1-1h-3"/><path d="M4 22h16"/><path d="M6 9a6 6 0 0 0 12 0V3a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1z"/><path d="M6.084 10H4.5A2.5 2.5 0 0 1 2 7.5V5a1 1 0 0 1 1-1h3"/></svg></span><span class="qtab__foot"><span class="qtab__text"><span class="qtab__name">Место в отрасли</span><span class="qtab__q">Насколько хороши условия?</span></span><span class="qtab__val"><b>62</b>перцентиль</span></span></button>
       </div>
       <div class="qpanel" role="tabpanel" id="mp-index" aria-labelledby="mt-index">
-        <div class="qpanel__text"><div><span class="qpanel__eyebrow">Относительно ваших обещаний</span><h3 class="qpanel__title">Совпадают ли слова и дела?</h3><p>Доля ваших обещаний, которые подтверждает опыт людей в отзывах, соцсетях, медиа и ответах нейросетей.</p></div><a class="btn-link" href="methodology.html">Подробнее о показателях <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <div class="qpanel__text"><div><span class="qpanel__eyebrow">Относительно ваших обещаний</span><h3 class="qpanel__title">Совпадают ли слова и дела?</h3><p>Доля ваших обещаний, которые подтверждает опыт людей в отзывах, соцсетях, медиа и ответах нейросетей.</p></div><a class="btn-link" href="methodology-brand.html">Подробнее о показателях <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g>
 <path d="M14.8327 14.1641C14.8327 14.5323 14.5342 14.8307 14.166 14.8307C13.7978 14.8307 13.4993 14.5323 13.4993 14.1641V7.4401L6.30404 14.6354C6.04369 14.8958 5.62168 14.8958 5.36133 14.6354C5.10098 14.3751 5.10098 13.9531 5.36133 13.6927L12.5566 6.4974H5.83268C5.46449 6.4974 5.16602 6.19892 5.16602 5.83073C5.16602 5.46254 5.46449 5.16406 5.83268 5.16406H14.166C14.5342 5.16406 14.8327 5.46254 14.8327 5.83073V14.1641Z" fill="currentColor"/>
 </g>
@@ -1655,27 +1690,29 @@ button.seg__item.is-active { background: var(--c-surface-2); }
         <div class="qpanel__vis"><div class="gauge gauge--big" id="g-index" role="img" aria-label="Индекс культуры 65 из 100"></div><p class="mcard__cap">Подтверждено 5 из 8 обещаний</p></div>
       </div>
       <div class="qpanel" role="tabpanel" id="mp-blind" aria-labelledby="mt-blind" hidden>
-        <div class="qpanel__text"><div><span class="qpanel__eyebrow">Относительно того, что обсуждают люди</span><h3 class="qpanel__title">О чём говорят, а вы молчите?</h3><p>Темы, которые часто встречаются в отзывах и разговорах, но которых нет в ваших текстах. Молчать выгодно только до первого отзыва.</p></div><a class="btn-link" href="methodology.html">Подробнее о показателях <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <div class="qpanel__text"><div><span class="qpanel__eyebrow">Относительно того, что обсуждают люди</span><h3 class="qpanel__title">О чём говорят, а вы молчите?</h3><p>Темы, которые часто встречаются в отзывах и разговорах, но которых нет в ваших текстах. Молчать выгодно только до первого отзыва.</p></div><a class="btn-link" href="methodology-brand.html">Подробнее о показателях <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g>
 <path d="M14.8327 14.1641C14.8327 14.5323 14.5342 14.8307 14.166 14.8307C13.7978 14.8307 13.4993 14.5323 13.4993 14.1641V7.4401L6.30404 14.6354C6.04369 14.8958 5.62168 14.8958 5.36133 14.6354C5.10098 14.3751 5.10098 13.9531 5.36133 13.6927L12.5566 6.4974H5.83268C5.46449 6.4974 5.16602 6.19892 5.16602 5.83073C5.16602 5.46254 5.46449 5.16406 5.83268 5.16406H14.166C14.5342 5.16406 14.8327 5.46254 14.8327 5.83073V14.1641Z" fill="currentColor"/>
 </g>
 </svg></a></div>
-        <div class="qpanel__vis"><ul class="spots"><li><div class="spots__head"><b>Переработки</b><span>18% упоминаний</span></div><div class="spots__meta"><span class="spots__tone spots__tone--neg"><span class="cmp__ico cmp__ico--no"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <div class="qpanel__vis"><!-- Слепые зоны демо-компании (.bspot): демо-отчёт, обзор и методика HR-бренда -->
+<ul class="bspots"><li class="bspot"><div class="bspot__head"><b>Переработки</b><span class="bspot__share"><b>18%</b> упоминаний</span></div><p class="bspot__quote">«Уходим в восемь, если сдаём отчётность.»</p><div class="bspot__bar is-bad" style="--w:100%"><span class="bspot__fill"><span class="mirror__status"><span class="cmp__ico"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g>
 <path d="M15 9L9 15M9 9L15 15M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
 </g>
-</svg></span>чаще негатив</span><span>в ваших текстах — ни разу</span></div><div class="blind__bar"><i class="is-neg" style="width:72%"></i></div></li><li><div class="spots__head"><b>Руководители</b><span>14% упоминаний</span></div><div class="spots__meta"><span class="spots__tone spots__tone--mix"><span class="cmp__ico cmp__ico--warn"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 8V12M12 16H12.01M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/></svg></span>по-разному</span><span>в ваших текстах — ни разу</span></div><div class="blind__bar"><i class="is-mix" style="width:56%"></i></div></li><li><div class="spots__head"><b>Нагрузка и планы</b><span>11% упоминаний</span></div><div class="spots__meta"><span class="spots__tone spots__tone--neg"><span class="cmp__ico cmp__ico--no"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+</svg></span>Чаще негатив</span></span></div></li><li class="bspot"><div class="bspot__head"><b>Руководители</b><span class="bspot__share"><b>14%</b> упоминаний</span></div><p class="bspot__quote">«Всё зависит от того, к какому начальнику попадёшь.»</p><div class="bspot__bar is-warn" style="--w:78%"><span class="bspot__fill"><span class="mirror__status"><span class="cmp__ico"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 8V12M12 16H12.01M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/></svg></span>По-разному</span></span></div></li><li class="bspot"><div class="bspot__head"><b>Нагрузка и планы</b><span class="bspot__share"><b>11%</b> упоминаний</span></div><p class="bspot__quote">«Планы растут каждый квартал, людей не добавляют.»</p><div class="bspot__bar is-bad" style="--w:61%"><span class="bspot__fill"><span class="mirror__status"><span class="cmp__ico"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g>
 <path d="M15 9L9 15M9 9L15 15M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
 </g>
-</svg></span>чаще негатив</span><span>в ваших текстах — ни разу</span></div><div class="blind__bar"><i class="is-neg" style="width:44%"></i></div></li><li><div class="spots__head"><b>Офис и техника</b><span>6% упоминаний</span></div><div class="spots__meta"><span class="spots__tone spots__tone--neu"><span class="cmp__ico cmp__ico--na"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+</svg></span>Чаще негатив</span></span></div></li><li class="bspot"><div class="bspot__head"><b>Офис и техника</b><span class="bspot__share"><b>6%</b> упоминаний</span></div><p class="bspot__quote">«Ноутбуки старые, но офис удобный.»</p><div class="bspot__bar is-neu" style="--w:33%"><span class="bspot__fill"><span class="mirror__status"><span class="cmp__ico"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g>
 <path d="M5 12H19" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
 </g>
-</svg></span>нейтрально</span><span>в ваших текстах — ни разу</span></div><div class="blind__bar"><i class="is-neu" style="width:24%"></i></div></li></ul></div>
+</svg></span>Нейтрально</span></span></div></li></ul>
+</div>
       </div>
       <div class="qpanel" role="tabpanel" id="mp-industry" aria-labelledby="mt-industry" hidden>
-        <div class="qpanel__text"><div><span class="qpanel__eyebrow">Относительно рынка</span><h3 class="qpanel__title">Насколько хороши условия?</h3><p>Сравниваем базовые темы — зарплату, развитие, руководство, нагрузку — с работодателями вашей отрасли и региона.</p></div><a class="btn-link" href="methodology.html">Подробнее о показателях <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <div class="qpanel__text"><div><span class="qpanel__eyebrow">Относительно рынка</span><h3 class="qpanel__title">Насколько хороши условия?</h3><p>Сравниваем базовые темы — зарплату, развитие, руководство, нагрузку — с работодателями вашей отрасли и региона.</p></div><a class="btn-link" href="methodology-brand.html">Подробнее о показателях <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g>
 <path d="M14.8327 14.1641C14.8327 14.5323 14.5342 14.8307 14.166 14.8307C13.7978 14.8307 13.4993 14.5323 13.4993 14.1641V7.4401L6.30404 14.6354C6.04369 14.8958 5.62168 14.8958 5.36133 14.6354C5.10098 14.3751 5.10098 13.9531 5.36133 13.6927L12.5566 6.4974H5.83268C5.46449 6.4974 5.16602 6.19892 5.16602 5.83073C5.16602 5.46254 5.46449 5.16406 5.83268 5.16406H14.166C14.5342 5.16406 14.8327 5.46254 14.8327 5.83073V14.1641Z" fill="currentColor"/>
 </g>
@@ -1940,18 +1977,43 @@ mirrorEl.addEventListener("pointerenter", () => (paused = true)); mirrorEl.addEv
 mirrorEl.addEventListener("focusin", () => (paused = true)); mirrorEl.addEventListener("focusout", () => (paused = false));
 if (!matchMedia("(prefers-reduced-motion: reduce)").matches) setInterval(() => { if (!paused && !document.hidden) showMirror((mi + 1) % MIRROR.length); }, 5000);
 
-/* Полоса разделов: прилипает под шапкой, подсвечивает раздел, который сейчас на экране */
-const anchors = document.getElementById("anchors"), alinks = [...anchors.querySelectorAll("a")];
-const secs = alinks.map((a) => document.querySelector(a.getAttribute("href")));
+/* Полоса разделов (.rmenu): общий скрипт для отчётов, обзоров и методик.
+   На первом экране все якоря серые; дальше подсвечен раздел на экране.
+   Полоса листается внутри себя, маска по краям — только там, где есть скрытые пункты */
+const menu = document.getElementById("rmenu"), scroller = document.getElementById("rmenu-scroll");
+const alinks = [...menu.querySelectorAll(".rmenu__links a")], secs = alinks.map((a) => document.querySelector(a.getAttribute("href")));
 const headerEl = document.querySelector(".header");
-function syncAnchors() {
-  const top = headerEl ? headerEl.getBoundingClientRect().bottom : 0;
-  anchors.classList.toggle("is-stuck", anchors.getBoundingClientRect().top <= top + 1);
-  const line = top + anchors.offsetHeight + 120;
-  let cur = 0; secs.forEach((s, i) => { if (s.getBoundingClientRect().top <= line) cur = i; });
-  alinks.forEach((a, i) => { a.classList.toggle("is-active", i === cur); if (i === cur) a.setAttribute("aria-current", "true"); else a.removeAttribute("aria-current"); });
+let activeIdx = -1;
+function fade() {
+  const max = scroller.scrollWidth - scroller.clientWidth;
+  scroller.classList.toggle("is-fade-l", scroller.scrollLeft > 2);
+  scroller.classList.toggle("is-fade-r", scroller.scrollLeft < max - 2);
 }
-addEventListener("scroll", syncAnchors, { passive: true }); addEventListener("resize", syncAnchors); syncAnchors();
+function sync() {
+  const top = headerEl ? headerEl.getBoundingClientRect().bottom : 0;
+  menu.classList.toggle("is-stuck", menu.getBoundingClientRect().top <= top + 1);
+  const line = top + menu.offsetHeight + 120;
+  let cur = -1; secs.forEach((s, i) => { if (s.getBoundingClientRect().top <= line) cur = i; });
+  if (cur === activeIdx) return;
+  activeIdx = cur;
+  alinks.forEach((a, i) => { a.classList.toggle("is-active", i === cur); if (i === cur) a.setAttribute("aria-current", "true"); else a.removeAttribute("aria-current"); });
+  if (cur < 0) { scroller.scrollTo({ left: 0, behavior: "smooth" }); return; }
+  const a = alinks[cur], l = a.offsetLeft - scroller.offsetLeft;
+  // пункт виден без прокрутки — возвращаем полосу в начало
+  if (l + a.offsetWidth <= scroller.clientWidth - 48) scroller.scrollTo({ left: 0, behavior: "smooth" });
+  else if (l < scroller.scrollLeft + 48 || l + a.offsetWidth > scroller.scrollLeft + scroller.clientWidth - 48) scroller.scrollTo({ left: l - scroller.clientWidth / 3, behavior: "smooth" });
+}
+scroller.addEventListener("scroll", fade, { passive: true });
+// При наведении колесо мыши листает полосу вбок; у края полосы прокручивается страница
+scroller.addEventListener("wheel", (e) => {
+  if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
+  const max = scroller.scrollWidth - scroller.clientWidth;
+  if ((e.deltaY > 0 && scroller.scrollLeft >= max - 1) || (e.deltaY < 0 && scroller.scrollLeft <= 0)) return;
+  e.preventDefault(); scroller.scrollBy({ left: e.deltaY, behavior: "auto" });
+}, { passive: false });
+addEventListener("scroll", sync, { passive: true }); addEventListener("resize", () => { fade(); sync(); });
+fade(); sync();
+
 </script>
 
   <footer class="footer">
@@ -1971,9 +2033,9 @@ addEventListener("scroll", syncAnchors, { passive: true }); addEventListener("re
       <div class="footer__nav">
         <p class="footer__about">Сверяем обещания работодателя с тем, что видят кандидаты и что переживают сотрудники. Снаружи и изнутри.</p>
         <div class="footer__cols">
-          <div class="fcol"><h4>Оценка HR-бренда</h4><ul><li><a href="hr-brand.html">Обзор направления</a></li><li><a href="hr-brand-demo.html">Демо-отчёт</a></li><li><a href="methodology.html#brand">Как считаем</a></li></ul></div>
-          <div class="fcol"><h4>Здоровье культуры</h4><ul><li><a href="culture-health.html">Обзор направления</a></li><li><a href="culture-health-demo.html">Демо-дашборд</a></li><li><a href="#">Как считаем</a></li></ul></div>
-          <div class="fcol"><h4>Компания</h4><ul><li><a href="methodology.html">Методика</a></li><li><a href="pricing.html">Цены</a></li><li><a href="#">О нас</a></li></ul></div>
+          <div class="fcol"><h4>Оценка HR-бренда</h4><ul><li><a href="hr-brand.html">Обзор направления</a></li><li><a href="hr-brand-demo.html">Демо-отчёт</a></li><li><a href="methodology-brand.html">Как считаем</a></li></ul></div>
+          <div class="fcol"><h4>Здоровье культуры</h4><ul><li><a href="culture-health.html">Обзор направления</a></li><li><a href="culture-health-demo.html">Демо-дашборд</a></li><li><a href="methodology-health.html">Как считаем</a></li></ul></div>
+          <div class="fcol"><h4>Компания</h4><ul><li><a href="methodology-brand.html">Методика</a></li><li><a href="pricing.html">Цены</a></li><li><a href="#">О нас</a></li></ul></div>
           <div class="fcol"><h4>Контакты</h4><ul><li><a href="mailto:mirrorcom@mail.ru">mirrorcom@mail.ru</a></li><li><a href="tel:+79127023030">+7 912 702-30-30</a></li><li><a href="https://t.me/mirror_diary" target="_blank" rel="noreferrer">@mirror_diary</a></li></ul></div>
         </div>
       </div>

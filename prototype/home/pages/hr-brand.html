@@ -34,9 +34,9 @@
     </div>
   </section>
 
-  <!-- Полоса разделов: внизу первого экрана, при прокрутке прилипает под шапкой -->
-  <nav class="anchors" id="anchors" aria-label="Разделы страницы">
-    <a href="#check" class="is-active">Что проверяем</a><a href="#metrics">Три показателя</a><a href="#matrix">Матрица</a><a href="#report">Отчёт</a><a href="#process">Как проходит</a><a href="#faq">Вопросы</a>
+  <!-- Полоса разделов: внизу первого экрана, прилипает под шапкой; листается внутри себя (колесо, маска по краям), как меню отчёта -->
+  <nav class="rmenu rmenu--page" id="rmenu" aria-label="Разделы страницы">
+    <div class="rmenu__scroll" id="rmenu-scroll"><div class="rmenu__links"><a href="#check">Что проверяем</a><a href="#metrics">Три показателя</a><a href="#matrix">Матрица</a><a href="#report">Отчёт</a><a href="#process">Как проходит</a><a href="#faq">Вопросы</a></div></div>
   </nav>
 
   <!-- Что проверяем: центр + фиолетовая лента из трёх шагов -->
@@ -67,15 +67,15 @@
         <button class="qtab" type="button" role="tab" aria-selected="false" aria-controls="mp-industry" id="mt-industry" tabindex="-1"><span class="qtab__ico">{{svgc:lucide-trophy.svg}}</span><span class="qtab__foot"><span class="qtab__text"><span class="qtab__name">Место в отрасли</span><span class="qtab__q">Насколько хороши условия?</span></span><span class="qtab__val"><b>62</b>перцентиль</span></span></button>
       </div>
       <div class="qpanel" role="tabpanel" id="mp-index" aria-labelledby="mt-index">
-        <div class="qpanel__text"><div><span class="qpanel__eyebrow">Относительно ваших обещаний</span><h3 class="qpanel__title">Совпадают ли слова и дела?</h3><p>Доля ваших обещаний, которые подтверждает опыт людей в отзывах, соцсетях, медиа и ответах нейросетей.</p></div><a class="btn-link" href="{{href:methodology}}">Подробнее о показателях {{svgc:arrow-up-right.svg}}</a></div>
+        <div class="qpanel__text"><div><span class="qpanel__eyebrow">Относительно ваших обещаний</span><h3 class="qpanel__title">Совпадают ли слова и дела?</h3><p>Доля ваших обещаний, которые подтверждает опыт людей в отзывах, соцсетях, медиа и ответах нейросетей.</p></div><a class="btn-link" href="{{href:methodology-brand}}">Подробнее о показателях {{svgc:arrow-up-right.svg}}</a></div>
         <div class="qpanel__vis"><div class="gauge gauge--big" id="g-index" role="img" aria-label="Индекс культуры 65 из 100"></div><p class="mcard__cap">Подтверждено 5 из 8 обещаний</p></div>
       </div>
       <div class="qpanel" role="tabpanel" id="mp-blind" aria-labelledby="mt-blind" hidden>
-        <div class="qpanel__text"><div><span class="qpanel__eyebrow">Относительно того, что обсуждают люди</span><h3 class="qpanel__title">О чём говорят, а вы молчите?</h3><p>Темы, которые часто встречаются в отзывах и разговорах, но которых нет в ваших текстах. Молчать выгодно только до первого отзыва.</p></div><a class="btn-link" href="{{href:methodology}}">Подробнее о показателях {{svgc:arrow-up-right.svg}}</a></div>
-        <div class="qpanel__vis"><ul class="spots"><li><div class="spots__head"><b>Переработки</b><span>18% упоминаний</span></div><div class="spots__meta"><span class="spots__tone spots__tone--neg"><span class="cmp__ico cmp__ico--no">{{svgc:circle-x.svg}}</span>чаще негатив</span><span>в ваших текстах — ни разу</span></div><div class="blind__bar"><i class="is-neg" style="width:72%"></i></div></li><li><div class="spots__head"><b>Руководители</b><span>14% упоминаний</span></div><div class="spots__meta"><span class="spots__tone spots__tone--mix"><span class="cmp__ico cmp__ico--warn">{{svgc:circle-alert.svg}}</span>по-разному</span><span>в ваших текстах — ни разу</span></div><div class="blind__bar"><i class="is-mix" style="width:56%"></i></div></li><li><div class="spots__head"><b>Нагрузка и планы</b><span>11% упоминаний</span></div><div class="spots__meta"><span class="spots__tone spots__tone--neg"><span class="cmp__ico cmp__ico--no">{{svgc:circle-x.svg}}</span>чаще негатив</span><span>в ваших текстах — ни разу</span></div><div class="blind__bar"><i class="is-neg" style="width:44%"></i></div></li><li><div class="spots__head"><b>Офис и техника</b><span>6% упоминаний</span></div><div class="spots__meta"><span class="spots__tone spots__tone--neu"><span class="cmp__ico cmp__ico--na">{{svgc:minus.svg}}</span>нейтрально</span><span>в ваших текстах — ни разу</span></div><div class="blind__bar"><i class="is-neu" style="width:24%"></i></div></li></ul></div>
+        <div class="qpanel__text"><div><span class="qpanel__eyebrow">Относительно того, что обсуждают люди</span><h3 class="qpanel__title">О чём говорят, а вы молчите?</h3><p>Темы, которые часто встречаются в отзывах и разговорах, но которых нет в ваших текстах. Молчать выгодно только до первого отзыва.</p></div><a class="btn-link" href="{{href:methodology-brand}}">Подробнее о показателях {{svgc:arrow-up-right.svg}}</a></div>
+        <div class="qpanel__vis">{{include:partials/bspots.html}}</div>
       </div>
       <div class="qpanel" role="tabpanel" id="mp-industry" aria-labelledby="mt-industry" hidden>
-        <div class="qpanel__text"><div><span class="qpanel__eyebrow">Относительно рынка</span><h3 class="qpanel__title">Насколько хороши условия?</h3><p>Сравниваем базовые темы — зарплату, развитие, руководство, нагрузку — с работодателями вашей отрасли и региона.</p></div><a class="btn-link" href="{{href:methodology}}">Подробнее о показателях {{svgc:arrow-up-right.svg}}</a></div>
+        <div class="qpanel__text"><div><span class="qpanel__eyebrow">Относительно рынка</span><h3 class="qpanel__title">Насколько хороши условия?</h3><p>Сравниваем базовые темы — зарплату, развитие, руководство, нагрузку — с работодателями вашей отрасли и региона.</p></div><a class="btn-link" href="{{href:methodology-brand}}">Подробнее о показателях {{svgc:arrow-up-right.svg}}</a></div>
         <div class="qpanel__vis"><ul class="tracks"><li><span>Коллектив</span><div class="tracks__bar"><i style="left:82%"></i></div><b>82</b></li><li><span>Стабильность</span><div class="tracks__bar"><i style="left:77%"></i></div><b>77</b></li><li><span>Развитие</span><div class="tracks__bar"><i style="left:71%"></i></div><b>71</b></li><li><span>Руководство</span><div class="tracks__bar"><i style="left:58%"></i></div><b>58</b></li><li><span>Нагрузка</span><div class="tracks__bar"><i style="left:41%"></i></div><b>41</b></li><li><span>Зарплата</span><div class="tracks__bar"><i style="left:34%"></i></div><b>34</b></li></ul><div class="tracks__scale"><span>хуже рынка</span><span>медиана</span><span>лучше рынка</span></div></div>
       </div>
     </div>
@@ -245,16 +245,5 @@ mirrorEl.addEventListener("pointerenter", () => (paused = true)); mirrorEl.addEv
 mirrorEl.addEventListener("focusin", () => (paused = true)); mirrorEl.addEventListener("focusout", () => (paused = false));
 if (!matchMedia("(prefers-reduced-motion: reduce)").matches) setInterval(() => { if (!paused && !document.hidden) showMirror((mi + 1) % MIRROR.length); }, 5000);
 
-/* Полоса разделов: прилипает под шапкой, подсвечивает раздел, который сейчас на экране */
-const anchors = document.getElementById("anchors"), alinks = [...anchors.querySelectorAll("a")];
-const secs = alinks.map((a) => document.querySelector(a.getAttribute("href")));
-const headerEl = document.querySelector(".header");
-function syncAnchors() {
-  const top = headerEl ? headerEl.getBoundingClientRect().bottom : 0;
-  anchors.classList.toggle("is-stuck", anchors.getBoundingClientRect().top <= top + 1);
-  const line = top + anchors.offsetHeight + 120;
-  let cur = 0; secs.forEach((s, i) => { if (s.getBoundingClientRect().top <= line) cur = i; });
-  alinks.forEach((a, i) => { a.classList.toggle("is-active", i === cur); if (i === cur) a.setAttribute("aria-current", "true"); else a.removeAttribute("aria-current"); });
-}
-addEventListener("scroll", syncAnchors, { passive: true }); addEventListener("resize", syncAnchors); syncAnchors();
+{{include:src/rmenu.js}}
 </script>

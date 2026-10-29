@@ -2,7 +2,7 @@
 // стрелки и штампы в текстах для посетителя, дефис вместо тире, запрещённые темы.
 // Запуск: npm run check:text (входит в npm run check и CI).
 import { readFileSync, readdirSync, statSync } from "node:fs";
-import { join, extname, relative } from "node:path";
+import { join, extname } from "node:path";
 
 const ROOT = new URL("..", import.meta.url).pathname;
 const SCAN = ["src", "prototype/home/pages", "prototype/home/partials", "prototype/home/src", "prototype/home/build.py"];
