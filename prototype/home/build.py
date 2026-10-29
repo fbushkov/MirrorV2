@@ -22,7 +22,7 @@ ROUTES = {
     "hr-brand":            ("/hr-brand",                  "hr-brand.html"),
     "hr-brand-demo":       ("/hr-brand/demo",             "hr-brand-demo.html"),
     "methodology-brand":   ("/methodology#brand",         "methodology.html#brand"),
-    "culture-health":      ("/culture-health",            None),
+    "culture-health":      ("/culture-health",            "culture-health.html"),
     "culture-health-demo": ("/culture-health/demo",       "culture-health-demo.html"),
     "methodology-health":  ("/methodology#health",        None),
     "methodology":         ("/methodology",               "methodology.html"),
