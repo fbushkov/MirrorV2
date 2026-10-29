@@ -186,7 +186,7 @@ function typograf(root) {
   const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
     acceptNode: (n) => (n.parentElement.closest(skip) ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT),
   });
-  const short = /(^|[\s\u00a0(«"„—–/])([A-Za-zА-Яа-яЁё0-9№]{1,3})[ ]+(?=\S)/g;
+  const short = /(^|[\s\u00a0(«"„—–/])([−+]?[A-Za-zА-Яа-яЁё0-9№]{1,3}%?)[ ]+(?=\S)/g; // «−8 за», «34% сигналов» тоже не висят
   let n;
   while ((n = walker.nextNode())) {
     let t = n.nodeValue, prev;
@@ -197,3 +197,40 @@ function typograf(root) {
   }
 }
 typograf(document.body);
+
+/* Выпадающий список по образцу Select из библиотеки: кнопка в стиле .select и скруглённое меню.
+   Нативный select остаётся источником значения: выбор меняет его и шлёт change */
+const CHECK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>';
+document.querySelectorAll("select.select").forEach((sel, n) => {
+  const box = document.createElement("div"), btn = document.createElement("button"), list = document.createElement("ul");
+  box.className = "csel"; btn.type = "button"; btn.className = "select csel__btn"; btn.id = "csel-" + n;
+  btn.setAttribute("aria-haspopup", "listbox"); btn.setAttribute("aria-expanded", "false");
+  list.className = "csel__list"; list.setAttribute("role", "listbox"); list.tabIndex = -1; list.hidden = true;
+  const label = sel.closest("label"); if (label) { label.htmlFor = btn.id; list.setAttribute("aria-label", label.querySelector(".label")?.textContent || ""); }
+  sel.replaceWith(box); box.append(sel, btn, list); sel.hidden = true; sel.tabIndex = -1;
+  let active = 0;
+  const sync = () => { btn.textContent = sel.options[sel.selectedIndex]?.text || ""; };
+  const mark = () => [...list.children].forEach((li, i) => li.classList.toggle("is-active", i === active));
+  const close = (focus) => { list.hidden = true; btn.setAttribute("aria-expanded", "false"); box.classList.remove("is-open"); if (focus) btn.focus(); };
+  const open = () => {
+    list.innerHTML = [...sel.options].map((o, i) => `<li role="option" id="${btn.id}-${i}" aria-selected="${i === sel.selectedIndex}">${o.text}${CHECK}</li>`).join("");
+    active = Math.max(0, sel.selectedIndex); mark(); list.setAttribute("aria-activedescendant", btn.id + "-" + active);
+    list.hidden = false; btn.setAttribute("aria-expanded", "true"); box.classList.add("is-open"); list.focus();
+  };
+  const pick = (i) => { if (i !== sel.selectedIndex) { sel.selectedIndex = i; sel.dispatchEvent(new Event("change", { bubbles: true })); } sync(); close(true); };
+  btn.addEventListener("click", () => (list.hidden ? open() : close()));
+  btn.addEventListener("keydown", (e) => { if (["ArrowDown", "ArrowUp"].includes(e.key)) { e.preventDefault(); open(); } });
+  list.addEventListener("click", (e) => { const li = e.target.closest("li"); if (li) pick([...list.children].indexOf(li)); });
+  list.addEventListener("pointermove", (e) => { const li = e.target.closest("li"); if (li) { active = [...list.children].indexOf(li); mark(); } });
+  list.addEventListener("keydown", (e) => {
+    const last = list.children.length - 1;
+    if (e.key === "ArrowDown" || e.key === "ArrowUp") { e.preventDefault(); active = Math.min(last, Math.max(0, active + (e.key === "ArrowDown" ? 1 : -1))); }
+    else if (e.key === "Home" || e.key === "End") { e.preventDefault(); active = e.key === "Home" ? 0 : last; }
+    else if (e.key === "Enter" || e.key === " ") { e.preventDefault(); pick(active); return; }
+    else if (e.key === "Escape") { e.preventDefault(); close(true); return; }
+    else if (e.key === "Tab") { close(); return; }
+    mark(); list.setAttribute("aria-activedescendant", btn.id + "-" + active); list.children[active].scrollIntoView({ block: "nearest" });
+  });
+  document.addEventListener("pointerdown", (e) => { if (!list.hidden && !box.contains(e.target)) close(); });
+  sel.addEventListener("change", sync); sync();
+});

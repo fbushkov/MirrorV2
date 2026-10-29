@@ -1338,6 +1338,42 @@ button.seg__item.is-active { background: var(--c-surface-2); }
   .rkpi { min-height: 0; gap: 16px; }
 }
 
+/* Правки 2026-10-29: подпись под числом — изменение цветом и период серым, статус только иконкой */
+.rkpi__cap--delta { display: flex; align-items: center; flex-wrap: wrap; gap: 4px 8px; color: var(--c-ink-2); }
+.rkpi__cap--delta .delta { font: 500 var(--fs-body)/var(--lh-body) var(--font-sans); }
+.rkpi__flag { display: inline-flex; margin-right: 4px; cursor: help; }
+.rkpi__flag svg { width: 20px; height: 20px; }
+.rkpi__label .info { margin-left: 4px; vertical-align: middle; }
+.is-health .info:hover, .is-health .info[aria-expanded="true"] { color: var(--c-teal-700); background: rgba(14,147,132,.1); }
+/* Тревоги: карточка в мягком цвете статуса */
+.ralert--bad { background: color-mix(in srgb, var(--c-bad) 9%, var(--c-surface)); }
+.ralert--warn { background: color-mix(in srgb, var(--c-warn) 11%, var(--c-surface)); }
+.ralert--ok { background: color-mix(in srgb, var(--c-ok) 9%, var(--c-surface)); }
+.ralert__ctx { color: var(--c-ink-2); }
+/* Выпадающий список (Select): кнопка как .select, меню — белая карточка со скруглением 12, пункты 44 с отступом по тексту кнопки */
+.csel { position: relative; min-width: 0; }
+.csel__btn { display: flex; align-items: center; text-align: left; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.csel.is-open .csel__btn { border-color: var(--c-teal); box-shadow: 0 0 0 3px rgba(14,147,132,.15); }
+.csel__list { position: absolute; z-index: 40; top: calc(100% + 8px); left: 0; right: 0; max-height: 320px; overflow-y: auto; list-style: none; display: flex; flex-direction: column; gap: 2px; padding: 6px; border: 1px solid var(--c-line-3); border-radius: var(--r-card); background: var(--c-surface); box-shadow: 0 20px 48px -20px rgba(23,20,43,.35); outline: none; }
+.csel__list[hidden] { display: none; }
+.csel__list li { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 44px; padding: 10px 11px; border-radius: var(--r-inner); font: 400 var(--fs-body)/var(--lh-body) var(--font-sans); cursor: pointer; }
+.csel__list li.is-active { background: var(--c-surface-2); }
+.csel__list li svg { flex: none; width: 18px; height: 18px; color: var(--c-teal); visibility: hidden; }
+.csel__list li[aria-selected="true"] { font-weight: 500; }
+.csel__list li[aria-selected="true"] svg { visibility: visible; }
+/* Слепые зоны: тема и доля, пример отзыва открыто, полоса-плашка в цвете тона (как вердикт в «Проверке обещания») */
+.bspots { list-style: none; display: flex; flex-direction: column; gap: 24px; flex: 1; justify-content: space-around; }
+.bspot { display: flex; flex-direction: column; gap: 8px; }
+.bspot__head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.bspot__head > b { font-weight: 500; }
+.bspot__share { font: 400 var(--fs-xs)/20px var(--font-sans); color: var(--c-ink-2); white-space: nowrap; }
+.bspot__share b { font: 500 var(--fs-body)/1 var(--font-mono); color: var(--c-ink); }
+.bspot__quote { font: 400 var(--fs-sm)/var(--lh-sm) var(--font-sans); color: var(--c-ink-2); }
+.bspot__bar { --tone: var(--c-ink-4); margin-top: 4px; border-radius: var(--r-inner); background: color-mix(in srgb, var(--tone) 12%, var(--c-surface)); }
+.bspot__bar.is-bad { --tone: var(--c-bad); }
+.bspot__bar.is-warn { --tone: var(--c-warn); }
+.bspot__fill { display: flex; align-items: center; width: var(--w); min-width: max-content; height: 40px; padding: 0 16px; border-radius: var(--r-inner); background: var(--tone); color: #fff; }
+
 </style>
 </head>
 <body>
@@ -2102,7 +2138,7 @@ function typograf(root) {
   const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
     acceptNode: (n) => (n.parentElement.closest(skip) ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT),
   });
-  const short = /(^|[\s\u00a0(«"„—–/])([A-Za-zА-Яа-яЁё0-9№]{1,3})[ ]+(?=\S)/g;
+  const short = /(^|[\s\u00a0(«"„—–/])([−+]?[A-Za-zА-Яа-яЁё0-9№]{1,3}%?)[ ]+(?=\S)/g; // «−8 за», «34% сигналов» тоже не висят
   let n;
   while ((n = walker.nextNode())) {
     let t = n.nodeValue, prev;
@@ -2113,6 +2149,43 @@ function typograf(root) {
   }
 }
 typograf(document.body);
+
+/* Выпадающий список по образцу Select из библиотеки: кнопка в стиле .select и скруглённое меню.
+   Нативный select остаётся источником значения: выбор меняет его и шлёт change */
+const CHECK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>';
+document.querySelectorAll("select.select").forEach((sel, n) => {
+  const box = document.createElement("div"), btn = document.createElement("button"), list = document.createElement("ul");
+  box.className = "csel"; btn.type = "button"; btn.className = "select csel__btn"; btn.id = "csel-" + n;
+  btn.setAttribute("aria-haspopup", "listbox"); btn.setAttribute("aria-expanded", "false");
+  list.className = "csel__list"; list.setAttribute("role", "listbox"); list.tabIndex = -1; list.hidden = true;
+  const label = sel.closest("label"); if (label) { label.htmlFor = btn.id; list.setAttribute("aria-label", label.querySelector(".label")?.textContent || ""); }
+  sel.replaceWith(box); box.append(sel, btn, list); sel.hidden = true; sel.tabIndex = -1;
+  let active = 0;
+  const sync = () => { btn.textContent = sel.options[sel.selectedIndex]?.text || ""; };
+  const mark = () => [...list.children].forEach((li, i) => li.classList.toggle("is-active", i === active));
+  const close = (focus) => { list.hidden = true; btn.setAttribute("aria-expanded", "false"); box.classList.remove("is-open"); if (focus) btn.focus(); };
+  const open = () => {
+    list.innerHTML = [...sel.options].map((o, i) => `<li role="option" id="${btn.id}-${i}" aria-selected="${i === sel.selectedIndex}">${o.text}${CHECK}</li>`).join("");
+    active = Math.max(0, sel.selectedIndex); mark(); list.setAttribute("aria-activedescendant", btn.id + "-" + active);
+    list.hidden = false; btn.setAttribute("aria-expanded", "true"); box.classList.add("is-open"); list.focus();
+  };
+  const pick = (i) => { if (i !== sel.selectedIndex) { sel.selectedIndex = i; sel.dispatchEvent(new Event("change", { bubbles: true })); } sync(); close(true); };
+  btn.addEventListener("click", () => (list.hidden ? open() : close()));
+  btn.addEventListener("keydown", (e) => { if (["ArrowDown", "ArrowUp"].includes(e.key)) { e.preventDefault(); open(); } });
+  list.addEventListener("click", (e) => { const li = e.target.closest("li"); if (li) pick([...list.children].indexOf(li)); });
+  list.addEventListener("pointermove", (e) => { const li = e.target.closest("li"); if (li) { active = [...list.children].indexOf(li); mark(); } });
+  list.addEventListener("keydown", (e) => {
+    const last = list.children.length - 1;
+    if (e.key === "ArrowDown" || e.key === "ArrowUp") { e.preventDefault(); active = Math.min(last, Math.max(0, active + (e.key === "ArrowDown" ? 1 : -1))); }
+    else if (e.key === "Home" || e.key === "End") { e.preventDefault(); active = e.key === "Home" ? 0 : last; }
+    else if (e.key === "Enter" || e.key === " ") { e.preventDefault(); pick(active); return; }
+    else if (e.key === "Escape") { e.preventDefault(); close(true); return; }
+    else if (e.key === "Tab") { close(); return; }
+    mark(); list.setAttribute("aria-activedescendant", btn.id + "-" + active); list.children[active].scrollIntoView({ block: "nearest" });
+  });
+  document.addEventListener("pointerdown", (e) => { if (!list.hidden && !box.contains(e.target)) close(); });
+  sel.addEventListener("change", sync); sync();
+});
 
 </script>
 </body>

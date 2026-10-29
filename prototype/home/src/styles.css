@@ -1327,3 +1327,39 @@ button.seg__item.is-active { background: var(--c-surface-2); }
   .ralert, .dcard, .rblock .mtile { padding: 16px; }
   .rkpi { min-height: 0; gap: 16px; }
 }
+
+/* Правки 2026-10-29: подпись под числом — изменение цветом и период серым, статус только иконкой */
+.rkpi__cap--delta { display: flex; align-items: center; flex-wrap: wrap; gap: 4px 8px; color: var(--c-ink-2); }
+.rkpi__cap--delta .delta { font: 500 var(--fs-body)/var(--lh-body) var(--font-sans); }
+.rkpi__flag { display: inline-flex; margin-right: 4px; cursor: help; }
+.rkpi__flag svg { width: 20px; height: 20px; }
+.rkpi__label .info { margin-left: 4px; vertical-align: middle; }
+.is-health .info:hover, .is-health .info[aria-expanded="true"] { color: var(--c-teal-700); background: rgba(14,147,132,.1); }
+/* Тревоги: карточка в мягком цвете статуса */
+.ralert--bad { background: color-mix(in srgb, var(--c-bad) 9%, var(--c-surface)); }
+.ralert--warn { background: color-mix(in srgb, var(--c-warn) 11%, var(--c-surface)); }
+.ralert--ok { background: color-mix(in srgb, var(--c-ok) 9%, var(--c-surface)); }
+.ralert__ctx { color: var(--c-ink-2); }
+/* Выпадающий список (Select): кнопка как .select, меню — белая карточка со скруглением 12, пункты 44 с отступом по тексту кнопки */
+.csel { position: relative; min-width: 0; }
+.csel__btn { display: flex; align-items: center; text-align: left; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.csel.is-open .csel__btn { border-color: var(--c-teal); box-shadow: 0 0 0 3px rgba(14,147,132,.15); }
+.csel__list { position: absolute; z-index: 40; top: calc(100% + 8px); left: 0; right: 0; max-height: 320px; overflow-y: auto; list-style: none; display: flex; flex-direction: column; gap: 2px; padding: 6px; border: 1px solid var(--c-line-3); border-radius: var(--r-card); background: var(--c-surface); box-shadow: 0 20px 48px -20px rgba(23,20,43,.35); outline: none; }
+.csel__list[hidden] { display: none; }
+.csel__list li { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 44px; padding: 10px 11px; border-radius: var(--r-inner); font: 400 var(--fs-body)/var(--lh-body) var(--font-sans); cursor: pointer; }
+.csel__list li.is-active { background: var(--c-surface-2); }
+.csel__list li svg { flex: none; width: 18px; height: 18px; color: var(--c-teal); visibility: hidden; }
+.csel__list li[aria-selected="true"] { font-weight: 500; }
+.csel__list li[aria-selected="true"] svg { visibility: visible; }
+/* Слепые зоны: тема и доля, пример отзыва открыто, полоса-плашка в цвете тона (как вердикт в «Проверке обещания») */
+.bspots { list-style: none; display: flex; flex-direction: column; gap: 24px; flex: 1; justify-content: space-around; }
+.bspot { display: flex; flex-direction: column; gap: 8px; }
+.bspot__head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.bspot__head > b { font-weight: 500; }
+.bspot__share { font: 400 var(--fs-xs)/20px var(--font-sans); color: var(--c-ink-2); white-space: nowrap; }
+.bspot__share b { font: 500 var(--fs-body)/1 var(--font-mono); color: var(--c-ink); }
+.bspot__quote { font: 400 var(--fs-sm)/var(--lh-sm) var(--font-sans); color: var(--c-ink-2); }
+.bspot__bar { --tone: var(--c-ink-4); margin-top: 4px; border-radius: var(--r-inner); background: color-mix(in srgb, var(--tone) 12%, var(--c-surface)); }
+.bspot__bar.is-bad { --tone: var(--c-bad); }
+.bspot__bar.is-warn { --tone: var(--c-warn); }
+.bspot__fill { display: flex; align-items: center; width: var(--w); min-width: max-content; height: 40px; padding: 0 16px; border-radius: var(--r-inner); background: var(--tone); color: #fff; }
