@@ -1348,18 +1348,6 @@ button.seg__item.is-active { background: var(--c-surface-2); }
 .csel__list li svg { flex: none; width: 18px; height: 18px; color: var(--c-teal); visibility: hidden; }
 .csel__list li[aria-selected="true"] { font-weight: 500; }
 .csel__list li[aria-selected="true"] svg { visibility: visible; }
-/* Слепые зоны: тема и доля, пример отзыва открыто, полоса-плашка в цвете тона (как вердикт в «Проверке обещания») */
-.bspots { list-style: none; display: flex; flex-direction: column; gap: 24px; flex: 1; justify-content: space-around; }
-.bspot { display: flex; flex-direction: column; gap: 8px; }
-.bspot__head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
-.bspot__head > b { font-weight: 500; }
-.bspot__share { font: 400 var(--fs-xs)/20px var(--font-sans); color: var(--c-ink-2); white-space: nowrap; }
-.bspot__share b { font: 500 var(--fs-body)/1 var(--font-mono); color: var(--c-ink); }
-.bspot__quote { font: 400 var(--fs-sm)/var(--lh-sm) var(--font-sans); color: var(--c-ink-2); }
-.bspot__bar { --tone: var(--c-ink-4); margin-top: 4px; border-radius: var(--r-inner); background: color-mix(in srgb, var(--tone) 12%, var(--c-surface)); }
-.bspot__bar.is-bad { --tone: var(--c-bad); }
-.bspot__bar.is-warn { --tone: var(--c-warn); }
-.bspot__fill { display: flex; align-items: center; width: var(--w); min-width: max-content; height: 40px; padding: 0 16px; border-radius: var(--r-inner); background: var(--tone); color: #fff; }
 
 /* Бейдж статуса (правило 2026-10-29): вместо «иконка + слово + изменение» — один бейдж 14px:
    мягкий цвет статуса, иконка и значение; слово статуса и пояснение — в подсказке data-tip */
@@ -1508,3 +1496,23 @@ button.seg__item.is-active { background: var(--c-surface-2); }
 /* Карточки сверки в ряду: статус, вывод и пара сторон стоят на одних строках (subgrid) */
 .xcards { grid-auto-rows: auto; }
 .xcards .xcard { display: grid; grid-row: span 3; grid-template-rows: subgrid; row-gap: 16px; }
+
+/* Слепые зоны: карточка на тему — кольцо доли упоминаний, тон бейджем, пример отзыва (по мотивам Mantine RingProgress) */
+.rrings { list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap-inner); flex: 1; }
+.rring { display: flex; align-items: center; gap: 16px; padding: 20px; border-radius: var(--r-inner); background: var(--c-surface); min-width: 0; }
+.rring__ring { position: relative; flex: none; width: 76px; height: 76px; }
+.rring__ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+.rring__ring circle { fill: none; stroke-width: 5; }
+.rring__track { stroke: var(--c-surface-2); }
+.rring__val { stroke: var(--tone); stroke-linecap: round; }
+.rring__ring span { position: absolute; inset: 0; display: grid; place-items: center; font: 500 var(--fs-body)/1 var(--font-mono); }
+.rring--bad { --tone: var(--c-bad); } .rring--warn { --tone: var(--c-warn); } .rring--na { --tone: var(--c-ink-4); }
+.rring__body { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; min-width: 0; }
+.rring__body b { font-weight: 500; }
+.rring__body p { font: 400 var(--fs-sm)/var(--lh-sm) var(--font-sans); color: var(--c-ink-2); }
+.rring .badge { white-space: nowrap; }
+.qpanel__vis .rrings { flex: none; }
+@media (max-width: 767px) { .rrings { grid-template-columns: minmax(0, 1fr); } .rring { padding: 16px; } }
+/* В узком блоке (пара блоков на 1280–1700) — одна колонка, чтобы отзыв не дробился на короткие строки */
+.rpair .rblock { container-type: inline-size; }
+@container (max-width: 640px) { .rrings { grid-template-columns: minmax(0, 1fr); } }

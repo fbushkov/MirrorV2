@@ -1358,18 +1358,6 @@ button.seg__item.is-active { background: var(--c-surface-2); }
 .csel__list li svg { flex: none; width: 18px; height: 18px; color: var(--c-teal); visibility: hidden; }
 .csel__list li[aria-selected="true"] { font-weight: 500; }
 .csel__list li[aria-selected="true"] svg { visibility: visible; }
-/* Слепые зоны: тема и доля, пример отзыва открыто, полоса-плашка в цвете тона (как вердикт в «Проверке обещания») */
-.bspots { list-style: none; display: flex; flex-direction: column; gap: 24px; flex: 1; justify-content: space-around; }
-.bspot { display: flex; flex-direction: column; gap: 8px; }
-.bspot__head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
-.bspot__head > b { font-weight: 500; }
-.bspot__share { font: 400 var(--fs-xs)/20px var(--font-sans); color: var(--c-ink-2); white-space: nowrap; }
-.bspot__share b { font: 500 var(--fs-body)/1 var(--font-mono); color: var(--c-ink); }
-.bspot__quote { font: 400 var(--fs-sm)/var(--lh-sm) var(--font-sans); color: var(--c-ink-2); }
-.bspot__bar { --tone: var(--c-ink-4); margin-top: 4px; border-radius: var(--r-inner); background: color-mix(in srgb, var(--tone) 12%, var(--c-surface)); }
-.bspot__bar.is-bad { --tone: var(--c-bad); }
-.bspot__bar.is-warn { --tone: var(--c-warn); }
-.bspot__fill { display: flex; align-items: center; width: var(--w); min-width: max-content; height: 40px; padding: 0 16px; border-radius: var(--r-inner); background: var(--tone); color: #fff; }
 
 /* Бейдж статуса (правило 2026-10-29): вместо «иконка + слово + изменение» — один бейдж 14px:
    мягкий цвет статуса, иконка и значение; слово статуса и пояснение — в подсказке data-tip */
@@ -1518,6 +1506,26 @@ button.seg__item.is-active { background: var(--c-surface-2); }
 /* Карточки сверки в ряду: статус, вывод и пара сторон стоят на одних строках (subgrid) */
 .xcards { grid-auto-rows: auto; }
 .xcards .xcard { display: grid; grid-row: span 3; grid-template-rows: subgrid; row-gap: 16px; }
+
+/* Слепые зоны: карточка на тему — кольцо доли упоминаний, тон бейджем, пример отзыва (по мотивам Mantine RingProgress) */
+.rrings { list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap-inner); flex: 1; }
+.rring { display: flex; align-items: center; gap: 16px; padding: 20px; border-radius: var(--r-inner); background: var(--c-surface); min-width: 0; }
+.rring__ring { position: relative; flex: none; width: 76px; height: 76px; }
+.rring__ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+.rring__ring circle { fill: none; stroke-width: 5; }
+.rring__track { stroke: var(--c-surface-2); }
+.rring__val { stroke: var(--tone); stroke-linecap: round; }
+.rring__ring span { position: absolute; inset: 0; display: grid; place-items: center; font: 500 var(--fs-body)/1 var(--font-mono); }
+.rring--bad { --tone: var(--c-bad); } .rring--warn { --tone: var(--c-warn); } .rring--na { --tone: var(--c-ink-4); }
+.rring__body { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; min-width: 0; }
+.rring__body b { font-weight: 500; }
+.rring__body p { font: 400 var(--fs-sm)/var(--lh-sm) var(--font-sans); color: var(--c-ink-2); }
+.rring .badge { white-space: nowrap; }
+.qpanel__vis .rrings { flex: none; }
+@media (max-width: 767px) { .rrings { grid-template-columns: minmax(0, 1fr); } .rring { padding: 16px; } }
+/* В узком блоке (пара блоков на 1280–1700) — одна колонка, чтобы отзыв не дробился на короткие строки */
+.rpair .rblock { container-type: inline-size; }
+@container (max-width: 640px) { .rrings { grid-template-columns: minmax(0, 1fr); } }
 
 </style>
 </head>
@@ -1705,21 +1713,21 @@ button.seg__item.is-active { background: var(--c-surface-2); }
   <div class="rpair">
     <section class="rblock" id="r-blind" aria-label="Слепые зоны">
       <div class="rblock__head"><h2 class="rblock__title"><span class="rblock__no">5.</span> Слепые зоны</h2><p class="rblock__hint">О чём люди пишут, а в ваших текстах нет ни слова.</p></div>
-      <div class="rblock__card"><!-- Слепые зоны демо-компании (.bspot): демо-отчёт, обзор и методика HR-бренда -->
-<ul class="bspots"><li class="bspot"><div class="bspot__head"><b>Переработки</b><span class="bspot__share"><b>18%</b> упоминаний</span></div><p class="bspot__quote">«Уходим в восемь, если сдаём отчётность.»</p><div class="bspot__bar is-bad" style="--w:100%"><span class="bspot__fill"><span class="mirror__status"><span class="cmp__ico"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Слепые зоны демо-компании: карточки с кольцом доли (.rring) — демо-отчёт, обзор и методика HR-бренда -->
+<ul class="rrings"><li class="rring rring--bad"><div class="rring__ring" role="img" aria-label="Переработки: 18% упоминаний"><svg viewBox="0 0 36 36" aria-hidden="true"><circle class="rring__track" cx="18" cy="18" r="15"/><circle class="rring__val" cx="18" cy="18" r="15" stroke-dasharray="16.96 94.25"/></svg><span>18%</span></div><div class="rring__body"><b>Переработки</b><span class="badge badge--bad badge--ico"><span class="cmp__ico cmp__ico--no"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g>
 <path d="M15 9L9 15M9 9L15 15M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
 </g>
-</svg></span>Чаще негатив</span></span></div></li><li class="bspot"><div class="bspot__head"><b>Руководители</b><span class="bspot__share"><b>14%</b> упоминаний</span></div><p class="bspot__quote">«Всё зависит от того, к какому начальнику попадёшь.»</p><div class="bspot__bar is-warn" style="--w:78%"><span class="bspot__fill"><span class="mirror__status"><span class="cmp__ico"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 8V12M12 16H12.01M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/></svg></span>По-разному</span></span></div></li><li class="bspot"><div class="bspot__head"><b>Нагрузка и планы</b><span class="bspot__share"><b>11%</b> упоминаний</span></div><p class="bspot__quote">«Планы растут каждый квартал, людей не добавляют.»</p><div class="bspot__bar is-bad" style="--w:61%"><span class="bspot__fill"><span class="mirror__status"><span class="cmp__ico"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+</svg></span>чаще негатив</span><p>«Уходим в восемь, если сдаём отчётность.»</p></div></li><li class="rring rring--warn"><div class="rring__ring" role="img" aria-label="Руководители: 14% упоминаний"><svg viewBox="0 0 36 36" aria-hidden="true"><circle class="rring__track" cx="18" cy="18" r="15"/><circle class="rring__val" cx="18" cy="18" r="15" stroke-dasharray="13.20 94.25"/></svg><span>14%</span></div><div class="rring__body"><b>Руководители</b><span class="badge badge--warn badge--ico"><span class="cmp__ico cmp__ico--warn"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 8V12M12 16H12.01M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/></svg></span>по-разному</span><p>«Всё зависит от того, к какому начальнику попадёшь.»</p></div></li><li class="rring rring--bad"><div class="rring__ring" role="img" aria-label="Нагрузка и планы: 11% упоминаний"><svg viewBox="0 0 36 36" aria-hidden="true"><circle class="rring__track" cx="18" cy="18" r="15"/><circle class="rring__val" cx="18" cy="18" r="15" stroke-dasharray="10.37 94.25"/></svg><span>11%</span></div><div class="rring__body"><b>Нагрузка и планы</b><span class="badge badge--bad badge--ico"><span class="cmp__ico cmp__ico--no"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g>
 <path d="M15 9L9 15M9 9L15 15M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
 </g>
-</svg></span>Чаще негатив</span></span></div></li><li class="bspot"><div class="bspot__head"><b>Офис и техника</b><span class="bspot__share"><b>6%</b> упоминаний</span></div><p class="bspot__quote">«Ноутбуки старые, но офис удобный.»</p><div class="bspot__bar is-neu" style="--w:33%"><span class="bspot__fill"><span class="mirror__status"><span class="cmp__ico"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+</svg></span>чаще негатив</span><p>«Планы растут каждый квартал, людей не добавляют.»</p></div></li><li class="rring rring--na"><div class="rring__ring" role="img" aria-label="Офис и техника: 6% упоминаний"><svg viewBox="0 0 36 36" aria-hidden="true"><circle class="rring__track" cx="18" cy="18" r="15"/><circle class="rring__val" cx="18" cy="18" r="15" stroke-dasharray="5.66 94.25"/></svg><span>6%</span></div><div class="rring__body"><b>Офис и техника</b><span class="badge badge--na badge--ico"><span class="cmp__ico cmp__ico--na"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g>
 <path d="M5 12H19" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
 </g>
-</svg></span>Нейтрально</span></span></div></li></ul>
-</div>
+</svg></span>нейтрально</span><p>«Ноутбуки старые, но офис удобный.»</p></div></li></ul>
+
     </section>
     <section class="rblock" id="r-ind" aria-label="Место в отрасли">
       <div class="rblock__head"><h2 class="rblock__title"><span class="rblock__no">6.</span> Место в отрасли</h2><p class="rblock__hint">Базовые темы в сравнении с работодателями отрасли и региона.</p></div>
