@@ -9,10 +9,10 @@
 
 ## Стек
 
-- [Next.js 16](https://nextjs.org) (App Router, TypeScript)
-- [Tailwind CSS 4](https://tailwindcss.com)
-- [shadcn/ui](https://ui.shadcn.com) (Radix, стиль `radix-nova`) — компоненты в `src/components/ui`
-- [Apache ECharts 6](https://echarts.apache.org) — графики в `src/components/charts`
+- [Next.js 16](https://nextjs.org) (App Router, TypeScript) отдаёт разметку прототипа `prototype/home` (ADR-0008)
+- Стили — `prototype/home/src/styles.css` (в Next — `src/site/styles.css`), шрифты Onest и JetBrains Mono
+- [Apache ECharts 6](https://echarts.apache.org) — своя облегчённая сборка `prototype/home/vendor/echarts.mirror.min.js`
+- Radix и shadcn/ui — в зависимостях для будущих форм, кабинета и админки на React
 
 ## Запуск
 
@@ -20,38 +20,30 @@
 npm install
 npm run dev     # http://localhost:3000
 npm run build   # production-сборка
-npm run lint
+npm run check   # тексты, линтер, типы, модульные тесты
 ```
 
-Нужен Node.js 20+.
+Нужен Node.js 20+. Правка дизайна или текста страниц: правим `prototype/home`, затем
+
+```bash
+python3 prototype/home/build.py          # prototype/home/dist — просмотр и согласование
+python3 prototype/home/build.py --next   # выгрузка в src/site и public/site
+```
 
 ## Структура
 
 ```
+prototype/home/        источник дизайна: страницы, общие блоки, стили, скрипты, дизайн-система
 src/
-  app/                 страницы (главная, /scan, /diagnostics, /support, /pricing, /agencies,
-                       /culture-index, /methodology, /example, /dashboard, /ai, /research,
-                       /about, /security, /faq, /request, /docs/[slug])
-  components/
-    ui/                компоненты shadcn/ui
-    site/              шапка, подвал, секции, статусы обещаний, подсветка условных текстов
-    charts/            обёртка ECharts, тема бренда, графики
-  content/             тексты и данные: навигация и контакты, FAQ, демо-данные «Банк N», исследования
-docs/content/          тексты старого сайта и юридические документы (источник для /docs)
+  app/                 маршруты: страницы прототипа (SitePage), документы /docs/[slug], 404, sitemap, robots
+  site/                выгрузка прототипа: pages/*.html, manifest.json, shell.json, styles.css
+  content/site.ts      карта маршрутов ROUTES, навигация, ссылки на документы
+  lib/                 typograf и другие чистые функции
+public/site/           скрипты прототипа и сборка ECharts
+docs/                  архитектура, ADR, тексты старого сайта и юридические документы
 ```
 
-## Тема
-
-Цвета бренда — CSS-переменные в `src/app/globals.css` (палитра старого сайта `#A847B8`, `#1E101E` и т. д.).
-Те же цвета продублированы для графиков в `src/components/charts/theme.ts`:
-сиреневый — внешний бренд, бирюзовый — внутренний.
-
-## Условные тексты
-
-Всё, что нужно заменить реальными данными (цены, имена, реквизиты, данные исследований), обёрнуто в `<Ph>` и
-подсвечивается жёлтым. Подсветку можно выключить переключателем в подвале. Найти все места: `grep -rn "<Ph>" src`.
-
-Форма заявки (`/request`) пока никуда не отправляет данные — нужно подключить API, Telegram-бот или CRM.
+Форма заявки (`/start` и главная) пока никуда не отправляет данные — следующий этап, ADR-0003.
 
 ## Материалы
 

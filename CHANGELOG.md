@@ -31,6 +31,7 @@
 
 ### Удалено
 - Старые страницы Next на shadcn и компоненты `src/components/*`, `globals.css`.
+- Tailwind CSS (`tailwindcss`, `@tailwindcss/turbopack`, `tw-animate-css`) и его обработчик CSS в `next.config.ts`: стили только из прототипа. Сверка вычисленных стилей всех элементов 18 страниц с прототипом совпала. `echarts` перенесён в devDependencies: он нужен только для пересборки своей сборки графиков.
 
 ## 2026-10-24 — первая версия сайта V2
 - Сайт на Next.js 16, Tailwind 4, shadcn/ui и ECharts 6, светлая тема, структура v2.

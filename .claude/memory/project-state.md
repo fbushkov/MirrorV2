@@ -6,7 +6,7 @@ _Обновлено: 2026-10-30. Ведёт агент `mirror-context-keeper`._
 Новая версия сайта Mirror (mirror-com.ru) под новое позиционирование: бесплатный внешний срез → платная диагностика внешнего и внутреннего бренда с экспертом.
 
 ## Сделано
-- **2026-10-30 — сайт на Next = прототип (ADR-0008).** Страницы: `/`, `/pricing`, `/start`, `/hr-brand` (+`/demo`, `/methodology`), `/culture-health` (+`/demo`, `/methodology`), `/docs/*`, 404. Разметка из `prototype/home` через `build.py --next` (`src/site`, `public/site`); сверка с прототипом 0 пикселей разницы; e2e 28/28. «О нас» убрана, `/about` на главную, `/methodology` 308 на методику HR-бренда. Неиспользуемые пакеты (shadcn, Tailwind, Radix, echarts из npm) — убрать отдельной задачей. Пункты ниже про shadcn-страницы и `src/content/pulse.ts` устарели.
+- **2026-10-30 — сайт на Next = прототип (ADR-0008).** Страницы: `/`, `/pricing`, `/start`, `/hr-brand` (+`/demo`, `/methodology`), `/culture-health` (+`/demo`, `/methodology`), `/docs/*`, 404. Разметка из `prototype/home` через `build.py --next` (`src/site`, `public/site`); сверка с прототипом 0 пикселей разницы; e2e 28/28. «О нас» убрана, `/about` на главную, `/methodology` 308 на методику HR-бренда. Tailwind удалён; `echarts` (devDependencies) нужен для пересборки графиков; Radix и shadcn оставлены для форм и кабинета. Пункты ниже про shadcn-страницы и `src/content/pulse.ts` устарели.
 - Тексты старого сайта собраны: `docs/content/site-texts.md`, юр. документы — `docs/content/legal/`.
 - Тестовый сайт на Next.js 16 + Tailwind 4 + shadcn/ui + ECharts 6 (ветка `claude/practical-gates-pzc7nm`), структура v2 (`docs/ux/site-structure.md`):
   светлая тема, акцент пока `#A847B8` (при переносе заменяется на `#7A2FD1`, ADR-0002), без старого логотипа и картинок.

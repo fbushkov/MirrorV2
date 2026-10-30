@@ -10,7 +10,7 @@ model: inherit
 ## Перед работой
 1. Прочитай `CLAUDE.md`, `docs/architecture/site.md`, `docs/adr/README.md` и связанные ADR, `.claude/memory/project-state.md`.
 2. Для Next.js 16 сверяйся с `node_modules/next/dist/docs/` (например, `proxy.ts` вместо middleware, `cacheComponents`, Server Actions).
-3. Посмотри текущий код по теме (`src/app`, `src/content/site.ts`, `src/components/site`).
+3. Посмотри текущий код по теме (`src/app`, `src/content/site.ts`, `src/site`, `prototype/home`).
 
 ## Что ты выдаёшь
 - **План реализации:** шаги, файлы, кто из агентов что делает, порядок, риски, как проверить.

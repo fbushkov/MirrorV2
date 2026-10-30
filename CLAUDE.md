@@ -34,7 +34,7 @@ Mirror — сервис диагностики HR-бренда и независ
 
 ## Стек и команды
 
-Next.js 16 (App Router, `cacheComponents`), TypeScript. Страницы — разметка прототипа (`src/site`), стили — `src/site/styles.css`, графики — своя сборка ECharts в `public/site`. Пакеты shadcn и Tailwind пока в зависимостях, но не используются.
+Next.js 16 (App Router, `cacheComponents`), TypeScript. Страницы — разметка прототипа (`src/site`), стили — `src/site/styles.css`, графики — своя сборка ECharts (`prototype/home/vendor`, собирается из пакета `echarts`) в `public/site`. Radix и shadcn в зависимостях оставлены для форм и кабинета на React. Tailwind не используется.
 
 ```bash
 npm run dev      # http://localhost:3000
@@ -68,7 +68,7 @@ CI (`.github/workflows/ci.yml`) гоняет всё это на каждый pus
 |---|---|
 | Архитектура: маршруты, слои, модель данных, выбор библиотек, ADR, план крупной задачи | `mirror-architect` |
 | Макет Figma → токены и компоненты, сверка с макетом, прототипы, дизайн-система | `mirror-design-system` |
-| Страницы, компоненты, вёрстка, адаптив, shadcn/ui | `mirror-frontend` |
+| Страницы, вёрстка, адаптив (прототип и выгрузка в Next), страницы на React | `mirror-frontend` |
 | Графики и дашборды ECharts | `mirror-charts` |
 | Тексты сайта, тон, позиционирование, типографика | `mirror-content` |
 | Методика индекса, демо-данные, проверка цифр, данные парсера | `mirror-analyst` |
