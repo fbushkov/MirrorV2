@@ -1529,6 +1529,21 @@ button.seg__item.is-active { background: var(--c-surface-2); }
 .rpair--half { grid-template-columns: repeat(2, minmax(0, 1fr)); } /* пара блоков поровну: «Слепые зоны» и «Место в отрасли» */
 @media (max-width: 1279px) { .rpair--half { grid-template-columns: minmax(0, 1fr); } }
 
+/* Документы (политика, соглашение, согласие): переключатель документов и текст */
+.docnav { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 32px; }
+.docnav a { padding: 8px 16px; border-radius: var(--r-pill); background: var(--c-chrome); font: 400 var(--fs-sm)/var(--lh-sm) var(--font-sans); color: var(--c-ink-2); transition: color .2s, background .2s; }
+.docnav a:hover { color: var(--c-ink); }
+.docnav a[aria-current="page"] { background: var(--c-surface); color: var(--c-ink); box-shadow: inset 0 0 0 1px var(--c-line-3); }
+.doc { max-width: 860px; padding: clamp(24px, 2.5vw, 48px); border-radius: var(--r-card); background: var(--c-surface); color: var(--c-ink); }
+.doc h2 { margin: 40px 0 16px; font: 500 var(--fs-title)/var(--lh-title) var(--font-sans); }
+.doc h3 { margin: 32px 0 12px; font: 500 var(--fs-body)/var(--lh-body) var(--font-sans); }
+.doc > :first-child { margin-top: 0; }
+.doc p, .doc ul, .doc ol { margin: 0 0 16px; }
+.doc ul, .doc ol { padding-left: 24px; }
+.doc li { margin-bottom: 6px; }
+.doc a { color: var(--c-violet); text-decoration: underline; text-underline-offset: 3px; }
+.doc strong { font-weight: 600; }
+
 </style>
 </head>
 <body>
@@ -1562,9 +1577,8 @@ button.seg__item.is-active { background: var(--c-surface-2); }
 </g>
 </svg></button></li>
             <li><a class="nav__item" href="pricing.html">Цены</a></li>
-            <li><a class="nav__item" href="#">О нас</a></li>
           </ul>
-          <a class="btn btn--primary header__cta" href="index.html#request">Бесплатный срез</a>
+          <a class="btn btn--primary header__cta" href="start.html">Бесплатный срез</a>
         </nav>
         <button class="header__burger" type="button" aria-expanded="false" aria-controls="mega" data-panel="mobile" aria-label="Открыть меню">
           <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 6h16M3 11h16M3 16h16"/></svg>
@@ -1603,9 +1617,8 @@ button.seg__item.is-active { background: var(--c-surface-2); }
             </div>
             <div class="mega__cards">
               <a class="mega__card" href="pricing.html"><b>Цены</b></a>
-              <a class="mega__card" href="#"><b>О нас</b></a>
             </div>
-            <a class="btn btn--primary btn--block" href="index.html#request">Бесплатный срез</a>
+            <a class="btn btn--primary btn--block" href="start.html">Бесплатный срез</a>
           </div>
         </div>
       </div>
@@ -1624,7 +1637,7 @@ button.seg__item.is-active { background: var(--c-surface-2); }
         <h1 class="hero__title" id="page-title">Дашборд здоровья<br><span class="dim">корпоративной культуры</span></h1>
         <p class="page-hero__lead">Как в компании живут и работают на самом деле. Дашборд показывает, где заявленные ценности совпадают с опытом людей, а где расходятся.</p>
         <div class="dir-hero__actions">
-          <a class="btn btn--primary" href="index.html?topic=health#request" data-topic="health">Обсудить запуск</a>
+          <a class="btn btn--primary" href="start.html?topic=health" data-topic="health">Обсудить запуск</a>
           <a class="btn-link" href="culture-health-demo.html">Демо-дашборд <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g>
 <path d="M14.8327 14.1641C14.8327 14.5323 14.5342 14.8307 14.166 14.8307C13.7978 14.8307 13.4993 14.5323 13.4993 14.1641V7.4401L6.30404 14.6354C6.04369 14.8958 5.62168 14.8958 5.36133 14.6354C5.10098 14.3751 5.10098 13.9531 5.36133 13.6927L12.5566 6.4974H5.83268C5.46449 6.4974 5.16602 6.19892 5.16602 5.83073C5.16602 5.46254 5.46449 5.16406 5.83268 5.16406H14.166C14.5342 5.16406 14.8327 5.46254 14.8327 5.83073V14.1641Z" fill="currentColor"/>
@@ -2000,7 +2013,7 @@ button.seg__item.is-active { background: var(--c-surface-2); }
     <div class="help">
       <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAiIGhlaWdodD0iODAiIHZpZXdCb3g9IjAgMCA4MCA4MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTQ4IDBIMzJWNDRDMzIgNDguNDE4NCAyOC40MTgzIDUyIDI0IDUyQzE5LjU4MTcgNTIgMTYgNDguNDE4NCAxNiA0NFYwSDBWNDBDMCA2Mi4wOTEyIDE3LjkwODYgODAgNDAgODBDNjIuMDkxMiA4MCA4MCA2Mi4wOTEyIDgwIDQwVjBINjRWNDRDNjQgNDguNDE4NCA2MC40MTg0IDUyIDU2IDUyQzUxLjU4MTYgNTIgNDggNDguNDE4NCA0OCA0NFYwWiIgZmlsbD0idXJsKCNjdGEtZGFzaC1nKSIvPjxkZWZzPjxsaW5lYXJHcmFkaWVudCBpZD0iY3RhLWRhc2gtZyIgeDE9IjQwIiB5MT0iMCIgeDI9IjQwIiB5Mj0iODAiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIj48c3RvcCBzdG9wLWNvbG9yPSIjNzA4N0ZGIi8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjRUE3MEZGIi8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PC9zdmc+Cg==" alt="" width="80" height="80">
       <div class="help__text"><h3 id="cta-title">Запустите дашборд в своей компании</h3><p>Начнём с диагностики и первого замера. Расскажите о компании, и мы предложим план кампании.</p></div>
-      <a class="btn btn--primary" href="index.html?topic=health#request" data-topic="health">Обсудить кампанию <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <a class="btn btn--primary" href="start.html?topic=health" data-topic="health">Обсудить кампанию <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g>
 <path d="M14.8327 14.1641C14.8327 14.5323 14.5342 14.8307 14.166 14.8307C13.7978 14.8307 13.4993 14.5323 13.4993 14.1641V7.4401L6.30404 14.6354C6.04369 14.8958 5.62168 14.8958 5.36133 14.6354C5.10098 14.3751 5.10098 13.9531 5.36133 13.6927L12.5566 6.4974H5.83268C5.46449 6.4974 5.16602 6.19892 5.16602 5.83073C5.16602 5.46254 5.46449 5.16406 5.83268 5.16406H14.166C14.5342 5.16406 14.8327 5.46254 14.8327 5.83073V14.1641Z" fill="currentColor"/>
 </g>
@@ -2175,7 +2188,7 @@ fade(); sync();
   <footer class="footer">
     <div class="footer__cta">
       <p><span class="dim">Хотите увидеть свою компанию в зеркале?</span><br>Обсудим задачу за 30 минут.</p>
-      <a class="btn btn--white" href="index.html#request">Задать вопрос <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <a class="btn btn--white" href="start.html">Задать вопрос <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g>
 <path d="M14.8327 14.1641C14.8327 14.5323 14.5342 14.8307 14.166 14.8307C13.7978 14.8307 13.4993 14.5323 13.4993 14.1641V7.4401L6.30404 14.6354C6.04369 14.8958 5.62168 14.8958 5.36133 14.6354C5.10098 14.3751 5.10098 13.9531 5.36133 13.6927L12.5566 6.4974H5.83268C5.46449 6.4974 5.16602 6.19892 5.16602 5.83073C5.16602 5.46254 5.46449 5.16406 5.83268 5.16406H14.166C14.5342 5.16406 14.8327 5.46254 14.8327 5.83073V14.1641Z" fill="currentColor"/>
 </g>
@@ -2191,7 +2204,7 @@ fade(); sync();
         <div class="footer__cols">
           <div class="fcol"><h4>Оценка HR-бренда</h4><ul><li><a href="hr-brand.html">Обзор направления</a></li><li><a href="hr-brand-demo.html">Демо-отчёт</a></li><li><a href="methodology-brand.html">Как считаем</a></li></ul></div>
           <div class="fcol"><h4>Здоровье культуры</h4><ul><li><a href="culture-health.html">Обзор направления</a></li><li><a href="culture-health-demo.html">Демо-дашборд</a></li><li><a href="methodology-health.html">Как считаем</a></li></ul></div>
-          <div class="fcol"><h4>Компания</h4><ul><li><a href="pricing.html">Цены</a></li><li><a href="#">О нас</a></li></ul></div>
+          <div class="fcol"><h4>Компания</h4><ul><li><a href="pricing.html">Цены</a></li><li><a href="start.html">Заявка</a></li></ul></div>
           <div class="fcol"><h4>Контакты</h4><ul><li><a href="mailto:mirrorcom@mail.ru">mirrorcom@mail.ru</a></li><li><a href="tel:+79127023030">+7 912 702-30-30</a></li><li><a href="https://t.me/mirror_diary" target="_blank" rel="noreferrer">@mirror_diary</a></li></ul></div>
         </div>
       </div>
@@ -2392,7 +2405,8 @@ document.querySelectorAll(".dir[data-shader]").forEach((card) => {
    если сверху мало места — под ней. Связь для скринридеров — aria-describedby. */
 const tip = document.createElement("div");
 tip.className = "tip"; tip.id = "tip"; tip.setAttribute("role", "tooltip");
-document.body.appendChild(tip);
+// В Next тело страницы принадлежит React: подсказку кладём в свой слой, иначе гидратация видит лишний узел
+(document.getElementById("site-layer") ?? document.body).appendChild(tip);
 let tipFor = null;
 function showTip(btn) {
   tipFor = btn;

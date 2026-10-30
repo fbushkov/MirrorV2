@@ -1,23 +1,14 @@
 import type { Metadata } from "next"
-import { Manrope } from "next/font/google"
-import { Toaster } from "@/components/ui/sonner"
-import { TooltipProvider } from "@/components/ui/tooltip"
-import { Header } from "@/components/site/header"
-import { Footer } from "@/components/site/footer"
-import "./globals.css"
-
-const manrope = Manrope({
-  variable: "--font-sans",
-  subsets: ["latin", "cyrillic"],
-})
+import "@/site/styles.css"
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://mirror-com.ru"),
   title: {
-    default: "Mirror — диагностика HR-бренда и индекс культуры",
-    template: "%s | Mirror",
+    default: "Mirror — сверяем обещания работодателя с реальностью",
+    template: "%s — Mirror",
   },
   description:
-    "Mirror сравнивает внешний и внутренний бренд работодателя: что вы обещаете, что о вас пишут и что говорят сотрудники. Первый внешний срез — бесплатно.",
+    "Mirror сверяет обещания работодателя с тем, что видят кандидаты и переживают сотрудники. Первый внешний срез HR-бренда бесплатно.",
   icons: {
     icon: [
       { url: "/icon.svg", type: "image/svg+xml" },
@@ -27,25 +18,17 @@ export const metadata: Metadata = {
   },
 }
 
+// Оформление и разметка страниц — из прототипа prototype/home (ADR-0008): шрифты Onest и JetBrains Mono, стили src/site/styles.css
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="ru" className={`${manrope.variable} antialiased`} data-ph="on" suppressHydrationWarning>
+    <html lang="ru">
       <head>
-        {/* Восстанавливаем выбор подсветки условных текстов до отрисовки */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `try{if(localStorage.getItem("mirror:ph")==="off")document.documentElement.dataset.ph="off"}catch(e){}`,
-          }}
-        />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        {/* eslint-disable-next-line @next/next/no-page-custom-font -- шрифты для всех страниц, как в прототипе */}
+        <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
       </head>
-      <body className="flex min-h-svh flex-col overflow-x-clip">
-        <TooltipProvider>
-          <Header />
-          <main className="flex-1">{children}</main>
-          <Footer />
-          <Toaster theme="light" />
-        </TooltipProvider>
-      </body>
+      <body>{children}</body>
     </html>
   )
 }

@@ -136,7 +136,8 @@ document.querySelectorAll(".dir[data-shader]").forEach((card) => {
    если сверху мало места — под ней. Связь для скринридеров — aria-describedby. */
 const tip = document.createElement("div");
 tip.className = "tip"; tip.id = "tip"; tip.setAttribute("role", "tooltip");
-document.body.appendChild(tip);
+// В Next тело страницы принадлежит React: подсказку кладём в свой слой, иначе гидратация видит лишний узел
+(document.getElementById("site-layer") ?? document.body).appendChild(tip);
 let tipFor = null;
 function showTip(btn) {
   tipFor = btn;

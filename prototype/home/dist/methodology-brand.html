@@ -1529,6 +1529,21 @@ button.seg__item.is-active { background: var(--c-surface-2); }
 .rpair--half { grid-template-columns: repeat(2, minmax(0, 1fr)); } /* пара блоков поровну: «Слепые зоны» и «Место в отрасли» */
 @media (max-width: 1279px) { .rpair--half { grid-template-columns: minmax(0, 1fr); } }
 
+/* Документы (политика, соглашение, согласие): переключатель документов и текст */
+.docnav { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 32px; }
+.docnav a { padding: 8px 16px; border-radius: var(--r-pill); background: var(--c-chrome); font: 400 var(--fs-sm)/var(--lh-sm) var(--font-sans); color: var(--c-ink-2); transition: color .2s, background .2s; }
+.docnav a:hover { color: var(--c-ink); }
+.docnav a[aria-current="page"] { background: var(--c-surface); color: var(--c-ink); box-shadow: inset 0 0 0 1px var(--c-line-3); }
+.doc { max-width: 860px; padding: clamp(24px, 2.5vw, 48px); border-radius: var(--r-card); background: var(--c-surface); color: var(--c-ink); }
+.doc h2 { margin: 40px 0 16px; font: 500 var(--fs-title)/var(--lh-title) var(--font-sans); }
+.doc h3 { margin: 32px 0 12px; font: 500 var(--fs-body)/var(--lh-body) var(--font-sans); }
+.doc > :first-child { margin-top: 0; }
+.doc p, .doc ul, .doc ol { margin: 0 0 16px; }
+.doc ul, .doc ol { padding-left: 24px; }
+.doc li { margin-bottom: 6px; }
+.doc a { color: var(--c-violet); text-decoration: underline; text-underline-offset: 3px; }
+.doc strong { font-weight: 600; }
+
 </style>
 </head>
 <body>
@@ -1562,9 +1577,8 @@ button.seg__item.is-active { background: var(--c-surface-2); }
 </g>
 </svg></button></li>
             <li><a class="nav__item" href="pricing.html">Цены</a></li>
-            <li><a class="nav__item" href="#">О нас</a></li>
           </ul>
-          <a class="btn btn--primary header__cta" href="index.html#request">Бесплатный срез</a>
+          <a class="btn btn--primary header__cta" href="start.html">Бесплатный срез</a>
         </nav>
         <button class="header__burger" type="button" aria-expanded="false" aria-controls="mega" data-panel="mobile" aria-label="Открыть меню">
           <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 6h16M3 11h16M3 16h16"/></svg>
@@ -1603,9 +1617,8 @@ button.seg__item.is-active { background: var(--c-surface-2); }
             </div>
             <div class="mega__cards">
               <a class="mega__card" href="pricing.html"><b>Цены</b></a>
-              <a class="mega__card" href="#"><b>О нас</b></a>
             </div>
-            <a class="btn btn--primary btn--block" href="index.html#request">Бесплатный срез</a>
+            <a class="btn btn--primary btn--block" href="start.html">Бесплатный срез</a>
           </div>
         </div>
       </div>
@@ -1626,7 +1639,7 @@ button.seg__item.is-active { background: var(--c-surface-2); }
         <p class="page-hero__lead">Методика открыта, и любой результат можно проверить по таблице. Веса следуют из ваших же текстов, а не из мнения эксперта. Для вас и для конкурентов правила одни.</p>
         <div class="badges"><span class="badge badge--soft">методика · версия 1.0</span></div>
         <div class="dir-hero__actions">
-          <a class="btn btn--primary" href="index.html?topic=scan#request" data-topic="scan">Бесплатный срез</a>
+          <a class="btn btn--primary" href="start.html?topic=scan" data-topic="scan">Бесплатный срез</a>
           <a class="btn-link" href="hr-brand-demo.html">Демо-отчёт <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g>
 <path d="M14.8327 14.1641C14.8327 14.5323 14.5342 14.8307 14.166 14.8307C13.7978 14.8307 13.4993 14.5323 13.4993 14.1641V7.4401L6.30404 14.6354C6.04369 14.8958 5.62168 14.8958 5.36133 14.6354C5.10098 14.3751 5.10098 13.9531 5.36133 13.6927L12.5566 6.4974H5.83268C5.46449 6.4974 5.16602 6.19892 5.16602 5.83073C5.16602 5.46254 5.46449 5.16406 5.83268 5.16406H14.166C14.5342 5.16406 14.8327 5.46254 14.8327 5.83073V14.1641Z" fill="currentColor"/>
@@ -1894,7 +1907,7 @@ button.seg__item.is-active { background: var(--c-surface-2); }
     <div class="help">
       <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxnIGlkPSJTaGFwZXMiPgo8ZyBpZD0iVmFyaWFudD0zNSIgY2xpcC1wYXRoPSJ1cmwoI3NoYXBlLWN0YS1tZXRob2QtYnJhbmQtY2xpcDBfMF8xKSI+CjxnIGlkPSJDbGlwIHBhdGggZ3JvdXAiPgo8bWFzayBpZD0ic2hhcGUtY3RhLW1ldGhvZC1icmFuZC1tYXNrMF8wXzEiIHN0eWxlPSJtYXNrLXR5cGU6bHVtaW5hbmNlIiBtYXNrVW5pdHM9InVzZXJTcGFjZU9uVXNlIiB4PSIwIiB5PSIwIiB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCI+CjxnIGlkPSJzaGFwZS1jdGEtbWV0aG9kLWJyYW5kLWNsaXAwXzExNl8yIj4KPHBhdGggaWQ9IlZlY3RvciIgZD0iTTIwMCAwSDBWMjAwSDIwMFYwWiIgZmlsbD0id2hpdGUiLz4KPC9nPgo8L21hc2s+CjxnIG1hc2s9InVybCgjc2hhcGUtY3RhLW1ldGhvZC1icmFuZC1tYXNrMF8wXzEpIj4KPGcgaWQ9Ikdyb3VwIj4KPHBhdGggaWQ9IlZlY3Rvcl8yIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTI5LjI4OTMgMjkuMjg5M0MxOS4yNjU4IDM5LjMxMjggMTUuNjQ1OCA1My4zMTUgMTguNDI5NCA2Ni4yMTIzQzcuMzQxMzIgNzMuMzYzOCAwIDg1LjgyNDYgMCAxMDBDLTEuNzQxNTZlLTA2IDExNC4xNzUgNy4zNDEzMiAxMjYuNjM2IDE4LjQyOTQgMTMzLjc4OEMxNS42NDU4IDE0Ni42ODUgMTkuMjY1OCAxNjAuNjg3IDI5LjI4OTMgMTcwLjcxMUMzOS4zMTI5IDE4MC43MzQgNTMuMzE1IDE4NC4zNTQgNjYuMjEyMyAxODEuNTcxQzczLjM2MzkgMTkyLjY1OSA4NS44MjQ2IDIwMCAxMDAgMjAwQzExNC4xNzUgMjAwIDEyNi42MzYgMTkyLjY1OSAxMzMuNzg4IDE4MS41NzFDMTQ2LjY4NSAxODQuMzU0IDE2MC42ODcgMTgwLjczNCAxNzAuNzExIDE3MC43MTFDMTgwLjczNCAxNjAuNjg3IDE4NC4zNTQgMTQ2LjY4NSAxODEuNTcxIDEzMy43ODhDMTkyLjY1OSAxMjYuNjM2IDIwMCAxMTQuMTc1IDIwMCAxMDBDMjAwIDg1LjgyNDYgMTkyLjY1OSA3My4zNjM4IDE4MS41NzEgNjYuMjEyM0MxODQuMzU0IDUzLjMxNSAxODAuNzM0IDM5LjMxMjkgMTcwLjcxMSAyOS4yODkzQzE2MC42ODcgMTkuMjY1OCAxNDYuNjg1IDE1LjY0NTggMTMzLjc4OCAxOC40Mjk0QzEyNi42MzYgNy4zNDEzMyAxMTQuMTc1IDAgMTAwIDBDODUuODI0NiAwIDczLjM2MzggNy4zNDEzMSA2Ni4yMTIzIDE4LjQyOTNDNTMuMzE1IDE1LjY0NTggMzkuMzEyOSAxOS4yNjU4IDI5LjI4OTMgMjkuMjg5M1oiIGZpbGw9InVybCgjc2hhcGUtY3RhLW1ldGhvZC1icmFuZC1wYWludDBfbGluZWFyXzBfMSkiLz4KPC9nPgo8L2c+CjwvZz4KPC9nPgo8L2c+CjxkZWZzPgo8bGluZWFyR3JhZGllbnQgaWQ9InNoYXBlLWN0YS1tZXRob2QtYnJhbmQtcGFpbnQwX2xpbmVhcl8wXzEiIHgxPSIxNzciIHkxPSItMS4wMDI3N2UtMDUiIHgyPSIzOS41IiB5Mj0iMTUyLjUiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIj4KPHN0b3Agc3RvcC1jb2xvcj0iIzcwODBGRiIvPgo8c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiM3MDdDRkYiLz4KPC9saW5lYXJHcmFkaWVudD4KPGNsaXBQYXRoIGlkPSJzaGFwZS1jdGEtbWV0aG9kLWJyYW5kLWNsaXAwXzBfMSI+CjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiBmaWxsPSJ3aGl0ZSIvPgo8L2NsaXBQYXRoPgo8L2RlZnM+Cjwvc3ZnPgo=" alt="" width="80" height="80">
       <div class="help__text"><h3 id="cta-title">Узнайте свой индекс культуры</h3><p>Пришлём внешний срез за 3 рабочих дня. Доступ к вашим системам не нужен.</p></div>
-      <a class="btn btn--primary" href="index.html?topic=scan#request" data-topic="scan">Получить бесплатный срез <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <a class="btn btn--primary" href="start.html?topic=scan" data-topic="scan">Получить бесплатный срез <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g>
 <path d="M14.8327 14.1641C14.8327 14.5323 14.5342 14.8307 14.166 14.8307C13.7978 14.8307 13.4993 14.5323 13.4993 14.1641V7.4401L6.30404 14.6354C6.04369 14.8958 5.62168 14.8958 5.36133 14.6354C5.10098 14.3751 5.10098 13.9531 5.36133 13.6927L12.5566 6.4974H5.83268C5.46449 6.4974 5.16602 6.19892 5.16602 5.83073C5.16602 5.46254 5.46449 5.16406 5.83268 5.16406H14.166C14.5342 5.16406 14.8327 5.46254 14.8327 5.83073V14.1641Z" fill="currentColor"/>
 </g>
@@ -2085,7 +2098,7 @@ fade(); sync();
   <footer class="footer">
     <div class="footer__cta">
       <p><span class="dim">Хотите увидеть свою компанию в зеркале?</span><br>Обсудим задачу за 30 минут.</p>
-      <a class="btn btn--white" href="index.html#request">Задать вопрос <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <a class="btn btn--white" href="start.html">Задать вопрос <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g>
 <path d="M14.8327 14.1641C14.8327 14.5323 14.5342 14.8307 14.166 14.8307C13.7978 14.8307 13.4993 14.5323 13.4993 14.1641V7.4401L6.30404 14.6354C6.04369 14.8958 5.62168 14.8958 5.36133 14.6354C5.10098 14.3751 5.10098 13.9531 5.36133 13.6927L12.5566 6.4974H5.83268C5.46449 6.4974 5.16602 6.19892 5.16602 5.83073C5.16602 5.46254 5.46449 5.16406 5.83268 5.16406H14.166C14.5342 5.16406 14.8327 5.46254 14.8327 5.83073V14.1641Z" fill="currentColor"/>
 </g>
@@ -2101,7 +2114,7 @@ fade(); sync();
         <div class="footer__cols">
           <div class="fcol"><h4>Оценка HR-бренда</h4><ul><li><a href="hr-brand.html">Обзор направления</a></li><li><a href="hr-brand-demo.html">Демо-отчёт</a></li><li><a href="methodology-brand.html">Как считаем</a></li></ul></div>
           <div class="fcol"><h4>Здоровье культуры</h4><ul><li><a href="culture-health.html">Обзор направления</a></li><li><a href="culture-health-demo.html">Демо-дашборд</a></li><li><a href="methodology-health.html">Как считаем</a></li></ul></div>
-          <div class="fcol"><h4>Компания</h4><ul><li><a href="pricing.html">Цены</a></li><li><a href="#">О нас</a></li></ul></div>
+          <div class="fcol"><h4>Компания</h4><ul><li><a href="pricing.html">Цены</a></li><li><a href="start.html">Заявка</a></li></ul></div>
           <div class="fcol"><h4>Контакты</h4><ul><li><a href="mailto:mirrorcom@mail.ru">mirrorcom@mail.ru</a></li><li><a href="tel:+79127023030">+7 912 702-30-30</a></li><li><a href="https://t.me/mirror_diary" target="_blank" rel="noreferrer">@mirror_diary</a></li></ul></div>
         </div>
       </div>
@@ -2302,7 +2315,8 @@ document.querySelectorAll(".dir[data-shader]").forEach((card) => {
    если сверху мало места — под ней. Связь для скринридеров — aria-describedby. */
 const tip = document.createElement("div");
 tip.className = "tip"; tip.id = "tip"; tip.setAttribute("role", "tooltip");
-document.body.appendChild(tip);
+// В Next тело страницы принадлежит React: подсказку кладём в свой слой, иначе гидратация видит лишний узел
+(document.getElementById("site-layer") ?? document.body).appendChild(tip);
 let tipFor = null;
 function showTip(btn) {
   tipFor = btn;

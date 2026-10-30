@@ -16,6 +16,8 @@ const eslintConfig = defineConfig([
     ".preview/**",
     // Статичный HTML-прототип по макету Figma — эталон для переноса, не код сайта
     "prototype/**",
+    // Скрипты прототипа и своя сборка ECharts, выгруженные build.py --next (ADR-0008)
+    "public/site/**",
   ]),
 ]);
 

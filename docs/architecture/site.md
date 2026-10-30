@@ -41,12 +41,8 @@ src/app/
 
 ```
 src/
-  app/                    только маршруты: собирают страницу из секций, задают metadata
-  components/
-    ui/                   shadcn, подогнанный под размеры макета (кнопки 48, поля, бейджи)
-    site/                 общие блоки сайта: Header, Footer, PageHero, Section, Breadcrumbs, Card…
-    charts/               ECharts-обёртка и тема
-    <домен>/              блоки одной страницы/домена (home, pulse, start…)
+  app/                    только маршруты: <SitePage name> с разметкой прототипа, metadata; документы и 404 — в SiteShell
+  site/                   выгрузка prototype/home (build.py --next, ADR-0008): pages/*.html, manifest.json, shell.json, styles.css
   content/                тексты и демо-данные; ROUTES/NAV/FOOTER в site.ts — единственная карта ссылок
   lib/                    чистые функции без сервера: typograf, форматирование, валидация (общие схемы Zod)
   server/                 (появится на этапе 2) только серверный код, import "server-only"

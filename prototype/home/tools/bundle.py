@@ -10,7 +10,7 @@ import base64, gzip, json, pathlib, re
 root = pathlib.Path(__file__).resolve().parent.parent
 dist = root / "dist"
 PAGES = ["index.html", "pricing.html", "hr-brand.html", "hr-brand-demo.html", "methodology-brand.html",
-         "culture-health.html", "culture-health-demo.html", "methodology-health.html"]
+         "culture-health.html", "culture-health-demo.html", "methodology-health.html", "start.html"]
 # Общие куски: подставляются вместо повторов во всех страницах
 CHUNKS = {k: (root / p).read_text() for k, p in {
     "E": "vendor/echarts.mirror.min.js", "S": "src/styles.css", "A": "src/app.js",

@@ -15,6 +15,7 @@
 | [0005](0005-testing-and-ci.md) | Vitest + Playwright, CI на каждый push | принято |
 | [0006](0006-hosting-regru.md) | Хостинг REG.RU, сервер ведёт пользователь, docker compose | принято |
 | [0007](0007-external-report.md) | Отчёт внешнего анализа: выгрузка парсера → ИИ → PDF | предложено |
+| [0008](0008-prototype-as-site.md) | Сайт отдаёт разметку прототипа (`build.py --next`) | принято |
 
 Шаблон:
 

@@ -1,4 +1,4 @@
-<!-- page: route=home; title=Mirror — сверяем обещания работодателя с реальностью -->
+<!-- page: route=home; title=Mirror — сверяем обещания работодателя с реальностью; description=Mirror сверяет обещания работодателя с тем, что видят кандидаты и переживают сотрудники. Первый внешний срез HR-бренда бесплатно. -->
   <main>
   <!-- 2. Первый экран + выбор направления -->
   <section class="hero" aria-labelledby="hero-title">
@@ -160,43 +160,6 @@
       </div>
       <p class="lead">Оставьте компанию и контакт. Конкурентов, сроки и формат уточним сами.</p>
     </div>
-    <div class="request">
-      <div class="contacts">
-        <dl>
-          <div><dt>Почта</dt><dd><a href="mailto:mirrorcom@mail.ru">mirrorcom@mail.ru</a></dd></div>
-          <div><dt>Телефон</dt><dd><a href="tel:+79127023030">+7 912 702-30-30</a></dd></div>
-          <div><dt>Телеграм-канал</dt><dd><a href="https://t.me/mirror_diary" target="_blank" rel="noreferrer">@mirror_diary</a></dd></div>
-        </dl>
-        <div class="next"><p>Что будет дальше?</p><ol><li>Ответим в течение рабочего дня</li><li>Уточним конкурентов для сравнения</li><li>Через 3 рабочих дня пришлём срез и созвонимся</li></ol></div>
-      </div>
-      <form class="form" novalidate>
-        <fieldset class="field" style="border:0">
-          <legend class="label" style="margin-bottom:8px">Что нужно</legend>
-          <div class="chips" role="radiogroup">
-            <label class="chip"><input type="radio" name="topic" value="scan" checked>Бесплатный срез</label>
-            <label class="chip"><input type="radio" name="topic" value="monitoring">Мониторинг</label>
-            <label class="chip"><input type="radio" name="topic" value="diagnostics">Диагностика</label>
-            <label class="chip"><input type="radio" name="topic" value="health">Кампания на 3 месяца</label>
-            <label class="chip"><input type="radio" name="topic" value="other">Другой вопрос</label>
-          </div>
-        </fieldset>
-        <div class="form__row">
-          <div class="field"><label class="label" for="f-name">Имя</label><input class="input" id="f-name" name="name" placeholder="Как к вам обращаться" autocomplete="given-name"></div>
-          <div class="field"><label class="label" for="f-company">Компания</label><input class="input" id="f-company" name="company" placeholder="Название компании" autocomplete="organization" required><span class="error" hidden>Укажите компанию</span></div>
-        </div>
-        <div class="form__row">
-          <div class="field"><label class="label" for="f-hh">Ссылка на hh.ru</label><input class="input" id="f-hh" name="hh" placeholder="hh.ru/employer/…"></div>
-          <div class="field"><label class="label" for="f-contact">Почта или Телеграм</label><input class="input" id="f-contact" name="contact" placeholder="Куда прислать срез" required><span class="error" hidden>Оставьте контакт</span></div>
-        </div>
-        <div class="field">
-          <label class="label" for="f-msg">Комментарий</label>
-          <p class="hint">Необязательное поле</p>
-          <textarea class="textarea" id="f-msg" name="message" placeholder="Что сейчас беспокоит или каких конкурентов добавить в сравнение"></textarea>
-        </div>
-        <label class="check"><input type="checkbox" name="consent" required><span><span class="muted">Согласен на</span> <a href="{{href:consent}}">обработку персональных данных</a> <span class="muted">и принимаю</span> <a href="{{href:privacy}}">политику конфиденциальности</a></span></label>
-        <button class="btn btn--primary btn--block" type="submit">Отправить заявку {{svgc:arrow-up-right-white.svg|ico-arrow}}</button>
-        <div class="form__done" role="status"><h3>Заявка принята</h3><p>Ответим в течение рабочего дня. Это прототип, данные никуда не отправляются.</p></div>
-      </form>
-    </div>
+    {{include:partials/request.html}}
   </section>
   </main>

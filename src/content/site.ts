@@ -81,7 +81,6 @@ export const ROUTES: Route[] = [
   { path: "/culture-health/demo", title: "Демо-дашборд", parent: "/culture-health" },
   { path: "/culture-health/methodology", title: "Как считаем переживаемую культуру", parent: "/culture-health" },
   { path: "/pricing", title: "Цены", parent: "/" },
-  { path: "/about", title: "О нас", parent: "/" },
   { path: "/start", title: "Заявка", parent: "/" },
   ...LEGAL_LINKS.map((l) => ({ path: l.href, title: l.title, parent: "/" })),
 ]
