@@ -23,11 +23,11 @@ ROUTES = {
     "start":               ("/start",                     "index.html#request"),   # пока форма на главной
     "hr-brand":            ("/hr-brand",                  "hr-brand.html"),
     "hr-brand-demo":       ("/hr-brand/demo",             "hr-brand-demo.html"),
-    "methodology-brand":   ("/methodology#brand",         "methodology-brand.html"),
+    "methodology-brand":   ("/hr-brand/methodology",      "methodology-brand.html"),
     "culture-health":      ("/culture-health",            "culture-health.html"),
     "culture-health-demo": ("/culture-health/demo",       "culture-health-demo.html"),
-    "methodology-health":  ("/methodology#health",        "methodology-health.html"),
-    "methodology":         ("/methodology",               "methodology-brand.html"),   # общей страницы нет: методика у каждого направления своя
+    "methodology-health":  ("/culture-health/methodology", "methodology-health.html"),
+    "methodology":         ("/hr-brand/methodology",      "methodology-brand.html"),   # общей страницы нет; старый /methodology — редирект 301 сюда
     "privacy":             ("/docs/privacy-policy",       None),
     "terms":               ("/docs/terms-of-use",         None),
     "consent":             ("/docs/data-processing-consent", None),
