@@ -25,7 +25,7 @@ _v0.1 · 2026-10-27. Владелец документа — агент `mirror-
 src/app/
   (site)/                 маркетинговый сайт: общая шапка и подвал, всё статическое
     page.tsx              /
-    about/ pricing/ start/ methodology/ hr-brand/ culture-health/ docs/[slug]/
+    about/ pricing/ start/ hr-brand/(demo, methodology) culture-health/(demo, methodology) docs/[slug]/
   (cabinet)/app/          личный кабинет клиента — /app/*        (этап 4)
   (admin)/admin/          админка команды Mirror — /admin/*       (этап 3)
   api/                    Route Handlers: вебхуки, healthcheck, приём данных парсера

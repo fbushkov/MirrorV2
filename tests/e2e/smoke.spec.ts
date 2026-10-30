@@ -23,3 +23,10 @@ test("несуществующая страница отдаёт 404", async ({ 
   const res = await page.goto("/no-such-page")
   expect(res?.status()).toBe(404)
 })
+
+// Общей методики нет: старый адрес навсегда ведёт на «Как считаем» HR-бренда
+test("/methodology постоянно перенаправляет на методику HR-бренда", async ({ request }) => {
+  const res = await request.get("/methodology", { maxRedirects: 0 })
+  expect(res.status()).toBe(308)
+  expect(res.headers()["location"]).toBe("/hr-brand/methodology")
+})

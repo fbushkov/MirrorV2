@@ -30,7 +30,8 @@
   демо                          /hr-brand/demo         отчёт на условных данных; блок «Снаружи и изнутри вместе» в конце
 Направление 2 · изнутри         /culture-health        Дашборд здоровья корпоративной культуры (по ТЗ, 15 блоков)
   демо                          /culture-health/demo   кликабельный дашборд
-Методика                        /methodology           #metrics, #brand-method — снаружи; #health-method — изнутри
+Как считаем (снаружи)           /hr-brand/methodology  #metrics, #brand-method; /methodology — редирект сюда
+Как считаем (изнутри)           /culture-health/methodology
 Цены                            /pricing               по направлениям: срез 0 ₽ и мониторинг; диагностика и кампания на 3 месяца
 О нас                           /about
 Заявка                          /start                 темы по направлениям (?type=scan|monitoring|diagnostics|health|other)

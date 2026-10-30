@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
-import { ArrowDown } from "lucide-react"
+import Link from "next/link"
+import { ArrowUpRight } from "lucide-react"
 import { DIRECTION_NAMES } from "@/content/site"
 import { PageHero } from "@/components/site/page-hero"
 import { Section, SectionHeader } from "@/components/site/section"
@@ -12,40 +13,12 @@ import { IndexGauge } from "@/components/charts/brand-charts"
 import { BlindSpots } from "@/components/metrics/blind-spots"
 import { IndustryTracks } from "@/components/metrics/industry-tracks"
 import { MatrixBlock } from "@/components/metrics/matrix-block"
-import { NOT_IN_METRICS, PULSE_METRICS } from "@/content/pulse"
-import { LevelBadge } from "@/components/pulse/parts"
-import { cn } from "@/lib/utils"
 import { FAQ_CULTURE } from "@/content/faq"
 
 export const metadata: Metadata = {
-  title: "Методика",
-  description: "Как Mirror считает оценку HR-бренда и индекс культуры снаружи и здоровье корпоративной культуры изнутри. Открытая методика и пример расчёта.",
-}
-
-function DirLabel({ n }: { n: 1 | 2 }) {
-  return <>Направление {n} · {n === 1 ? "HR-бренд и индекс культуры" : "здоровье корпоративной культуры"}</>
-}
-
-function DirNav() {
-  const items = [
-    { href: "#metrics", n: 1, name: DIRECTION_NAMES.brand, text: "Индекс, слепые зоны, место в отрасли, матрица, расчёт", dot: "bg-brand-500", card: "border-brand-100 bg-brand-50/60" },
-    { href: "#health-method", n: 2, name: DIRECTION_NAMES.health, text: "10 метрик, источники, зоны балла, уверенность данных", dot: "bg-health-500", card: "border-health-100 bg-health-50/70" },
-  ]
-  return (
-    <div className="grid gap-3 md:grid-cols-2">
-      {items.map((i) => (
-        <a key={i.href} href={i.href} className={cn("flex flex-col gap-1.5 rounded-3xl border p-6 transition-colors hover:border-foreground/20", i.card)}>
-          <span className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
-            <span className={cn("size-1.5 rounded-full", i.dot)} aria-hidden />
-            Направление {i.n}
-          </span>
-          <span className="text-lg font-semibold">{i.name}</span>
-          <span className="text-sm text-muted-foreground">{i.text}</span>
-          <span className="mt-1 inline-flex items-center gap-1 text-sm font-medium text-primary">Перейти <ArrowDown className="size-4" /></span>
-        </a>
-      ))}
-    </div>
-  )
+  title: "Как считаем индекс культуры",
+  description: "Открытая методика оценки HR-бренда: индекс культуры, слепые зоны, место в отрасли, шесть шагов расчёта и калькулятор на примере.",
+  alternates: { canonical: "/hr-brand/methodology" },
 }
 
 function MetricCard({ name, base, question, text, children }: { name: string; base: string; question: string; text: React.ReactNode; children: React.ReactNode }) {
@@ -71,18 +44,14 @@ const STEPS = [
   ["Привязываем к действию", "У каждого спорного обещания — ответственный, срок и показатель, по которому видно результат."],
 ] as const
 
-export default function MethodologyPage() {
+export default function BrandMethodologyPage() {
   return (
     <>
       <PageHero
-        eyebrow="Методика"
-        title="Как мы считаем"
-        description="Открытая методика двух направлений. Снаружи — насколько ваши обещания совпадают с тем, что видят люди. Изнутри — как сотрудники переживают культуру."
+        eyebrow={DIRECTION_NAMES.brand}
+        title="Как считаем индекс культуры"
+        description="Методика открыта, и любой результат можно проверить по таблице. Веса следуют из ваших же текстов, а не из мнения эксперта. Для вас и для конкурентов правила одни."
       />
-
-      <Section className="pt-0 md:pt-0">
-        <DirNav />
-      </Section>
 
       <Section className="pt-0 md:pt-0">
         <div className="grid gap-3 md:grid-cols-3">
@@ -101,7 +70,7 @@ export default function MethodologyPage() {
 
       <Section id="metrics" className="bg-card">
         <SectionHeader
-          eyebrow={<DirLabel n={1} />}
+          eyebrow="Три показателя"
           title="У каждого показателя своя точка отсчёта"
           description="Индекс культуры меряет честность. Но честно можно обещать и мало. Поэтому рядом — ещё два показателя. В одну цифру мы их не смешиваем."
         />
@@ -144,7 +113,7 @@ export default function MethodologyPage() {
 
       <Section id="brand-method">
         <SectionHeader
-          eyebrow={<>Направление 1 · методика, версия <Ph>1.0</Ph></>}
+          eyebrow={<>Методика, версия <Ph>1.0</Ph></>}
           title="Как мы считаем"
           description="Методика открыта: любой результат можно проверить по таблице. Веса следуют из ваших же текстов, а не из мнения эксперта."
         />
@@ -196,67 +165,12 @@ export default function MethodologyPage() {
         </div>
       </Section>
 
-      <Section id="health-method" className="bg-health-50/50">
-        <SectionHeader
-          eyebrow={<DirLabel n={2} />}
-          title="Как считаем изнутри"
-          description="Переживаемую культуру меряем по 10 метрикам. У каждой — свои источники. Баллом становятся только опросы и тексты; остальное подтверждает или опровергает сигнал."
-        />
-        <div className="surface overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full min-w-[760px] text-left text-sm">
-              <thead>
-                <tr className="text-xs text-muted-foreground">
-                  <th scope="col" className="px-4 py-3 font-normal">Метрика</th>
-                  <th scope="col" className="px-4 py-3 font-normal">О · опросы</th>
-                  <th scope="col" className="px-4 py-3 font-normal">Т · тексты</th>
-                  <th scope="col" className="px-4 py-3 font-normal">П · поведение и HR-события в агрегате</th>
-                </tr>
-              </thead>
-              <tbody>
-                {PULSE_METRICS.map((m) => (
-                  <tr key={m.id} className="border-t border-border align-top">
-                    <th scope="row" className="px-4 py-3 font-medium">{m.name}</th>
-                    <td className="px-4 py-3 text-muted-foreground">{m.sources.o}</td>
-                    <td className="px-4 py-3 text-muted-foreground">{m.sources.t}</td>
-                    <td className="px-4 py-3 text-muted-foreground">{m.sources.p}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div className="mt-3 grid gap-3 md:grid-cols-2 lg:grid-cols-4">
-          <div className="surface p-5">
-            <p className="mb-2 font-semibold">Зоны балла</p>
-            <ul className="flex flex-col gap-2 text-sm">
-              <li className="flex items-center justify-between gap-2"><LevelBadge score={70} /> от 65</li>
-              <li className="flex items-center justify-between gap-2"><LevelBadge score={55} /> 50–64</li>
-              <li className="flex items-center justify-between gap-2"><LevelBadge score={40} /> до 50</li>
-            </ul>
-          </div>
-          <div className="surface p-5">
-            <p className="mb-2 font-semibold">Уверенность данных</p>
-            <p className="text-sm text-muted-foreground">У каждого балла: высокая, средняя или низкая. Зависит от числа ответов и согласия источников между собой.</p>
-          </div>
-          <div className="surface p-5">
-            <p className="mb-2 font-semibold">Что влияет</p>
-            <p className="text-sm text-muted-foreground">Каждая причина помечена уровнем доказанности: гипотеза, коррелирует или подтверждено пилотом.</p>
-          </div>
-          <div className="surface p-5">
-            <p className="mb-2 font-semibold">Подтверждающие сигналы</p>
-            <p className="text-sm text-muted-foreground">Отказы от офферов, абсентеизм, доля закрытых петель обратной связи. Баллом не становятся.</p>
-          </div>
-        </div>
-        <p className="mt-6 text-sm text-muted-foreground">{NOT_IN_METRICS} Разрыв считаем по нормам культурного кода: каждая норма привязана к одной или нескольким метрикам.</p>
-        <div className="surface mt-6 p-6">
-          <p className="font-semibold">Как направления сверяются между собой</p>
-          <p className="mt-2 text-muted-foreground">
-            Индекс культуры и индекс переживаемой культуры не смешиваем: у них разные точки отсчёта и источники. Если компания
-            подключила оба направления, сверяем общие темы. Например, слепая зона «переработки» снаружи и низкая метрика «Энергия и
-            ресурс» изнутри — значит, проблема видна с двух сторон.
-          </p>
-        </div>
+      <Section className="pt-0 md:pt-0">
+        <Link href="/culture-health/methodology" className="group flex flex-col gap-1.5 rounded-3xl border border-health-100 bg-health-50/70 p-6 transition-colors hover:border-foreground/20">
+          <span className="text-xs font-medium text-muted-foreground">{DIRECTION_NAMES.health}</span>
+          <span className="inline-flex items-center gap-1 text-lg font-semibold">Как считаем изнутри <ArrowUpRight className="size-5 transition-transform group-hover:rotate-45" aria-hidden /></span>
+          <span className="text-sm text-muted-foreground">10 метрик переживаемой культуры, источники, зоны балла и уверенность данных. Группы от 5 человек.</span>
+        </Link>
       </Section>
 
       <Section>

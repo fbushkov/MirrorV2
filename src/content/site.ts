@@ -25,7 +25,7 @@ export const NAV_GROUPS: NavGroup[] = [
     items: [
       { title: "Обзор направления", href: "/hr-brand", note: "Что видят кандидаты и рынок" },
       { title: "Демо-отчёт", href: "/hr-brand/demo", note: "Индекс, слепые зоны, место в отрасли" },
-      { title: "Как считаем", href: "/methodology#brand-method", note: "Методика внешней оценки" },
+      { title: "Как считаем", href: "/hr-brand/methodology", note: "Методика внешней оценки" },
     ],
   },
   {
@@ -35,7 +35,7 @@ export const NAV_GROUPS: NavGroup[] = [
     items: [
       { title: "Обзор направления", href: "/culture-health", note: "Что переживают сотрудники" },
       { title: "Демо-дашборд", href: "/culture-health/demo", note: "10 метрик, срезы, сигналы" },
-      { title: "Как считаем", href: "/methodology#health-method", note: "Методика внутреннего замера" },
+      { title: "Как считаем", href: "/culture-health/methodology", note: "Методика внутреннего замера" },
     ],
   },
 ]
@@ -51,7 +51,6 @@ export const FOOTER_COLUMNS: { title: string; items: NavLink[] }[] = [
   {
     title: "Компания",
     items: [
-      { title: "Методика", href: "/methodology" },
       { title: "Цены", href: "/pricing" },
       { title: "О нас", href: "/about" },
       { title: "Заявка", href: "/start" },
@@ -77,9 +76,10 @@ export const ROUTES: Route[] = [
   { path: "/", title: "Главная" },
   { path: "/hr-brand", title: DIRECTION_NAMES.brand, parent: "/" },
   { path: "/hr-brand/demo", title: "Демо-отчёт", parent: "/hr-brand" },
+  { path: "/hr-brand/methodology", title: "Как считаем индекс культуры", parent: "/hr-brand" },
   { path: "/culture-health", title: DIRECTION_NAMES.health, parent: "/" },
   { path: "/culture-health/demo", title: "Демо-дашборд", parent: "/culture-health" },
-  { path: "/methodology", title: "Методика", parent: "/" },
+  { path: "/culture-health/methodology", title: "Как считаем переживаемую культуру", parent: "/culture-health" },
   { path: "/pricing", title: "Цены", parent: "/" },
   { path: "/about", title: "О нас", parent: "/" },
   { path: "/start", title: "Заявка", parent: "/" },

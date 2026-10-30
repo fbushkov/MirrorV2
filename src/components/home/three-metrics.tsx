@@ -92,7 +92,7 @@ export function ThreeMetrics() {
           <span className="rounded-full bg-secondary px-3 py-1 text-xs font-medium text-secondary-foreground">{m.base}</span>
           <h3 className="text-2xl font-semibold md:text-3xl">{m.question}</h3>
           <p className="text-muted-foreground">{m.text}</p>
-          <Link href="/methodology#metrics" className="mt-auto inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline">
+          <Link href="/hr-brand/methodology#metrics" className="mt-auto inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline">
             Подробнее о показателях <ArrowRight className="size-4" />
           </Link>
         </div>
