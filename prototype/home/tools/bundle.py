@@ -47,8 +47,15 @@ async function unpack() {
   const text = await new Response(new Blob([bytes]).stream().pipeThrough(new DecompressionStream("gzip"))).text();
   return JSON.parse(text);
 }
-// Ссылки на другие страницы перехватываем и открываем через адрес #/имя.html
-const HOOK = `<script>document.addEventListener("click", (e) => { const a = e.target.closest("a[href]"); if (!a) return; const h = a.getAttribute("href"); if (/^[\\\\w-]+\\\\.html/.test(h)) { e.preventDefault(); parent.location.hash = "/" + h; } }, true);<\\/script>`;
+// Ссылки внутри фрейма. Адрес фрейма (about:srcdoc) считается от адреса этого файла, поэтому
+// якорь «#блок» и заглушка «#» без перехвата грузили бы во фрейм весь сайт заново.
+// Другие страницы открываем через адрес #/имя.html, якоря прокручиваем внутри страницы.
+const HOOK = `<script>document.addEventListener("click", (e) => {
+  const a = e.target.closest("a[href]"); if (!a || e.defaultPrevented) return; // ссылку уже обработал скрипт страницы
+  const h = a.getAttribute("href");
+  if (/^[\\\\w-]+\\\\.html/.test(h)) { e.preventDefault(); parent.location.hash = "/" + h; return; }
+  if (h.startsWith("#")) { e.preventDefault(); const el = h.length > 1 && document.getElementById(decodeURIComponent(h.slice(1))); if (el) el.scrollIntoView({ behavior: "smooth" }); }
+});<\\/script>`;
 function render() {
   const route = decodeURIComponent(location.hash.replace(/^#\\/?/, "")) || "index.html";
   const m = route.match(/^([\\w-]+\\.html)(\\?[^#]*)?(#.*)?$/) || [];
