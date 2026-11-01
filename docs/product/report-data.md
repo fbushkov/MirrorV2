@@ -1,5 +1,6 @@
 # Отчёт как данные
 
+Какие отчёты получает клиент на какой услуге и в какие сроки — `docs/product/business-rules.md`.
 Схема: `src/lib/schemas/report.ts` (Zod). Методика в коде: `src/lib/report/methodology.ts`.
 Образец: `src/content/demo-report.ts`, «Банк N», совпадает с демо-страницами сайта. Решение: ADR-0009.
 
