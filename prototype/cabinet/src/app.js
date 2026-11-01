@@ -9,9 +9,15 @@ const store = {
   get(k, d) { try { return localStorage.getItem("cab-" + k) ?? d; } catch { return d; } },
   set(k, v) { try { localStorage.setItem("cab-" + k, v); } catch { /* без хранилища — только в памяти */ } },
 };
-const state = { role: store.get("role", "owner"), service: store.get("service", "campaign"), unit: null, wave: null, adding: false };
+const state = { role: store.get("role", "owner"), mode: "campaign", service: "campaign", phase: "ready", unit: null, wave: null, adding: false, ask: null, reminder: false };
+/** Этап из полосы прототипа: услуга (диагностика или кампания) и фаза (запуск, идёт опрос, отчёт готов) */
+function applyMode(m) { state.mode = MODES[m] ? m : "campaign"; state.service = MODES[state.mode].service; state.phase = MODES[state.mode].phase; }
+applyMode(store.get("service", "campaign"));
 const live = {
   decisions: INT.decisions.map((d) => ({ ...d })),
+  launch: LAUNCH.map((l) => ({ ...l })),
+  questions: QUESTIONS.map((q) => ({ ...q })),
+  meetings: MEETINGS.map((m) => ({ ...m })),
   plan: REPORT.plan.map((p) => ({ ...p })),
   team: TEAM.map((t) => ({ ...t })),
   notify: { report: true, stage: true, alerts: true, waves: true, plan: true, rhythm: false },
@@ -62,6 +68,9 @@ const ICONS = {
   info: '<circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>',
   back: '<path d="m12 19-7-7 7-7"/><path d="M19 12H5"/>',
   external: '<path d="M7 7h10v10"/><path d="M7 17 17 7"/>',
+  help: '<circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/>',
+  book: '<path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/>',
+  calendar: '<path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/>',
 };
 const ico = (n) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[n]}</svg>`;
 const metricIco = (id) => tpl("ico-" + ({ compass: "compass", home: "house", sprout: "sprout", shield: "shield", handshake: "handshake", megaphone: "megaphone", battery: "battery-medium", target: "target", scale: "scale", award: "award" })[METRIC_DEFS[id].icon]);
@@ -77,6 +86,7 @@ const NAV = [
   { id: "decisions", label: "Решения", icon: "message", health: true },
   { id: "data", label: "Сбор данных", icon: "upload", health: true },
   { id: "plan", label: "План и встречи", icon: "list" },
+  { id: "questions", label: "Вопросы эксперту", icon: "help" },
   { group: "Компания" },
   { id: "reports", label: "Отчёты и документы", icon: "file" },
   { id: "team", label: "Команда", icon: "users" },
@@ -94,11 +104,16 @@ const ACCESS = {
   reports: ["owner", "hrbp", "manager", "executive", "viewer"],
   team: ["owner", "hrbp"],
   settings: ["owner"],
+  questions: ["owner", "hrbp", "manager", "executive"],
+  glossary: ["owner", "hrbp", "manager", "executive", "viewer"],
 };
 const can = (section) => ACCESS[section]?.includes(state.role);
 /** Раздел закрыт услугой: показываем, что в нём будет */
 const LOCKED = { decisions: { service: "campaign", text: "Решения по обратной связи и открытая страница для сотрудников входят в кампанию на 3 месяца. Сотрудники видят, что их услышали и что изменилось." } };
 const locked = (section) => LOCKED[section] && LOCKED[section].service !== state.service;
+/** До первого отчёта разделы с цифрами изнутри пусты: показываем, когда появятся данные (ADR-0011) */
+const NEEDS_REPORT = ["internal", "metric", "bridge", "plan"];
+const waitingData = (section) => state.phase !== "ready" && NEEDS_REPORT.includes(section);
 const edits = () => ["owner", "hrbp"].includes(state.role);
 const seesSignals = () => ["owner", "hrbp"].includes(state.role);
 /** Подразделения, которые видит роль: руководитель — свою ветку, остальные — компанию и первый уровень */
@@ -171,6 +186,9 @@ function sparkline(values) {
   return `<svg class="spark spark--${LEVEL(values[values.length - 1])}" viewBox="0 0 ${w} ${h}" aria-hidden="true"><path d="${pts.map(([x, y], i) => (i ? "L" : "M") + x.toFixed(1) + "," + y.toFixed(1)).join(" ")}"/><circle cx="${lx}" cy="${ly}" r="3"/></svg>`;
 }
 
+/* ── Подсказки к терминам: тексты из src/content/glossary.ts (GLOSSARY) ── */
+const info = (key) => `<button class="info" type="button" data-tip="${esc(GLOSSARY[key].text)}" aria-label="${GLOSSARY[key].title}: пояснение" aria-expanded="false">${ico("info")}</button>`;
+
 /* ── Общие блоки ── */
 const pageHead = (title, lead = "", actions = "") => `<header class="top"><div><h1 class="top__title">${title}</h1>${lead ? `<p class="top__lead">${lead}</p>` : ""}</div>${actions ? `<div class="top__actions">${actions}</div>` : ""}</header>`;
 const panel = (title, body, hint = "", cls = "") => `<section class="panel ${cls}"><div class="panel__head"><h2 class="panel__title">${title}</h2>${hint ? `<p class="panel__hint">${hint}</p>` : ""}</div>${body}</section>`;
@@ -184,22 +202,57 @@ const noAccess = (label) => pageHead(label) + lockedView("Нет доступа 
 /* ── Разделы ── */
 const PAGES = {};
 
+
+const stagesList = (stages) => `<ol class="stages">${stages.map((s) => `<li class="is-${s.s}"><span class="stages__dot">${s.s === "done" ? ico("check") : ""}</span><b>${s.t}</b><span class="stages__date">${s.d}</span></li>`).join("")}</ol>`;
+
+/* Запуск: чек-лист до первого опроса. Ведёт HR-директор, HRBP видит; остальным — только этапы */
+function launchPanel() {
+  const done = live.launch.filter((l) => l.done).length, all = live.launch.length;
+  const items = live.launch.map((l) => `<li class="${l.done ? "is-done" : ""}"><span class="launch__mark">${l.done ? ico("check") : ""}</span><div class="rows__main"><b>${l.t}</b><span class="rows__sub">${l.hint}</span></div><div class="launch__act">${l.done ? `<span class="rows__meta">${l.auto ? "отмечено системой" : "готово"}</span>` : `<a class="btn btn--ghost btn--sm" href="${l.href}">Открыть</a>${!l.auto && state.role === "owner" ? `<button class="btn btn--primary btn--sm" data-launch="${l.id}">Готово</button>` : ""}`}</div></li>`).join("");
+  return panel(`Подготовка к запуску · ${done} из ${all}`, `<div class="bar bar--teal" style="margin-bottom:16px"><i style="width:${(done / all) * 100}%"></i></div><ul class="launch">${items}</ul>`, "Опрос начнётся, когда всё готово. Большую часть шагов система отмечает сама по данным кабинета.");
+}
+function overviewSetup(stages) {
+  const out = [];
+  if (["owner", "hrbp"].includes(state.role)) out.push(launchPanel());
+  out.push(`<div class="grid2">${panel("Ход работы", stagesList(stages), "Этапы отмечаются сами по действиям эксперта и системы")}${panel("Что дальше", `<ul class="rows"><li><div class="rows__main"><b>Эксперт проверяет подразделения</b><span class="rows__sub">После загрузки таблицы, обычно за 1 рабочий день. Подскажет, какие группы меньше 5 человек и с кем их объединить.</span></div></li><li><div class="rows__main"><b>Ссылки на опрос</b><span class="rows__sub">Появятся в «Сборе данных» после проверки. Рассылаете вы, по одной ссылке на подразделение.</span></div></li><li><div class="rows__main"><b>Цифры изнутри</b><span class="rows__sub">После опроса и проверки экспертом, примерно через 10 дней после закрытия опроса.</span></div></li></ul>`)}</div>`);
+  out.push(note("Пока идёт подготовка, разделы с цифрами изнутри пустые. Внешний срез, если он был, уже доступен в разделе «Снаружи»."));
+  return out;
+}
+/* Ход опроса: сколько ответили по подразделениям. Меньше 5 — без точного числа */
+function waveProgress() {
+  const units = LIVE_WAVE.units.filter((u) => state.role !== "manager" || u.id === ROLES.manager.unit);
+  const total = units.reduce((s, u) => s + u.resp, 0), size = units.reduce((s, u) => s + u.size, 0);
+  const rows = units.map((u) => {
+    const rate = u.resp / u.size, small = u.resp < 5;
+    const st = small ? badge("bad", "срез будет скрыт") : rate < 0.3 ? badge("warn", "низкая уверенность") : badge("ok", "достаточно");
+    return `<li><div class="rows__main"><b>${u.name}</b><div class="barline" style="grid-template-columns:minmax(0,1fr) 120px"><div class="bar bar--teal"><i style="width:${small ? 1 : Math.round(rate * 100)}%"></i></div><span class="num">${small ? "меньше 5" : `${u.resp} из ${u.size}`}</span></div></div>${st}</li>`;
+  }).join("");
+  chart("ch-wave", { ...lineOption(LIVE_WAVE.daily.map((v, i) => ({ month: "2026-11", value: v, day: i + 3 })), CH.teal, { min: 0, max: Math.ceil(size / 100) * 100, name: "Ответили" }), xAxis: { type: "category", data: LIVE_WAVE.daily.map((_, i) => `${i + 3} ноя`), boundaryGap: false, ...chAxis, axisLabel: { ...chAxis.axisLabel, fontSize: 12 } }, yAxis: { type: "value", ...chAxis, axisLabel: { ...chAxis.axisLabel, fontSize: 12 } } });
+  const actions = ["owner", "hrbp"].includes(state.role) ? `<div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:16px"><button class="btn btn--ghost btn--sm" data-act="reminder">${ico("message")}Текст напоминания</button><a class="btn btn--ghost btn--sm" href="#survey">${ico("eye")}Опрос глазами сотрудника</a></div>${state.reminder ? `<div class="reminder"><p>${REMINDER}<span class="mono">mirror-com.ru/s/7f3k-sales</span></p><button class="btn btn--ghost btn--sm" data-copytext="${esc(REMINDER)}https://mirror-com.ru/s/7f3k-sales">${ico("link")}Копировать текст</button><p class="rows__sub">Рассылаете вы, по каналам компании. Mirror не знает адресов сотрудников.</p></div>` : ""}` : "";
+  return panel(`${LIVE_WAVE.label} идёт · ${LIVE_WAVE.dates}` + info("respondents"), `<div class="kpis kpis--3">${kpi("Ответили", `${Math.round((total / size) * 100)}<small> %</small>`, `${total} из ${size}`, "kpi--teal")}${kpi("До конца опроса", `${LIVE_WAVE.daysLeft}<small> ${LIVE_WAVE.daysLeft === 1 ? "день" : LIVE_WAVE.daysLeft < 5 ? "дня" : "дней"}</small>`, LIVE_WAVE.dates)}${kpi("Срез будет скрыт", `${units.filter((u) => u.resp < 5).length}<small> из ${units.length}</small>`, "подразделений, где ответили меньше 5")}</div><ul class="rows progress" style="margin-top:16px">${rows}</ul>${state.role === "manager" ? "" : `<div class="chart chart--sm" id="ch-wave" role="img" aria-label="Ответили по дням"></div>`}${actions}`, "Видно только, сколько ответили. Ответы отдельных людей не видит никто из компании.");
+}
+function overviewSurvey(stages) {
+  return [waveProgress(), `<div class="grid2">${panel("Ход работы", stagesList(stages), "Этапы отмечаются сами по действиям эксперта и системы")}${panel("Что дальше", `<ul class="rows"><li><div class="rows__main"><b>Опрос закроется 14 ноября</b><span class="rows__sub">Если в подразделении меньше 5 ответов, его данные объединятся с уровнем выше. Напоминание обычно добавляет треть ответов.</span></div></li><li><div class="rows__main"><b>Анализ и проверка экспертом</b><span class="rows__sub">Около 10 дней. Эксперт проверяет цитаты на узнаваемые детали.</span></div></li><li><div class="rows__main"><b>Отчёт и встреча</b><span class="rows__sub">Цифры появятся в разделе «Изнутри», план на 90 дней — в «Плане и встречах».</span></div></li></ul>`)}</div>`];
+}
+
 PAGES.overview = () => {
   const r = ROLES[state.role];
   const unit = state.role === "manager" ? r.unit : "company";
-  const stages = STAGES[state.service];
+  const stages = STAGES[state.mode] ?? STAGES[state.service];
   const parts = [pageHead(`Добрый день, ${r.person.split(" ")[0]}`, `${REPORT.company.name} · ${SERVICES[state.service].name}. ${SERVICES[state.service].note}.`)];
+  if (state.phase === "setup") return parts.concat(overviewSetup(stages)).join("");
+  if (state.phase === "survey") return parts.concat(overviewSurvey(stages)).join("");
   const kpis = [];
   if (can("internal")) {
     const idx = unitIndex(unit), norms = unitNorms(unit);
-    kpis.push(kpi(state.role === "manager" ? `Индекс · ${unitName(unit)}` : "Индекс изнутри", `${idx}<small> /100</small>`, `${badge(LEVEL(idx), LEVEL_WORD[LEVEL(idx)])} за 30 дней ${delta(INT.index.delta30)}`, "kpi--teal"));
-    kpis.push(kpi("Разрыв с культурным кодом", `${norms.filter((n) => n.level === "bad").length}<small> из ${norms.length}</small>`, (() => { const k = norms.filter((n) => n.level === "warn").length; return k === 1 ? "Ещё 1 норма расходится частично" : k ? `Ещё ${k} нормы расходятся частично` : "Частичных разрывов нет"; })(), "kpi--teal"));
+    kpis.push(kpi((state.role === "manager" ? `Индекс · ${unitName(unit)}` : "Индекс изнутри") + info("internalIndex"), `${idx}<small> /100</small>`, `${badge(LEVEL(idx), LEVEL_WORD[LEVEL(idx)])} за 30 дней ${delta(INT.index.delta30)}`, "kpi--teal"));
+    kpis.push(kpi("Разрыв с культурным кодом" + info("codeGap"), `${norms.filter((n) => n.level === "bad").length}<small> из ${norms.length}</small>`, (() => { const k = norms.filter((n) => n.level === "warn").length; return k === 1 ? "Ещё 1 норма расходится частично" : k ? `Ещё ${k} нормы расходятся частично` : "Частичных разрывов нет"; })(), "kpi--teal"));
   }
   if (can("external")) {
-    kpis.push(kpi("Индекс культуры снаружи", `${EXT.index.value}<small> /100</small>`, `${delta(EXT.index.delta.value)} за квартал · подтверждено ${EXT.promises.filter((p) => p.status === "confirmed").length} из ${EXT.promises.length}`));
-    kpis.push(kpi("Место в отрасли", `${EXT.industry.percentile}<small> %</small>`, `условия лучше, чем у ${EXT.industry.percentile}% · ${EXT.industry.peerGroup}`));
+    kpis.push(kpi("Индекс культуры снаружи" + info("externalIndex"), `${EXT.index.value}<small> /100</small>`, `${delta(EXT.index.delta.value)} за квартал · подтверждено ${EXT.promises.filter((p) => p.status === "confirmed").length} из ${EXT.promises.length}`));
+    kpis.push(kpi("Место в отрасли" + info("industry"), `${EXT.industry.percentile}<small> %</small>`, `условия лучше, чем у ${EXT.industry.percentile}% · ${EXT.industry.peerGroup}`));
   }
-  if (state.role === "manager") kpis.push(kpi("Ответили в вашей группе", `${Math.round((SURVEY_LINKS[0].answered / SURVEY_LINKS[0].size) * 100)}<small> %</small>`, `${SURVEY_LINKS[0].answered} из ${SURVEY_LINKS[0].size} · последняя волна`, "kpi--teal"));
+  if (state.role === "manager") kpis.push(kpi("Ответили в вашей группе" + info("respondents"), `${Math.round((SURVEY_LINKS[0].answered / SURVEY_LINKS[0].size) * 100)}<small> %</small>`, `${SURVEY_LINKS[0].answered} из ${SURVEY_LINKS[0].size} · последняя волна`, "kpi--teal"));
   if (kpis.length) parts.push(`<div class="kpis">${kpis.slice(0, 4).join("")}</div>`);
 
   const stagesHtml = `<ol class="stages">${stages.map((s) => `<li class="is-${s.s}"><span class="stages__dot">${s.s === "done" ? ico("check") : ""}</span><b>${s.t}</b><span class="stages__date">${s.d}</span></li>`).join("")}</ol>`;
@@ -213,7 +266,7 @@ PAGES.overview = () => {
     const tags = { works: "Работает", risk: "Риск", start: "С чего начать" };
     parts.push(panel("Главное из последнего отчёта", `<div class="summary">${REPORT.summary.map((f) => `<div><span class="summary__tag">${tags[f.kind]}</span><p>${f.text}</p></div>`).join("")}</div>`));
   }
-  const meetings = MEETINGS.filter((m) => m.campaign === (state.service === "campaign"));
+  const meetings = live.meetings.filter((m) => m.campaign === (state.service === "campaign"));
   const steps = live.plan.filter((p) => p.status !== "done" && (state.role === "manager" ? p.unitId === ROLES.manager.unit : true)).slice(0, 2);
   parts.push(panel("Ближайшее", `<ul class="rows">${meetings.map((m) => `<li><div class="rows__main"><b>${m.title}</b><span class="rows__sub">${m.who}</span></div><span class="rows__meta">${m.date}</span></li>`).join("")}${steps.map((p) => `<li><div class="rows__main"><b>${p.title}</b><span class="rows__sub">Шаг плана · ${p.ownerRole}</span></div><span class="rows__meta">срок ${p.due}</span></li>`).join("")}</ul>`));
   return parts.join("");
@@ -226,24 +279,24 @@ PAGES.internal = () => {
   const w = waves(), last = w[w.length - 1];
   const parts = [`<div class="is-health">`, pageHead("Изнутри: здоровье культуры", `${state.service === "campaign" ? "Кампания, три замера" : "Диагностика, один замер"}. Последний: ${last.label.toLowerCase()}, данные опубликованы с задержкой ${INT.delayDays} дней.`)];
   parts.push(`<div class="filters ${w.length > 1 ? "filters--two" : "filters--one"}"><div><p class="filters__title">Срез</p><p class="filters__cap">${state.role === "manager" ? "Вы видите свою ветку подразделений. Группы меньше 5 человек объединены с уровнем выше." : state.role === "executive" ? "Компания и первый уровень подразделений." : "Все подразделения. Группы меньше 5 человек объединены с уровнем выше."}</p></div><label class="field"><span class="sr-only">Подразделение</span><select class="select" id="f-unit">${units.map((u) => `<option value="${u.id}" ${u.id === unit ? "selected" : ""}>${u.name}</option>`).join("")}</select></label>${w.length > 1 ? `<label class="field"><span class="sr-only">Волна</span><select class="select" id="f-wave">${w.map((x) => `<option value="${x.id}" ${x.id === wave ? "selected" : ""}>${x.label}</option>`).join("")}</select></label>` : ""}</div>`);
-  parts.push(`<div class="kpis">${kpi("Индекс культуры изнутри", `${idx}<small> /100</small>`, `${badge(LEVEL(idx), LEVEL_WORD[LEVEL(idx)])} среднее по 10 метрикам`)}${kpi("Разрыв с кодом", `${norms.filter((n) => n.level === "bad").length}<small> из ${norms.length}</small>`, "норм расходятся с опытом людей")}${kpi("Тренд за 30 дней", `${sign(INT.index.delta30)}`, "баллов индекса")}${kpi("Ответили в срезе", `${resp}<small> из ${size}</small>`, `уверенность данных ${CONF[responseConf(resp, size)]} · ${waveName(wave).toLowerCase()}`)}</div>`);
+  parts.push(`<div class="kpis">${kpi("Индекс культуры изнутри" + info("internalIndex"), `${idx}<small> /100</small>`, `${badge(LEVEL(idx), LEVEL_WORD[LEVEL(idx)])} среднее по 10 метрикам`)}${kpi("Разрыв с кодом" + info("codeGap"), `${norms.filter((n) => n.level === "bad").length}<small> из ${norms.length}</small>`, "норм расходятся с опытом людей")}${kpi("Тренд за 30 дней", `${sign(INT.index.delta30)}`, "баллов индекса")}${kpi("Ответили в срезе" + info("respondents"), `${resp}<small> из ${size}</small>`, `уверенность данных ${CONF[responseConf(resp, size)]} · ${waveName(wave).toLowerCase()}`)}</div>`);
   chart("ch-index", lineOption(INT.index.series.points.map((p) => ({ ...p, value: p.value + off })), CH.teal, { events: INT.index.series.events }));
   parts.push(panel("Динамика индекса", `<div class="chart" id="ch-index" role="img" aria-label="Индекс по месяцам"></div><ul class="legend"><li><i class="legend__line"></i>Индекс · ${unitName(unit)}</li><li><i class="legend__line legend__line--dash"></i>Событие</li></ul>`, "За 12 месяцев. Пунктиром отмечены события, которые могли повлиять на индекс."));
   const groups = Object.entries(METRIC_GROUPS).map(([g, name]) => `<div class="mgroup"><p class="mgroup__name">${name}</p>${metrics.filter((m) => METRIC_DEFS[m.id].group === g).map((m) => {
     const l = LEVEL(m.score);
     return `<a class="mtile" href="#metric-${m.id}"><span class="mtile__head"><span class="mtile__ico">${metricIco(m.id)}</span><span class="mtile__name">${METRIC_DEFS[m.id].name}</span></span><span class="mtile__body"><span class="mtile__num">${m.score}</span>${sparkline(m.series.points.map((p) => p.value + (m.score - INT.metrics.find((x) => x.id === m.id).score)))}</span><span class="mtile__foot">${badge(l, `${LEVEL_WORD[l]} · ${sign(m.delta30)}`)}</span></a>`;
   }).join("")}</div>`).join("");
-  parts.push(panel("10 метрик", `<div class="mgroups">${groups}</div>`, "В норме от 65, внимание от 50 до 64, риск ниже 50. Откройте метрику, чтобы увидеть срезы, причины и источники.", "panel--well"));
+  parts.push(panel("10 метрик" + info("zones"), `<div class="mgroups">${groups}</div>`, "В норме от 65, внимание от 50 до 64, риск ниже 50. Откройте метрику, чтобы увидеть срезы, причины и источники.", "panel--well"));
   if (w.length > 1) {
     const ws = w.map((x) => unitMetrics(unit, x.id));
     const rows = INT.metrics.map((m, i) => { const first = ws[0][i].score, lastS = ws[ws.length - 1][i].score; return `<tr><th>${METRIC_DEFS[m.id].name}</th>${ws.map((x) => `<td class="num">${x[i].score}</td>`).join("")}<td>${delta(lastS - first)}</td><td>${status(LEVEL(lastS), LEVEL_WORD[LEVEL(lastS)])}</td></tr>`; }).join("");
     const idxs = w.map((x) => unitIndex(unit, x.id));
-    parts.push(panel("Волны кампании", `<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Метрика</th>${w.map((x) => `<th class="num">${x.label}</th>`).join("")}<th>Изменение</th><th>Сейчас</th></tr></thead><tbody>${rows}<tr><th>Индекс</th>${idxs.map((v) => `<td class="num"><b>${v}</b></td>`).join("")}<td>${delta(idxs[idxs.length - 1] - idxs[0])}</td><td>${status(LEVEL(idxs[idxs.length - 1]), LEVEL_WORD[LEVEL(idxs[idxs.length - 1])])}</td></tr></tbody></table></div>`, `${unitName(unit)}. Главный результат кампании: что изменилось от первого замера к последнему.`));
+    parts.push(panel("Волны кампании" + info("wave"), `<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Метрика</th>${w.map((x) => `<th class="num">${x.label}</th>`).join("")}<th>Изменение</th><th>Сейчас</th></tr></thead><tbody>${rows}<tr><th>Индекс</th>${idxs.map((v) => `<td class="num"><b>${v}</b></td>`).join("")}<td>${delta(idxs[idxs.length - 1] - idxs[0])}</td><td>${status(LEVEL(idxs[idxs.length - 1]), LEVEL_WORD[LEVEL(idxs[idxs.length - 1])])}</td></tr></tbody></table></div>`, `${unitName(unit)}. Главный результат кампании: что изменилось от первого замера к последнему.`));
   }
   const cols = units;
   const heat = `<div class="tbl-wrap"><table class="tbl heat"><thead><tr><th>Метрика</th>${cols.map((u) => `<th>${u.name}</th>`).join("")}</tr></thead><tbody>${INT.metrics.map((m) => `<tr><th>${METRIC_DEFS[m.id].name}</th>${cols.map((u) => { const s = slice(m.id, u.id)?.score; return `<td><span class="heat__cell heat__cell--${s == null ? "na" : LEVEL(s)}">${s ?? "<5"}</span></td>`; }).join("")}</tr>`).join("")}</tbody></table></div>`;
-  parts.push(panel("Где просаживается", heat, state.role === "manager" ? "Только ваша ветка. Подгруппы «Розница» и «Корпоративные клиенты» появятся отдельно, когда в каждой будет срез от 5 человек." : `Балл метрик по подразделениям, ${waveName(wave).toLowerCase()}. «<5» значит, что ответили меньше пяти человек и данные не показываем.`));
-  parts.push(panel("Культурный код", `<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Норма из кода</th><th>Связанные метрики</th><th class="num">Балл</th><th>Разрыв</th></tr></thead><tbody>${norms.map((n) => `<tr><th>«${n.title}»</th><td>${n.metrics.map((id) => METRIC_DEFS[id].name).join(", ")}</td><td class="num">${n.score}</td><td>${status(n.level, GAP_WORD[n.level])}</td></tr>`).join("")}</tbody></table></div>`, "Балл нормы — среднее по её метрикам. Ниже 50 — разрыв, от 50 до 64 — частичный."));
+  parts.push(panel("Где просаживается" + info("hidden"), heat, state.role === "manager" ? "Только ваша ветка. Подгруппы «Розница» и «Корпоративные клиенты» появятся отдельно, когда в каждой будет срез от 5 человек." : `Балл метрик по подразделениям, ${waveName(wave).toLowerCase()}. «<5» значит, что ответили меньше пяти человек и данные не показываем.`));
+  parts.push(panel("Культурный код" + info("codeGap"), `<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Норма из кода</th><th>Связанные метрики</th><th class="num">Балл</th><th>Разрыв</th></tr></thead><tbody>${norms.map((n) => `<tr><th>«${n.title}»</th><td>${n.metrics.map((id) => METRIC_DEFS[id].name).join(", ")}</td><td class="num">${n.score}</td><td>${status(n.level, GAP_WORD[n.level])}</td></tr>`).join("")}</tbody></table></div>`, "Балл нормы — среднее по её метрикам. Ниже 50 — разрыв, от 50 до 64 — частичный."));
   if (seesSignals()) {
     parts.push(`<div class="grid2">${panel("Расхождения", `<ul class="rows">${INT.discrepancies.map((d) => `<li><div class="rows__main"><b>${d.text}</b><span class="rows__sub">${d.hint}</span></div></li>`).join("")}</ul>`, "Где разные каналы говорят разное")}${panel("Лента сигналов", `<ul class="rows">${INT.signals.slice(0, 4).map((s) => `<li><div class="rows__main"><b>«${s.text}»</b><span class="rows__sub">${badge(TONE[s.tone][0], TONE[s.tone][1])} ${METRIC_DEFS[s.metric].name} · ${s.source}</span></div></li>`).join("")}</ul>`, "Цитаты обезличены, проверены на узнаваемые детали и не привязаны к подразделениям")}</div>`);
   }
@@ -260,11 +313,11 @@ PAGES.metric = (id) => {
   chart("ch-metric", lineOption(m.series.points.map((p) => ({ ...p, value: p.value + off })), CH.teal, { name: def.name }));
   const byUnits = units.filter((u) => u.id !== "company").map((u) => { const s = slice(id, u.id)?.score; return `<li class="barline"><div><div style="display:flex;justify-content:space-between;margin-bottom:6px"><span>${u.name}</span><span class="num">${s ?? "<5"}</span></div><div class="bar bar--${s == null ? "" : LEVEL(s) === "ok" ? "ok" : LEVEL(s) === "bad" ? "bad" : "teal"}"><i style="width:${s ?? 0}%"></i></div></div><span class="num">${s == null ? "" : LEVEL_WORD[LEVEL(s)]}</span></li>`; }).join("");
   const signals = seesSignals() ? INT.signals.filter((s) => s.metric === id) : [];
-  return `<div class="is-health"><p class="crumbs-sm"><a href="#internal">Изнутри</a> · ${METRIC_GROUPS[def.group]}</p>${pageHead(def.name, def.detail)}
-    <div class="kpis">${kpi(`Балл · ${unitName(unit)}`, `${score}<small> /100</small>`, badge(l, LEVEL_WORD[l]))}${kpi("За 30 дней", sign(m.delta30), "баллов")}${kpi("Уверенность данных", `<span style="font-size:24px">${CONF[m.confidence]}</span>`, "по числу ответов и согласию источников")}${waves().length > 1 ? kpi("По волнам", `<span style="font-size:24px">${waves().map((x) => slice(id, unit, x.id)?.score ?? "—").join(" · ")}</span>`, waves().map((x) => x.label.split(" ")[0].toLowerCase()).join(" · ")) : kpi("Зона", `<span style="font-size:24px">${LEVEL_WORD[l]}</span>`, "в норме от 65, риск ниже 50")}</div>
+  return `<div class="is-health"><p class="crumbs-sm"><a href="#internal">Изнутри</a> · ${METRIC_GROUPS[def.group]}</p>${pageHead(def.name, def.detail, can("questions") ? `<button class="btn btn--ghost btn--sm" data-ask="metric:${id}">${ico("help")}Спросить эксперта</button>` : "")}
+    <div class="kpis">${kpi(`Балл · ${unitName(unit)}`, `${score}<small> /100</small>`, badge(l, LEVEL_WORD[l]))}${kpi("За 30 дней", sign(m.delta30), "баллов")}${kpi("Уверенность данных" + info("confidence"), `<span style="font-size:24px">${CONF[m.confidence]}</span>`, "по числу ответов и согласию источников")}${waves().length > 1 ? kpi("По волнам", `<span style="font-size:24px">${waves().map((x) => slice(id, unit, x.id)?.score ?? "—").join(" · ")}</span>`, waves().map((x) => x.label.split(" ")[0].toLowerCase()).join(" · ")) : kpi("Зона", `<span style="font-size:24px">${LEVEL_WORD[l]}</span>`, "в норме от 65, риск ниже 50")}</div>
     ${panel("Динамика за 12 месяцев", `<div class="chart" id="ch-metric" role="img" aria-label="${def.name} по месяцам"></div>`)}
     <div class="grid2">${byUnits ? panel("По подразделениям", `<ul class="tree" style="gap:16px;background:none">${byUnits}</ul>`, `Срез за 30 дней, ${waveName(currentWave()).toLowerCase()}`) : ""}
-    ${panel("Что влияет", `<ul class="rows">${m.drivers.map((d) => `<li><div class="rows__main"><b>${d.text}</b></div>${badge(EVIDENCE[d.evidence][0], EVIDENCE[d.evidence][1])}</li>`).join("")}</ul>`, "У каждой причины указан уровень доказанности")}</div>
+    ${panel("Что влияет" + info("evidence"), `<ul class="rows">${m.drivers.map((d) => `<li><div class="rows__main"><b>${d.text}</b></div>${badge(EVIDENCE[d.evidence][0], EVIDENCE[d.evidence][1])}</li>`).join("")}</ul>`, "У каждой причины указан уровень доказанности")}</div>
     ${panel("Откуда данные", `<ul class="rows"><li><div class="rows__main"><b>Опросы</b><span class="rows__sub">${def.sources.o}</span></div><span class="rows__meta">балл</span></li><li><div class="rows__main"><b>Тексты</b><span class="rows__sub">${def.sources.t}</span></div><span class="rows__meta">балл</span></li><li><div class="rows__main"><b>Поведение и HR-события</b><span class="rows__sub">${def.sources.p}</span></div><span class="rows__meta">подтверждают</span></li></ul>`, "Баллом становятся только опросы и тексты")}
     ${signals.length ? panel("Сигналы по метрике", `<ul class="quotes">${signals.map((s) => `<li><p>«${s.text}»</p><span class="quotes__meta">${badge(TONE[s.tone][0], TONE[s.tone][1])}${s.source}</span></li>`).join("")}</ul>`) : ""}</div>`;
 };
@@ -277,17 +330,17 @@ PAGES.external = () => {
   const tracks = `<ul class="rows">${EXT.industry.tracks.map((t) => `<li style="display:block"><div class="barline"><div><div style="margin-bottom:6px">${t.topic}</div><div class="bar bar--${t.percentile >= 60 ? "ok" : t.percentile < 45 ? "bad" : ""}"><i style="width:${t.percentile}%"></i></div></div><span class="num">${t.percentile}</span></div></li>`).join("")}</ul>`;
   const comp = `<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Обещание</th><th>${REPORT.company.name}</th>${EXT.competitors.map((c) => `<th>${c.name}</th>`).join("")}</tr></thead><tbody>${EXT.competitors[0].promises.map((cp) => { const p = EXT.promises.find((x) => x.id === cp.promiseId); return `<tr><th>${p.title}</th><td>${status(PROMISE[p.status][0], PROMISE[p.status][1])}</td>${EXT.competitors.map((c) => { const st = c.promises.find((x) => x.promiseId === cp.promiseId).status; return `<td>${status(PROMISE[st][0], PROMISE[st][1])}</td>`; }).join("")}</tr>`; }).join("")}<tr><th>Индекс культуры</th><td class="num" style="text-align:left">${EXT.index.value}</td>${EXT.competitors.map((c) => `<td>${c.index}</td>`).join("")}</tr></tbody></table></div>`;
   return pageHead("Снаружи: оценка HR-бренда", `Мониторинг, отчёт за октябрь. Источники: ${EXT.coverage.map((c) => `${SOURCES[c.source]} ${c.mentions}`).join(", ")} упоминаний.`, `<a class="btn btn--ghost btn--sm" href="#reports">${ico("download")}PDF отчёта</a>`)
-    + `<div class="kpis">${kpi("Индекс культуры", `${EXT.index.value}<small> /100</small>`, `${delta(EXT.index.delta.value)} за квартал`)}${kpi("Обещаний подтверждено", `${confirmed}<small> из ${EXT.promises.length}</small>`, "зарплата и гибкий формат не подтверждаются")}${kpi("Слепые зоны", `${EXT.blindSpots.length}<small> темы</small>`, `чаще всего «${EXT.blindSpots[0].topic}», ${EXT.blindSpots[0].share}%`)}${kpi("Место в отрасли", `${EXT.industry.percentile}<small> %</small>`, `среди ${EXT.industry.peerCount} компаний: ${EXT.industry.peerGroup}`)}</div>`
+    + `<div class="kpis">${kpi("Индекс культуры" + info("externalIndex"), `${EXT.index.value}<small> /100</small>`, `${delta(EXT.index.delta.value)} за квартал`)}${kpi("Обещаний подтверждено" + info("promiseStatus"), `${confirmed}<small> из ${EXT.promises.length}</small>`, "зарплата и гибкий формат не подтверждаются")}${kpi("Слепые зоны" + info("blindSpots"), `${EXT.blindSpots.length}<small> темы</small>`, `чаще всего «${EXT.blindSpots[0].topic}», ${EXT.blindSpots[0].share}%`)}${kpi("Место в отрасли" + info("industry"), `${EXT.industry.percentile}<small> %</small>`, `среди ${EXT.industry.peerCount} компаний: ${EXT.industry.peerGroup}`)}</div>`
     + panel("Динамика индекса", `<div class="chart" id="ch-ext" role="img" aria-label="Индекс культуры по месяцам"></div>`, "Красной областью выделена просадка, пунктиром — события, которые на неё повлияли.")
-    + panel("Обещания", promises, "Вес — доля обещания в ваших текстах. «Подтверждено» — доля упоминаний, где опыт людей совпадает с обещанием.")
-    + `<div class="grid2">${panel("Слепые зоны", blind, "О чём пишут люди, а в ваших текстах нет ни слова")}${panel("Место в отрасли по темам", tracks, "Перцентиль: у скольких работодателей отрасли условия хуже")}</div>`
+    + panel("Обещания" + info("promiseStatus"), promises, "Вес — доля обещания в ваших текстах. «Подтверждено» — доля упоминаний, где опыт людей совпадает с обещанием.")
+    + `<div class="grid2">${panel("Слепые зоны" + info("blindSpots"), blind, "О чём пишут люди, а в ваших текстах нет ни слова")}${panel("Место в отрасли по темам" + info("industry"), tracks, "Перцентиль: у скольких работодателей отрасли условия хуже")}</div>`
     + panel("Конкуренты", comp, "Те же обещания у конкурентов, по той же методике")
     + note("Отчёт мониторинга выходит раз в месяц. Если тема резко выросла, придёт письмо, а сигнал появится на обзоре.");
 };
 
 PAGES.bridge = () => {
   const KIND = { both_sides: ["bad", "Видно с двух сторон"], strength: ["ok", "Сильная сторона"], early_signal: ["warn", "Ранний сигнал"] };
-  return pageHead("Снаружи и изнутри", "Шкалы направлений не смешиваем и сверяем только темы: что видят кандидаты и что переживают сотрудники.")
+  return pageHead("Снаружи и изнутри" + info("bridge"), "Шкалы направлений не смешиваем и сверяем только темы: что видят кандидаты и что переживают сотрудники.")
     + `<div class="grid2">${REPORT.bridge.map((b) => {
       const ext = b.external.type === "blind_spot" ? [`Слепая зона «${b.external.topic}»`, `${b.external.share}%`, "упоминаний"] : [`Обещание «${EXT.promises.find((p) => p.id === b.external.promiseId).title}»`, `${b.external.confirmedShare}%`, "подтверждений"];
       return panel(badge(KIND[b.kind][0], KIND[b.kind][1]), `<div class="vs"><div class="is-ext"><small>снаружи</small><span>${ext[0]}</span><span class="num">${ext[1]} <small>${ext[2]}</small></span></div><div class="is-int"><small>изнутри</small><span>${METRIC_DEFS[b.internal.metric].name}</span><span class="num">${b.internal.score} <small>${LEVEL_WORD[LEVEL(b.internal.score)]}</small></span></div></div><p style="margin-top:16px">${b.text}</p>`);
@@ -303,6 +356,7 @@ PAGES.decisions = () => {
 };
 
 PAGES.data = () => {
+  if (state.phase === "survey" && state.role === "manager") return `<div class="is-health">` + pageHead("Сбор данных", "Сколько ответили в вашей группе. Ответы отдельных людей не видит никто из компании.") + waveProgress() + `</div>`;
   if (state.role === "manager") {
     const l = SURVEY_LINKS[0];
     return `<div class="is-health">` + pageHead("Сбор данных", "Доля ответивших в вашей группе. Ответы отдельных людей не видит никто из компании.") + `<div class="kpis">${kpi("Ответили", `${Math.round((l.answered / l.size) * 100)}<small> %</small>`, `${l.answered} из ${l.size} · ${l.unit}`)}</div>` + note("Ссылку на опрос рассылает HR-директор. Если у вас нет ссылки, напишите ему.", true) + `</div>`;
@@ -312,10 +366,12 @@ PAGES.data = () => {
   const links = `<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Подразделение</th><th class="num">Ответили</th><th>Ссылка</th><th></th></tr></thead><tbody>${SURVEY_LINKS.map((l) => `<tr><th>${l.unit}</th><td class="num">${l.answered} из ${l.size}</td><td class="muted mono">mirror-com.ru/${l.token}</td><td><button class="btn btn--ghost btn--sm" data-copy="${l.token}">${ico("link")}Копировать</button></td></tr>`).join("")}</tbody></table></div>`;
   const depth = (n) => (n.parent === null ? 0 : n.parent === "company" ? 1 : 2);
   const tree = `<ul class="tree">${TREE.map((n) => `<li data-depth="${depth(n)}" class="${n.size < 5 ? "is-small" : ""}"><span>${n.name}</span>${n.size < 5 ? badge("warn", "меньше 5: объединяется с уровнем выше") : ""}<span class="tree__size">${n.size}</span></li>`).join("")}</ul>`;
-  return `<div class="is-health">` + pageHead("Сбор данных", "Опрос по ссылке на подразделение, анонимная форма, выгрузки из ваших каналов и документы.")
-    + panel("Замеры", `<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Волна</th><th>Даты</th><th class="num">Ответили</th><th>Доля</th></tr></thead><tbody>${waveRows}</tbody></table></div>`, "Ответы отдельных людей не видит никто из компании. Видна только доля ответивших по группам от 5 человек.")
-    + panel("Ссылки на опрос", links, "Одна ссылка на подразделение. Разошлите её сотрудникам подразделения сами: так никто не знает, кто как ответил.")
-    + `<div class="grid2">${panel("Подразделения", tree + `<div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:16px"><button class="btn btn--ghost btn--sm" data-toast="В прототипе таблица не загружается">${ico("upload")}Загрузить таблицу</button><button class="btn btn--ghost btn--sm" data-toast="Шаблон: подразделение, входит в, численность">${ico("download")}Шаблон</button></div>`, state.service === "campaign" ? "Дерево заморожено до конца кампании: изменения вступят со следующего замера." : "Дерево проверил эксперт при запуске. Изменения вступят со следующего замера.")}
+  const setup = state.phase === "setup";
+  const linksPanel = setup ? panel("Ссылки на опрос", `<p>Ссылки появятся после проверки подразделений экспертом. Загрузите таблицу подразделений, эксперт проверит её обычно за 1 рабочий день.</p>`, "Одна ссылка на подразделение. Рассылаете вы, так никто не знает, кто как ответил.") : panel("Ссылки на опрос", links, "Одна ссылка на подразделение. Разошлите её сотрудникам подразделения сами: так никто не знает, кто как ответил.");
+  const wavesPanel = setup ? "" : state.phase === "survey" ? waveProgress() : panel("Замеры" + info("wave"), `<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Волна</th><th>Даты</th><th class="num">Ответили</th><th>Доля</th></tr></thead><tbody>${waveRows}</tbody></table></div>`, "Ответы отдельных людей не видит никто из компании. Видна только доля ответивших по группам от 5 человек.");
+  return `<div class="is-health">` + pageHead("Сбор данных", setup ? "Подготовка к первому опросу: культурный код, подразделения и ссылки." : "Опрос по ссылке на подразделение, анонимная форма, выгрузки из ваших каналов и документы.")
+    + wavesPanel + linksPanel
+    + `<div class="grid2">${panel("Подразделения", tree + `<div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:16px"><button class="btn btn--ghost btn--sm" data-toast="В прототипе таблица не загружается">${ico("upload")}Загрузить таблицу</button><button class="btn btn--ghost btn--sm" data-toast="Шаблон: подразделение, входит в, численность">${ico("download")}Шаблон</button></div>`, setup ? "Черновик ждёт проверки экспертом. Подразделения меньше 5 человек отмечены сразу." : state.service === "campaign" ? "Дерево заморожено до конца кампании: изменения вступят со следующего замера." : "Дерево проверил эксперт при запуске. Изменения вступят со следующего замера.")}
       ${panel("Анонимная форма", `<p>Сотрудники пишут без входа и без имени. Сообщение обезличивается при приёме и проверяется экспертом, прежде чем попасть в анализ. В подразделения анонимные сообщения не попадают.</p><p class="mono muted" style="margin-top:12px;color:var(--c-ink-4)">mirror-com.ru/f/bank-n-9x2c</p><button class="btn btn--ghost btn--sm" style="margin-top:12px" data-copy="f/bank-n-9x2c">${ico("link")}Копировать ссылку</button>`, state.service === "campaign" ? "Открыта все 3 месяца кампании" : "Входит в кампанию")}</div>`
     + `<div class="grid2">${panel("Выгрузки из ваших каналов", `<ul class="rows">${IMPORTS.map((i) => `<li><div class="rows__main"><b>${i.name}</b><span class="rows__sub">${i.kind} · ${i.rows} записей</span></div>${badge(i.ok ? "ok" : "warn", i.status)}</li>`).join("")}</ul><div class="drop" style="margin-top:16px">${ico("upload")}<b>Перетащите файл выгрузки</b>Опросы, платформа идей, ретроспективы: CSV или XLSX</div>`, "Имена и персональные сведения убираются до записи в базу")}
       ${panel("Документы", `<ul class="rows">${DOCUMENTS.slice(0, 2).map((d) => `<li><div class="rows__main"><b>${d.name}</b><span class="rows__sub">${d.kind}</span></div><span class="rows__meta">${d.date}</span></li>`).join("")}</ul><div class="drop" style="margin-top:16px">${ico("upload")}<b>Загрузить культурный код или документы о ценностях</b>PDF, DOCX</div>`)}</div>`
@@ -340,7 +396,7 @@ PAGES.reports = () => {
   if (state.role === "manager") {
     return pageHead("Отчёты", "Срезы вашей группы, которые выпустил эксперт.") + panel("Отчёты по вашей группе", `<ul class="rows"><li><div class="rows__main"><b>Продажи · волна 3</b><span class="rows__sub">Только агрегаты по группам от 5 человек</span></div><button class="btn btn--ghost btn--sm" data-toast="В прототипе PDF не формируется">${ico("download")}PDF</button></li></ul>`);
   }
-  const list = REPORTS.filter((r) => (state.service === "campaign" || !r.campaign) && (r.kind === "Снаружи" ? can("external") : can("internal") || state.role === "viewer"));
+  const list = REPORTS.filter((r) => (state.phase === "ready" || r.kind === "Снаружи") && (state.service === "campaign" || !r.campaign) && (r.kind === "Снаружи" ? can("external") : can("internal") || state.role === "viewer"));
   return pageHead("Отчёты и документы", "Каждая публикация — отдельная версия. Исправление создаёт новую версию, старая остаётся.")
     + panel("Отчёты", `<ul class="rows">${list.map((r) => `<li><div class="rows__main"><b>${r.title}</b><span class="rows__sub">${badge(r.kind === "Снаружи" ? "purple" : "teal", r.kind)} ${r.period} · ${r.status}${r.fixed ? ` · ${r.fixed}` : ""}</span></div>${r.draft ? `<span class="rows__meta">готовится</span>` : `<button class="btn btn--ghost btn--sm" data-toast="В прототипе PDF не формируется">${ico("download")}PDF</button>`}</li>`).join("")}</ul>`)
     + (state.role === "owner" ? panel("Документы", `<ul class="rows">${DOCUMENTS.map((d) => `<li><div class="rows__main"><b>${d.name}</b><span class="rows__sub">${d.kind}</span></div><span class="rows__meta">${d.date}</span></li>`).join("")}</ul>`) : "");
@@ -363,8 +419,32 @@ PAGES.settings = () => {
     + panel("Уведомления на почту", `<ul class="rows">${Object.entries(N).map(([k, v]) => `<li><span>${v}</span><label class="switch"><input type="checkbox" data-notify="${k}" ${live.notify[k] ? "checked" : ""}><span class="sr-only">${v}</span></label></li>`).join("")}<li><span>Приглашения и вход</span><label class="switch"><input type="checkbox" checked disabled><span class="sr-only">Всегда включено</span></label></li></ul>`, "В письмах нет цифр по группам: они видны после входа");
 };
 
+PAGES.questions = () => {
+  const mine = (q) => ["owner", "hrbp"].includes(state.role) || q.author === ROLES[state.role].person;
+  const aboutLabel = (a) => (a.type === "metric" ? `Метрика · ${METRIC_DEFS[a.id].name}` : a.type === "plan" ? `Шаг плана · ${live.plan.find((p) => p.id === a.id)?.title ?? ""}` : a.type === "report" ? "Отчёт" : "Общий вопрос");
+  const aboutHref = (a) => (a.type === "metric" ? `#metric-${a.id}` : a.type === "plan" ? "#plan" : a.type === "report" ? "#reports" : "");
+  const threads = live.questions.filter(mine).map((q) => `<li class="item"><div class="item__head"><div class="rows__main"><b>${q.author}</b><span class="rows__sub">${ROLE_NAMES[q.role]} · ${q.date}</span></div><span class="badges">${aboutHref(q.about) ? `<a class="badge badge--soft" href="${aboutHref(q.about)}">${aboutLabel(q.about)}</a>` : badge("soft", aboutLabel(q.about))}${q.answer ? badge("ok", "Ответ получен") : badge("warn", "Ждёт ответа")}</span></div><p>${q.text}</p>${q.answer ? `<div class="answer"><span class="rows__sub">Эксперт Mirror · ${q.answer.date}</span><p>${q.answer.text}</p></div>` : `<p class="rows__sub">Эксперт отвечает в течение 2 рабочих дней. Ответ придёт на почту.</p>`}</li>`).join("");
+  const ask = state.ask ?? "general";
+  const options = [["general", "Общий вопрос"], ["report:final", "Отчёт"], ...INT.metrics.map((m) => [`metric:${m.id}`, `Метрика · ${METRIC_DEFS[m.id].name}`]), ...live.plan.filter((p) => p.unitId === null || ownUnit(p.unitId)).map((p) => [`plan:${p.id}`, `Шаг плана · ${p.title}`])];
+  const form = `<form id="ask-form" class="qform"><label class="field"><span class="label">О чём вопрос</span><select class="select" name="about">${options.map(([v, l]) => `<option value="${v}" ${v === ask ? "selected" : ""}>${esc(l)}</option>`).join("")}</select></label><label class="field"><span class="label">Вопрос</span><textarea class="textarea" name="text" required rows="4" placeholder="Например, как отличить влияние плана от сезонности"></textarea></label><p class="rows__sub">Не пишите имена сотрудников и детали, по которым их можно узнать.</p><div><button class="btn btn--primary btn--sm" type="submit">Отправить эксперту</button></div></form>`;
+  const slots = `<div class="slots">${SLOTS.map((t) => `<button class="btn btn--ghost btn--sm" data-slot="${t}">${ico("calendar")}${t}</button>`).join("")}</div><p class="rows__sub" style="margin-top:12px">Встреча 30 минут по видеосвязи. Приглашение придёт на почту всем, кого вы укажете.</p>`;
+  return pageHead("Вопросы эксперту", "Эксперт Mirror отвечает в течение 2 рабочих дней. Срочное и большое удобнее обсудить на встрече.")
+    + `<div class="grid2">${panel("Задать вопрос", form, "Вопрос виден вам, HR-директору и HRBP")}${panel("Записаться на встречу", slots, "Свободное время эксперта на ближайшие две недели")}</div>`
+    + `<section class="panel panel--well"><div class="panel__head"><h2 class="panel__title">Вопросы и ответы</h2></div><ul class="items">${threads || `<li class="item">Вопросов пока нет.</li>`}</ul></section>`;
+};
+
+PAGES.glossary = () => {
+  const SIDE = { external: "Снаружи", internal: "Изнутри", common: "Обе стороны" };
+  return pageHead("Как читать цифры", "Термины кабинета и отчётов. Те же пояснения открываются по кнопке «i» рядом с показателями.")
+    + Object.entries(SIDE).map(([side, name]) => panel(name, `<dl class="glossary">${Object.values(GLOSSARY).filter((t) => t.side === side).map((t) => `<div><dt>${t.title}</dt><dd>${t.text}</dd></div>`).join("")}</dl>`)).join("");
+};
+
 /* Без меню: вход и страница для сотрудников */
 const SOLO = {
+  survey() {
+    const p = SURVEY_PREVIEW;
+    return `<div class="solo"><span class="solo__logo">${tpl("logo")}</span><div class="public"><p class="crumbs-sm"><a href="#data">Вернуться в кабинет</a> · так опрос видит сотрудник</p><h1>Как нам работается</h1><p class="public__lead">${REPORT.company.name} · ${LIVE_WAVE.label.toLowerCase()}, ${LIVE_WAVE.dates}. ${p.intro}</p><form class="survey" id="survey-form">${p.questions.map((q, i) => `<fieldset class="item"><legend class="item__title">${q.q}</legend><div class="survey__scale">${p.scale.map((s, j) => `<label><input type="radio" name="q${i}" value="${j + 1}"><span>${s}</span></label>`).join("")}</div></fieldset>`).join("")}<label class="item field"><span class="item__title">${p.open}</span><textarea class="textarea" rows="3"></textarea></label><button class="btn btn--primary" type="submit">Отправить ответы</button></form><p class="public__foot">Пример вопросов: настоящий опрос эксперт собирает под культурный код компании, 15–20 вопросов, около 7 минут.</p></div></div>`;
+  },
   login() {
     const step = state.login ?? 0;
     const body = step === 0
@@ -387,7 +467,7 @@ function sideHtml(active) {
     if (!can(n.id)) return "";
     return `<a href="#${n.id === "settings" ? "prefs" : n.id}" class="${n.health ? "is-health" : ""}" ${n.id === active ? 'aria-current="page"' : ""}>${ico(n.icon)}${n.label}${locked(n.id) ? `<span class="snav__lock">${ico("lock")}</span>` : ""}</a>`;
   }).join("").replace(/(<p class="snav__label">[^<]*<\/p>)(?=<p|$)/g, "");
-  return `<aside class="side" id="side"><a class="side__logo" href="#overview" aria-label="Mirror, на обзор">${tpl("logo")}</a><div class="company"><b>${REPORT.company.name}</b><span>${SERVICES[state.service].name}</span></div><nav class="snav" aria-label="Разделы кабинета">${items}</nav><div class="side__user"><span class="avatar">${r.person.split(" ").map((w) => w[0]).join("")}</span><div><b>${r.person}</b><span>${r.name}</span></div><a href="#login" aria-label="Выйти">${ico("logout")}</a></div></aside>`;
+  return `<aside class="side" id="side"><a class="side__logo" href="#overview" aria-label="Mirror, на обзор">${tpl("logo")}</a><div class="company"><b>${REPORT.company.name}</b><span>${SERVICES[state.service].name}</span></div><nav class="snav" aria-label="Разделы кабинета">${items}</nav><a class="side__help" href="#glossary">${ico("book")}Как читать цифры</a><div class="side__user"><span class="avatar">${r.person.split(" ").map((w) => w[0]).join("")}</span><div><b>${r.person}</b><span>${r.name}</span></div><a href="#login" aria-label="Выйти">${ico("logout")}</a></div></aside>`;
 }
 /* Адрес раздела — простой якорь: #overview, #metric-energy. «Настройки» — #prefs: имя settings занято площадкой ссылок */
 function route() {
@@ -406,6 +486,7 @@ function render() {
   if (!PAGES[section] && !PAGES[page]) html = noAccess("Раздел не найден");
   else if (!can(section)) html = noAccess(label);
   else if (locked(section)) html = pageHead(label) + lockedView("Раздел входит в кампанию", LOCKED[section].text);
+  else if (waitingData(section)) html = pageHead(label) + lockedView(state.phase === "setup" ? "Данные появятся после первого опроса" : "Опрос идёт", state.phase === "setup" ? "Сначала подготовка к запуску: культурный код, подразделения, ссылки опроса. Цифры изнутри появятся примерно через 10 дней после закрытия опроса." : `${LIVE_WAVE.label} идёт до 14 ноября. Цифры появятся после анализа и проверки экспертом, примерно через 10 дней.`, "info", `<a class="btn btn--ghost btn--sm" href="#overview">Ход работы</a>`);
   else html = section === "metric" ? PAGES.metric(sub) : PAGES[section]();
   root.innerHTML = `<div class="app" id="app">${sideHtml(page === "internal" ? "internal" : page)}<main class="main" id="main"><button class="burger" data-act="menu">${ico("menu")}Разделы</button>${html}</main></div>`;
   after();
@@ -423,13 +504,18 @@ function toast(text) {
 
 /* ── События ── */
 document.addEventListener("click", (e) => {
-  const el = e.target.closest("[data-act],[data-copy],[data-toast]"); if (!el) return;
+  const el = e.target.closest("[data-act],[data-copy],[data-copytext],[data-toast],[data-launch],[data-ask],[data-slot]"); if (!el) return;
+  if (el.dataset.copytext) { navigator.clipboard?.writeText(el.dataset.copytext).catch(() => {}); toast("Текст скопирован"); return; }
+  if (el.dataset.launch) { live.launch.find((l) => l.id === el.dataset.launch).done = true; render(); toast("Шаг отмечен"); return; }
+  if (el.dataset.ask) { state.ask = el.dataset.ask; location.hash = "#questions"; return; }
+  if (el.dataset.slot) { live.meetings.unshift({ date: el.dataset.slot, title: "Встреча с экспертом", who: "Эксперт Mirror и вы", campaign: state.service === "campaign" }); toast(`Встреча ${el.dataset.slot} назначена, приглашение придёт на почту`); return; }
   if (el.dataset.copy) { navigator.clipboard?.writeText("https://mirror-com.ru/" + el.dataset.copy).catch(() => {}); toast("Ссылка скопирована"); return; }
   if (el.dataset.toast) { toast(el.dataset.toast); return; }
   const act = el.dataset.act;
   if (act === "menu") { const app = $("#app"); app.classList.toggle("is-menu"); if (app.classList.contains("is-menu")) { const s = document.createElement("div"); s.className = "scrim"; s.dataset.act = "close"; app.append(s); } else app.querySelector(".scrim")?.remove(); }
   if (act === "close") { $("#app").classList.remove("is-menu"); el.remove(); }
   if (act === "add") { state.adding = true; render(); }
+  if (act === "reminder") { state.reminder = !state.reminder; render(); }
   if (act === "cancel") { state.adding = false; render(); }
   if (act === "open-link") { state.login = 2; render(); }
   if (act === "enter") { state.login = 0; location.hash = "#overview"; toast("Вы вошли в кабинет"); }
@@ -446,18 +532,54 @@ document.addEventListener("submit", (e) => {
   e.preventDefault();
   const f = e.target, data = Object.fromEntries(new FormData(f));
   if (f.id === "login-form") { state.login = 1; render(); }
+  if (f.id === "survey-form") { toast("Это пример: ответы не сохраняются"); return; }
+  if (f.id === "ask-form") { const [type, id] = data.about.split(":"); live.questions.unshift({ id: "q" + Date.now(), author: ROLES[state.role].person, role: ROLES[state.role].role, about: { type, id }, text: data.text, date: "сегодня", answer: null }); state.ask = null; render(); toast("Вопрос отправлен эксперту"); }
   if (f.id === "dec-form") { live.decisions.unshift({ id: "new-" + Date.now(), unitId: data.unit || null, topic: data.topic, decision: data.decision, metric: data.metric, status: "planned", public: false, month: "2026-11" }); state.adding = false; render(); toast("Решение добавлено. Опубликуйте его, когда будет готово"); }
   if (f.id === "inv-form") { live.team.push({ person: data.email, email: data.email, role: data.role, unit: data.unit || null, last: "приглашение отправлено" }); render(); toast("Приглашение отправлено"); }
 });
-addEventListener("hashchange", () => { state.adding = false; render(); });
+addEventListener("hashchange", () => { state.adding = false; if (location.hash !== "#questions") state.ask = null; render(); });
 
 /* Полоса прототипа */
 const roleSel = $("#demo-role"), serviceSel = $("#demo-service");
 roleSel.innerHTML = Object.entries(ROLES).map(([k, r]) => `<option value="${k}">${r.name}</option>`).join("");
-serviceSel.innerHTML = Object.entries(SERVICES).map(([k, s]) => `<option value="${k}">${s.name}</option>`).join("");
-roleSel.value = state.role; serviceSel.value = state.service;
+serviceSel.innerHTML = Object.entries(MODES).map(([k, m]) => `<option value="${k}">${m.name}</option>`).join("");
+roleSel.value = state.role; serviceSel.value = state.mode;
 roleSel.addEventListener("change", () => { state.role = roleSel.value; state.unit = null; store.set("role", state.role); render(); });
-serviceSel.addEventListener("change", () => { state.service = serviceSel.value; store.set("service", state.service); render(); });
+serviceSel.addEventListener("change", () => { applyMode(serviceSel.value); state.wave = null; store.set("service", state.mode); render(); });
+
+/* Подсказки «i»: та же логика, что на сайте (prototype/home/src/app.js). Наведение и фокус показывают, Esc и уход прячут */
+const tip = $("#tip");
+let tipFor = null;
+function showTip(btn) {
+  tipFor = btn;
+  tip.textContent = btn.dataset.tip;
+  typograf(tip);
+  btn.setAttribute("aria-describedby", "tip"); btn.setAttribute("aria-expanded", "true");
+  tip.classList.add("is-shown");
+  const b = btn.getBoundingClientRect(), t = tip.getBoundingClientRect(), gap = 12;
+  const left = Math.min(Math.max(16, b.left + b.width / 2 - t.width / 2), innerWidth - t.width - 16);
+  const above = b.top - t.height - gap > 8;
+  tip.dataset.side = above ? "top" : "bottom";
+  tip.style.left = left + "px";
+  tip.style.top = (above ? b.top - t.height - gap : b.bottom + gap) + "px";
+  tip.style.setProperty("--tip-arrow", (b.left + b.width / 2 - left) + "px");
+}
+function hideTip() {
+  if (!tipFor) return;
+  tipFor.removeAttribute("aria-describedby"); tipFor.setAttribute("aria-expanded", "false");
+  tip.classList.remove("is-shown"); tipFor = null;
+}
+const tipTarget = (e) => (e.target instanceof Element ? e.target.closest("[data-tip]") : null);
+let lastPointer = "mouse";
+document.addEventListener("pointerdown", (e) => { lastPointer = e.pointerType; }, true);
+document.addEventListener("pointerover", (e) => { const t = tipTarget(e); if (e.pointerType === "mouse" && t && t !== tipFor) showTip(t); });
+document.addEventListener("pointerout", (e) => { if (e.pointerType === "mouse" && tipFor && !tipFor.contains(e.relatedTarget)) hideTip(); });
+document.addEventListener("focusin", (e) => { const t = tipTarget(e); if (t && t.matches(":focus-visible")) showTip(t); });
+document.addEventListener("focusout", (e) => { if (tipTarget(e)) hideTip(); });
+document.addEventListener("click", (e) => { const t = tipTarget(e); if (t) { if (lastPointer !== "mouse" && tipFor === t) hideTip(); else showTip(t); return; } hideTip(); });
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") hideTip(); });
+addEventListener("scroll", hideTip, { passive: true });
+addEventListener("hashchange", hideTip);
 
 /* Типограф: короткие слова не висят в конце строки (как на сайте, src/lib/typograf.ts) */
 function typograf(root) {

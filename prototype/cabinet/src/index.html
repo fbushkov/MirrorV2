@@ -17,11 +17,12 @@
 <div class="demo" role="region" aria-label="Настройки прототипа">
   <span class="demo__tag">прототип · данные условные</span>
   <label>Смотреть как <select id="demo-role"></select></label>
-  <label>Услуга <select id="demo-service"></select></label>
-  <span class="demo__links"><a href="#login">Вход</a><a href="#public">Страница для сотрудников</a></span>
+  <label>Этап <select id="demo-service"></select></label>
+  <span class="demo__links"><a href="#login">Вход</a><a href="#survey">Опрос</a><a href="#public">Страница для сотрудников</a></span>
 </div>
 <div id="root"></div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="tip" id="tip" role="tooltip"></div>
 <template id="logo">{{svgc:logo.svg}}</template>
 <template id="ico-compass">{{svgc:lucide-compass.svg}}</template><template id="ico-house">{{svgc:lucide-house.svg}}</template><template id="ico-sprout">{{svgc:lucide-sprout.svg}}</template><template id="ico-shield">{{svgc:lucide-shield.svg}}</template><template id="ico-handshake">{{svgc:lucide-handshake.svg}}</template><template id="ico-megaphone">{{svgc:lucide-megaphone.svg}}</template><template id="ico-battery-medium">{{svgc:lucide-battery-medium.svg}}</template><template id="ico-target">{{svgc:lucide-target.svg}}</template><template id="ico-scale">{{svgc:lucide-scale.svg}}</template><template id="ico-award">{{svgc:lucide-award.svg}}</template>
 <template id="st-ok"><span class="cmp__ico cmp__ico--yes">{{svgc:circle-check.svg}}</span></template><template id="st-warn"><span class="cmp__ico cmp__ico--warn">{{svgc:circle-alert.svg}}</span></template><template id="st-bad"><span class="cmp__ico cmp__ico--no">{{svgc:circle-x.svg}}</span></template><template id="st-na"><span class="cmp__ico cmp__ico--na">{{svgc:minus.svg}}</span></template>
@@ -31,6 +32,7 @@
 <script>
 {{include:../home/src/charts.js}}
 const REPORT = {{include:vendor/report.json}};
+const GLOSSARY = {{include:vendor/glossary.json}};
 {{include:src/metrics.js}}
 {{include:src/data.js}}
 {{include:src/app.js}}

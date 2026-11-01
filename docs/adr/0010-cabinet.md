@@ -95,6 +95,7 @@
 `engagements`, `engagement_stages`, `reports`, `report_versions`, `decisions`, `plan_steps`, `meetings`, `surveys`,
 `survey_waves`, `survey_links`, `raw.responses`, `raw.messages`, `imports`, `documents`, `notifications`, `outbox`, `audit_log`.
 ORM — Drizzle (ADR-0003), миграции SQL в git. *Предложено.*
+Дополнено ADR-0011: `engagements.phase`, `engagement_tasks`, `unit_versions.approved_at`, `questions`, `question_answers`, `expert_slots`.
 
 ## Последствия
 - Кабинет и админка делаются вместе: без админки отчёты некому публиковать.

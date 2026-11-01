@@ -88,6 +88,7 @@ Postgres (как в старом проекте). ORM — решить в ADR-00
 | `users`, `memberships` | 3–4 | пользователи и их роль в компании |
 | `reports`, `report_versions` | 3–4 | отчёты: неизменяемые версии JSON по схеме `src/lib/schemas/report.ts` (jsonb), PDF файлом рядом (ADR-0009, `docs/product/report-data.md`) |
 | `audit_log` | 3 | кто что сделал в админке и кабинете |
+| `unit_versions`, `units`, `engagements`, `engagement_tasks`, `surveys`, `survey_waves`, `survey_links`, `questions`, `question_answers`, `expert_slots`, `meetings`, `decisions`, `plan_steps` | 5 | кабинет: подразделения, фазы услуги, опросы, вопросы эксперту, встречи, решения, план (ADR-0010, ADR-0011) |
 
 Данные парсера приходят **выгрузкой файлом**, где всё уже собрано и размечено (решение 2026-10-27). Адаптер
 `src/server/parser` читает файл и проверяет его схемой Zod; по нему ИИ формирует отчёт (ADR-0007). Формат выгрузки — описать
