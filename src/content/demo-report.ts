@@ -28,7 +28,7 @@ const METRICS = {
 const zone = (s: number) => (s >= 65 ? "ok" : s >= 50 ? "warn" : "bad") as "ok" | "warn" | "bad"
 const clamp = (v: number) => Math.max(5, Math.min(98, v))
 
-/* Подразделения: сдвиг балла как в демо-дашборде. ИТ на этапе «Уход» — 2 человека: балл скрыт, группа объединена с ИТ */
+/* Подразделения: сдвиг балла как в демо-дашборде. ИТ на этапе «Уход» ответили 2 человека: балл скрыт, группа объединена с уровнем выше */
 const UNITS = [
   { id: "company", name: "Вся компания", parentId: null, size: 680, offset: 0 },
   { id: "sales", name: "Продажи", parentId: "company", size: 210, offset: -6 },
@@ -37,12 +37,25 @@ const UNITS = [
   { id: "back", name: "Бэк-офис", parentId: "company", size: 145, offset: 5 },
 ]
 
+/* Три волны кампании: месяц в ряду метрики (август, сентябрь, октябрь) и сколько ответили в каждом подразделении */
+const WAVES = [
+  { id: "wave-1", month: 9, respondents: { company: 452, sales: 143, it: 51, ops: 160, back: 98 } },
+  { id: "wave-2", month: 10, respondents: { company: 431, sales: 136, it: 47, ops: 155, back: 93 } },
+  { id: "wave-3", month: 11, respondents: { company: 447, sales: 141, it: 49, ops: 162, back: 95 } },
+] as const
+const waveScore = (metric: (typeof METRIC_IDS)[number], w: (typeof WAVES)[number]) => METRICS[metric].trend[w.month]
+const indexOf = (scores: number[]) => Math.round(scores.reduce((s, v) => s + v, 0) / scores.length)
+
 const slices: NonNullable<NonNullable<ReportInput["internal"]>["slices"]> = [
-  ...UNITS.flatMap((u) =>
-    METRIC_IDS.map((metric) => ({ metric, unitId: u.id, period: "30d" as const, groupSize: u.size, score: clamp(METRICS[metric].score + u.offset) })),
+  ...WAVES.flatMap((w) =>
+    UNITS.flatMap((u) => {
+      const scores = METRIC_IDS.map((metric) => clamp(waveScore(metric, w) + u.offset))
+      const base = { unitId: u.id, period: "30d" as const, waveId: w.id, groupSize: u.size, respondents: w.respondents[u.id as keyof typeof w.respondents] }
+      return [...METRIC_IDS.map((metric, i) => ({ ...base, metric, score: scores[i] })), { ...base, metric: "index" as const, score: indexOf(scores) }]
+    }),
   ),
-  { metric: "index", unitId: "it", stage: "onboarding", period: "30d", groupSize: 7, score: 59 },
-  { metric: "index", unitId: "it", stage: "leaving", period: "30d", groupSize: 2, score: null, mergedInto: "company" },
+  { metric: "index", unitId: "it", stage: "onboarding", period: "30d", waveId: "wave-3", groupSize: 7, respondents: 6, score: 59 },
+  { metric: "index", unitId: "it", stage: "leaving", period: "30d", waveId: "wave-3", groupSize: 2, respondents: 2, score: null, mergedInto: "it" },
 ]
 
 export const DEMO_REPORT: ReportInput = {
@@ -133,11 +146,12 @@ export const DEMO_REPORT: ReportInput = {
     ],
     delayDays: 14,
     units: UNITS.map(({ id, name, parentId, size }) => ({ id, name, parentId, size })),
-    index: { value: 59, level: "warn", delta30: -1, series: { points: points(MONTHS_INT, MONTHS_INT.map((_, i) => Math.round(METRIC_IDS.reduce((s, m) => s + METRICS[m].trend[i], 0) / METRIC_IDS.length))), events: [{ month: "2026-10", label: "Смена руководителя в двух командах ИТ" }] } },
+    index: { value: 59, level: "warn", delta30: -1, waves: WAVES.map((w) => ({ waveId: w.id, score: indexOf(METRIC_IDS.map((m) => waveScore(m, w))) })), series: { points: points(MONTHS_INT, MONTHS_INT.map((_, i) => Math.round(METRIC_IDS.reduce((s, m) => s + METRICS[m].trend[i], 0) / METRIC_IDS.length))), events: [{ month: "2026-10", label: "Смена руководителя в двух командах ИТ" }] } },
     metrics: METRIC_IDS.map((id) => {
       const m = METRICS[id]
       return {
         id, score: m.score, level: zone(m.score), delta30: m.delta30, confidence: m.confidence,
+        waves: WAVES.map((w) => ({ waveId: w.id, score: waveScore(id, w) })),
         series: { points: points(MONTHS_INT, [...m.trend]) },
         drivers: m.drivers.map(([text, evidence]) => ({ text, evidence })),
       }
@@ -176,9 +190,9 @@ export const DEMO_REPORT: ReportInput = {
       { month: "2026-10", label: "Квартальный план продаж вырос на 18%", unitId: "sales" },
     ],
     decisions: [
-      { id: "sales-load", topic: "Переработки в отделе продаж", decision: "Пересчитали план с учётом штата и ввели «тихие часы» без встреч", outcome: "Энергия и ресурс +9 за квартал", metric: "energy", change: 9, status: "done", public: true, month: "2026-07" },
+      { id: "sales-load", unitId: "sales", topic: "Переработки в отделе продаж", decision: "Пересчитали план с учётом штата и ввели «тихие часы» без встреч", outcome: "Энергия и ресурс +9 за квартал", metric: "energy", change: 9, status: "done", public: true, month: "2026-07" },
       { id: "loop", topic: "Сигналы остаются без ответа", decision: "Отвечать на каждый сигнал в течение 10 рабочих дней", outcome: "Доля закрытых петель выросла с 34% до 71%", metric: "voice", status: "in_progress", public: true, month: "2026-10" },
-      { id: "review", topic: "Непонятные критерии ревью", decision: "Опубликовали критерии для всех отделов", outcome: "Справедливость и прозрачность +6", metric: "fairness", change: 6, status: "done", public: true, month: "2026-06" },
+      { id: "review", unitId: null, topic: "Непонятные критерии ревью", decision: "Опубликовали критерии для всех отделов", outcome: "Справедливость и прозрачность +6", metric: "fairness", change: 6, status: "done", public: true, month: "2026-06" },
     ],
   },
 
@@ -190,6 +204,8 @@ export const DEMO_REPORT: ReportInput = {
   ],
 
   plan: [
+    { id: "sales-quiet-hours", unitId: "sales", title: "Проверить, соблюдаются ли «тихие часы» в продажах", why: "Энергия и ресурс в продажах упали на 11 баллов за 2 недели после роста плана.", ownerRole: "Руководитель продаж", due: "2 недели", horizon: "quick", impact: "high", effort: "low", kpi: "Энергия и ресурс в продажах", status: "in_progress" },
+    { id: "it-retro", unitId: "it", title: "Разборы ошибок без поиска виноватых в двух командах ИТ", why: "После смены руководителей психологическая безопасность в ИТ упала на 8 баллов.", ownerRole: "Руководитель ИТ", due: "1 месяц", horizon: "mid", impact: "medium", effort: "medium", kpi: "Психологическая безопасность в ИТ" },
     { id: "salary-ranges", title: "Указать зарплатные вилки во всех вакансиях", why: "Сейчас вилок нет в 8 из 28 вакансий, включая все роли в ИТ.", ownerRole: "Руководитель подбора", due: "2 недели", horizon: "quick", impact: "high", effort: "low", kpi: "Подтверждение «Справедливой зарплаты»" },
     { id: "drop-fair-pay", title: "Убрать «справедливую зарплату» из текстов до пересмотра окладов", why: "Обещание, которое не подтверждается, бьёт по доверию сильнее, чем его отсутствие.", ownerRole: "HR-бренд", due: "2 недели", horizon: "quick", impact: "medium", effort: "low" },
     { id: "hybrid-rules", title: "Описать правила гибридной работы", why: "Кому, сколько дней и как договориться. Опубликовать в вакансиях и на карьерном сайте.", ownerRole: "Директор по персоналу", due: "1 месяц", horizon: "mid", impact: "high", effort: "medium", kpi: "Подтверждение «Гибкого формата»" },

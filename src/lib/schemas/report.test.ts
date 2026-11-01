@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest"
 import { z } from "zod"
 import { DEMO_REPORT } from "@/content/demo-report"
-import { externalIndex, level, mentionAgeWeight, promiseLoss, promiseStatus } from "@/lib/report/methodology"
+import { complementarySuppression, externalIndex, level, mentionAgeWeight, promiseLoss, promiseStatus, responseConfidence } from "@/lib/report/methodology"
 import { report, type ReportInput } from "./report"
 
 const clone = (): ReportInput => structuredClone(DEMO_REPORT)
@@ -40,6 +40,19 @@ describe("методика", () => {
     expect(index).toBe(80)
   })
 
+  it("защита от вычитания: скрываем ещё одну часть, если разность открывает группу меньше 5", () => {
+    // ИТ: 49 ответивших, «Аналитика данных» — 3 (скрыта), «Разработка» — 46: 49 − 46 = 3, разность открывает аналитику
+    expect([...complementarySuppression(49, [{ id: "data", respondents: 3 }, { id: "dev", respondents: 46 }])].sort()).toEqual(["data", "dev"])
+    // Три части: скрываем самую маленькую из видимых, остальные остаются
+    expect([...complementarySuppression(60, [{ id: "a", respondents: 2 }, { id: "b", respondents: 8 }, { id: "c", respondents: 50 }])].sort()).toEqual(["a", "b"])
+    // Разность 0 или от 5 — ничего лишнего не скрываем
+    expect([...complementarySuppression(30, [{ id: "a", respondents: 10 }, { id: "b", respondents: 20 }])]).toEqual([])
+  })
+
+  it("уверенность по доле ответивших", () => {
+    expect([responseConfidence(60, 100), responseConfidence(35, 100), responseConfidence(10, 100)]).toEqual(["high", "medium", "low"])
+  })
+
   it("зоны балла изнутри", () => {
     expect([level(65), level(64), level(50), level(49)]).toEqual(["ok", "warn", "warn", "bad"])
   })
@@ -68,10 +81,49 @@ describe("схема отчёта", () => {
     expect(issues(r).join()).toMatch(/сумма весов/)
   })
 
-  it("группа меньше 5 человек не может иметь балл", () => {
+  it("правило 5 человек по ответившим: в большом подразделении 3 ответа — без балла", () => {
     const r = clone()
-    r.internal!.slices!.push({ metric: "energy", unitId: "it", stage: "crisis", period: "30d", groupSize: 3, score: 41 })
-    expect(issues(r).join()).toMatch(/группа меньше 5 человек/)
+    r.internal!.slices!.push({ metric: "energy", unitId: "it", stage: "crisis", period: "90d", groupSize: 85, respondents: 3, score: 41 })
+    expect(issues(r).join()).toMatch(/ответили меньше 5 человек/)
+  })
+
+  it("ответивших больше численности — ошибка до публикации", () => {
+    const r = clone()
+    r.internal!.slices![0].respondents = 900
+    expect(issues(r).join()).toMatch(/ответивших больше численности/)
+  })
+
+  it("разность срезов подразделений не открывает группу из 1–4 человек", () => {
+    const r = clone()
+    // ИТ в волне 3: 49 ответивших; если «Продажи» и остальные видны, а у компании на 3 больше суммы — утечка
+    const company = r.internal!.slices!.find((s) => s.unitId === "company" && s.metric === "energy" && s.waveId === "wave-3")!
+    company.respondents = 450
+    expect(issues(r).join()).toMatch(/разность срезов подразделений открывает группу из 3 человек/)
+  })
+
+  it("разность срезов этапов не открывает группу из 1–4 человек", () => {
+    const r = clone()
+    r.internal!.slices!.push({ metric: "index", unitId: "it", stage: "work", period: "30d", waveId: "wave-3", groupSize: 60, respondents: 40, score: 55 })
+    // 49 − 6 (онбординг) − 40 (работа) = 3
+    expect(issues(r).join()).toMatch(/разность срезов этапов открывает группу из 3 человек/)
+  })
+
+  it("последняя волна совпадает с баллом метрики, волны — из списка замеров", () => {
+    const r = clone()
+    r.internal!.metrics[0].waves!.at(-1)!.score = 10
+    r.internal!.index.waves!.push({ waveId: "wave-9", score: 50 })
+    const text = issues(r).join()
+    expect(text).toMatch(/последняя волна 10, а балл 68/)
+    expect(text).toMatch(/нет волны wave-9/)
+  })
+
+  it("решения и шаги плана ссылаются только на существующие подразделения", () => {
+    const r = clone()
+    r.plan![0].unitId = "marketing"
+    r.internal!.decisions![0].unitId = "marketing"
+    const text = issues(r).join()
+    expect(text).toMatch(/plan\.0\.unitId: нет подразделения marketing/)
+    expect(text).toMatch(/decisions\.0\.unitId: нет подразделения marketing/)
   })
 
   it("перцентиль отрасли без 30 компаний в базе — ошибка", () => {
@@ -115,6 +167,7 @@ describe("схема отчёта", () => {
     r.kind = "external_scan"
     delete r.internal
     r.bridge = []
+    r.plan = r.plan!.filter((p) => !p.unitId)
     expect(issues(r)).toEqual([])
   })
 

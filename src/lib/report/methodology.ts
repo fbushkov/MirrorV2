@@ -68,3 +68,42 @@ export const average = (values: number[]) => values.reduce((s, v) => s + v, 0) /
 export function internalIndex(scores: number[]): number {
   return average(scores)
 }
+
+/* ── Приватность срезов изнутри (ADR-0010, раздел 6) ── */
+
+/**
+ * Правило 5 человек считается по ответившим, а не по численности: в подразделении из 85 человек
+ * трёх ответивших легко узнать. Срез показываем, только если ответили не меньше 5.
+ */
+export const sliceVisible = (respondents: number) => respondents >= MIN_GROUP
+
+/**
+ * Уверенность по доле ответивших: от 50% высокая, от 30% средняя, ниже — низкая.
+ * Пороги — предложение, утверждаются экспертом (на сайте: уверенность зависит от числа ответов и согласия источников).
+ */
+export const RESPONSE_HIGH_FROM = 0.5
+export const RESPONSE_MEDIUM_FROM = 0.3
+export function responseConfidence(respondents: number, groupSize: number): "high" | "medium" | "low" {
+  const rate = groupSize ? respondents / groupSize : 0
+  return rate >= RESPONSE_HIGH_FROM ? "high" : rate >= RESPONSE_MEDIUM_FROM ? "medium" : "low"
+}
+
+/** Остаток «целое минус видимые части»: 1–4 человека — это группа, которую можно вычислить разностью срезов */
+export function exposedRemainder(total: number, visibleParts: number[]): number | null {
+  const rest = total - visibleParts.reduce((s, v) => s + v, 0)
+  return rest > 0 && rest < MIN_GROUP ? rest : null
+}
+
+/**
+ * Защита от вычитания (дополнительное скрытие). Части с ответившими меньше 5 скрыты сразу.
+ * Если целое минус видимые части даёт 1–4 человека, скрываем ещё самую маленькую видимую часть и проверяем снова.
+ * Возвращает id частей, которые нужно скрыть. Части — дочерние подразделения или этапы жизненного цикла.
+ */
+export function complementarySuppression(total: number, parts: { id: string; respondents: number }[]): Set<string> {
+  const hidden = new Set(parts.filter((p) => !sliceVisible(p.respondents)).map((p) => p.id))
+  for (;;) {
+    const visible = parts.filter((p) => !hidden.has(p.id))
+    if (exposedRemainder(total, visible.map((p) => p.respondents)) === null || !visible.length) return hidden
+    hidden.add(visible.reduce((a, b) => (b.respondents < a.respondents ? b : a)).id)
+  }
+}

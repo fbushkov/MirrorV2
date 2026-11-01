@@ -207,6 +207,7 @@ body.cab .legend { margin-top: 12px; }
 .drop { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 32px; border: 1.5px dashed var(--c-line-hover); border-radius: var(--r-inner); text-align: center; color: var(--c-ink-2); font-size: var(--fs-sm); }
 .drop svg { width: 24px; height: 24px; color: var(--c-ink-4); }
 .filters--one { grid-template-columns: minmax(0, 1fr) minmax(0, 260px) !important; }
+.filters--two { grid-template-columns: minmax(0, 1fr) repeat(2, minmax(0, 220px)) !important; }
 .drop b { color: var(--c-ink); font-weight: 500; font-size: var(--fs-body); }
 
 /* Форма в карточке */
@@ -246,7 +247,7 @@ body.cab .legend { margin-top: 12px; }
   .grid2, .quotes, .vs { grid-template-columns: 1fr; }
 }
 @media (max-width: 767px) {
-  .filters--one { grid-template-columns: 1fr !important; padding: 16px; }
+  .filters--one, .filters--two { grid-template-columns: 1fr !important; padding: 16px; }
   .demo { position: static; }
   .demo__links { margin-left: 0; }
   .side { top: 0; height: 100vh; inset: 0 auto 0 0; }

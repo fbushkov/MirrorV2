@@ -15,6 +15,7 @@ import {
   METHODOLOGY_VERSION,
   MIN_GROUP,
   average,
+  exposedRemainder,
   externalIndex,
   level,
   promiseStatus,
@@ -181,10 +182,14 @@ export const unit = z.object({
   size: count,
 })
 
+/** Балл в каждой волне замера: так видна динамика кампании «волна 1 — волна 3». Последняя волна равна `score` */
+export const waveScores = z.array(z.object({ waveId: id, score })).default([])
+
 export const metricResult = z
   .object({
     id: metricId,
     score,
+    waves: waveScores,
     level: level$,
     /** Изменение за 30 дней, баллы */
     delta30: z.number(),
@@ -196,11 +201,14 @@ export const metricResult = z
   })
   .superRefine((m, ctx) => {
     if (m.level !== level(m.score)) ctx.addIssue({ code: "custom", path: ["level"], message: `зона по баллу: ${level(m.score)}` })
+    const last = m.waves.at(-1)
+    if (last && last.score !== m.score) ctx.addIssue({ code: "custom", path: ["waves"], message: `последняя волна ${last.score}, а балл ${m.score}` })
   })
 
 /**
- * Срез: метрика (или индекс) × подразделение × этап × период. Хранится только агрегат.
- * Группа меньше 5 человек — без балла; такая группа объединяется с уровнем выше (`mergedInto`).
+ * Срез: метрика (или индекс) × подразделение × этап × период × волна. Хранится только агрегат.
+ * Правило 5 человек — по ответившим (`respondents`), а не по численности (`groupSize`): меньше 5 ответивших — без балла,
+ * такая группа объединяется с уровнем выше (`mergedInto`). Разность срезов проверяется в `internal` (защита от вычитания).
  */
 export const slice = z
   .object({
@@ -208,13 +216,20 @@ export const slice = z
     unitId: id,
     stage: z.union([z.enum(LIFECYCLE_STAGES), z.literal("all")]).default("all"),
     period: z.enum(["30d", "90d", "12m"]),
+    /** Волна замера; без волны — последняя */
+    waveId: id.optional(),
+    /** Численность группы */
     groupSize: count,
+    /** Сколько ответили: по нему правило 5 человек */
+    respondents: count,
     score: score.nullable(),
     mergedInto: id.optional(),
   })
   .superRefine((s, ctx) => {
-    if (s.groupSize < MIN_GROUP && s.score !== null)
-      ctx.addIssue({ code: "custom", path: ["score"], message: `группа меньше ${MIN_GROUP} человек: балл не показываем` })
+    if (s.respondents > s.groupSize)
+      ctx.addIssue({ code: "custom", path: ["respondents"], message: "ответивших больше численности: проверить волну до публикации" })
+    if (s.respondents < MIN_GROUP && s.score !== null)
+      ctx.addIssue({ code: "custom", path: ["score"], message: `ответили меньше ${MIN_GROUP} человек: балл не показываем` })
   })
 
 export const codeNorm = z
@@ -250,6 +265,8 @@ export const decision = z.object({
   metric: metricId.optional(),
   change: z.number().optional(),
   status: z.enum(["planned", "in_progress", "done"]),
+  /** Подразделение решения; null — вся компания. Руководитель видит решения своей ветки */
+  unitId: id.nullable().default(null),
   /** Показывать на публичной странице для сотрудников */
   public: z.boolean(),
   month,
@@ -263,7 +280,7 @@ export const internal = z
     /** Задержка публикации данных, дней */
     delayDays: z.number().int().min(0),
     units: z.array(unit).min(1),
-    index: z.object({ value: score, level: level$, delta30: z.number(), series: series.optional() }),
+    index: z.object({ value: score, level: level$, delta30: z.number(), series: series.optional(), waves: waveScores }),
     metrics: z.array(metricResult).length(METRIC_IDS.length),
     slices: z.array(slice).default([]),
     code: z.array(codeNorm).default([]),
@@ -292,6 +309,33 @@ export const internal = z
     const unitIds = new Set(v.units.map((u) => u.id))
     v.slices.forEach((s, i) => {
       if (!unitIds.has(s.unitId)) ctx.addIssue({ code: "custom", path: ["slices", i, "unitId"], message: `нет подразделения ${s.unitId}` })
+    })
+    v.decisions.forEach((d, i) => {
+      if (d.unitId && !unitIds.has(d.unitId)) ctx.addIssue({ code: "custom", path: ["decisions", i, "unitId"], message: `нет подразделения ${d.unitId}` })
+    })
+    // Волны: только из списка замеров, индекс волны — среднее метрик этой волны
+    const waveIds = new Set(v.waves.map((w) => w.id))
+    const lastWave = v.waves.at(-1)!.id
+    ;[...v.metrics.flatMap((m) => m.waves), ...v.index.waves, ...v.slices.filter((s) => s.waveId)].forEach((w) => {
+      if (!waveIds.has(w.waveId!)) ctx.addIssue({ code: "custom", path: ["waves"], message: `нет волны ${w.waveId}` })
+    })
+    v.index.waves.forEach((w, i) => {
+      const scores = v.metrics.map((m) => m.waves.find((x) => x.waveId === w.waveId)?.score).filter((x) => x !== undefined)
+      if (scores.length === METRIC_IDS.length && Math.abs(average(scores) - w.score) > 1)
+        ctx.addIssue({ code: "custom", path: ["index", "waves", i], message: `индекс волны по метрикам ${average(scores).toFixed(1)}` })
+    })
+    // Защита от вычитания: целое минус видимые части не должно давать группу из 1–4 ответивших
+    const key = (s: { metric: string; stage: string; period: string; waveId?: string }) => [s.metric, s.stage, s.period, s.waveId ?? lastWave].join("|")
+    const byUnit = new Map(v.slices.map((s) => [key(s) + "|" + s.unitId, s]))
+    v.slices.forEach((parent, i) => {
+      const children = v.units.filter((u) => u.parentId === parent.unitId).map((u) => byUnit.get(key(parent) + "|" + u.id)).filter((x) => x !== undefined)
+      const stages = parent.stage === "all" ? v.slices.filter((s) => s.unitId === parent.unitId && s.stage !== "all" && s.metric === parent.metric && s.period === parent.period && (s.waveId ?? lastWave) === (parent.waveId ?? lastWave)) : []
+      for (const [parts, what] of [[children, "подразделений"], [stages, "этапов"]] as const) {
+        if (!parts.length) continue
+        const rest = exposedRemainder(parent.respondents, parts.filter((s) => s.score !== null).map((s) => s.respondents))
+        if (rest !== null)
+          ctx.addIssue({ code: "custom", path: ["slices", i], message: `разность срезов ${what} открывает группу из ${rest} человек: скрыть ещё один срез` })
+      }
     })
   })
 
@@ -323,6 +367,8 @@ export const planStep = z.object({
   impact: z.enum(["low", "medium", "high"]).optional(),
   effort: z.enum(["low", "medium", "high"]).optional(),
   kpi: text.optional(),
+  /** Подразделение шага; null — вся компания. Руководитель отмечает шаги своей ветки */
+  unitId: id.nullable().default(null),
   status: z.enum(["proposed", "in_progress", "done", "dropped"]).default("proposed"),
 })
 
@@ -395,6 +441,10 @@ export const report = z
     if (r.bridge.length && !(r.external && r.internal))
       ctx.addIssue({ code: "custom", path: ["bridge"], message: "сверка снаружи и изнутри нужна только при обоих блоках" })
     if (r.period.from > r.period.to) ctx.addIssue({ code: "custom", path: ["period"], message: "начало периода позже конца" })
+    const units = new Set(r.internal?.units.map((u) => u.id))
+    r.plan.forEach((p, i) => {
+      if (p.unitId && !units.has(p.unitId)) ctx.addIssue({ code: "custom", path: ["plan", i, "unitId"], message: `нет подразделения ${p.unitId}` })
+    })
     const promiseIds = new Set(r.external?.promises.map((p) => p.id))
     r.bridge.forEach((b, i) => {
       if (b.external.type === "promise" && !promiseIds.has(b.external.promiseId))

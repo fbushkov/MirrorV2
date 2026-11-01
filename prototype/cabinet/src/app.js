@@ -9,7 +9,7 @@ const store = {
   get(k, d) { try { return localStorage.getItem("cab-" + k) ?? d; } catch { return d; } },
   set(k, v) { try { localStorage.setItem("cab-" + k, v); } catch { /* без хранилища — только в памяти */ } },
 };
-const state = { role: store.get("role", "owner"), service: store.get("service", "campaign"), unit: null, adding: false };
+const state = { role: store.get("role", "owner"), service: store.get("service", "campaign"), unit: null, wave: null, adding: false };
 const live = {
   decisions: INT.decisions.map((d) => ({ ...d })),
   plan: REPORT.plan.map((p) => ({ ...p })),
@@ -108,12 +108,24 @@ function visibleUnits() {
 }
 const waves = () => (state.service === "campaign" ? INT.waves : INT.waves.slice(0, 1));
 
-/* ── Срезы ── */
-const slice = (metric, unit) => INT.slices.find((s) => s.metric === metric && s.unitId === unit && s.stage === "all" && s.period === "30d");
-function unitMetrics(unit) {
-  return INT.metrics.map((m) => ({ ...m, score: unit === "company" ? m.score : slice(m.id, unit)?.score ?? m.score }));
+/* ── Срезы: подразделение × волна. Правило 5 человек — по ответившим (respondents) ── */
+const LAST_WAVE = INT.waves[INT.waves.length - 1].id;
+/** Волна на экране: в кампании выбирается, в диагностике — единственный замер */
+function currentWave() {
+  const w = waves();
+  if (!w.some((x) => x.id === state.wave)) state.wave = w[w.length - 1].id;
+  return state.wave;
 }
-const unitIndex = (unit) => avg(unitMetrics(unit).map((m) => m.score));
+const slice = (metric, unit, wave = currentWave()) => INT.slices.find((s) => s.metric === metric && s.unitId === unit && s.stage === "all" && s.period === "30d" && (s.waveId ?? LAST_WAVE) === wave);
+const waveName = (id) => INT.waves.find((w) => w.id === id).label;
+/** Уверенность по доле ответивших — как responseConfidence() в src/lib/report/methodology.ts */
+const responseConf = (r, n) => (r / n >= 0.5 ? "high" : r / n >= 0.3 ? "medium" : "low");
+function unitMetrics(unit, wave = currentWave()) {
+  return INT.metrics.map((m) => ({ ...m, score: slice(m.id, unit, wave)?.score ?? m.waves.find((x) => x.waveId === wave)?.score ?? m.score }));
+}
+const unitIndex = (unit, wave) => avg(unitMetrics(unit, wave).map((m) => m.score));
+/** Подразделение шага или решения видно роли: руководителю — своя ветка и общие, остальным — всё */
+const ownUnit = (unitId) => state.role !== "manager" || unitId === ROLES.manager.unit;
 function unitNorms(unit) {
   const ms = Object.fromEntries(unitMetrics(unit).map((m) => [m.id, m.score]));
   return INT.code.map((n) => { const s = avg(n.metrics.map((id) => ms[id])); return { ...n, score: s, level: LEVEL(s) }; });
@@ -202,19 +214,19 @@ PAGES.overview = () => {
     parts.push(panel("Главное из последнего отчёта", `<div class="summary">${REPORT.summary.map((f) => `<div><span class="summary__tag">${tags[f.kind]}</span><p>${f.text}</p></div>`).join("")}</div>`));
   }
   const meetings = MEETINGS.filter((m) => m.campaign === (state.service === "campaign"));
-  const steps = live.plan.filter((p) => p.status !== "done").slice(0, 2);
+  const steps = live.plan.filter((p) => p.status !== "done" && (state.role === "manager" ? p.unitId === ROLES.manager.unit : true)).slice(0, 2);
   parts.push(panel("Ближайшее", `<ul class="rows">${meetings.map((m) => `<li><div class="rows__main"><b>${m.title}</b><span class="rows__sub">${m.who}</span></div><span class="rows__meta">${m.date}</span></li>`).join("")}${steps.map((p) => `<li><div class="rows__main"><b>${p.title}</b><span class="rows__sub">Шаг плана · ${p.ownerRole}</span></div><span class="rows__meta">срок ${p.due}</span></li>`).join("")}</ul>`));
   return parts.join("");
 };
 
 PAGES.internal = () => {
   const unit = currentUnit(), units = visibleUnits();
-  const metrics = unitMetrics(unit), idx = unitIndex(unit), norms = unitNorms(unit), off = idx - INT.index.value;
-  const size = INT.units.find((u) => u.id === unit).size;
+  const wave = currentWave(), metrics = unitMetrics(unit), idx = unitIndex(unit), norms = unitNorms(unit), off = unitIndex(unit, LAST_WAVE) - INT.index.value;
+  const size = INT.units.find((u) => u.id === unit).size, resp = slice("index", unit)?.respondents ?? size;
   const w = waves(), last = w[w.length - 1];
   const parts = [`<div class="is-health">`, pageHead("Изнутри: здоровье культуры", `${state.service === "campaign" ? "Кампания, три замера" : "Диагностика, один замер"}. Последний: ${last.label.toLowerCase()}, данные опубликованы с задержкой ${INT.delayDays} дней.`)];
-  parts.push(`<div class="filters filters--one"><div><p class="filters__title">Срез</p><p class="filters__cap">${state.role === "manager" ? "Вы видите свою ветку подразделений. Группы меньше 5 человек объединены с уровнем выше." : state.role === "executive" ? "Компания и первый уровень подразделений." : "Все подразделения. Группы меньше 5 человек объединены с уровнем выше."}</p></div><label class="field"><span class="sr-only">Подразделение</span><select class="select" id="f-unit">${units.map((u) => `<option value="${u.id}" ${u.id === unit ? "selected" : ""}>${u.name}</option>`).join("")}</select></label></div>`);
-  parts.push(`<div class="kpis">${kpi("Индекс культуры изнутри", `${idx}<small> /100</small>`, `${badge(LEVEL(idx), LEVEL_WORD[LEVEL(idx)])} среднее по 10 метрикам`)}${kpi("Разрыв с кодом", `${norms.filter((n) => n.level === "bad").length}<small> из ${norms.length}</small>`, "норм расходятся с опытом людей")}${kpi("Тренд за 30 дней", `${sign(INT.index.delta30)}`, "баллов индекса")}${kpi("Группа в срезе", `${size}`, "человек")}</div>`);
+  parts.push(`<div class="filters ${w.length > 1 ? "filters--two" : "filters--one"}"><div><p class="filters__title">Срез</p><p class="filters__cap">${state.role === "manager" ? "Вы видите свою ветку подразделений. Группы меньше 5 человек объединены с уровнем выше." : state.role === "executive" ? "Компания и первый уровень подразделений." : "Все подразделения. Группы меньше 5 человек объединены с уровнем выше."}</p></div><label class="field"><span class="sr-only">Подразделение</span><select class="select" id="f-unit">${units.map((u) => `<option value="${u.id}" ${u.id === unit ? "selected" : ""}>${u.name}</option>`).join("")}</select></label>${w.length > 1 ? `<label class="field"><span class="sr-only">Волна</span><select class="select" id="f-wave">${w.map((x) => `<option value="${x.id}" ${x.id === wave ? "selected" : ""}>${x.label}</option>`).join("")}</select></label>` : ""}</div>`);
+  parts.push(`<div class="kpis">${kpi("Индекс культуры изнутри", `${idx}<small> /100</small>`, `${badge(LEVEL(idx), LEVEL_WORD[LEVEL(idx)])} среднее по 10 метрикам`)}${kpi("Разрыв с кодом", `${norms.filter((n) => n.level === "bad").length}<small> из ${norms.length}</small>`, "норм расходятся с опытом людей")}${kpi("Тренд за 30 дней", `${sign(INT.index.delta30)}`, "баллов индекса")}${kpi("Ответили в срезе", `${resp}<small> из ${size}</small>`, `уверенность данных ${CONF[responseConf(resp, size)]} · ${waveName(wave).toLowerCase()}`)}</div>`);
   chart("ch-index", lineOption(INT.index.series.points.map((p) => ({ ...p, value: p.value + off })), CH.teal, { events: INT.index.series.events }));
   parts.push(panel("Динамика индекса", `<div class="chart" id="ch-index" role="img" aria-label="Индекс по месяцам"></div><ul class="legend"><li><i class="legend__line"></i>Индекс · ${unitName(unit)}</li><li><i class="legend__line legend__line--dash"></i>Событие</li></ul>`, "За 12 месяцев. Пунктиром отмечены события, которые могли повлиять на индекс."));
   const groups = Object.entries(METRIC_GROUPS).map(([g, name]) => `<div class="mgroup"><p class="mgroup__name">${name}</p>${metrics.filter((m) => METRIC_DEFS[m.id].group === g).map((m) => {
@@ -222,14 +234,20 @@ PAGES.internal = () => {
     return `<a class="mtile" href="#metric-${m.id}"><span class="mtile__head"><span class="mtile__ico">${metricIco(m.id)}</span><span class="mtile__name">${METRIC_DEFS[m.id].name}</span></span><span class="mtile__body"><span class="mtile__num">${m.score}</span>${sparkline(m.series.points.map((p) => p.value + (m.score - INT.metrics.find((x) => x.id === m.id).score)))}</span><span class="mtile__foot">${badge(l, `${LEVEL_WORD[l]} · ${sign(m.delta30)}`)}</span></a>`;
   }).join("")}</div>`).join("");
   parts.push(panel("10 метрик", `<div class="mgroups">${groups}</div>`, "В норме от 65, внимание от 50 до 64, риск ниже 50. Откройте метрику, чтобы увидеть срезы, причины и источники.", "panel--well"));
+  if (w.length > 1) {
+    const ws = w.map((x) => unitMetrics(unit, x.id));
+    const rows = INT.metrics.map((m, i) => { const first = ws[0][i].score, lastS = ws[ws.length - 1][i].score; return `<tr><th>${METRIC_DEFS[m.id].name}</th>${ws.map((x) => `<td class="num">${x[i].score}</td>`).join("")}<td>${delta(lastS - first)}</td><td>${status(LEVEL(lastS), LEVEL_WORD[LEVEL(lastS)])}</td></tr>`; }).join("");
+    const idxs = w.map((x) => unitIndex(unit, x.id));
+    parts.push(panel("Волны кампании", `<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Метрика</th>${w.map((x) => `<th class="num">${x.label}</th>`).join("")}<th>Изменение</th><th>Сейчас</th></tr></thead><tbody>${rows}<tr><th>Индекс</th>${idxs.map((v) => `<td class="num"><b>${v}</b></td>`).join("")}<td>${delta(idxs[idxs.length - 1] - idxs[0])}</td><td>${status(LEVEL(idxs[idxs.length - 1]), LEVEL_WORD[LEVEL(idxs[idxs.length - 1])])}</td></tr></tbody></table></div>`, `${unitName(unit)}. Главный результат кампании: что изменилось от первого замера к последнему.`));
+  }
   const cols = units;
-  const heat = `<div class="tbl-wrap"><table class="tbl heat"><thead><tr><th>Метрика</th>${cols.map((u) => `<th>${u.name}</th>`).join("")}</tr></thead><tbody>${INT.metrics.map((m) => `<tr><th>${METRIC_DEFS[m.id].name}</th>${cols.map((u) => { const s = u.id === "company" ? m.score : slice(m.id, u.id)?.score; return `<td><span class="heat__cell heat__cell--${s == null ? "na" : LEVEL(s)}">${s ?? "<5"}</span></td>`; }).join("")}</tr>`).join("")}</tbody></table></div>`;
-  parts.push(panel("Где просаживается", heat, state.role === "manager" ? "Только ваша ветка. Подгруппы «Розница» и «Корпоративные клиенты» появятся отдельно, когда в каждой будет срез от 5 человек." : "Балл метрик по подразделениям. «<5» значит, что в группе меньше пяти человек и данные не показываем."));
+  const heat = `<div class="tbl-wrap"><table class="tbl heat"><thead><tr><th>Метрика</th>${cols.map((u) => `<th>${u.name}</th>`).join("")}</tr></thead><tbody>${INT.metrics.map((m) => `<tr><th>${METRIC_DEFS[m.id].name}</th>${cols.map((u) => { const s = slice(m.id, u.id)?.score; return `<td><span class="heat__cell heat__cell--${s == null ? "na" : LEVEL(s)}">${s ?? "<5"}</span></td>`; }).join("")}</tr>`).join("")}</tbody></table></div>`;
+  parts.push(panel("Где просаживается", heat, state.role === "manager" ? "Только ваша ветка. Подгруппы «Розница» и «Корпоративные клиенты» появятся отдельно, когда в каждой будет срез от 5 человек." : `Балл метрик по подразделениям, ${waveName(wave).toLowerCase()}. «<5» значит, что ответили меньше пяти человек и данные не показываем.`));
   parts.push(panel("Культурный код", `<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Норма из кода</th><th>Связанные метрики</th><th class="num">Балл</th><th>Разрыв</th></tr></thead><tbody>${norms.map((n) => `<tr><th>«${n.title}»</th><td>${n.metrics.map((id) => METRIC_DEFS[id].name).join(", ")}</td><td class="num">${n.score}</td><td>${status(n.level, GAP_WORD[n.level])}</td></tr>`).join("")}</tbody></table></div>`, "Балл нормы — среднее по её метрикам. Ниже 50 — разрыв, от 50 до 64 — частичный."));
   if (seesSignals()) {
     parts.push(`<div class="grid2">${panel("Расхождения", `<ul class="rows">${INT.discrepancies.map((d) => `<li><div class="rows__main"><b>${d.text}</b><span class="rows__sub">${d.hint}</span></div></li>`).join("")}</ul>`, "Где разные каналы говорят разное")}${panel("Лента сигналов", `<ul class="rows">${INT.signals.slice(0, 4).map((s) => `<li><div class="rows__main"><b>«${s.text}»</b><span class="rows__sub">${badge(TONE[s.tone][0], TONE[s.tone][1])} ${METRIC_DEFS[s.metric].name} · ${s.source}</span></div></li>`).join("")}</ul>`, "Цитаты обезличены, проверены на узнаваемые детали и не привязаны к подразделениям")}</div>`);
   }
-  parts.push(note("Группы меньше 5 человек не показываем ни одной роли. Сочетания срезов, из которых можно вычислить группу меньше 5, сервер тоже не отдаёт. Пример: ИТ на этапе «Уход» — 2 человека, данные объединены с уровнем выше.", true));
+  parts.push(note("Группы меньше 5 человек не показываем ни одной роли. Сочетания срезов, из которых можно вычислить группу меньше 5, сервер тоже не отдаёт. Правило считается по ответившим, а не по численности. Пример: в ИТ на этапе «Уход» ответили 2 человека, данные объединены с уровнем выше.", true));
   parts.push(`</div>`);
   return parts.join("");
 };
@@ -238,14 +256,14 @@ PAGES.metric = (id) => {
   const def = METRIC_DEFS[id], m = INT.metrics.find((x) => x.id === id);
   if (!def) return noAccess("Метрика");
   const unit = currentUnit(), units = visibleUnits();
-  const score = unit === "company" ? m.score : slice(id, unit)?.score ?? m.score, l = LEVEL(score), off = score - m.score;
+  const score = slice(id, unit)?.score ?? m.score, l = LEVEL(score), off = (slice(id, unit, LAST_WAVE)?.score ?? m.score) - m.score;
   chart("ch-metric", lineOption(m.series.points.map((p) => ({ ...p, value: p.value + off })), CH.teal, { name: def.name }));
   const byUnits = units.filter((u) => u.id !== "company").map((u) => { const s = slice(id, u.id)?.score; return `<li class="barline"><div><div style="display:flex;justify-content:space-between;margin-bottom:6px"><span>${u.name}</span><span class="num">${s ?? "<5"}</span></div><div class="bar bar--${s == null ? "" : LEVEL(s) === "ok" ? "ok" : LEVEL(s) === "bad" ? "bad" : "teal"}"><i style="width:${s ?? 0}%"></i></div></div><span class="num">${s == null ? "" : LEVEL_WORD[LEVEL(s)]}</span></li>`; }).join("");
   const signals = seesSignals() ? INT.signals.filter((s) => s.metric === id) : [];
   return `<div class="is-health"><p class="crumbs-sm"><a href="#internal">Изнутри</a> · ${METRIC_GROUPS[def.group]}</p>${pageHead(def.name, def.detail)}
-    <div class="kpis">${kpi(`Балл · ${unitName(unit)}`, `${score}<small> /100</small>`, badge(l, LEVEL_WORD[l]))}${kpi("За 30 дней", sign(m.delta30), "баллов")}${kpi("Уверенность данных", `<span style="font-size:24px">${CONF[m.confidence]}</span>`, "по числу ответов и согласию источников")}${kpi("Зона", `<span style="font-size:24px">${LEVEL_WORD[l]}</span>`, "в норме от 65, риск ниже 50")}</div>
+    <div class="kpis">${kpi(`Балл · ${unitName(unit)}`, `${score}<small> /100</small>`, badge(l, LEVEL_WORD[l]))}${kpi("За 30 дней", sign(m.delta30), "баллов")}${kpi("Уверенность данных", `<span style="font-size:24px">${CONF[m.confidence]}</span>`, "по числу ответов и согласию источников")}${waves().length > 1 ? kpi("По волнам", `<span style="font-size:24px">${waves().map((x) => slice(id, unit, x.id)?.score ?? "—").join(" · ")}</span>`, waves().map((x) => x.label.split(" ")[0].toLowerCase()).join(" · ")) : kpi("Зона", `<span style="font-size:24px">${LEVEL_WORD[l]}</span>`, "в норме от 65, риск ниже 50")}</div>
     ${panel("Динамика за 12 месяцев", `<div class="chart" id="ch-metric" role="img" aria-label="${def.name} по месяцам"></div>`)}
-    <div class="grid2">${byUnits ? panel("По подразделениям", `<ul class="tree" style="gap:16px;background:none">${byUnits}</ul>`, "Срез за 30 дней") : ""}
+    <div class="grid2">${byUnits ? panel("По подразделениям", `<ul class="tree" style="gap:16px;background:none">${byUnits}</ul>`, `Срез за 30 дней, ${waveName(currentWave()).toLowerCase()}`) : ""}
     ${panel("Что влияет", `<ul class="rows">${m.drivers.map((d) => `<li><div class="rows__main"><b>${d.text}</b></div>${badge(EVIDENCE[d.evidence][0], EVIDENCE[d.evidence][1])}</li>`).join("")}</ul>`, "У каждой причины указан уровень доказанности")}</div>
     ${panel("Откуда данные", `<ul class="rows"><li><div class="rows__main"><b>Опросы</b><span class="rows__sub">${def.sources.o}</span></div><span class="rows__meta">балл</span></li><li><div class="rows__main"><b>Тексты</b><span class="rows__sub">${def.sources.t}</span></div><span class="rows__meta">балл</span></li><li><div class="rows__main"><b>Поведение и HR-события</b><span class="rows__sub">${def.sources.p}</span></div><span class="rows__meta">подтверждают</span></li></ul>`, "Баллом становятся только опросы и тексты")}
     ${signals.length ? panel("Сигналы по метрике", `<ul class="quotes">${signals.map((s) => `<li><p>«${s.text}»</p><span class="quotes__meta">${badge(TONE[s.tone][0], TONE[s.tone][1])}${s.source}</span></li>`).join("")}</ul>`) : ""}</div>`;
@@ -277,10 +295,10 @@ PAGES.bridge = () => {
 };
 
 PAGES.decisions = () => {
-  const list = state.role === "viewer" ? live.decisions.filter((d) => d.public) : live.decisions;
-  const form = state.adding ? panel("Новое решение", `<form id="dec-form" class="form-row" style="grid-template-columns:1fr 1fr"><label class="field"><span class="label">Тема сигнала</span><input class="input" name="topic" required placeholder="Например, переработки в продажах"></label><label class="field"><span class="label">Связанная метрика</span><select class="select" name="metric">${INT.metrics.map((m) => `<option value="${m.id}">${METRIC_DEFS[m.id].name}</option>`).join("")}</select></label><label class="field" style="grid-column:1/-1"><span class="label">Что решили</span><input class="input" name="decision" required placeholder="Что меняем и к какому сроку"></label><div style="display:flex;gap:12px"><button class="btn btn--primary btn--sm" type="submit">Сохранить</button><button class="btn btn--ghost btn--sm" type="button" data-act="cancel">Отмена</button></div></form>`) : "";
+  const list = (state.role === "viewer" ? live.decisions.filter((d) => d.public) : live.decisions).filter((d) => d.unitId === null || ownUnit(d.unitId));
+  const form = state.adding ? panel("Новое решение", `<form id="dec-form" class="form-row" style="grid-template-columns:1fr 1fr"><label class="field"><span class="label">Тема сигнала</span><input class="input" name="topic" required placeholder="Например, переработки в продажах"></label><label class="field"><span class="label">Подразделение</span><select class="select" name="unit"><option value="">Вся компания</option>${INT.units.filter((u) => u.id !== "company").map((u) => `<option value="${u.id}">${u.name}</option>`).join("")}</select></label><label class="field"><span class="label">Связанная метрика</span><select class="select" name="metric">${INT.metrics.map((m) => `<option value="${m.id}">${METRIC_DEFS[m.id].name}</option>`).join("")}</select></label><label class="field" style="grid-column:1/-1"><span class="label">Что решили</span><input class="input" name="decision" required placeholder="Что меняем и к какому сроку"></label><div style="display:flex;gap:12px"><button class="btn btn--primary btn--sm" type="submit">Сохранить</button><button class="btn btn--ghost btn--sm" type="button" data-act="cancel">Отмена</button></div></form>`) : "";
   return pageHead("Решения по обратной связи", "Что услышали, что решили и что изменилось. Опубликованные решения видят сотрудники на открытой странице компании.", (edits() ? `<button class="btn btn--primary btn--sm" data-act="add">${ico("plus")}Новое решение</button>` : "") + `<a class="btn btn--ghost btn--sm" href="#public">${ico("external")}Страница для сотрудников</a>`)
-    + form + `<section class="panel panel--well"><ul class="items">${list.map((d) => `<li class="item"><div class="item__head"><h3 class="item__title">${d.topic}</h3>${badge(DECISION[d.status][0], DECISION[d.status][1])}</div><dl class="item__grid"><div><dt>Решение</dt><dd>${d.decision}</dd></div><div><dt>Что изменилось</dt><dd>${d.outcome ?? "Пока рано судить"}</dd></div><div><dt>Метрика</dt><dd>${d.metric ? METRIC_DEFS[d.metric].name : "—"}</dd></div></dl><div class="item__foot"><label class="switch"><input type="checkbox" data-pub="${d.id}" ${d.public ? "checked" : ""} ${edits() ? "" : "disabled"}>Показывать сотрудникам</label><span class="rows__meta">${mon(d.month)} 2026</span></div></li>`).join("")}</ul></section>`
+    + form + `<section class="panel panel--well"><ul class="items">${list.map((d) => `<li class="item"><div class="item__head"><h3 class="item__title">${d.topic}</h3><span class="badges">${badge("soft", d.unitId ? unitName(d.unitId) : "Вся компания")}${badge(DECISION[d.status][0], DECISION[d.status][1])}</span></div><dl class="item__grid"><div><dt>Решение</dt><dd>${d.decision}</dd></div><div><dt>Что изменилось</dt><dd>${d.outcome ?? "Пока рано судить"}</dd></div><div><dt>Метрика</dt><dd>${d.metric ? METRIC_DEFS[d.metric].name : "—"}</dd></div></dl><div class="item__foot"><label class="switch"><input type="checkbox" data-pub="${d.id}" ${d.public ? "checked" : ""} ${edits() ? "" : "disabled"}>Показывать сотрудникам</label><span class="rows__meta">${mon(d.month)} 2026</span></div></li>`).join("")}</ul></section>`
     + note("Перед публикацией текст решения проверяется на узнаваемые детали, как цитаты. На открытой странице нет цифр по группам меньше 5 человек.", true);
 };
 
@@ -305,11 +323,16 @@ PAGES.data = () => {
 };
 
 PAGES.plan = () => {
-  const editable = edits();
-  const steps = `<ul class="items">${live.plan.map((p) => `<li class="item"><div class="item__head"><h3 class="item__title">${p.title}</h3>${badge(p.status === "done" ? "ok" : p.status === "in_progress" ? "warn" : "na", STEP[p.status])}</div><p class="rows__sub">${p.why}</p><dl class="item__grid"><div><dt>Ответственный</dt><dd>${p.ownerRole}</dd></div><div><dt>Срок</dt><dd>${p.due} · ${HORIZON[p.horizon]}</dd></div><div><dt>Показатель</dt><dd>${p.kpi ?? "—"}</dd></div></dl>${editable ? `<div class="item__foot"><span class="rows__sub">Отметка видна эксперту</span><select class="select" data-step="${p.id}">${Object.entries(STEP).map(([k, v]) => `<option value="${k}" ${k === p.status ? "selected" : ""}>${v}</option>`).join("")}</select></div>` : ""}</li>`).join("")}</ul>`;
+  /* Шаг меняет HR-директор и HRBP; руководитель — шаги своего подразделения. Общие шаги руководитель только видит */
+  const editable = (p) => edits() || (state.role === "manager" && p.unitId === ROLES.manager.unit);
+  const card = (p) => `<li class="item"><div class="item__head"><h3 class="item__title">${p.title}</h3><span class="badges">${badge("soft", p.unitId ? unitName(p.unitId) : "Вся компания")}${badge(p.status === "done" ? "ok" : p.status === "in_progress" ? "warn" : "na", STEP[p.status])}</span></div><p class="rows__sub">${p.why}</p><dl class="item__grid"><div><dt>Ответственный</dt><dd>${p.ownerRole}</dd></div><div><dt>Срок</dt><dd>${p.due} · ${HORIZON[p.horizon]}</dd></div><div><dt>Показатель</dt><dd>${p.kpi ?? "—"}</dd></div></dl>${editable(p) ? `<div class="item__foot"><span class="rows__sub">Отметка видна эксперту</span><select class="select" data-step="${p.id}" aria-label="Статус шага">${Object.entries(STEP).map(([k, v]) => `<option value="${k}" ${k === p.status ? "selected" : ""}>${v}</option>`).join("")}</select></div>` : ""}</li>`;
+  const mine = state.role === "manager" ? live.plan.filter((p) => p.unitId === ROLES.manager.unit) : [];
+  const rest = state.role === "manager" ? live.plan.filter((p) => p.unitId === null) : live.plan;
+  const steps = (mine.length ? `<h3 class="mgroup__name" style="margin-bottom:8px">Шаги вашего подразделения</h3><ul class="items">${mine.map(card).join("")}</ul><h3 class="mgroup__name" style="margin:20px 0 8px">Общие шаги компании</h3>` : "") + `<ul class="items">${rest.map(card).join("")}</ul>`;
+  const hint = state.role === "manager" ? "Шаги своего подразделения отмечаете вы, общие — HR-директор и HRBP." : edits() ? "Отмечайте статус, эксперт видит изменения." : "Статус отмечают HR-директор, HRBP и руководители своих шагов.";
   const meetings = MEETINGS.filter((m) => m.campaign === (state.service === "campaign"));
   return pageHead("План и встречи", state.service === "campaign" ? "План и сопровождение изменений. Встречи с руководителями раз в 2 недели." : "План на 90 дней по итогам диагностики.")
-    + `<section class="panel panel--well"><div class="panel__head"><h2 class="panel__title">Шаги</h2><p class="panel__hint">Из отчётов эксперта. ${editable ? "Отмечайте статус, эксперт видит изменения." : "Статус отмечают HR-директор и HRBP."}</p></div>${steps}</section>`
+    + `<section class="panel panel--well"><div class="panel__head"><h2 class="panel__title">Шаги</h2><p class="panel__hint">Из отчётов эксперта. ${hint}</p></div>${steps}</section>`
     + `<div class="grid2">${panel("Ближайшие встречи", `<ul class="rows">${meetings.map((m) => `<li><div class="rows__main"><b>${m.title}</b><span class="rows__sub">${m.who}</span></div><span class="rows__meta">${m.date}</span></li>`).join("")}</ul>`)}${panel("Прошедшие встречи", `<ul class="rows">${MEETINGS_PAST.map((m) => `<li><div class="rows__main"><b>${m.title}</b><span class="rows__sub">${m.result}</span></div><span class="rows__meta">${m.date}</span></li>`).join("")}</ul>`)}</div>`;
 };
 
@@ -414,6 +437,7 @@ document.addEventListener("click", (e) => {
 document.addEventListener("change", (e) => {
   const t = e.target;
   if (t.id === "f-unit") { state.unit = t.value; render(); }
+  if (t.id === "f-wave") { state.wave = t.value; render(); }
   if (t.dataset.pub) { const d = live.decisions.find((x) => x.id === t.dataset.pub); d.public = t.checked; toast(t.checked ? "Решение опубликовано для сотрудников" : "Решение скрыто со страницы для сотрудников"); }
   if (t.dataset.step) { live.plan.find((x) => x.id === t.dataset.step).status = t.value; toast("Статус шага сохранён"); render(); }
   if (t.dataset.notify) { live.notify[t.dataset.notify] = t.checked; toast("Настройка сохранена"); }
@@ -422,7 +446,7 @@ document.addEventListener("submit", (e) => {
   e.preventDefault();
   const f = e.target, data = Object.fromEntries(new FormData(f));
   if (f.id === "login-form") { state.login = 1; render(); }
-  if (f.id === "dec-form") { live.decisions.unshift({ id: "new-" + Date.now(), topic: data.topic, decision: data.decision, metric: data.metric, status: "planned", public: false, month: "2026-11" }); state.adding = false; render(); toast("Решение добавлено. Опубликуйте его, когда будет готово"); }
+  if (f.id === "dec-form") { live.decisions.unshift({ id: "new-" + Date.now(), unitId: data.unit || null, topic: data.topic, decision: data.decision, metric: data.metric, status: "planned", public: false, month: "2026-11" }); state.adding = false; render(); toast("Решение добавлено. Опубликуйте его, когда будет готово"); }
   if (f.id === "inv-form") { live.team.push({ person: data.email, email: data.email, role: data.role, unit: data.unit || null, last: "приглашение отправлено" }); render(); toast("Приглашение отправлено"); }
 });
 addEventListener("hashchange", () => { state.adding = false; render(); });
