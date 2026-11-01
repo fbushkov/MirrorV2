@@ -30,6 +30,7 @@ Mirror — сервис диагностики HR-бренда и независ
 - `docs/architecture/site.md` — **архитектура сайта и платформы**: этапы (сайт → заявки → админка → кабинет), зоны маршрутов, слои, данные, доступы.
 - `docs/adr/` — архитектурные решения (ADR). Новое решение с последствиями — новый ADR, через `mirror-architect`.
 - `docs/product/report-data.md` — **отчёт как данные** (ADR-0009): схема `src/lib/schemas/report.ts`, методика в коде `src/lib/report/methodology.ts`, образец `src/content/demo-report.ts`. Новые показатели отчёта — сначала в схему и тест.
+- `docs/product/cabinet.md` — **проект личного кабинета**: роли, разделы, доступ по ролям и услугам, сотрудники без входа, сценарии, данные, первая версия.
 - `docs/architecture/agents.md` — архитектура будущих агентов внутри продукта (не путать с агентами разработки ниже).
 - `prototype/home` — **источник дизайна и разметки всех страниц сайта** (ADR-0008) и дизайн-система (`design-system.html`). Правка вида или текста: правим прототип, затем `python3 prototype/home/build.py && python3 prototype/home/build.py --next` и коммитим выгрузку (`src/site`, `public/site`, `prototype/home/dist`).
 
