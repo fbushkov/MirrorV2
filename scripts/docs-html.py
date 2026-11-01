@@ -5,6 +5,7 @@
 
   docs/product/business-rules.md → docs/html/business-logic.html  «Бизнес-логика Mirror»
   docs/product/admin.md          → docs/html/admin.html           «Админка Mirror»
+  docs/backlog.md                → docs/html/backlog.html         «Бэклог Mirror»
 
 HTML руками не правим: правка — в Markdown, потом пересборка.
 """
@@ -15,6 +16,7 @@ root = pathlib.Path(__file__).resolve().parent.parent
 DOCS = [
     ("docs/product/business-rules.md", "docs/html/business-logic.html", "Бизнес-логика Mirror"),
     ("docs/product/admin.md", "docs/html/admin.html", "Админка Mirror"),
+    ("docs/backlog.md", "docs/html/backlog.html", "Бэклог Mirror"),
 ]
 
 # Короткие слова не остаются в конце строки — то же правило, что typograf() в src/lib/typograf.ts

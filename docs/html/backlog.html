@@ -1,0 +1,415 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Бэклог Mirror</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+:root { --page: #f7f7fb; --surface: #fff; --well: #ecebf1; --ink: #17142b; --ink2: #5f5b76; --ink4: #8a86a0; --line: #e5e4ec;
+  --violet: #7a2fd1; --violet-soft: #eee5fa; --teal: #0e9384; --zebra: #faf9fe;
+  --sans: "Onest", ui-sans-serif, system-ui, sans-serif; --mono: "JetBrains Mono", ui-monospace, monospace; color-scheme: light; }
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--page); color: var(--ink); font: 400 15px/1.6 var(--sans); -webkit-font-smoothing: antialiased; }
+.wrap { display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: 32px; max-width: 1320px; margin: 0 auto; padding: 32px max(16px, 2vw) 64px; }
+.toc { position: sticky; top: 24px; align-self: start; max-height: calc(100vh - 48px); overflow: auto; padding: 20px; border-radius: 12px; background: var(--surface); }
+.toc b { display: block; margin-bottom: 8px; font: 400 12px/18px var(--mono); color: var(--ink4); }
+.toc a { display: block; padding: 6px 8px; border-radius: 8px; color: var(--ink2); text-decoration: none; font-size: 14px; line-height: 20px; }
+.toc a:hover { background: var(--page); color: var(--violet); }
+.doc { min-width: 0; padding: 40px clamp(20px, 4vw, 56px); border-radius: 12px; background: var(--surface); }
+.doc__brand { display: flex; align-items: center; gap: 10px; font: 400 12px/18px var(--mono); color: var(--ink4); }
+.doc__brand i { width: 10px; height: 10px; border-radius: 3px; background: var(--violet); }
+h1 { margin: 12px 0 8px; font: 600 clamp(28px, 3vw, 40px)/1.15 var(--sans); letter-spacing: -.01em; text-wrap: balance; }
+h1 + p { margin-top: 0; color: var(--ink2); }
+h2 { margin: 48px 0 12px; padding-top: 24px; border-top: 1px solid var(--line); font: 600 22px/1.3 var(--sans); text-wrap: balance; }
+h3 { margin: 28px 0 8px; font: 600 17px/1.4 var(--sans); }
+p, ul, ol { margin: 10px 0; max-width: 78ch; }
+li { margin: 4px 0; }
+li::marker { color: var(--ink4); }
+strong { font-weight: 600; }
+a { color: var(--violet); }
+code { padding: 1px 6px; border-radius: 6px; background: var(--page); font: 400 13px/1.5 var(--mono); color: var(--ink2); }
+pre { overflow-x: auto; padding: 16px; border-radius: 8px; background: var(--page); }
+pre code { padding: 0; background: none; }
+.table { overflow-x: auto; margin: 12px 0 16px; border-radius: 10px; background: var(--well); padding: 8px; }
+table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 14px; line-height: 20px; font-variant-numeric: tabular-nums; }
+th { padding: 8px 12px 10px; text-align: left; vertical-align: bottom; font: 400 12px/16px var(--mono); color: var(--ink4); }
+td { padding: 10px 12px; vertical-align: top; background: var(--surface); }
+tbody tr:nth-child(even) td { background: var(--zebra); }
+tbody tr:first-child td:first-child { border-top-left-radius: 8px; } tbody tr:first-child td:last-child { border-top-right-radius: 8px; }
+tbody tr:last-child td:first-child { border-bottom-left-radius: 8px; } tbody tr:last-child td:last-child { border-bottom-right-radius: 8px; }
+td:first-child { font-weight: 500; }
+.foot { margin-top: 48px; padding-top: 16px; border-top: 1px solid var(--line); font: 400 12px/18px var(--mono); color: var(--ink4); }
+@media (max-width: 960px) { .wrap { grid-template-columns: 1fr; } .toc { position: static; max-height: none; } }
+@media print { body { background: #fff; } .wrap { display: block; padding: 0; } .toc { display: none; } .doc { padding: 0; }
+  h2 { break-after: avoid; } .table { break-inside: avoid; background: #fff; border: 1px solid var(--line); } }
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav class="toc" aria-label="Содержание"><b>Содержание</b><a href="#1-бизнес-и-продукт">1. Бизнес и продукт</a><a href="#2-юридическое-152-фз-и-договоры">2. Юридическое (152-ФЗ и договоры)</a><a href="#3-данные-и-отчёт">3. Данные и отчёт</a><a href="#4-кабинет-и-админка">4. Кабинет и админка</a><a href="#5-техника-и-инфраструктура">5. Техника и инфраструктура</a><a href="#6-документы-и-порядок">6. Документы и порядок</a></nav>
+<main class="doc">
+<p class="doc__brand"><i></i>Mirror · внутренний документ</p>
+<h1>Бэклог Mirror</h1>
+<p>Открытые вопросы и отложенные задачи в одном месте, чтобы к ним вернуться. Обновлено 2026-11-01.
+Вопрос закрыт — переносим решение в профильный документ и журнал (<code>.claude/memory/decisions.md</code>), строку здесь удаляем.</p>
+<p>Кто решает: <strong>В</strong> — владелец сервиса, <strong>Э</strong> — эксперт, <strong>Ю</strong> — юрист, <strong>Р</strong> — разработка.
+Когда нужно: к какому этапу без ответа не обойтись.</p>
+<h2 id="1-бизнес-и-продукт">1. Бизнес и продукт</h2>
+<div class="table"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>Вопрос</th>
+<th>Кто</th>
+<th>Когда нужно</th>
+<th>Источник</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.1</td>
+<td>Подтвердить цены и объёмы: срез, мониторинг, диагностика, кампания, число интервью, конкуренты; заменить условные тексты <code>&lt;Ph&gt;</code> на сайте</td>
+<td>В</td>
+<td>до запуска сайта</td>
+<td><code>business-rules.md</code> §2, §7</td>
+</tr>
+<tr>
+<td>1.2</td>
+<td>Реквизиты, состав команды и другие условные тексты на сайте</td>
+<td>В</td>
+<td>до запуска сайта</td>
+<td><code>project-state.md</code></td>
+</tr>
+<tr>
+<td>1.3</td>
+<td>Утвердить пороги уверенности по доле ответивших (от 50% высокая, от 30% средняя)</td>
+<td>Э</td>
+<td>к первой диагностике</td>
+<td><code>methodology.ts</code>, <code>business-rules.md</code> §7</td>
+</tr>
+<tr>
+<td>1.4</td>
+<td>Пересмотреть лимит «до 3 проектов одновременно» по фактическим часам эксперта</td>
+<td>В, Э</td>
+<td>после первых проектов</td>
+<td><code>business-rules.md</code> §6.2</td>
+</tr>
+<tr>
+<td>1.5</td>
+<td>ТЗ дашборда: реальные нормы культурного кода, подтверждение 10 метрик, примеры «Решений по обратной связи»</td>
+<td>В, Э</td>
+<td>к первой диагностике</td>
+<td><code>project-state.md</code></td>
+</tr>
+<tr>
+<td>1.6</td>
+<td>Состав разделов нового отчёта: какие из 14 разделов «Экспресс-аудита» оставляем и как связать с тремя показателями</td>
+<td>В, Э</td>
+<td>к первому срезу</td>
+<td>ADR-0007, <code>architecture/site.md</code> §9</td>
+</tr>
+<tr>
+<td>1.7</td>
+<td>Порог матрицы «честность и условия» по условиям: сейчас 60, медиана перцентиля — 50. Проверить, какой порог правильный</td>
+<td>Э</td>
+<td>до запуска сайта</td>
+<td><code>methodology-brand.html</code>, <code>hr-brand*.html</code></td>
+</tr>
+<tr>
+<td>1.8</td>
+<td>Шаблоны опроса: кто пишет и утверждает, сколько вариантов под разные культурные коды</td>
+<td>Э</td>
+<td>к первой диагностике</td>
+<td><code>admin.md</code> §9</td>
+</tr>
+<tr>
+<td>1.9</td>
+<td>Как обезличивать заметки интервью: эксперт вручную или с помощью ИИ</td>
+<td>Э</td>
+<td>к первой диагностике</td>
+<td><code>admin.md</code> §9</td>
+</tr>
+<tr>
+<td>1.10</td>
+<td>Вернуть страницу «О нас» (сейчас <code>/about</code> временно ведёт на главную)</td>
+<td>В</td>
+<td>когда будут тексты</td>
+<td><code>decisions.md</code> 2026-10-30</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="2-юридическое-152-фз-и-договоры">2. Юридическое (152-ФЗ и договоры)</h2>
+<div class="table"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>Вопрос</th>
+<th>Кто</th>
+<th>Когда нужно</th>
+<th>Источник</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2.1</td>
+<td>Проверить сроки хранения и удаления (30 дней после итогового отчёта, 6 месяцев чтения, акты) и договор-поручение</td>
+<td>Ю</td>
+<td>до первого договора изнутри</td>
+<td><code>business-rules.md</code> §5.1, ADR-0010 §8</td>
+</tr>
+<tr>
+<td>2.2</td>
+<td>Срок хранения заявок с сайта (предложение — 1 год с последнего контакта) вписать в текст согласия</td>
+<td>В, Ю</td>
+<td>до подключения формы</td>
+<td>ADR-0003, <code>business-rules.md</code> §5.1</td>
+</tr>
+<tr>
+<td>2.3</td>
+<td>Обновить политику конфиденциальности и согласия под кабинет, опрос, анонимную форму и интервью</td>
+<td>Ю, Р</td>
+<td>до первого договора изнутри</td>
+<td><code>docs/content/legal/</code>, ADR-0010, ADR-0011</td>
+</tr>
+<tr>
+<td>2.4</td>
+<td>Юридическая оценка сбора данных с Dreamjob (нет публичного API, условия использования)</td>
+<td>Ю</td>
+<td>до регулярного мониторинга</td>
+<td><code>architecture/agents.md</code> §8</td>
+</tr>
+<tr>
+<td>2.5</td>
+<td>Хранение агрегатов и проверенных цитат 6 месяцев после договора: подтвердить, что это не персональные данные</td>
+<td>Ю</td>
+<td>до первого договора изнутри</td>
+<td><code>business-rules.md</code> §5.1</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="3-данные-и-отчёт">3. Данные и отчёт</h2>
+<div class="table"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>Вопрос</th>
+<th>Кто</th>
+<th>Когда нужно</th>
+<th>Источник</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3.1</td>
+<td>Образец выгрузки парсера (формат файла), чтобы описать её схему и проверку при загрузке</td>
+<td>В</td>
+<td>к первому срезу</td>
+<td>ADR-0007, <code>architecture/site.md</code> §9</td>
+</tr>
+<tr>
+<td>3.2</td>
+<td>Где формируется отчёт: локально у эксперта или на сервере</td>
+<td>В, Р</td>
+<td>к первому срезу</td>
+<td>ADR-0007</td>
+</tr>
+<tr>
+<td>3.3</td>
+<td>Шаблон PDF отчёта из JSON по схеме (срез, мониторинг, диагностика, сводка для руководства)</td>
+<td>Р</td>
+<td>к первому срезу</td>
+<td>ADR-0009</td>
+</tr>
+<tr>
+<td>3.4</td>
+<td>Выгрузка схемы отчёта в JSON Schema для генерации ИИ (<code>z.toJSONSchema</code>)</td>
+<td>Р</td>
+<td>к первому срезу</td>
+<td><code>report-data.md</code></td>
+</tr>
+<tr>
+<td>3.5</td>
+<td>Запуск парсера по расписанию вместо ручного</td>
+<td>Р</td>
+<td>когда клиентов мониторинга станет много</td>
+<td><code>admin.md</code> §9</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="4-кабинет-и-админка">4. Кабинет и админка</h2>
+<div class="table"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>Вопрос</th>
+<th>Кто</th>
+<th>Когда нужно</th>
+<th>Источник</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>4.1</td>
+<td>Отчёт страницей внутри кабинета и что изменилось между версиями (сейчас только PDF)</td>
+<td>Р</td>
+<td>после первой кампании</td>
+<td>критический разбор, п. 14</td>
+</tr>
+<tr>
+<td>4.2</td>
+<td>Выгрузка агрегатов в таблицу для HR-аналитики клиента (группы от 5)</td>
+<td>Р</td>
+<td>позже</td>
+<td>разбор, п. 15</td>
+</tr>
+<tr>
+<td>4.3</td>
+<td>Безопасность для владельца: активные входы, «выйти на всех устройствах», второй фактор по желанию</td>
+<td>Р</td>
+<td>позже</td>
+<td>разбор, п. 16</td>
+</tr>
+<tr>
+<td>4.4</td>
+<td>Договор и сроки в кабинете: до какого числа услуга, когда только чтение, счета</td>
+<td>Р</td>
+<td>позже</td>
+<td>разбор, п. 17</td>
+</tr>
+<tr>
+<td>4.5</td>
+<td>Переключатель компаний для холдингов</td>
+<td>Р</td>
+<td>позже</td>
+<td>разбор, п. 18, <code>cabinet.md</code> §3</td>
+</tr>
+<tr>
+<td>4.6</td>
+<td>Пустые состояния и ошибки во всех разделах (данных нет, срез скрыт, ошибка загрузки)</td>
+<td>Р</td>
+<td>к первой диагностике</td>
+<td>разбор, п. 19</td>
+</tr>
+<tr>
+<td>4.7</td>
+<td>Связь встреч с внешним календарём (например, Яндекс Календарь)</td>
+<td>В</td>
+<td>позже</td>
+<td><code>admin.md</code> §9</td>
+</tr>
+<tr>
+<td>4.8</td>
+<td>Доступ к кабинету для клиентов мониторинга (раздел «Снаружи» бонусом)</td>
+<td>В</td>
+<td>когда клиентов мониторинга 5–10</td>
+<td><code>cabinet.md</code> §1</td>
+</tr>
+<tr>
+<td>4.9</td>
+<td>Кабинет для агентств (сейчас PDF под их брендом)</td>
+<td>В</td>
+<td>позже</td>
+<td><code>business-rules.md</code> §2</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="5-техника-и-инфраструктура">5. Техника и инфраструктура</h2>
+<div class="table"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>Вопрос</th>
+<th>Кто</th>
+<th>Когда нужно</th>
+<th>Источник</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>5.1</td>
+<td>Утвердить: вход своей реализацией и ORM Drizzle (в ADR — «предложено»)</td>
+<td>Р</td>
+<td>в начале разработки кабинета</td>
+<td>ADR-0010, ADR-0003</td>
+</tr>
+<tr>
+<td>5.2</td>
+<td>Тариф REG.RU (VPS или облачный сервер), ОС, Docker; домен V2 до переключения основного</td>
+<td>В</td>
+<td>до деплоя</td>
+<td>ADR-0006, <code>architecture/site.md</code> §9</td>
+</tr>
+<tr>
+<td>5.3</td>
+<td>Docker compose, nginx, HTTPS и инструкция деплоя на REG.RU</td>
+<td>Р</td>
+<td>до запуска сайта</td>
+<td>ADR-0006</td>
+</tr>
+<tr>
+<td>5.4</td>
+<td>Подключить форму заявки к почте: SMTP, Zod, антиспам, согласие</td>
+<td>Р</td>
+<td>к первым заявкам</td>
+<td>ADR-0003</td>
+</tr>
+<tr>
+<td>5.5</td>
+<td>Яндекс Метрика и баннер cookies по 152-ФЗ</td>
+<td>Р</td>
+<td>до запуска сайта</td>
+<td><code>architecture/site.md</code></td>
+</tr>
+<tr>
+<td>5.6</td>
+<td>Пакеты shadcn, Radix и мелкие к ним: оставить нужные для кабинета, остальные удалить</td>
+<td>Р</td>
+<td>в начале разработки кабинета</td>
+<td>ADR-0008</td>
+</tr>
+<tr>
+<td>5.7</td>
+<td>Агенты внутри продукта: провайдер ИИ (данные изнутри — только с хранением в России?), эмбеддинги, оркестрация, каналы</td>
+<td>В, Р</td>
+<td>до автоматизации отчёта</td>
+<td><code>architecture/agents.md</code> §8</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="6-документы-и-порядок">6. Документы и порядок</h2>
+<div class="table"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>Задача</th>
+<th>Кто</th>
+<th>Когда нужно</th>
+<th>Источник</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>6.1</td>
+<td><code>docs/ux/site-structure.md</code> устарел: «О нас» и меню, методика по направлениям, страница заявки</td>
+<td>Р</td>
+<td>при следующей правке сайта</td>
+<td>—</td>
+</tr>
+<tr>
+<td>6.2</td>
+<td>Статусы ADR-0003 и ADR-0007 («принято частично», «предложено») — пересмотреть после ответов из разделов 3 и 5</td>
+<td>Р</td>
+<td>по мере ответов</td>
+<td><code>docs/adr/README.md</code></td>
+</tr>
+</tbody>
+</table></div>
+<p class="foot">Источник: docs/backlog.md · собрано scripts/docs-html.py</p>
+</main>
+</div>
+</body>
+</html>
