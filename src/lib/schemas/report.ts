@@ -267,6 +267,11 @@ export const decision = z.object({
   status: z.enum(["planned", "in_progress", "done"]),
   /** Подразделение решения; null — вся компания. Руководитель видит решения своей ветки */
   unitId: id.nullable().default(null),
+  /** Ответственная роль и срок: без них решение не закрывает петлю обратной связи (ADR-0012) */
+  ownerRole: text.optional(),
+  due: text.optional(),
+  /** Откуда решение: резкое изменение метрики, сигнал из ленты, встреча, вопрос эксперту */
+  source: z.object({ type: z.enum(["alert", "signal", "meeting", "question", "other"]), note: text.optional() }).optional(),
   /** Показывать на публичной странице для сотрудников */
   public: z.boolean(),
   month,

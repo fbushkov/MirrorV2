@@ -320,3 +320,16 @@ a.badge:hover { color: var(--c-violet); }
 .qform .field, .qform .select { min-width: 0; max-width: 100%; }
 .item__head .badges { min-width: 0; }
 .item__head .badge { white-space: normal; height: auto; }
+
+/* Фильтры «Изнутри»: подпись и до 4 списков (подразделение, этап, период, волна) */
+.filters--many { grid-template-columns: repeat(var(--n), minmax(0, 1fr)) !important; }
+.filters--many > div:first-child { grid-column: 1 / -1; }
+.filters--many .select:disabled { opacity: .5; cursor: not-allowed; }
+@media (max-width: 1279px) { .filters--many { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; } .filters--many > div:first-child { grid-column: 1 / -1; } }
+@media (max-width: 767px) { .filters--many { grid-template-columns: 1fr !important; padding: 16px; } }
+/* Ориентир по компании у руководителя */
+.mtile__foot { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.mtile__ref { font: 400 12px/16px var(--font-mono); color: var(--c-ink-4); }
+/* Тревоги с кнопкой «Завести решение», лента «Что нового» */
+.alerts li > span:last-child:has(.btn) { margin-top: 4px; }
+.feed__link:hover b { color: var(--c-violet); }

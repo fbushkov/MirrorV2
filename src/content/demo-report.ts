@@ -1,7 +1,7 @@
 // Демо-отчёт «Банка N» по схеме src/lib/schemas/report.ts. Данные условные и совпадают с демо-страницами прототипа:
 // снаружи — prototype/home/pages/hr-brand-demo.html, изнутри — culture-health-demo.html.
 // Это образец для генерации отчёта (ADR-0007), PDF и будущего кабинета; тест проверяет его схемой и методикой.
-import { METHODOLOGY_VERSION } from "@/lib/report/methodology"
+import { METHODOLOGY_VERSION, complementarySuppression } from "@/lib/report/methodology"
 import { METRIC_IDS, REPORT_SCHEMA_VERSION, type ReportInput } from "@/lib/schemas/report"
 
 const MONTHS_EXT = ["2026-01", "2026-02", "2026-03", "2026-04", "2026-05", "2026-06", "2026-07", "2026-08", "2026-09", "2026-10"]
@@ -46,6 +46,25 @@ const WAVES = [
 const waveScore = (metric: (typeof METRIC_IDS)[number], w: (typeof WAVES)[number]) => METRICS[metric].trend[w.month]
 const indexOf = (scores: number[]) => Math.round(scores.reduce((s, v) => s + v, 0) / scores.length)
 
+/* Этапы жизненного цикла по всей компании, волна 3: сдвиг балла и число ответивших как в демо-дашборде.
+   «После ухода» ответили 3 человека — срез скрыт; тогда разность «вся компания минус остальные этапы» открыла бы этих троих,
+   поэтому complementarySuppression() скрывает ещё самый маленький этап («Возврат после отсутствия»). */
+const STAGES = [
+  { id: "prehire", offset: 6, respondents: 13 }, { id: "onboarding", offset: 4, respondents: 36 }, { id: "work", offset: 0, respondents: 283 },
+  { id: "review", offset: -5, respondents: 45 }, { id: "growth", offset: 3, respondents: 22 }, { id: "rolechange", offset: -2, respondents: 18 },
+  { id: "return", offset: -4, respondents: 8 }, { id: "crisis", offset: -9, respondents: 9 }, { id: "leaving", offset: -12, respondents: 10 },
+  { id: "after", offset: -7, respondents: 3 },
+] as const
+function stageSlices() {
+  const w = WAVES[2], hidden = complementarySuppression(w.respondents.company, STAGES.map((s) => ({ id: s.id, respondents: s.respondents })))
+  return STAGES.flatMap((st) => {
+    const scores = METRIC_IDS.map((metric) => clamp(waveScore(metric, w) + st.offset))
+    const base = { unitId: "company", stage: st.id, period: "30d" as const, waveId: w.id, groupSize: Math.round(st.respondents * 1.5), respondents: st.respondents }
+    const score = (v: number) => (hidden.has(st.id) ? null : v)
+    return [...METRIC_IDS.map((metric, i) => ({ ...base, metric, score: score(scores[i]) })), { ...base, metric: "index" as const, score: score(indexOf(scores)) }]
+  })
+}
+
 const slices: NonNullable<NonNullable<ReportInput["internal"]>["slices"]> = [
   ...WAVES.flatMap((w) =>
     UNITS.flatMap((u) => {
@@ -54,6 +73,7 @@ const slices: NonNullable<NonNullable<ReportInput["internal"]>["slices"]> = [
       return [...METRIC_IDS.map((metric, i) => ({ ...base, metric, score: scores[i] })), { ...base, metric: "index" as const, score: indexOf(scores) }]
     }),
   ),
+  ...stageSlices(),
   { metric: "index", unitId: "it", stage: "onboarding", period: "30d", waveId: "wave-3", groupSize: 7, respondents: 6, score: 59 },
   { metric: "index", unitId: "it", stage: "leaving", period: "30d", waveId: "wave-3", groupSize: 2, respondents: 2, score: null, mergedInto: "it" },
 ]
@@ -190,9 +210,9 @@ export const DEMO_REPORT: ReportInput = {
       { month: "2026-10", label: "Квартальный план продаж вырос на 18%", unitId: "sales" },
     ],
     decisions: [
-      { id: "sales-load", unitId: "sales", topic: "Переработки в отделе продаж", decision: "Пересчитали план с учётом штата и ввели «тихие часы» без встреч", outcome: "Энергия и ресурс +9 за квартал", metric: "energy", change: 9, status: "done", public: true, month: "2026-07" },
-      { id: "loop", topic: "Сигналы остаются без ответа", decision: "Отвечать на каждый сигнал в течение 10 рабочих дней", outcome: "Доля закрытых петель выросла с 34% до 71%", metric: "voice", status: "in_progress", public: true, month: "2026-10" },
-      { id: "review", unitId: null, topic: "Непонятные критерии ревью", decision: "Опубликовали критерии для всех отделов", outcome: "Справедливость и прозрачность +6", metric: "fairness", change: 6, status: "done", public: true, month: "2026-06" },
+      { id: "sales-load", unitId: "sales", ownerRole: "Руководитель продаж", due: "июль", source: { type: "alert", note: "Энергия и ресурс −9 в продажах" }, topic: "Переработки в отделе продаж", decision: "Пересчитали план с учётом штата и ввели «тихие часы» без встреч", outcome: "Энергия и ресурс +9 за квартал", metric: "energy", change: 9, status: "done", public: true, month: "2026-07" },
+      { id: "loop", ownerRole: "HR-директор", due: "до конца кампании", source: { type: "signal", note: "«Писали про парковку полгода назад. Ответа так и нет.»" }, topic: "Сигналы остаются без ответа", decision: "Отвечать на каждый сигнал в течение 10 рабочих дней", outcome: "Доля закрытых петель выросла с 34% до 71%", metric: "voice", status: "in_progress", public: true, month: "2026-10" },
+      { id: "review", unitId: null, ownerRole: "HRBP", due: "июнь", source: { type: "meeting", note: "Встреча с руководителями" }, topic: "Непонятные критерии ревью", decision: "Опубликовали критерии для всех отделов", outcome: "Справедливость и прозрачность +6", metric: "fairness", change: 6, status: "done", public: true, month: "2026-06" },
     ],
   },
 

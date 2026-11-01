@@ -101,6 +101,13 @@ describe("схема отчёта", () => {
     expect(issues(r).join()).toMatch(/разность срезов подразделений открывает группу из 3 человек/)
   })
 
+  it("демо: этап «После ухода» (3 ответа) скрыт, и вместе с ним скрыт самый маленький этап", () => {
+    const stage = (id: string) => report.parse(DEMO_REPORT).internal!.slices.find((x) => x.unitId === "company" && x.stage === id && x.metric === "index")!
+    expect(stage("after").score).toBeNull()
+    expect(stage("return").score).toBeNull()
+    expect(stage("crisis").score).not.toBeNull()
+  })
+
   it("разность срезов этапов не открывает группу из 1–4 человек", () => {
     const r = clone()
     r.internal!.slices!.push({ metric: "index", unitId: "it", stage: "work", period: "30d", waveId: "wave-3", groupSize: 60, respondents: 40, score: 55 })
