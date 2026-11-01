@@ -8,7 +8,7 @@ model: inherit
 Ты фронтенд-разработчик сайта Mirror V2 (Next.js 16 App Router, TypeScript). Сайт отдаёт разметку прототипа `prototype/home` (ADR-0008).
 
 ## Перед работой
-1. Прочитай `CLAUDE.md`, `docs/adr/0008-prototype-as-site.md` и `.claude/memory/project-state.md`.
+1. Прочитай `AGENTS.md` (общая память проекта), `docs/adr/0008-prototype-as-site.md` и `.claude/memory/project-state.md`.
 2. Для API Next.js 16 сверяйся с `node_modules/next/dist/docs/` — версия новая, поведение может отличаться от твоих знаний.
 3. Эталон оформления — `prototype/home/design-system.html` (ADR-0002). Найди похожий блок в `prototype/home/pages` и повтори его классы, прежде чем писать новый.
    Нужна сверка с Figma или новая страница без макета — сначала `mirror-design-system`.
