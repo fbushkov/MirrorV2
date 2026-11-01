@@ -95,8 +95,9 @@ Postgres (как в старом проекте). ORM — решить в ADR-00
 
 ## 6. Доступы (этапы 3–4)
 
-- **Вход:** ссылка на почту (без паролей) для клиентов; для команды — то же плюс 2FA позже. Сессия в httpOnly-cookie.
-- **Роли:** `mirror_admin`, `mirror_expert` (команда); `client_owner`, `client_viewer` (клиент).
+Подробно — ADR-0010 и `docs/product/cabinet.md`.
+- **Вход:** ссылка на почту (без паролей); для команды Mirror — плюс TOTP. Сессия на сервере, cookie `__Host-`, httpOnly.
+- **Роли:** `mirror_expert` (эксперт, один), `mirror_admin` (запасной доступ); `client_owner`, `client_hrbp`, `client_manager` (ветка подразделений), `client_executive`, `client_viewer`. Права — одна функция `can()`.
 - **Изоляция клиентов:** каждый запрос к данным фильтруется по `company_id` из сессии на сервере; ID из URL не доверяем.
 - **Правило 5 человек** для дашборда здоровья культуры проверяется **на сервере** при выборке, а не скрывается в интерфейсе.
 - Все действия в админке и выгрузки — в `audit_log`.
@@ -122,7 +123,7 @@ Postgres (как в старом проекте). ORM — решить в ADR-00
 - Заголовки безопасности в `next.config.ts` (`headers()`), до запуска формы: CSP (с учётом ECharts и Яндекс Метрики),
   `frame-ancestors 'none'`, `Referrer-Policy: strict-origin-when-cross-origin`, `X-Content-Type-Options: nosniff`.
 - CI без секретов и с правами `contents: read`; деплой — отдельным workflow с `environment` и защитой веток.
-- Требования 152-ФЗ к заявкам и кабинету — в ADR-0003 и ADR-0004.
+- Требования 152-ФЗ к заявкам и кабинету — в ADR-0003 и ADR-0010.
 
 ## 9. Открытые вопросы
 
