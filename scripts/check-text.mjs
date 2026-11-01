@@ -5,7 +5,7 @@ import { readFileSync, readdirSync, statSync } from "node:fs";
 import { join, extname } from "node:path";
 
 const ROOT = new URL("..", import.meta.url).pathname;
-const SCAN = ["src", "prototype/home/pages", "prototype/home/partials", "prototype/home/src", "prototype/home/build.py"];
+const SCAN = ["src", "prototype/home/pages", "prototype/home/partials", "prototype/home/src", "prototype/home/build.py", "prototype/cabinet/src", "prototype/cabinet/build.py"];
 const SKIP = /node_modules|\.next|\/dist\//;
 const CODE = new Set([".ts", ".tsx", ".js", ".mjs", ".css", ".py"]);
 const TEXT = new Set([...CODE, ".html"]);

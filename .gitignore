@@ -50,3 +50,6 @@ next-env.d.ts
 # тесты
 /test-results/
 /playwright-report/
+
+# python
+__pycache__/
