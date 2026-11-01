@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
-<title>Кабинет Mirror · прототип</title>
+<title>Кабинет Mirror</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -1579,7 +1579,7 @@ body.cab .alerts li { padding: 16px; }
 body.cab .legend { margin-top: 12px; }
 
 /* Полоса прототипа: смотреть как роль и услуга */
-.demo { position: sticky; top: 0; z-index: 60; display: flex; align-items: center; flex-wrap: wrap; gap: 8px 24px; min-height: 56px; padding: 10px var(--page-x); background: var(--c-dark); color: var(--c-on-dark); font: 400 var(--fs-sm)/var(--lh-sm) var(--font-sans); }
+.demo { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 60; display: flex; align-items: center; flex-wrap: wrap; gap: 8px 24px; min-height: 56px; padding: 10px var(--page-x); background: var(--c-dark); color: var(--c-on-dark); font: 400 var(--fs-sm)/var(--lh-sm) var(--font-sans); }
 .demo__tag { font: 400 var(--fs-xs)/20px var(--font-mono); color: var(--c-ink-4); }
 .demo label { display: inline-flex; align-items: center; gap: 8px; color: #c9c7d6; }
 .demo select { height: 32px; padding: 0 32px 0 12px; border: 1px solid var(--c-dark-2); border-radius: var(--r-inner); background: var(--c-dark-2) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23fafafa' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 10px center; color: #fff; font: 500 var(--fs-sm)/1 var(--font-sans); appearance: none; cursor: pointer; }
@@ -1813,7 +1813,7 @@ body.cab .legend { margin-top: 12px; }
   <span class="demo__tag">прототип · данные условные</span>
   <label>Смотреть как <select id="demo-role"></select></label>
   <label>Услуга <select id="demo-service"></select></label>
-  <span class="demo__links"><a href="#/login">Вход</a><a href="#/public">Страница для сотрудников</a></span>
+  <span class="demo__links"><a href="#login">Вход</a><a href="#public">Страница для сотрудников</a></span>
 </div>
 <div id="root"></div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -2293,10 +2293,10 @@ const pageHead = (title, lead = "", actions = "") => `<header class="top"><div><
 const panel = (title, body, hint = "", cls = "") => `<section class="panel ${cls}"><div class="panel__head"><h2 class="panel__title">${title}</h2>${hint ? `<p class="panel__hint">${hint}</p>` : ""}</div>${body}</section>`;
 const kpi = (label, num, cap, cls = "") => `<div class="kpi ${cls}"><span class="kpi__label">${label}</span><span class="kpi__num">${num}</span><span class="kpi__cap">${cap}</span></div>`;
 const note = (text, teal = false) => `<p class="note ${teal ? "note--teal" : ""}">${ico(teal ? "shield" : "info")}<span>${text}</span></p>`;
-function lockedView(title, text, icon = "lock", action = `<a class="btn btn--primary btn--sm" href="#/plan">Обсудить с экспертом</a>`) {
+function lockedView(title, text, icon = "lock", action = `<a class="btn btn--primary btn--sm" href="#plan">Обсудить с экспертом</a>`) {
   return `<div class="locked"><span class="locked__ico">${ico(icon)}</span><h2>${title}</h2><p>${text}</p>${action}</div>`;
 }
-const noAccess = (label) => pageHead(label) + lockedView("Нет доступа к разделу", `У роли «${ROLES[state.role].name}» нет доступа к этому разделу. Права выдаёт владелец кабинета в разделе «Команда».`, "lock", `<a class="btn btn--ghost btn--sm" href="#/overview">На обзор</a>`);
+const noAccess = (label) => pageHead(label) + lockedView("Нет доступа к разделу", `У роли «${ROLES[state.role].name}» нет доступа к этому разделу. Права выдаёт владелец кабинета в разделе «Команда».`, "lock", `<a class="btn btn--ghost btn--sm" href="#overview">На обзор</a>`);
 
 /* ── Разделы ── */
 const PAGES = {};
@@ -2348,7 +2348,7 @@ PAGES.internal = () => {
   parts.push(panel("Динамика индекса", `<div class="chart" id="ch-index" role="img" aria-label="Индекс по месяцам"></div><ul class="legend"><li><i class="legend__line"></i>Индекс · ${unitName(unit)}</li><li><i class="legend__line legend__line--dash"></i>Событие</li></ul>`, "За 12 месяцев. Пунктиром отмечены события, которые могли повлиять на индекс."));
   const groups = Object.entries(METRIC_GROUPS).map(([g, name]) => `<div class="mgroup"><p class="mgroup__name">${name}</p>${metrics.filter((m) => METRIC_DEFS[m.id].group === g).map((m) => {
     const l = LEVEL(m.score);
-    return `<a class="mtile" href="#/internal/${m.id}"><span class="mtile__head"><span class="mtile__ico">${metricIco(m.id)}</span><span class="mtile__name">${METRIC_DEFS[m.id].name}</span></span><span class="mtile__body"><span class="mtile__num">${m.score}</span>${sparkline(m.series.points.map((p) => p.value + (m.score - INT.metrics.find((x) => x.id === m.id).score)))}</span><span class="mtile__foot">${badge(l, `${LEVEL_WORD[l]} · ${sign(m.delta30)}`)}</span></a>`;
+    return `<a class="mtile" href="#metric-${m.id}"><span class="mtile__head"><span class="mtile__ico">${metricIco(m.id)}</span><span class="mtile__name">${METRIC_DEFS[m.id].name}</span></span><span class="mtile__body"><span class="mtile__num">${m.score}</span>${sparkline(m.series.points.map((p) => p.value + (m.score - INT.metrics.find((x) => x.id === m.id).score)))}</span><span class="mtile__foot">${badge(l, `${LEVEL_WORD[l]} · ${sign(m.delta30)}`)}</span></a>`;
   }).join("")}</div>`).join("");
   parts.push(panel("10 метрик", `<div class="mgroups">${groups}</div>`, "В норме от 65, внимание от 50 до 64, риск ниже 50. Откройте метрику, чтобы увидеть срезы, причины и источники.", "panel--well"));
   const cols = units;
@@ -2371,7 +2371,7 @@ PAGES.metric = (id) => {
   chart("ch-metric", lineOption(m.series.points.map((p) => ({ ...p, value: p.value + off })), CH.teal, { name: def.name }));
   const byUnits = units.filter((u) => u.id !== "company").map((u) => { const s = slice(id, u.id)?.score; return `<li class="barline"><div><div style="display:flex;justify-content:space-between;margin-bottom:6px"><span>${u.name}</span><span class="num">${s ?? "<5"}</span></div><div class="bar bar--${s == null ? "" : LEVEL(s) === "ok" ? "ok" : LEVEL(s) === "bad" ? "bad" : "teal"}"><i style="width:${s ?? 0}%"></i></div></div><span class="num">${s == null ? "" : LEVEL_WORD[LEVEL(s)]}</span></li>`; }).join("");
   const signals = seesSignals() ? INT.signals.filter((s) => s.metric === id) : [];
-  return `<div class="is-health"><p class="crumbs-sm"><a href="#/internal">Изнутри</a> · ${METRIC_GROUPS[def.group]}</p>${pageHead(def.name, def.detail)}
+  return `<div class="is-health"><p class="crumbs-sm"><a href="#internal">Изнутри</a> · ${METRIC_GROUPS[def.group]}</p>${pageHead(def.name, def.detail)}
     <div class="kpis">${kpi(`Балл · ${unitName(unit)}`, `${score}<small> /100</small>`, badge(l, LEVEL_WORD[l]))}${kpi("За 30 дней", sign(m.delta30), "баллов")}${kpi("Уверенность данных", `<span style="font-size:24px">${CONF[m.confidence]}</span>`, "по числу ответов и согласию источников")}${kpi("Зона", `<span style="font-size:24px">${LEVEL_WORD[l]}</span>`, "в норме от 65, риск ниже 50")}</div>
     ${panel("Динамика за 12 месяцев", `<div class="chart" id="ch-metric" role="img" aria-label="${def.name} по месяцам"></div>`)}
     <div class="grid2">${byUnits ? panel("По подразделениям", `<ul class="tree" style="gap:16px;background:none">${byUnits}</ul>`, "Срез за 30 дней") : ""}
@@ -2387,7 +2387,7 @@ PAGES.external = () => {
   const blind = `<ul class="rows">${EXT.blindSpots.map((b) => `<li style="display:block"><div class="barline"><div><div style="display:flex;justify-content:space-between;gap:12px;margin-bottom:6px"><b style="font-weight:500">${b.topic}</b>${badge(TONE[b.tone][0], TONE[b.tone][1])}</div><div class="bar"><i style="width:${b.share * 4}%"></i></div></div><span class="num">${b.share}%</span></div>${b.quote ? `<p class="rows__sub" style="margin-top:8px">«${b.quote.text}» · ${b.quote.source}</p>` : ""}</li>`).join("")}</ul>`;
   const tracks = `<ul class="rows">${EXT.industry.tracks.map((t) => `<li style="display:block"><div class="barline"><div><div style="margin-bottom:6px">${t.topic}</div><div class="bar bar--${t.percentile >= 60 ? "ok" : t.percentile < 45 ? "bad" : ""}"><i style="width:${t.percentile}%"></i></div></div><span class="num">${t.percentile}</span></div></li>`).join("")}</ul>`;
   const comp = `<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Обещание</th><th>${REPORT.company.name}</th>${EXT.competitors.map((c) => `<th>${c.name}</th>`).join("")}</tr></thead><tbody>${EXT.competitors[0].promises.map((cp) => { const p = EXT.promises.find((x) => x.id === cp.promiseId); return `<tr><th>${p.title}</th><td>${status(PROMISE[p.status][0], PROMISE[p.status][1])}</td>${EXT.competitors.map((c) => { const st = c.promises.find((x) => x.promiseId === cp.promiseId).status; return `<td>${status(PROMISE[st][0], PROMISE[st][1])}</td>`; }).join("")}</tr>`; }).join("")}<tr><th>Индекс культуры</th><td class="num" style="text-align:left">${EXT.index.value}</td>${EXT.competitors.map((c) => `<td>${c.index}</td>`).join("")}</tr></tbody></table></div>`;
-  return pageHead("Снаружи: оценка HR-бренда", `Мониторинг, отчёт за октябрь. Источники: ${EXT.coverage.map((c) => `${SOURCES[c.source]} ${c.mentions}`).join(", ")} упоминаний.`, `<a class="btn btn--ghost btn--sm" href="#/reports">${ico("download")}PDF отчёта</a>`)
+  return pageHead("Снаружи: оценка HR-бренда", `Мониторинг, отчёт за октябрь. Источники: ${EXT.coverage.map((c) => `${SOURCES[c.source]} ${c.mentions}`).join(", ")} упоминаний.`, `<a class="btn btn--ghost btn--sm" href="#reports">${ico("download")}PDF отчёта</a>`)
     + `<div class="kpis">${kpi("Индекс культуры", `${EXT.index.value}<small> /100</small>`, `${delta(EXT.index.delta.value)} за квартал`)}${kpi("Обещаний подтверждено", `${confirmed}<small> из ${EXT.promises.length}</small>`, "зарплата и гибкий формат не подтверждаются")}${kpi("Слепые зоны", `${EXT.blindSpots.length}<small> темы</small>`, `чаще всего «${EXT.blindSpots[0].topic}», ${EXT.blindSpots[0].share}%`)}${kpi("Место в отрасли", `${EXT.industry.percentile}<small> %</small>`, `среди ${EXT.industry.peerCount} компаний: ${EXT.industry.peerGroup}`)}</div>`
     + panel("Динамика индекса", `<div class="chart" id="ch-ext" role="img" aria-label="Индекс культуры по месяцам"></div>`, "Красной областью выделена просадка, пунктиром — события, которые на неё повлияли.")
     + panel("Обещания", promises, "Вес — доля обещания в ваших текстах. «Подтверждено» — доля упоминаний, где опыт людей совпадает с обещанием.")
@@ -2408,7 +2408,7 @@ PAGES.bridge = () => {
 PAGES.decisions = () => {
   const list = state.role === "viewer" ? live.decisions.filter((d) => d.public) : live.decisions;
   const form = state.adding ? panel("Новое решение", `<form id="dec-form" class="form-row" style="grid-template-columns:1fr 1fr"><label class="field"><span class="label">Тема сигнала</span><input class="input" name="topic" required placeholder="Например, переработки в продажах"></label><label class="field"><span class="label">Связанная метрика</span><select class="select" name="metric">${INT.metrics.map((m) => `<option value="${m.id}">${METRIC_DEFS[m.id].name}</option>`).join("")}</select></label><label class="field" style="grid-column:1/-1"><span class="label">Что решили</span><input class="input" name="decision" required placeholder="Что меняем и к какому сроку"></label><div style="display:flex;gap:12px"><button class="btn btn--primary btn--sm" type="submit">Сохранить</button><button class="btn btn--ghost btn--sm" type="button" data-act="cancel">Отмена</button></div></form>`) : "";
-  return pageHead("Решения по обратной связи", "Что услышали, что решили и что изменилось. Опубликованные решения видят сотрудники на открытой странице компании.", (edits() ? `<button class="btn btn--primary btn--sm" data-act="add">${ico("plus")}Новое решение</button>` : "") + `<a class="btn btn--ghost btn--sm" href="#/public">${ico("external")}Страница для сотрудников</a>`)
+  return pageHead("Решения по обратной связи", "Что услышали, что решили и что изменилось. Опубликованные решения видят сотрудники на открытой странице компании.", (edits() ? `<button class="btn btn--primary btn--sm" data-act="add">${ico("plus")}Новое решение</button>` : "") + `<a class="btn btn--ghost btn--sm" href="#public">${ico("external")}Страница для сотрудников</a>`)
     + form + `<section class="panel panel--well"><ul class="items">${list.map((d) => `<li class="item"><div class="item__head"><h3 class="item__title">${d.topic}</h3>${badge(DECISION[d.status][0], DECISION[d.status][1])}</div><dl class="item__grid"><div><dt>Решение</dt><dd>${d.decision}</dd></div><div><dt>Что изменилось</dt><dd>${d.outcome ?? "Пока рано судить"}</dd></div><div><dt>Метрика</dt><dd>${d.metric ? METRIC_DEFS[d.metric].name : "—"}</dd></div></dl><div class="item__foot"><label class="switch"><input type="checkbox" data-pub="${d.id}" ${d.public ? "checked" : ""} ${edits() ? "" : "disabled"}>Показывать сотрудникам</label><span class="rows__meta">${mon(d.month)} 2026</span></div></li>`).join("")}</ul></section>`
     + note("Перед публикацией текст решения проверяется на узнаваемые детали, как цитаты. На открытой странице нет цифр по группам меньше 5 человек.", true);
 };
@@ -2464,7 +2464,7 @@ PAGES.team = () => {
 PAGES.settings = () => {
   const N = { report: "Новый отчёт", stage: "Смена этапа работы", alerts: "Резкое изменение метрики и сигналы снаружи", waves: "Начало и конец волны опроса", plan: "Срок шага плана", rhythm: "Напоминание по ритму роли" };
   return pageHead("Настройки", "Компания, источники и уведомления.")
-    + `<div class="grid2">${panel("Компания", `<ul class="rows"><li><div class="rows__main"><b>${REPORT.company.name}</b><span class="rows__sub">${REPORT.company.industry} · ${REPORT.company.region} · ${REPORT.company.headcount} сотрудников</span></div></li><li><div class="rows__main"><b>Подразделения</b><span class="rows__sub">${TREE.length - 1} в дереве, ведёте вы</span></div><a class="btn btn--ghost btn--sm" href="#/data">Открыть</a></li></ul>`)}
+    + `<div class="grid2">${panel("Компания", `<ul class="rows"><li><div class="rows__main"><b>${REPORT.company.name}</b><span class="rows__sub">${REPORT.company.industry} · ${REPORT.company.region} · ${REPORT.company.headcount} сотрудников</span></div></li><li><div class="rows__main"><b>Подразделения</b><span class="rows__sub">${TREE.length - 1} в дереве, ведёте вы</span></div><a class="btn btn--ghost btn--sm" href="#data">Открыть</a></li></ul>`)}
       ${panel("Снаружи: источники и конкуренты", `<ul class="rows"><li><div class="rows__main"><b>Страница работодателя на hh.ru</b><span class="rows__sub mono">hh.ru/employer/0000000</span></div></li><li><div class="rows__main"><b>Конкуренты</b><span class="rows__sub">${EXT.competitors.map((c) => c.name).join(", ")}</span></div><span class="rows__meta">до 5 в мониторинге</span></li></ul>`)}</div>`
     + panel("Уведомления на почту", `<ul class="rows">${Object.entries(N).map(([k, v]) => `<li><span>${v}</span><label class="switch"><input type="checkbox" data-notify="${k}" ${live.notify[k] ? "checked" : ""}><span class="sr-only">${v}</span></label></li>`).join("")}<li><span>Приглашения и вход</span><label class="switch"><input type="checkbox" checked disabled><span class="sr-only">Всегда включено</span></label></li></ul>`, "В письмах нет цифр по группам: они видны после входа");
 };
@@ -2481,7 +2481,7 @@ const SOLO = {
     return `<div class="solo"><span class="solo__logo">${tpl("logo")}</span><div class="login">${body}</div></div>`;
   },
   public() {
-    return `<div class="solo"><span class="solo__logo">${tpl("logo")}</span><div class="public"><p class="crumbs-sm"><a href="#/decisions">${"Вернуться в кабинет"}</a></p><h1>Решения по обратной связи</h1><p class="public__lead">${REPORT.company.name}. Что вы сказали, что мы решили и что изменилось. Страница обновляется по мере решений.</p><ul class="items">${live.decisions.filter((d) => d.public).map((d) => `<li class="item"><div class="item__head"><h2 class="item__title">${d.topic}</h2>${badge(DECISION[d.status][0], DECISION[d.status][1])}</div><dl class="item__grid" style="grid-template-columns:1fr 1fr"><div><dt>Что решили</dt><dd>${d.decision}</dd></div><div><dt>Что изменилось</dt><dd>${d.outcome ?? "Пока рано судить"}</dd></div></dl></li>`).join("") || `<li class="item">Пока нет опубликованных решений.</li>`}</ul><p class="public__foot">Есть что сказать? Напишите анонимно: mirror-com.ru/f/bank-n-9x2c. Мы не определяем авторов и показываем только группы от 5 человек.</p></div></div>`;
+    return `<div class="solo"><span class="solo__logo">${tpl("logo")}</span><div class="public"><p class="crumbs-sm"><a href="#decisions">${"Вернуться в кабинет"}</a></p><h1>Решения по обратной связи</h1><p class="public__lead">${REPORT.company.name}. Что вы сказали, что мы решили и что изменилось. Страница обновляется по мере решений.</p><ul class="items">${live.decisions.filter((d) => d.public).map((d) => `<li class="item"><div class="item__head"><h2 class="item__title">${d.topic}</h2>${badge(DECISION[d.status][0], DECISION[d.status][1])}</div><dl class="item__grid" style="grid-template-columns:1fr 1fr"><div><dt>Что решили</dt><dd>${d.decision}</dd></div><div><dt>Что изменилось</dt><dd>${d.outcome ?? "Пока рано судить"}</dd></div></dl></li>`).join("") || `<li class="item">Пока нет опубликованных решений.</li>`}</ul><p class="public__foot">Есть что сказать? Напишите анонимно: mirror-com.ru/f/bank-n-9x2c. Мы не определяем авторов и показываем только группы от 5 человек.</p></div></div>`;
   },
 };
 
@@ -2491,13 +2491,15 @@ function sideHtml(active) {
   const items = NAV.map((n) => {
     if (n.group) return `<p class="snav__label">${n.group}</p>`;
     if (!can(n.id)) return "";
-    return `<a href="#/${n.id}" class="${n.health ? "is-health" : ""}" ${n.id === active ? 'aria-current="page"' : ""}>${ico(n.icon)}${n.label}${locked(n.id) ? `<span class="snav__lock">${ico("lock")}</span>` : ""}</a>`;
+    return `<a href="#${n.id === "settings" ? "prefs" : n.id}" class="${n.health ? "is-health" : ""}" ${n.id === active ? 'aria-current="page"' : ""}>${ico(n.icon)}${n.label}${locked(n.id) ? `<span class="snav__lock">${ico("lock")}</span>` : ""}</a>`;
   }).join("").replace(/(<p class="snav__label">[^<]*<\/p>)(?=<p|$)/g, "");
-  return `<aside class="side" id="side"><a class="side__logo" href="#/overview" aria-label="Mirror, на обзор">${tpl("logo")}</a><div class="company"><b>${REPORT.company.name}</b><span>${SERVICES[state.service].name}</span></div><nav class="snav" aria-label="Разделы кабинета">${items}</nav><div class="side__user"><span class="avatar">${r.person.split(" ").map((w) => w[0]).join("")}</span><div><b>${r.person}</b><span>${r.name}</span></div><a href="#/login" aria-label="Выйти">${ico("logout")}</a></div></aside>`;
+  return `<aside class="side" id="side"><a class="side__logo" href="#overview" aria-label="Mirror, на обзор">${tpl("logo")}</a><div class="company"><b>${REPORT.company.name}</b><span>${SERVICES[state.service].name}</span></div><nav class="snav" aria-label="Разделы кабинета">${items}</nav><div class="side__user"><span class="avatar">${r.person.split(" ").map((w) => w[0]).join("")}</span><div><b>${r.person}</b><span>${r.name}</span></div><a href="#login" aria-label="Выйти">${ico("logout")}</a></div></aside>`;
 }
+/* Адрес раздела — простой якорь: #overview, #metric-energy. «Настройки» — #prefs: имя settings занято площадкой ссылок */
 function route() {
-  const [, page = "overview", sub] = (location.hash || "#/overview").split("/");
-  return { page, sub };
+  const h = location.hash.slice(1) || "overview";
+  if (h.startsWith("metric-")) return { page: "internal", sub: h.slice(7) };
+  return { page: h === "prefs" ? "settings" : h, sub: null };
 }
 function render() {
   const { page, sub } = route();
@@ -2528,7 +2530,7 @@ function toast(text) {
 /* ── События ── */
 document.addEventListener("click", (e) => {
   const el = e.target.closest("[data-act],[data-copy],[data-toast]"); if (!el) return;
-  if (el.dataset.copy) { try { navigator.clipboard?.writeText("https://mirror-com.ru/" + el.dataset.copy); } catch { /* без буфера */ } toast("Ссылка скопирована"); return; }
+  if (el.dataset.copy) { navigator.clipboard?.writeText("https://mirror-com.ru/" + el.dataset.copy).catch(() => {}); toast("Ссылка скопирована"); return; }
   if (el.dataset.toast) { toast(el.dataset.toast); return; }
   const act = el.dataset.act;
   if (act === "menu") { const app = $("#app"); app.classList.toggle("is-menu"); if (app.classList.contains("is-menu")) { const s = document.createElement("div"); s.className = "scrim"; s.dataset.act = "close"; app.append(s); } else app.querySelector(".scrim")?.remove(); }
@@ -2536,7 +2538,7 @@ document.addEventListener("click", (e) => {
   if (act === "add") { state.adding = true; render(); }
   if (act === "cancel") { state.adding = false; render(); }
   if (act === "open-link") { state.login = 2; render(); }
-  if (act === "enter") { state.login = 0; location.hash = "#/overview"; toast("Вы вошли в кабинет"); }
+  if (act === "enter") { state.login = 0; location.hash = "#overview"; toast("Вы вошли в кабинет"); }
 });
 document.addEventListener("change", (e) => {
   const t = e.target;
