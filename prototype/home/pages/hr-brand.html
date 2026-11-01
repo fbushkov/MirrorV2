@@ -170,7 +170,7 @@ mountChart(document.getElementById("ch-dynamics"), {
     markLine: eventMarks(innerWidth < 768 ? [{ x: "Мар", text: "Отзывы" }, { x: "Авг", text: "Вилки" }] : [{ x: "Мар", text: "Отзывы о задержке индексации" }, { x: "Авг", text: "Вилки зарплат в вакансиях" }]),
   }],
 });
-const MX = [{ name: "Банк N", x: 62, y: 65, you: true }, { name: "Банк А", x: 74, y: 72 }, { name: "Банк Б", x: 38, y: 54 }];
+const MX = [{ name: "Банк N", x: 65, y: 62, you: true }, { name: "Банк А", x: 74, y: 72 }, { name: "Банк Б", x: 38, y: 54 }];
 const Q = (x1, y1, x2, y2, color) => [{ coord: [x1, y1], itemStyle: { color } }, { coord: [x2, y2] }];
 const MXS = innerWidth < 768 ? 44 : 64; // поля сетки по бокам — симметричные (как --mx-side в CSS)
 mountChart(document.getElementById("ch-matrix"), {
