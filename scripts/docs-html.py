@@ -17,6 +17,7 @@ DOCS = [
     ("docs/product/business-rules.md", "docs/html/business-logic.html", "Бизнес-логика Mirror"),
     ("docs/product/admin.md", "docs/html/admin.html", "Админка Mirror"),
     ("docs/backlog.md", "docs/html/backlog.html", "Бэклог Mirror"),
+    ("docs/marketing/expert-texts.md", "docs/html/expert-texts.html", "Тексты эксперта Mirror"),
 ]
 
 # Короткие слова не остаются в конце строки — то же правило, что typograf() в src/lib/typograf.ts

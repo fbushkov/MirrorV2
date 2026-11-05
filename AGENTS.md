@@ -57,6 +57,7 @@ Mirror — сервис диагностики HR-бренда и независ
 - `prototype/cabinet` — прототип кабинета, сборка `python3 prototype/cabinet/build.py`, данные `node prototype/cabinet/tools/report-build.mjs`.
 - `docs/product/` — продукт: бизнес-правила, кабинет, админка, отчёт. `docs/adr/` — архитектурные решения, список в `README.md`.
 - `docs/architecture/site.md` — этапы, маршруты, слои, данные, доступы. `docs/architecture/agents.md` — будущие ИИ-агенты внутри продукта.
+- `docs/marketing/` — тексты для продвижения от имени эксперта (пост, письмо); факты берутся из бизнес-правил.
 - `docs/ux/site-structure.md` — структура сайта; `docs/content/` — тексты старого сайта и юридические документы.
 - `src/lib/schemas/` — схемы Zod; `src/lib/report/` — методика; `src/content/` — контент, демо-отчёт, словарь; `src/site/` — выгрузка прототипа.
 - `fbushkov/mirror.service` — **старый действующий сайт, только чтение**: ничего не менять. Пример отчёта — его `public/demo.html`.

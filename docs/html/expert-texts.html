@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Тексты эксперта Mirror</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+:root { --page: #f7f7fb; --surface: #fff; --well: #ecebf1; --ink: #17142b; --ink2: #5f5b76; --ink4: #8a86a0; --line: #e5e4ec;
+  --violet: #7a2fd1; --violet-soft: #eee5fa; --teal: #0e9384; --zebra: #faf9fe;
+  --sans: "Onest", ui-sans-serif, system-ui, sans-serif; --mono: "JetBrains Mono", ui-monospace, monospace; color-scheme: light; }
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--page); color: var(--ink); font: 400 15px/1.6 var(--sans); -webkit-font-smoothing: antialiased; }
+.wrap { display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: 32px; max-width: 1320px; margin: 0 auto; padding: 32px max(16px, 2vw) 64px; }
+.toc { position: sticky; top: 24px; align-self: start; max-height: calc(100vh - 48px); overflow: auto; padding: 20px; border-radius: 12px; background: var(--surface); }
+.toc b { display: block; margin-bottom: 8px; font: 400 12px/18px var(--mono); color: var(--ink4); }
+.toc a { display: block; padding: 6px 8px; border-radius: 8px; color: var(--ink2); text-decoration: none; font-size: 14px; line-height: 20px; }
+.toc a:hover { background: var(--page); color: var(--violet); }
+.doc { min-width: 0; padding: 40px clamp(20px, 4vw, 56px); border-radius: 12px; background: var(--surface); }
+.doc__brand { display: flex; align-items: center; gap: 10px; font: 400 12px/18px var(--mono); color: var(--ink4); }
+.doc__brand i { width: 10px; height: 10px; border-radius: 3px; background: var(--violet); }
+h1 { margin: 12px 0 8px; font: 600 clamp(28px, 3vw, 40px)/1.15 var(--sans); letter-spacing: -.01em; text-wrap: balance; }
+h1 + p { margin-top: 0; color: var(--ink2); }
+h2 { margin: 48px 0 12px; padding-top: 24px; border-top: 1px solid var(--line); font: 600 22px/1.3 var(--sans); text-wrap: balance; }
+h3 { margin: 28px 0 8px; font: 600 17px/1.4 var(--sans); }
+p, ul, ol { margin: 10px 0; max-width: 78ch; }
+li { margin: 4px 0; }
+li::marker { color: var(--ink4); }
+strong { font-weight: 600; }
+a { color: var(--violet); }
+code { padding: 1px 6px; border-radius: 6px; background: var(--page); font: 400 13px/1.5 var(--mono); color: var(--ink2); }
+pre { overflow-x: auto; padding: 16px; border-radius: 8px; background: var(--page); }
+pre code { padding: 0; background: none; }
+.table { overflow-x: auto; margin: 12px 0 16px; border-radius: 10px; background: var(--well); padding: 8px; }
+table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 14px; line-height: 20px; font-variant-numeric: tabular-nums; }
+th { padding: 8px 12px 10px; text-align: left; vertical-align: bottom; font: 400 12px/16px var(--mono); color: var(--ink4); }
+td { padding: 10px 12px; vertical-align: top; background: var(--surface); }
+tbody tr:nth-child(even) td { background: var(--zebra); }
+tbody tr:first-child td:first-child { border-top-left-radius: 8px; } tbody tr:first-child td:last-child { border-top-right-radius: 8px; }
+tbody tr:last-child td:first-child { border-bottom-left-radius: 8px; } tbody tr:last-child td:last-child { border-bottom-right-radius: 8px; }
+td:first-child { font-weight: 500; }
+.foot { margin-top: 48px; padding-top: 16px; border-top: 1px solid var(--line); font: 400 12px/18px var(--mono); color: var(--ink4); }
+@media (max-width: 960px) { .wrap { grid-template-columns: 1fr; } .toc { position: static; max-height: none; } }
+@media print { body { background: #fff; } .wrap { display: block; padding: 0; } .toc { display: none; } .doc { padding: 0; }
+  h2 { break-after: avoid; } .table { break-inside: avoid; background: #fff; border: 1px solid var(--line); } }
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav class="toc" aria-label="Содержание"><b>Содержание</b><a href="#пост-для-личной-страницы">Пост для личной страницы</a><a href="#письмо-для-личной-рассылки">Письмо для личной рассылки</a></nav>
+<main class="doc">
+<p class="doc__brand"><i></i>Mirror · внутренний документ</p>
+<h1>Тексты эксперта Mirror</h1>
+<p>Пост для личной страницы эксперта и письмо для личной рассылки. Версия 1.0 · 2026-11-05.
+Факты — из <code>docs/product/business-rules.md</code>: срез бесплатный, 3 рабочих дня, разбор 30 минут, нужны название и ссылка на hh.ru,
+группы от 5 человек. Цены не называем: они ещё условные (бэклог 1.1).</p>
+<p><strong>Что подставить перед публикацией:</strong></p>
+<ul>
+<li>[Имя] — имя эксперта и имя получателя письма;</li>
+<li>[о себе] — одна-две фразы об опыте эксперта, своими словами;</li>
+<li>[ссылка] — адрес страницы заявки, сейчас <code>mirror-com.ru/start</code>;</li>
+<li>[почему вам] — одна фраза, почему письмо именно этому человеку.</li>
+</ul>
+<p>Глаголы в первом лице стоят в настоящем времени, чтобы текст подошёл эксперту любого пола.</p>
+<h2 id="пост-для-личной-страницы">Пост для личной страницы</h2>
+<p>Компании много пишут о себе в вакансиях: «дружный коллектив», «карьерный рост», «гибкий формат». Кандидат читает это,
+а потом открывает Dreamjob и hh.ru, чтобы проверить. Если там другое, он перестаёт верить и остальным словам компании.</p>
+<p>[о себе] Поэтому я запускаю Mirror. Это сервис, который сверяет обещания работодателя с опытом людей.</p>
+<p>Как это устроено:</p>
+<ul>
+<li>собираем ваши обещания из вакансий, карьерного сайта и соцсетей;</li>
+<li>смотрим, что о тех же темах пишут люди на hh.ru, Dreamjob, в VK, Дзене, медиа и в ответах нейросетей;</li>
+<li>считаем, какая доля обещаний подтверждается.</li>
+</ul>
+<p>В отчёте три показателя:</p>
+<ul>
+<li>индекс культуры показывает, совпадают ли слова и дела;</li>
+<li>слепые зоны показывают, о чём люди говорят, а вы молчите;</li>
+<li>место в отрасли показывает, насколько ваши условия хороши по сравнению с рынком.</li>
+</ul>
+<p>Первый срез бесплатный. Мне нужны только название компании и ссылка на её страницу на hh.ru, доступ к вашим системам не нужен.
+Через 3 рабочих дня я пришлю отчёт и за 30 минут разберу его с вами. Ни к чему не обязывает.</p>
+<p>Если захочется заглянуть внутрь, есть диагностика: опрос и интервью сотрудников, сверка с культурным кодом компании.
+Мы показываем только группы от 5 человек и не ищем авторов ответов.</p>
+<p>Напишите мне в личные сообщения или оставьте заявку: [ссылка]</p>
+<h3 id="короткая-версия">Короткая версия</h3>
+<p>Вакансии обещают «дружный коллектив» и «гибкий формат», а кандидаты проверяют это на Dreamjob и hh.ru.
+Я запускаю Mirror: сервис сверяет обещания работодателя с тем, что пишут люди, и считает, какая доля подтверждается.
+Первый срез бесплатный, нужны только название компании и ссылка на hh.ru. Отчёт через 3 рабочих дня и разбор
+за 30 минут. Заявка: [ссылка]</p>
+<h2 id="письмо-для-личной-рассылки">Письмо для личной рассылки</h2>
+<p><strong>Тема письма, на выбор:</strong></p>
+<ul>
+<li>Что о вашей компании пишут кандидаты</li>
+<li>Совпадают ли ваши вакансии с отзывами</li>
+<li>Бесплатный срез HR-бренда [название компании]</li>
+</ul>
+<p>Здравствуйте, [Имя]!</p>
+<p>Пишу вам лично, потому что [почему вам].</p>
+<p>[о себе] Сейчас я запускаю Mirror. Это сервис, который сверяет то, что компания обещает в вакансиях и на карьерном сайте,
+с тем, что о ней пишут сотрудники и кандидаты.</p>
+<p>Хочу предложить вам бесплатный внешний срез по вашей компании. В нём будет:</p>
+<ul>
+<li>какая доля ваших обещаний подтверждается в отзывах, соцсетях и ответах нейросетей;</li>
+<li>о чём люди говорят, а в ваших текстах этого нет;</li>
+<li>как ваши условия выглядят на фоне работодателей отрасли.</li>
+</ul>
+<p>От вас нужна только ссылка на страницу компании на hh.ru. Доступ к системам не нужен, данные беру из открытых источников.
+Через 3 рабочих дня пришлю отчёт и предложу 30 минут, чтобы разобрать его вместе. Это ни к чему не обязывает.</p>
+<p>Если интересно, просто ответьте на это письмо. Или оставьте заявку здесь: [ссылка]</p>
+<p>С уважением,
+[Имя]
+Mirror</p>
+<h3 id="повторное-письмо-через-неделю">Повторное письмо через неделю</h3>
+<p>Здравствуйте, [Имя]!</p>
+<p>Возвращаюсь к своему письму про бесплатный срез HR-бренда. Предложение в силе: по ссылке на hh.ru за 3 рабочих дня
+покажу, какие обещания вашей компании подтверждаются в отзывах, а какие нет.</p>
+<p>Если сейчас не до этого, напишите, когда удобнее вернуться к разговору.</p>
+<p>[Имя]</p>
+<p class="foot">Источник: docs/marketing/expert-texts.md · собрано scripts/docs-html.py</p>
+</main>
+</div>
+</body>
+</html>
