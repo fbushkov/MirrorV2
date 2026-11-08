@@ -1,0 +1,657 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Mirror — презентация для заказчиков</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Презентация Mirror для потенциальных заказчиков. Слайд 1920×1080, PDF собирает build.mjs.
+   Стиль — дизайн-система сайта (prototype/home/src/styles.css): акцент #7A2FD1, изнутри #0E9384, Onest и JetBrains Mono. */
+:root {
+  --page: #f7f7fb; --surface: #fff; --well: #ecebf1; --chrome: #eeedf4; --line: #e5e4ec;
+  --ink: #17142b; --ink2: #5f5b76; --ink3: #807c93; --ink4: #8a86a0;
+  --violet: #7a2fd1; --violet-soft: #eee5fa; --violet-num: #aa76cc; --teal: #0e9384; --teal-soft: #e3f3f1;
+  --ok: #3b9952; --warn: #d08a1e; --bad: #db4f4f;
+  --sans: "Onest", ui-sans-serif, system-ui, sans-serif; --mono: "JetBrains Mono", ui-monospace, monospace;
+}
+@page { size: 1920px 1080px; margin: 0; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: #d9d8e0; }
+body { font-family: var(--sans); color: var(--ink); -webkit-font-smoothing: antialiased; }
+.slide { position: relative; width: 1920px; height: 1080px; overflow: hidden; background: var(--page); page-break-after: always; break-after: page; }
+@media screen { .slide { margin: 24px auto; box-shadow: 0 10px 40px rgba(23,20,43,.15); } }
+
+/* Полоса сверху: сервис и раздел */
+.bar { position: absolute; top: 0; left: 0; right: 0; height: 64px; display: flex; align-items: center; justify-content: space-between; padding: 0 56px;
+  font: 400 18px/1 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink4); }
+.bar b { font-weight: 400; color: var(--ink2); }
+.page-no { position: absolute; right: 56px; bottom: 28px; font: 400 18px/1 var(--mono); color: var(--ink4); }
+
+/* Рабочая область */
+.frame { position: absolute; top: 64px; left: 48px; right: 48px; bottom: 64px; border-radius: 28px; background: var(--surface); padding: 96px 104px; display: flex; flex-direction: column; }
+.frame--well { background: var(--well); }
+.frame--center { align-items: center; justify-content: center; text-align: center; }
+
+/* Заставка раздела */
+.divider { background: var(--violet); }
+.divider .bar, .divider .bar b, .divider .page-no { color: rgba(255,255,255,.75); }
+.divider .frame { background: #f5f0fc; justify-content: space-between; }
+.divider h2 { font: 700 132px/1.02 var(--sans); letter-spacing: -.02em; }
+.divider .num { align-self: flex-end; font: 500 320px/.8 var(--mono); color: var(--violet); letter-spacing: -.04em; }
+
+/* Типографика */
+.eyebrow { display: inline-flex; width: fit-content; padding: 12px 28px; border-radius: 999px; background: var(--chrome); color: var(--ink4); font: 400 22px/1.2 var(--mono); }
+.h1 { font: 700 112px/1.02 var(--sans); letter-spacing: -.025em; }
+.h2 { font: 700 72px/1.06 var(--sans); letter-spacing: -.02em; }
+.h3 { font: 600 40px/1.2 var(--sans); letter-spacing: -.01em; }
+.lead { font: 400 34px/1.4 var(--sans); color: var(--ink2); }
+.dim { color: var(--ink3); font-weight: 400; }
+.statement { font: 400 60px/1.3 var(--sans); letter-spacing: -.01em; max-width: 1500px; }
+.statement b { font-weight: 600; }
+.small { font: 400 24px/1.4 var(--sans); color: var(--ink3); }
+.mono { font-family: var(--mono); }
+.violet { color: var(--violet); }
+.teal { color: var(--teal); }
+
+/* Сетки */
+.split { display: grid; grid-template-columns: 1fr 1fr; gap: 96px; align-items: center; height: 100%; }
+.split--shot { grid-template-columns: 560px 1fr; gap: 64px; }
+.split--shot-r { grid-template-columns: 1fr 560px; gap: 64px; }
+.col { display: flex; flex-direction: column; gap: 32px; min-width: 0; }
+
+/* Списки */
+.list { list-style: none; display: flex; flex-direction: column; gap: 28px; }
+.list li { display: grid; grid-template-columns: 56px 1fr; gap: 8px; font: 400 32px/1.35 var(--sans); }
+.list li::before { content: attr(data-n); font: 500 28px/1.5 var(--mono); color: var(--violet); }
+.list li > b, .list li > span { grid-column: 2; }
+.list li b { font-weight: 600; display: block; }
+.list li span { color: var(--ink2); }
+.dots { list-style: none; display: flex; flex-direction: column; gap: 20px; }
+.dots li { position: relative; padding-left: 32px; font: 400 28px/1.4 var(--sans); color: var(--ink2); }
+.dots li::before { content: ""; position: absolute; left: 0; top: 15px; width: 12px; height: 12px; border-radius: 3px; background: var(--violet); }
+.dots.teal-dots li::before { background: var(--teal); }
+.dots li b { color: var(--ink); font-weight: 600; }
+
+/* Окно браузера со скриншотом */
+.shot { min-width: 0; border-radius: 22px; overflow: hidden; background: #fff; border: 1px solid var(--line); box-shadow: 0 30px 80px -30px rgba(23,20,43,.35); }
+.shot__bar { display: flex; align-items: center; gap: 10px; height: 52px; padding: 0 22px; background: var(--chrome); border-bottom: 1px solid var(--line); }
+.shot__bar i { width: 14px; height: 14px; border-radius: 50%; background: #d6d4df; }
+.shot__bar span { margin-left: 18px; padding: 6px 18px; border-radius: 8px; background: #fff; font: 400 18px/1 var(--mono); color: var(--ink3); }
+.shot img { display: block; width: 100%; height: auto; }
+.shot--h img { height: 640px; object-fit: cover; object-position: top left; }
+.shot--hs img { height: 520px; object-fit: cover; object-position: top left; }
+.caption { margin-top: 16px; font: 400 20px/1.3 var(--mono); color: var(--ink4); }
+
+/* Карточки */
+.cards { display: grid; gap: 28px; }
+.cards--2 { grid-template-columns: 1fr 1fr; }
+.cards--3 { grid-template-columns: repeat(3, 1fr); }
+.cards--4 { grid-template-columns: repeat(4, 1fr); }
+.card { display: flex; flex-direction: column; gap: 20px; padding: 44px; border-radius: 24px; background: var(--page); }
+.card--violet { background: var(--violet-soft); }
+.card--teal { background: var(--teal-soft); }
+.card--dark { background: var(--ink); color: #fff; }
+.card__tag { font: 400 22px/1.2 var(--mono); color: var(--ink4); }
+.card--violet .card__tag { color: var(--violet); }
+.card--teal .card__tag { color: var(--teal); }
+.card__title { font: 600 40px/1.15 var(--sans); letter-spacing: -.01em; }
+.card__text { font: 400 26px/1.4 var(--sans); color: var(--ink2); }
+.card__num { font: 500 30px/1 var(--mono); color: var(--violet); }
+.chips { display: flex; flex-wrap: wrap; gap: 12px; margin-top: auto; }
+.chips span { padding: 10px 18px; border-radius: 999px; background: #fff; font: 500 20px/1 var(--sans); color: var(--ink2); }
+
+/* Тарифы */
+.plan { display: flex; flex-direction: column; gap: 18px; padding: 40px 36px; border-radius: 24px; background: var(--page); }
+.plan__dir { font: 400 20px/1 var(--mono); color: var(--violet); }
+.plan--in .plan__dir { color: var(--teal); }
+.plan__name { font: 600 36px/1.15 var(--sans); }
+.plan__price { font: 600 52px/1 var(--sans); letter-spacing: -.02em; }
+.plan__price small { font: 400 24px/1 var(--sans); color: var(--ink3); letter-spacing: 0; }
+.plan__meta { font: 400 22px/1.35 var(--mono); color: var(--ink3); }
+.plan ul { list-style: none; display: flex; flex-direction: column; gap: 12px; padding-top: 18px; border-top: 1px solid var(--line); }
+.plan li { font: 400 23px/1.35 var(--sans); color: var(--ink2); }
+
+/* Формула */
+.formula { display: inline-flex; align-items: baseline; gap: 22px; padding: 36px 48px; border-radius: 24px; background: var(--violet-soft); font: 600 64px/1 var(--sans); }
+.formula small { font: 400 30px/1 var(--mono); color: var(--violet); }
+.statuses { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+.statuses div { padding: 28px; border-radius: 20px; background: var(--page); display: flex; flex-direction: column; gap: 10px; }
+.statuses b { font: 600 28px/1.2 var(--sans); }
+.statuses span { font: 400 24px/1.3 var(--mono); color: var(--ink3); }
+.st-ok b { color: var(--ok); } .st-warn b { color: var(--warn); } .st-bad b { color: var(--bad); } .st-na b { color: var(--ink4); }
+
+/* Эксперт */
+.expert { display: grid; grid-template-columns: 520px 1fr; gap: 88px; height: 100%; align-items: center; }
+.expert__photo { width: 520px; height: 700px; border-radius: 28px; overflow: hidden; background: #1a1a1a; }
+.expert__photo img { width: 100%; height: 100%; object-fit: cover; object-position: center 22%; }
+.expert__name { font: 600 40px/1.2 var(--sans); }
+.expert__role { font: 400 26px/1.3 var(--mono); color: var(--violet); }
+
+/* Обложка и финал */
+.logo { height: 56px; width: 298px; align-self: flex-start; } /* у logo.svg preserveAspectRatio=none: ширину задаём по пропорции 137:25.8 */
+.cover .frame { justify-content: space-between; padding: 112px 120px; }
+.contacts { display: grid; grid-template-columns: repeat(3, auto); gap: 96px; justify-content: center; text-align: left; }
+.contacts span { display: block; font: 400 22px/1.3 var(--mono); color: var(--ink4); margin-bottom: 12px; }
+.contacts b { font: 600 40px/1.2 var(--sans); }
+</style>
+</head>
+<body>
+
+<!-- 1. Обложка -->
+<section class="slide cover">
+  <div class="bar"><span>Сервис Mirror</span><b>Презентация для заказчиков</b></div>
+  <div class="frame">
+    <img class="logo" src="../../prototype/home/assets/logo.svg" alt="Mirror">
+    <div class="col" style="gap:40px">
+      <h1 class="h1">Сверяем обещания<br>работодателя<br><span class="dim">с реальностью</span></h1>
+      <p class="lead" style="max-width:1200px">Оценка HR-бренда снаружи и здоровье корпоративной культуры изнутри. Данные, методика и эксперт, который ведёт до результата.</p>
+    </div>
+    <p class="mono small">mirror-com.ru</p>
+  </div>
+</section>
+
+<!-- 2. Раздел 01 -->
+<section class="slide divider">
+  <div class="bar"><span>Сервис Mirror</span><b>Презентация для заказчиков</b></div>
+  <div class="frame"><h2>О проблеме</h2><div class="num">01</div></div>
+</section>
+
+<section class="slide">
+  <div class="bar"><span>Сервис Mirror</span><b>О проблеме</b></div>
+  <div class="frame">
+    <div class="split">
+      <h2 class="h2">Большинство компаний не видят себя со стороны</h2>
+      <ol class="list">
+        <li data-n="01"><b>Заявленное не совпадает с тем, что видят люди</b><span>Компания пишет о себе одно, а кандидаты и сотрудники видят другое. Часто это два разных мира.</span></li>
+        <li data-n="02"><b>Опросы вовлечённости не показывают причину</b><span>Метрики есть, но непонятно, почему они такие и что с ними делать.</span></li>
+        <li data-n="03"><b>Решения принимаются по ощущениям</b><span>По громким историям и мнениям, а не по данным, которые можно проверить.</span></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="bar"><span>Сервис Mirror</span><b>О проблеме</b></div>
+  <div class="frame frame--center" style="gap:56px">
+    <p class="eyebrow">Как это выглядит снаружи</p>
+    <p class="statement">В вакансии написано <b>«гибкий формат»</b>, а на Dreamjob кандидат читает <b>«Удалёнку обещали на собеседовании. По факту офис пять дней в неделю»</b>.</p>
+    <p class="lead" style="max-width:1200px">Обещание, которое не подтверждается, бьёт по доверию сильнее, чем его отсутствие. Кандидат перестаёт верить и остальным словам компании.</p>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="bar"><span>Сервис Mirror</span><b>О проблеме</b></div>
+  <div class="frame frame--center">
+    <p class="statement">В результате компании сложнее нанимать, падает доверие сотрудников, растут репутационные риски, и непонятно, <b>с чего начать изменения</b>.</p>
+  </div>
+</section>
+
+<!-- Раздел 02 -->
+<section class="slide divider">
+  <div class="bar"><span>Сервис Mirror</span><b>Презентация для заказчиков</b></div>
+  <div class="frame"><h2>Решение</h2><div class="num">02</div></div>
+</section>
+
+<section class="slide">
+  <div class="bar"><span>Сервис Mirror</span><b>Решение</b></div>
+  <div class="frame" style="padding-bottom:0;gap:56px">
+    <p class="statement" style="font-size:52px;max-width:1600px">Mirror сверяет то, что компания обещает, с тем, что видят кандидаты и переживают сотрудники. Эксперт превращает разрывы <b>в план изменений</b>.</p>
+    <div class="shot" style="width:1400px;align-self:center;border-bottom-left-radius:0;border-bottom-right-radius:0">
+      <div class="shot__bar"><i></i><i></i><i></i><span>mirror-com.ru</span></div>
+      <img src="shots/site-home.jpg" alt="" style="height:520px;object-fit:cover;object-position:top">
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="bar"><span>Сервис Mirror</span><b>Решение</b></div>
+  <div class="frame" style="gap:56px">
+    <h2 class="h2">Два направления</h2>
+    <div class="cards cards--2" style="flex:1">
+      <div class="card card--violet">
+        <p class="card__tag">направление 01 · снаружи</p>
+        <p class="card__title">Оценка HR-бренда и индекс культуры</p>
+        <p class="card__text">Что видят кандидаты и рынок. Верят ли вашим обещаниям, о чём люди говорят, а вы молчите, насколько ваши условия хороши по сравнению с отраслью.</p>
+        <div class="chips"><span>Индекс культуры</span><span>Слепые зоны</span><span>Место в отрасли</span><span>Конкуренты</span></div>
+      </div>
+      <div class="card card--teal">
+        <p class="card__tag">направление 02 · изнутри</p>
+        <p class="card__title">Дашборд здоровья корпоративной культуры</p>
+        <p class="card__text">Как сотрудники переживают культуру каждый день. Где опыт людей расходится с культурным кодом и куда направить усилия.</p>
+        <div class="chips"><span>10 метрик</span><span>Разрыв с кодом</span><span>Группы от 5 человек</span><span>Решения по обратной связи</span></div>
+      </div>
+    </div>
+    <p class="small">Показатели направлений не смешиваем в одну цифру: у них разные точки отсчёта. Сверяем темы. Если проблема видна и снаружи, и изнутри, это не шум в отзывах.</p>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="bar"><span>Сервис Mirror</span><b>Решение</b></div>
+  <div class="frame">
+    <div class="split" style="align-items:start;padding-top:80px">
+      <div class="col"><p class="eyebrow">Цель Mirror</p><p class="lead" style="font-size:38px;color:var(--ink)">Помогать компаниям увидеть свою культуру такой, какая она есть. Мы соединяем анализ данных с экспертизой, чтобы найти причины проблем, построить честные отношения между компанией и сотрудниками и запустить изменения изнутри.</p></div>
+      <div class="col"><p class="eyebrow">Миссия Mirror</p><p class="lead" style="font-size:38px;color:var(--ink)">Запустить цепную реакцию улучшений: от доверия сотрудников до роста ключевых показателей компании.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- Раздел 03 -->
+<section class="slide divider">
+  <div class="bar"><span>Сервис Mirror</span><b>Презентация для заказчиков</b></div>
+  <div class="frame"><h2>Как это работает</h2><div class="num">03</div></div>
+</section>
+
+<section class="slide">
+  <div class="bar"><span>Сервис Mirror</span><b>Как это работает</b></div>
+  <div class="frame frame--well" style="gap:56px">
+    <h2 class="h2">Путь клиента</h2>
+    <div class="cards cards--4" style="flex:1">
+      <div class="card" style="background:#fff"><p class="card__num">01</p><p class="card__title">Бесплатный срез</p><p class="card__text">Нужны название компании и ссылка на hh.ru. Доступ к вашим системам не нужен.</p><p class="card__tag" style="margin-top:auto">3 рабочих дня · 0 ₽</p></div>
+      <div class="card" style="background:#fff"><p class="card__num">02</p><p class="card__title">Разбор с экспертом</p><p class="card__text">Объясняем цифры, отвечаем на вопросы, вместе решаем, нужен ли следующий шаг.</p><p class="card__tag" style="margin-top:auto">30 минут · бесплатно</p></div>
+      <div class="card" style="background:#fff"><p class="card__num">03</p><p class="card__title">Мониторинг или диагностика</p><p class="card__text">Снаружи следим за индексом каждый месяц. Изнутри проводим опрос, интервью и сверку с культурным кодом.</p><p class="card__tag" style="margin-top:auto">каждый месяц или около 4 недель</p></div>
+      <div class="card" style="background:#fff"><p class="card__num">04</p><p class="card__title">Кампания на 3 месяца</p><p class="card__text">Три замера, решения по обратной связи для сотрудников, встречи с руководителями и сопровождение изменений.</p><p class="card__tag" style="margin-top:auto">3 месяца</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="bar"><span>Сервис Mirror</span><b>Снаружи · оценка HR-бренда</b></div>
+  <div class="frame">
+    <div class="split split--shot">
+      <div class="col">
+        <h2 class="h2">Ваши обещания против опыта людей</h2>
+        <ul class="dots">
+          <li><b>Что вы обещаете.</b> Собираем обещания из вакансий, карьерного сайта и соцсетей.</li>
+          <li><b>Где проверяем.</b> Ищем упоминания каждой темы на hh.ru, Dreamjob, в VK, Дзене, медиа и в ответах нейросетей.</li>
+          <li><b>Что получаете.</b> Статус каждого обещания и индекс культуры одной цифрой.</li>
+        </ul>
+      </div>
+      <div><div class="shot shot--h"><div class="shot__bar"><i></i><i></i><i></i><span>mirror-com.ru/hr-brand</span></div><img src="shots/site-check.jpg" alt=""></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="bar"><span>Сервис Mirror</span><b>Снаружи · оценка HR-бренда</b></div>
+  <div class="frame">
+    <div class="split split--shot-r">
+      <div><div class="shot shot--h"><div class="shot__bar"><i></i><i></i><i></i><span>mirror-com.ru/hr-brand</span></div><img src="shots/site-metrics.jpg" alt=""></div></div>
+      <div class="col">
+        <h2 class="h2">Три показателя</h2>
+        <ul class="dots">
+          <li><b>Индекс культуры.</b> Совпадают ли слова и дела: доля обещаний, которые подтверждает опыт людей.</li>
+          <li><b>Слепые зоны.</b> О чём люди говорят, а в ваших текстах ни слова. Закрывают лазейку «пообещать поменьше».</li>
+          <li><b>Место в отрасли.</b> Насколько хороши условия по сравнению с работодателями вашей отрасли и региона.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="bar"><span>Сервис Mirror</span><b>Снаружи · как считаем</b></div>
+  <div class="frame" style="gap:56px">
+    <h2 class="h2">Методика открыта, любой результат можно проверить</h2>
+    <div class="formula">Индекс = Σ (вес × % подтверждения) <small>от 0 до 100</small></div>
+    <p class="lead">Вес обещания равен его доле в ваших текстах. Упоминания до 12 месяцев весят 1, от 12 до 24 месяцев 0,5, старше не учитываем. Для конкурентов правила те же.</p>
+    <div class="statuses">
+      <div class="st-ok"><b>Подтверждается</b><span>от 60% упоминаний</span></div>
+      <div class="st-warn"><b>Частично</b><span>от 40 до 59%</span></div>
+      <div class="st-bad"><b>Не подтверждается</b><span>меньше 40%</span></div>
+      <div class="st-na"><b>Нет данных</b><span>меньше 10 упоминаний</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="bar"><span>Сервис Mirror</span><b>Снаружи · пример отчёта</b></div>
+  <div class="frame">
+    <div class="split split--shot">
+      <div class="col">
+        <h2 class="h2">Как выглядит результат</h2>
+        <ul class="dots">
+          <li>Четыре числа и три вывода: что работает, где риск, с чего начать.</li>
+          <li>Динамика индекса по месяцам с событиями, которые на него повлияли.</li>
+          <li>Три первых шага: кто делает и за какой срок.</li>
+        </ul>
+        <p class="caption">Пример на условной компании «Банк N»</p>
+      </div>
+      <div><div class="shot shot--h"><div class="shot__bar"><i></i><i></i><i></i><span>mirror-com.ru/hr-brand/demo</span></div><img src="shots/demo-summary.jpg" alt=""></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="bar"><span>Сервис Mirror</span><b>Снаружи · пример отчёта</b></div>
+  <div class="frame">
+    <div class="split split--shot-r">
+      <div><div class="shot shot--h"><div class="shot__bar"><i></i><i></i><i></i><span>mirror-com.ru/hr-brand/demo</span></div><img src="shots/demo-promises.jpg" alt=""></div></div>
+      <div class="col">
+        <h2 class="h2">Каждое обещание по отдельности</h2>
+        <ul class="dots">
+          <li>Вес обещания в ваших текстах и число упоминаний.</li>
+          <li>Доля упоминаний, где опыт людей совпадает с обещанием.</li>
+          <li>Сколько баллов индекса теряет каждое обещание. Обычно почти весь недобор даёт одно-два из них.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="bar"><span>Сервис Mirror</span><b>Снаружи · пример отчёта</b></div>
+  <div class="frame">
+    <div class="split split--shot">
+      <div class="col">
+        <h2 class="h2">Честность и условия на одном поле</h2>
+        <ul class="dots">
+          <li><b>Сильный и честный.</b> Условия выше рынка, обещания подтверждаются. Рассказывайте громче.</li>
+          <li><b>Честно, но слабо.</b> Обещания честные, условия хуже рынка. Улучшайте условия.</li>
+          <li><b>Обещаете не то.</b> Условия хорошие, но в текстах есть то, что не подтверждается.</li>
+          <li><b>Переобещаете.</b> Главный риск для доверия.</li>
+        </ul>
+      </div>
+      <div><div class="shot shot--h"><div class="shot__bar"><i></i><i></i><i></i><span>mirror-com.ru/hr-brand/demo</span></div><img src="shots/demo-matrix.jpg" alt=""></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="bar"><span>Сервис Mirror</span><b>Изнутри · здоровье культуры</b></div>
+  <div class="frame">
+    <div class="split split--shot-r">
+      <div><div class="shot shot--h"><div class="shot__bar"><i></i><i></i><i></i><span>mirror-com.ru/culture-health</span></div><img src="shots/health-layers.jpg" alt=""></div></div>
+      <div class="col">
+        <h2 class="h2">Два слоя культуры и разрыв между ними</h2>
+        <ul class="dots teal-dots">
+          <li><b>Заявленная культура.</b> Ценности и нормы вашего культурного кода.</li>
+          <li><b>Переживаемая культура.</b> Что люди испытывают каждый день, по опросам и текстам.</li>
+          <li><b>Разрыв.</b> Где норма расходится с опытом и куда направить усилия.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="bar"><span>Сервис Mirror</span><b>Изнутри · здоровье культуры</b></div>
+  <div class="frame">
+    <div class="split split--shot">
+      <div class="col">
+        <h2 class="h2">10 метрик переживаемой культуры</h2>
+        <ul class="dots teal-dots" style="gap:12px">
+          <li>Ясность смысла, принадлежность, развитие и рост</li>
+          <li>Психологическая безопасность, сотрудничество, обратная связь и голос</li>
+          <li>Энергия и ресурс, влияние, справедливость, признание</li>
+        </ul>
+        <p class="small">Баллом становятся только опросы и тексты. HR-данные в агрегате подтверждают или опровергают сигнал. У каждого балла видна уверенность данных.</p>
+      </div>
+      <div><div class="shot shot--h"><div class="shot__bar"><i></i><i></i><i></i><span>mirror-com.ru/culture-health/demo</span></div><img src="shots/health-demo.jpg" alt=""></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="bar"><span>Сервис Mirror</span><b>Изнутри · приватность</b></div>
+  <div class="frame" style="gap:56px">
+    <h2 class="h2">Смотрим на группы, а не на людей</h2>
+    <div class="cards cards--3" style="flex:1">
+      <div class="card card--teal"><p class="card__title">Группы от 5 ответивших</p><p class="card__text">Меньшие группы объединяем с уровнем выше. Сочетания срезов, из которых можно вычислить маленькую группу, тоже скрыты.</p></div>
+      <div class="card card--teal"><p class="card__title">Авторов не ищем</p><p class="card__text">Анонимные сообщения не привязываем к подразделениям, цитаты проверяем на узнаваемые детали.</p></div>
+      <div class="card card--teal"><p class="card__title">Данные в России</p><p class="card__text">Сырые ответы удаляем в течение 30 дней после проекта. Договор на обработку данных по 152-ФЗ.</p></div>
+    </div>
+    <p class="small">Правила одинаковые для всех ролей, включая топ-менеджмент. Дашборд показывает состояние культуры в группах и не используется для оценки людей.</p>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="bar"><span>Сервис Mirror</span><b>Личный кабинет</b></div>
+  <div class="frame">
+    <div class="split split--shot">
+      <div class="col">
+        <h2 class="h2">Личный кабинет клиента</h2>
+        <p class="lead">Для проверки изнутри всё в одном месте, с доступом по ролям.</p>
+        <ul class="dots">
+          <li><b>Ход работы.</b> На каком этапе проект и что дальше.</li>
+          <li><b>Что нового</b> с прошлого входа.</li>
+          <li><b>Требует внимания.</b> Резкие изменения метрик.</li>
+        </ul>
+      </div>
+      <div><div class="shot shot--h"><div class="shot__bar"><i></i><i></i><i></i><span>mirror-com.ru/app</span></div><img src="shots/cab-overview.jpg" alt=""></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="bar"><span>Сервис Mirror</span><b>Личный кабинет</b></div>
+  <div class="frame" style="gap:44px">
+    <h2 class="h2">Запуск и опрос без лишней переписки</h2>
+    <div class="cards cards--2" style="align-items:start">
+      <div class="col" style="gap:20px"><div class="shot shot--hs"><div class="shot__bar"><i></i><i></i><i></i><span>Подготовка к запуску</span></div><img src="shots/cab-launch.jpg" alt=""></div><p class="card__text">Чек-лист запуска: что загрузить и кого пригласить. Большую часть шагов система отмечает сама.</p></div>
+      <div class="col" style="gap:20px"><div class="shot shot--hs"><div class="shot__bar"><i></i><i></i><i></i><span>Опрос идёт</span></div><img src="shots/cab-survey.jpg" alt=""></div><p class="card__text">Ход опроса по подразделениям: видно только, сколько ответили. Где ответов меньше 5, срез будет скрыт.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="bar"><span>Сервис Mirror</span><b>Личный кабинет</b></div>
+  <div class="frame">
+    <div class="split split--shot-r">
+      <div><div class="shot shot--h"><div class="shot__bar"><i></i><i></i><i></i><span>mirror-com.ru/app · изнутри</span></div><img src="shots/cab-internal.jpg" alt=""></div></div>
+      <div class="col">
+        <h2 class="h2">Дашборд на ваших данных</h2>
+        <ul class="dots teal-dots">
+          <li>Срезы по подразделениям, этапам жизненного цикла, периодам и волнам.</li>
+          <li>У каждого среза видно, сколько ответили и насколько можно опираться на балл.</li>
+          <li>Каждая метрика открывается: динамика, причины, источники.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="bar"><span>Сервис Mirror</span><b>Личный кабинет</b></div>
+  <div class="frame">
+    <div class="split split--shot">
+      <div class="col">
+        <h2 class="h2">Что изменилось за кампанию</h2>
+        <p class="lead">Каждая метрика и индекс по трём замерам. Видно, где стало лучше, а где нужно действовать дальше.</p>
+      </div>
+      <div><div class="shot shot--h"><div class="shot__bar"><i></i><i></i><i></i><span>mirror-com.ru/app · волны кампании</span></div><img src="shots/cab-waves.jpg" alt=""></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="bar"><span>Сервис Mirror</span><b>Личный кабинет</b></div>
+  <div class="frame">
+    <div class="split split--shot-r">
+      <div><div class="shot shot--h"><div class="shot__bar"><i></i><i></i><i></i><span>mirror-com.ru/app · руководитель</span></div><img src="shots/cab-manager.jpg" alt=""></div></div>
+      <div class="col">
+        <h2 class="h2">Каждой роли свой срез</h2>
+        <ul class="dots">
+          <li><b>HR-директор и HRBP.</b> Все группы, сигналы, решения и план.</li>
+          <li><b>Руководитель.</b> Своя группа от 5 человек и среднее по компании для ориентира.</li>
+          <li><b>Топ-менеджмент.</b> Общая картина, разрывы и тренды.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="bar"><span>Сервис Mirror</span><b>Личный кабинет</b></div>
+  <div class="frame">
+    <div class="split split--shot">
+      <div class="col">
+        <h2 class="h2">Сводка для руководства</h2>
+        <p class="lead">Одна страница для первых лиц: индексы, главные разрывы, что изменилось с прошлого замера, решения и их результат.</p>
+        <p class="small">Без срезов по подразделениям, поэтому её можно показать совету директоров целиком. Раз в месяц приходит письмом.</p>
+      </div>
+      <div><div class="shot shot--h"><div class="shot__bar"><i></i><i></i><i></i><span>mirror-com.ru/app · сводка</span></div><img src="shots/cab-brief.jpg" alt=""></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="bar"><span>Сервис Mirror</span><b>Личный кабинет</b></div>
+  <div class="frame">
+    <div class="split split--shot-r">
+      <div><div class="shot shot--h"><div class="shot__bar"><i></i><i></i><i></i><span>mirror-com.ru/app · решения</span></div><img src="shots/cab-decisions.jpg" alt=""></div></div>
+      <div class="col">
+        <h2 class="h2">От сигнала к решению</h2>
+        <ul class="dots teal-dots">
+          <li>Решение заводится прямо из сигнала: с ответственным и сроком.</li>
+          <li>Доля закрытых петель: сколько сигналов получили ответ.</li>
+          <li>Опубликованные решения сотрудники видят на открытой странице. Люди видят, что их услышали.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="bar"><span>Сервис Mirror</span><b>Личный кабинет</b></div>
+  <div class="frame">
+    <div class="split split--shot">
+      <div class="col">
+        <h2 class="h2">Эксперт на связи</h2>
+        <ul class="dots">
+          <li>Вопрос эксперту с привязкой к метрике, отчёту или шагу плана.</li>
+          <li>Ответ в течение 2 рабочих дней.</li>
+          <li>Запись на встречу в свободное окно эксперта.</li>
+        </ul>
+      </div>
+      <div><div class="shot shot--h"><div class="shot__bar"><i></i><i></i><i></i><span>mirror-com.ru/app · вопросы эксперту</span></div><img src="shots/cab-questions.jpg" alt=""></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="bar"><span>Сервис Mirror</span><b>Как это работает</b></div>
+  <div class="frame" style="padding:0;flex-direction:row;background:none;gap:28px">
+    <div style="flex:0 0 640px;border-radius:28px;background:#fff;padding:96px;display:flex;align-items:center"><h2 class="h2">Данные, эксперт и внедрение</h2></div>
+    <div style="flex:1;border-radius:28px;background:#fff;padding:96px;display:flex;flex-direction:column;justify-content:center;gap:56px">
+      <div><p class="h3"><span class="violet mono">01</span> · Анализ данных</p><p class="card__text" style="margin-top:14px">Код считает индекс и метрики по открытой методике. ИИ готовит черновик выводов. Цифры не придумываются.</p></div>
+      <div><p class="h3"><span class="violet mono">02</span> · Проверка и план эксперта</p><p class="card__text" style="margin-top:14px">Эксперт проверяет цифры и цитаты, изучает ваши документы и пишет план: что делать, кто отвечает, к какому сроку.</p></div>
+      <div><p class="h3"><span class="violet mono">03</span> · Внедрение</p><p class="card__text" style="margin-top:14px">Вместе с командой проводим изменения и показываем результат. Решения видят сотрудники.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="bar"><span>Сервис Mirror</span><b>Как это работает</b></div>
+  <div class="frame frame--center">
+    <p class="statement">Ключевая ценность Mirror в том, что вы получаете <b>приоритеты действий</b> и индекс культуры, основанный на том, насколько ваши обещания совпадают с реальностью.</p>
+  </div>
+</section>
+
+<!-- Раздел 04 -->
+<section class="slide divider">
+  <div class="bar"><span>Сервис Mirror</span><b>Презентация для заказчиков</b></div>
+  <div class="frame"><h2>Что вы получаете</h2><div class="num">04</div></div>
+</section>
+
+<section class="slide">
+  <div class="bar"><span>Сервис Mirror</span><b>Что вы получаете</b></div>
+  <div class="frame frame--well" style="gap:48px">
+    <h2 class="h2">Услуги и цены</h2>
+    <div class="cards cards--4" style="flex:1">
+      <div class="plan" style="background:#fff"><p class="plan__dir">снаружи</p><p class="plan__name">Внешний срез</p><p class="plan__price">0 ₽</p><p class="plan__meta">3 рабочих дня</p><ul><li>Индекс культуры, слепые зоны, место в отрасли</li><li>2–3 конкурента</li><li>PDF-отчёт и разбор с экспертом 30 минут</li></ul></div>
+      <div class="plan" style="background:#fff"><p class="plan__dir">снаружи</p><p class="plan__name">Мониторинг</p><p class="plan__price"><small>от</small> 110 000 ₽</p><p class="plan__meta">в месяц · отчёт каждый месяц</p><ul><li>Динамика индекса и слепых зон</li><li>Сигнал, если тема резко выросла</li><li>До 5 конкурентов, звонок с экспертом раз в месяц</li></ul></div>
+      <div class="plan plan--in" style="background:#fff"><p class="plan__dir">изнутри</p><p class="plan__name">Диагностика</p><p class="plan__price"><small>от</small> 250 000 ₽</p><p class="plan__meta">около 4 недель</p><ul><li>Опрос, до 12 интервью, сверка с культурным кодом</li><li>10 метрик и разрыв с кодом</li><li>Личный кабинет, отчёт и план на 90 дней</li></ul></div>
+      <div class="plan plan--in" style="background:#fff"><p class="plan__dir">изнутри</p><p class="plan__name">Кампания</p><p class="plan__price"><small>от</small> 490 000 ₽</p><p class="plan__meta">3 месяца</p><ul><li>Диагностика уже входит</li><li>Три замера, анонимная обратная связь, решения для сотрудников</li><li>Встречи с руководителями раз в 2 недели</li></ul></div>
+    </div>
+    <p class="small">Цена проверки изнутри зависит от численности и числа подразделений и фиксируется в договоре до начала работы.</p>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="bar"><span>Сервис Mirror</span><b>Что вы получаете</b></div>
+  <div class="frame" style="padding:0;flex-direction:row;background:none;gap:28px">
+    <div style="flex:0 0 640px;border-radius:28px;background:#fff;padding:96px;display:flex;align-items:center"><h2 class="h2">Преимущества Mirror</h2></div>
+    <div style="flex:1;border-radius:28px;background:#fff;padding:96px;display:flex;flex-direction:column;justify-content:center;gap:56px">
+      <div><p class="h3"><span class="violet mono">01</span> · Открытая методика</p><p class="card__text" style="margin-top:14px">Любой результат можно проверить по таблице. Для вас и для конкурентов правила одни.</p></div>
+      <div><p class="h3"><span class="violet mono">02</span> · От анализа к действию</p><p class="card__text" style="margin-top:14px">План с ответственными и сроками, а эксперт ведёт до результата.</p></div>
+      <div><p class="h3"><span class="violet mono">03</span> · Снаружи и изнутри</p><p class="card__text" style="margin-top:14px">Видно, где проблема заметна с двух сторон, а где сильная сторона, которую стоит показывать громче.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- Раздел 05 -->
+<section class="slide divider">
+  <div class="bar"><span>Сервис Mirror</span><b>Презентация для заказчиков</b></div>
+  <div class="frame"><h2>Кому это подойдёт</h2><div class="num">05</div></div>
+</section>
+
+<section class="slide">
+  <div class="bar"><span>Сервис Mirror</span><b>Кому это подойдёт</b></div>
+  <div class="frame" style="padding:0;flex-direction:row;background:none;gap:28px">
+    <div style="flex:0 0 640px;border-radius:28px;background:#fff;padding:96px;display:flex;align-items:center"><h2 class="h2">Mirror для вашей команды</h2></div>
+    <div style="flex:1;border-radius:28px;background:#fff;padding:96px;display:flex;flex-direction:column;justify-content:center;gap:48px">
+      <div><p class="h3">HR-бренд и внутренние коммуникации</p><p class="card__text" style="margin-top:12px">Структурированный анализ вместо догадок и понятно, о чём говорить громче.</p></div>
+      <div><p class="h3">HR-директора</p><p class="card__text" style="margin-top:12px">Язык данных для разговора с топ-менеджментом и выход в зону стратегического влияния.</p></div>
+      <div><p class="h3">Руководители подразделений</p><p class="card__text" style="margin-top:12px">Срез своей команды, ориентир по компании и конкретные шаги.</p></div>
+      <div><p class="h3">Собственники и топ-менеджеры</p><p class="card__text" style="margin-top:12px">Риски и точки напряжения до того, как они станут критичными.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="bar"><span>Сервис Mirror</span><b>Автор идеи</b></div>
+  <div class="frame">
+    <div class="expert">
+      <div class="col" style="gap:28px">
+        <div class="expert__photo"><img src="expert.png" alt="Анастасия Флегантова"></div>
+      </div>
+      <div class="col" style="gap:32px">
+        <div><p class="expert__name">Анастасия Флегантова</p><p class="expert__role">Автор идеи Mirror</p></div>
+        <ul class="dots" style="gap:16px">
+          <li>10+ лет опыта в развитии корпоративной культуры, внутренних коммуникаций, PR и HR-брендинге.</li>
+          <li>Член Национальной ассоциации экспертов по корпоративным коммуникациям.</li>
+          <li>Работала in-house и в консалтинге с компаниями разных отраслей: банки, ритейл, IT, строительство, госкорпорации, производство, медиа.</li>
+          <li>Соавтор профильных курсов «Развиваем HR-бренд в эпоху перемен» и «ДНК привлекательного HR-бренда» Академии ПРОвнутриком.</li>
+          <li>Победитель и призёр премий InterComm, GRASIAS AWARDS, ВЕКтор развития, Silver Mercury, Bravo, ТОП-50 HR-решений.</li>
+          <li>Автор канала о культуре, коммуникациях и HR-бренде «В самую ценность».</li>
+          <li>Член жюри профильных премий, спикер профильных конференций и сообществ.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="bar"><span>Сервис Mirror</span><b>Контакты</b></div>
+  <div class="frame frame--center" style="gap:80px">
+    <img class="logo" src="../../prototype/home/assets/logo.svg" alt="Mirror" style="height:72px;width:383px;align-self:center">
+    <p class="statement" style="font-size:52px">Мы не украшаем бренд работодателя. Мы показываем его таким, какой он есть, чтобы вы могли увидеть, принять и изменить <b>то, что действительно важно</b>.</p>
+    <div class="contacts">
+      <div><span>Сайт</span><b>mirror-com.ru</b></div>
+      <div><span>Почта</span><b>mirrorcom@mail.ru</b></div>
+      <div><span>Телефон</span><b>+7 912 702-30-30</b></div>
+    </div>
+    <p class="eyebrow">Первый срез бесплатный: 3 рабочих дня, нужна только ссылка на hh.ru</p>
+  </div>
+</section>
+
+<script>
+/* Номера страниц и типограф: короткие слова не остаются в конце строки (как typograf() в src/lib/typograf.ts) */
+document.querySelectorAll(".slide").forEach((s, i, all) => { if (i > 0) { const n = document.createElement("span"); n.className = "page-no"; n.textContent = String(i + 1).padStart(2, "0") + " / " + all.length; s.append(n); } });
+(function typograf(root) {
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, { acceptNode: (n) => (n.parentElement.closest("script,style,.mono,.bar") ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT) });
+  const short = /(^|[\s («"„—–/])([−+]?[A-Za-zА-Яа-яЁё0-9№]{1,3}%?)[ ]+(?=\S)/g;
+  let n;
+  while ((n = walker.nextNode())) {
+    let t = n.nodeValue, prev;
+    if (!t.trim()) continue;
+    do { prev = t; t = t.replace(short, "$1$2 "); } while (t !== prev);
+    t = t.replace(/ +([—–])/g, " $1");
+    if (t !== n.nodeValue) n.nodeValue = t;
+  }
+})(document.body);
+</script>
+</body>
+</html>
