@@ -36,7 +36,7 @@ body { font-family: var(--sans); color: var(--ink); -webkit-font-smoothing: anti
 
 /* Заставка раздела */
 .divider { background: var(--violet); }
-.divider .bar, .divider .bar b, .divider .page-no { color: rgba(255,255,255,.75); }
+.divider .bar, .divider .bar b, .divider .page-no { color: #d9c6f2; }
 .divider .frame { background: #f5f0fc; justify-content: space-between; }
 .divider h2 { font: 400 132px/1.02 var(--sans); letter-spacing: -.02em; }
 .divider .num { align-self: flex-end; font: 400 320px/.8 var(--mono); color: var(--violet); letter-spacing: -.04em; }
@@ -77,6 +77,8 @@ body { font-family: var(--sans); color: var(--ink); -webkit-font-smoothing: anti
 
 /* Окно браузера со скриншотом */
 .shot { min-width: 0; border-radius: 22px; overflow: hidden; background: #fff; border: 1px solid var(--line); box-shadow: 0 30px 80px -30px rgba(23,20,43,.35); }
+/* В PDF без полупрозрачных теней: Safari и мобильные просмотрщики рисуют их серыми прямоугольниками */
+@media print { .shot { box-shadow: none; border-color: #d6d4df; } }
 .shot__bar { display: flex; align-items: center; gap: 10px; height: 52px; padding: 0 22px; background: var(--chrome); border-bottom: 1px solid var(--line); }
 .shot__bar i { width: 14px; height: 14px; border-radius: 50%; background: #d6d4df; }
 .shot__bar span { margin-left: 18px; padding: 6px 18px; border-radius: 8px; background: #fff; font: 400 18px/1 var(--mono); color: var(--ink3); }
