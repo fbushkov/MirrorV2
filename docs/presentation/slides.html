@@ -38,18 +38,18 @@ body { font-family: var(--sans); color: var(--ink); -webkit-font-smoothing: anti
 .divider { background: var(--violet); }
 .divider .bar, .divider .bar b, .divider .page-no { color: rgba(255,255,255,.75); }
 .divider .frame { background: #f5f0fc; justify-content: space-between; }
-.divider h2 { font: 700 132px/1.02 var(--sans); letter-spacing: -.02em; }
-.divider .num { align-self: flex-end; font: 500 320px/.8 var(--mono); color: var(--violet); letter-spacing: -.04em; }
+.divider h2 { font: 400 132px/1.02 var(--sans); letter-spacing: -.02em; }
+.divider .num { align-self: flex-end; font: 400 320px/.8 var(--mono); color: var(--violet); letter-spacing: -.04em; }
 
 /* Типографика */
 .eyebrow { display: inline-flex; width: fit-content; padding: 12px 28px; border-radius: 999px; background: var(--chrome); color: var(--ink4); font: 400 22px/1.2 var(--mono); }
-.h1 { font: 700 112px/1.02 var(--sans); letter-spacing: -.025em; }
-.h2 { font: 700 72px/1.06 var(--sans); letter-spacing: -.02em; }
-.h3 { font: 600 40px/1.2 var(--sans); letter-spacing: -.01em; }
+.h1 { font: 400 112px/1.02 var(--sans); letter-spacing: -.025em; }
+.h2 { font: 400 72px/1.06 var(--sans); letter-spacing: -.02em; }
+.h3 { font: 400 40px/1.2 var(--sans); letter-spacing: -.01em; }
 .lead { font: 400 34px/1.4 var(--sans); color: var(--ink2); }
 .dim { color: var(--ink3); font-weight: 400; }
 .statement { font: 400 60px/1.3 var(--sans); letter-spacing: -.01em; max-width: 1500px; }
-.statement b { font-weight: 600; }
+.statement b { font-weight: 400; }
 .small { font: 400 24px/1.4 var(--sans); color: var(--ink3); }
 .mono { font-family: var(--mono); }
 .violet { color: var(--violet); }
@@ -58,21 +58,22 @@ body { font-family: var(--sans); color: var(--ink); -webkit-font-smoothing: anti
 /* Сетки */
 .split { display: grid; grid-template-columns: 1fr 1fr; gap: 96px; align-items: center; height: 100%; }
 .split--shot { grid-template-columns: 560px 1fr; gap: 64px; }
+.split--cab { grid-template-columns: 720px 1fr; }
 .split--shot-r { grid-template-columns: 1fr 560px; gap: 64px; }
 .col { display: flex; flex-direction: column; gap: 32px; min-width: 0; }
 
 /* Списки */
 .list { list-style: none; display: flex; flex-direction: column; gap: 28px; }
 .list li { display: grid; grid-template-columns: 56px 1fr; gap: 8px; font: 400 32px/1.35 var(--sans); }
-.list li::before { content: attr(data-n); font: 500 28px/1.5 var(--mono); color: var(--violet); }
+.list li::before { content: attr(data-n); font: 400 28px/1.5 var(--mono); color: var(--violet); }
 .list li > b, .list li > span { grid-column: 2; }
-.list li b { font-weight: 600; display: block; }
+.list li b { font-weight: 400; display: block; }
 .list li span { color: var(--ink2); }
 .dots { list-style: none; display: flex; flex-direction: column; gap: 20px; }
 .dots li { position: relative; padding-left: 32px; font: 400 28px/1.4 var(--sans); color: var(--ink2); }
 .dots li::before { content: ""; position: absolute; left: 0; top: 15px; width: 12px; height: 12px; border-radius: 3px; background: var(--violet); }
 .dots.teal-dots li::before { background: var(--teal); }
-.dots li b { color: var(--ink); font-weight: 600; }
+.dots li b { display: block; margin-bottom: 4px; color: var(--ink); font-weight: 400; }
 
 /* Окно браузера со скриншотом */
 .shot { min-width: 0; border-radius: 22px; overflow: hidden; background: #fff; border: 1px solid var(--line); box-shadow: 0 30px 80px -30px rgba(23,20,43,.35); }
@@ -96,29 +97,29 @@ body { font-family: var(--sans); color: var(--ink); -webkit-font-smoothing: anti
 .card__tag { font: 400 22px/1.2 var(--mono); color: var(--ink4); }
 .card--violet .card__tag { color: var(--violet); }
 .card--teal .card__tag { color: var(--teal); }
-.card__title { font: 600 40px/1.15 var(--sans); letter-spacing: -.01em; }
+.card__title { font: 400 40px/1.15 var(--sans); letter-spacing: -.01em; }
 .card__text { font: 400 26px/1.4 var(--sans); color: var(--ink2); }
-.card__num { font: 500 30px/1 var(--mono); color: var(--violet); }
+.card__num { font: 400 30px/1 var(--mono); color: var(--violet); }
 .chips { display: flex; flex-wrap: wrap; gap: 12px; margin-top: auto; }
-.chips span { padding: 10px 18px; border-radius: 999px; background: #fff; font: 500 20px/1 var(--sans); color: var(--ink2); }
+.chips span { padding: 10px 18px; border-radius: 999px; background: #fff; font: 400 20px/1 var(--sans); color: var(--ink2); }
 
 /* Тарифы */
 .plan { display: flex; flex-direction: column; gap: 18px; padding: 40px 36px; border-radius: 24px; background: var(--page); }
 .plan__dir { font: 400 20px/1 var(--mono); color: var(--violet); }
 .plan--in .plan__dir { color: var(--teal); }
-.plan__name { font: 600 36px/1.15 var(--sans); }
-.plan__price { font: 600 52px/1 var(--sans); letter-spacing: -.02em; }
+.plan__name { font: 400 36px/1.15 var(--sans); }
+.plan__price { font: 400 52px/1 var(--sans); letter-spacing: -.02em; }
 .plan__price small { font: 400 24px/1 var(--sans); color: var(--ink3); letter-spacing: 0; }
 .plan__meta { font: 400 22px/1.35 var(--mono); color: var(--ink3); }
 .plan ul { list-style: none; display: flex; flex-direction: column; gap: 12px; padding-top: 18px; border-top: 1px solid var(--line); }
 .plan li { font: 400 23px/1.35 var(--sans); color: var(--ink2); }
 
 /* Формула */
-.formula { display: inline-flex; align-items: baseline; gap: 22px; padding: 36px 48px; border-radius: 24px; background: var(--violet-soft); font: 600 64px/1 var(--sans); }
+.formula { display: inline-flex; align-items: baseline; gap: 22px; padding: 36px 48px; border-radius: 24px; background: var(--violet-soft); font: 400 64px/1 var(--sans); }
 .formula small { font: 400 30px/1 var(--mono); color: var(--violet); }
 .statuses { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
 .statuses div { padding: 28px; border-radius: 20px; background: var(--page); display: flex; flex-direction: column; gap: 10px; }
-.statuses b { font: 600 28px/1.2 var(--sans); }
+.statuses b { font: 400 28px/1.2 var(--sans); }
 .statuses span { font: 400 24px/1.3 var(--mono); color: var(--ink3); }
 .st-ok b { color: var(--ok); } .st-warn b { color: var(--warn); } .st-bad b { color: var(--bad); } .st-na b { color: var(--ink4); }
 
@@ -126,7 +127,7 @@ body { font-family: var(--sans); color: var(--ink); -webkit-font-smoothing: anti
 .expert { display: grid; grid-template-columns: 520px 1fr; gap: 88px; height: 100%; align-items: center; }
 .expert__photo { width: 520px; height: 700px; border-radius: 28px; overflow: hidden; background: #1a1a1a; }
 .expert__photo img { width: 100%; height: 100%; object-fit: cover; object-position: center 22%; }
-.expert__name { font: 600 40px/1.2 var(--sans); }
+.expert__name { font: 400 40px/1.2 var(--sans); }
 .expert__role { font: 400 26px/1.3 var(--mono); color: var(--violet); }
 
 /* Обложка и финал */
@@ -134,7 +135,7 @@ body { font-family: var(--sans); color: var(--ink); -webkit-font-smoothing: anti
 .cover .frame { justify-content: space-between; padding: 112px 120px; }
 .contacts { display: grid; grid-template-columns: repeat(3, auto); gap: 96px; justify-content: center; text-align: left; }
 .contacts span { display: block; font: 400 22px/1.3 var(--mono); color: var(--ink4); margin-bottom: 12px; }
-.contacts b { font: 600 40px/1.2 var(--sans); }
+.contacts b { font: 400 40px/1.2 var(--sans); }
 </style>
 </head>
 <body>
@@ -145,7 +146,7 @@ body { font-family: var(--sans); color: var(--ink); -webkit-font-smoothing: anti
   <div class="frame">
     <img class="logo" src="../../prototype/home/assets/logo.svg" alt="Mirror">
     <div class="col" style="gap:40px">
-      <h1 class="h1">Сверяем обещания<br>работодателя<br><span class="dim">с реальностью</span></h1>
+      <h1 class="h1">Сверяем обещания<br>работодателя<br>с реальностью</h1>
       <p class="lead" style="max-width:1200px">Оценка HR-бренда снаружи и здоровье корпоративной культуры изнутри. Данные, методика и эксперт, который ведёт до результата.</p>
     </div>
     <p class="mono small">mirror-com.ru</p>
@@ -176,7 +177,7 @@ body { font-family: var(--sans); color: var(--ink); -webkit-font-smoothing: anti
   <div class="bar"><span>Сервис Mirror</span><b>О проблеме</b></div>
   <div class="frame frame--center" style="gap:56px">
     <p class="eyebrow">Как это выглядит снаружи</p>
-    <p class="statement">В вакансии написано <b>«гибкий формат»</b>, а на Dreamjob кандидат читает <b>«Удалёнку обещали на собеседовании. По факту офис пять дней в неделю»</b>.</p>
+    <p class="statement">В вакансии написано «гибкий формат», а на Dreamjob кандидат читает «Удалёнку обещали на собеседовании. По факту офис пять дней в неделю».</p>
     <p class="lead" style="max-width:1200px">Обещание, которое не подтверждается, бьёт по доверию сильнее, чем его отсутствие. Кандидат перестаёт верить и остальным словам компании.</p>
   </div>
 </section>
@@ -184,7 +185,7 @@ body { font-family: var(--sans); color: var(--ink); -webkit-font-smoothing: anti
 <section class="slide">
   <div class="bar"><span>Сервис Mirror</span><b>О проблеме</b></div>
   <div class="frame frame--center">
-    <p class="statement">В результате компании сложнее нанимать, падает доверие сотрудников, растут репутационные риски, и непонятно, <b>с чего начать изменения</b>.</p>
+    <p class="statement">В результате компании сложнее нанимать, падает доверие сотрудников, растут репутационные риски, и непонятно, с чего начать изменения.</p>
   </div>
 </section>
 
@@ -197,7 +198,7 @@ body { font-family: var(--sans); color: var(--ink); -webkit-font-smoothing: anti
 <section class="slide">
   <div class="bar"><span>Сервис Mirror</span><b>Решение</b></div>
   <div class="frame" style="padding-bottom:0;gap:56px">
-    <p class="statement" style="font-size:52px;max-width:1600px">Mirror сверяет то, что компания обещает, с тем, что видят кандидаты и переживают сотрудники. Эксперт превращает разрывы <b>в план изменений</b>.</p>
+    <p class="statement" style="font-size:52px;max-width:1600px">Mirror сверяет то, что компания обещает, с тем, что видят кандидаты и переживают сотрудники. Эксперт превращает разрывы в план изменений.</p>
     <div class="shot" style="width:1400px;align-self:center;border-bottom-left-radius:0;border-bottom-right-radius:0">
       <div class="shot__bar"><i></i><i></i><i></i><span>mirror-com.ru</span></div>
       <img src="shots/site-home.jpg" alt="" style="height:520px;object-fit:cover;object-position:top">
@@ -263,9 +264,9 @@ body { font-family: var(--sans); color: var(--ink); -webkit-font-smoothing: anti
       <div class="col">
         <h2 class="h2">Ваши обещания против опыта людей</h2>
         <ul class="dots">
-          <li><b>Что вы обещаете.</b> Собираем обещания из вакансий, карьерного сайта и соцсетей.</li>
-          <li><b>Где проверяем.</b> Ищем упоминания каждой темы на hh.ru, Dreamjob, в VK, Дзене, медиа и в ответах нейросетей.</li>
-          <li><b>Что получаете.</b> Статус каждого обещания и индекс культуры одной цифрой.</li>
+          <li><b>Что вы обещаете</b>Собираем обещания из вакансий, карьерного сайта и соцсетей.</li>
+          <li><b>Где проверяем</b>Ищем упоминания каждой темы на hh.ru, Dreamjob, в VK, Дзене, медиа и в ответах нейросетей.</li>
+          <li><b>Что получаете</b>Статус каждого обещания и индекс культуры одной цифрой.</li>
         </ul>
       </div>
       <div><div class="shot shot--h"><div class="shot__bar"><i></i><i></i><i></i><span>mirror-com.ru/hr-brand</span></div><img src="shots/site-check.jpg" alt=""></div></div>
@@ -281,9 +282,9 @@ body { font-family: var(--sans); color: var(--ink); -webkit-font-smoothing: anti
       <div class="col">
         <h2 class="h2">Три показателя</h2>
         <ul class="dots">
-          <li><b>Индекс культуры.</b> Совпадают ли слова и дела: доля обещаний, которые подтверждает опыт людей.</li>
-          <li><b>Слепые зоны.</b> О чём люди говорят, а в ваших текстах ни слова. Закрывают лазейку «пообещать поменьше».</li>
-          <li><b>Место в отрасли.</b> Насколько хороши условия по сравнению с работодателями вашей отрасли и региона.</li>
+          <li><b>Индекс культуры</b>Совпадают ли слова и дела: доля обещаний, которые подтверждает опыт людей.</li>
+          <li><b>Слепые зоны</b>О чём люди говорят, а в ваших текстах ни слова. Закрывают лазейку «пообещать поменьше».</li>
+          <li><b>Место в отрасли</b>Насколько хороши условия по сравнению с работодателями вашей отрасли и региона.</li>
         </ul>
       </div>
     </div>
@@ -347,10 +348,10 @@ body { font-family: var(--sans); color: var(--ink); -webkit-font-smoothing: anti
       <div class="col">
         <h2 class="h2">Честность и условия на одном поле</h2>
         <ul class="dots">
-          <li><b>Сильный и честный.</b> Условия выше рынка, обещания подтверждаются. Рассказывайте громче.</li>
-          <li><b>Честно, но слабо.</b> Обещания честные, условия хуже рынка. Улучшайте условия.</li>
-          <li><b>Обещаете не то.</b> Условия хорошие, но в текстах есть то, что не подтверждается.</li>
-          <li><b>Переобещаете.</b> Главный риск для доверия.</li>
+          <li><b>Сильный и честный</b>Условия выше рынка, обещания подтверждаются. Рассказывайте громче.</li>
+          <li><b>Честно, но слабо</b>Обещания честные, условия хуже рынка. Улучшайте условия.</li>
+          <li><b>Обещаете не то</b>Условия хорошие, но в текстах есть то, что не подтверждается.</li>
+          <li><b>Переобещаете</b>Главный риск для доверия.</li>
         </ul>
       </div>
       <div><div class="shot shot--h"><div class="shot__bar"><i></i><i></i><i></i><span>mirror-com.ru/hr-brand/demo</span></div><img src="shots/demo-matrix.jpg" alt=""></div></div>
@@ -366,9 +367,9 @@ body { font-family: var(--sans); color: var(--ink); -webkit-font-smoothing: anti
       <div class="col">
         <h2 class="h2">Два слоя культуры и разрыв между ними</h2>
         <ul class="dots teal-dots">
-          <li><b>Заявленная культура.</b> Ценности и нормы вашего культурного кода.</li>
-          <li><b>Переживаемая культура.</b> Что люди испытывают каждый день, по опросам и текстам.</li>
-          <li><b>Разрыв.</b> Где норма расходится с опытом и куда направить усилия.</li>
+          <li><b>Заявленная культура</b>Ценности и нормы вашего культурного кода.</li>
+          <li><b>Переживаемая культура</b>Что люди испытывают каждый день, по опросам и текстам.</li>
+          <li><b>Разрыв</b>Где норма расходится с опытом и куда направить усилия.</li>
         </ul>
       </div>
     </div>
@@ -409,14 +410,14 @@ body { font-family: var(--sans); color: var(--ink); -webkit-font-smoothing: anti
 <section class="slide">
   <div class="bar"><span>Сервис Mirror</span><b>Личный кабинет</b></div>
   <div class="frame">
-    <div class="split split--shot">
+    <div class="split split--shot split--cab">
       <div class="col">
-        <h2 class="h2">Личный кабинет клиента</h2>
+        <h2 class="h2">Личный кабинет<br>клиента</h2>
         <p class="lead">Для проверки изнутри всё в одном месте, с доступом по ролям.</p>
         <ul class="dots">
-          <li><b>Ход работы.</b> На каком этапе проект и что дальше.</li>
-          <li><b>Что нового</b> с прошлого входа.</li>
-          <li><b>Требует внимания.</b> Резкие изменения метрик.</li>
+          <li><b>Ход работы</b>На каком этапе проект и что дальше.</li>
+          <li><b>Что нового</b>Изменения с прошлого входа.</li>
+          <li><b>Требует внимания</b>Резкие изменения метрик.</li>
         </ul>
       </div>
       <div><div class="shot shot--h"><div class="shot__bar"><i></i><i></i><i></i><span>mirror-com.ru/app</span></div><img src="shots/cab-overview.jpg" alt=""></div></div>
@@ -473,9 +474,9 @@ body { font-family: var(--sans); color: var(--ink); -webkit-font-smoothing: anti
       <div class="col">
         <h2 class="h2">Каждой роли свой срез</h2>
         <ul class="dots">
-          <li><b>HR-директор и HRBP.</b> Все группы, сигналы, решения и план.</li>
-          <li><b>Руководитель.</b> Своя группа от 5 человек и среднее по компании для ориентира.</li>
-          <li><b>Топ-менеджмент.</b> Общая картина, разрывы и тренды.</li>
+          <li><b>HR-директор и HRBP</b>Все группы, сигналы, решения и план.</li>
+          <li><b>Руководитель</b>Своя группа от 5 человек и среднее по компании для ориентира.</li>
+          <li><b>Топ-менеджмент</b>Общая картина, разрывы и тренды.</li>
         </ul>
       </div>
     </div>
@@ -545,7 +546,7 @@ body { font-family: var(--sans); color: var(--ink); -webkit-font-smoothing: anti
 <section class="slide">
   <div class="bar"><span>Сервис Mirror</span><b>Как это работает</b></div>
   <div class="frame frame--center">
-    <p class="statement">Ключевая ценность Mirror в том, что вы получаете <b>приоритеты действий</b> и индекс культуры, основанный на том, насколько ваши обещания совпадают с реальностью.</p>
+    <p class="statement">Ключевая ценность Mirror в том, что вы получаете приоритеты действий и индекс культуры, основанный на том, насколько ваши обещания совпадают с реальностью.</p>
   </div>
 </section>
 
@@ -561,7 +562,7 @@ body { font-family: var(--sans); color: var(--ink); -webkit-font-smoothing: anti
     <h2 class="h2">Услуги и цены</h2>
     <div class="cards cards--4" style="flex:1">
       <div class="plan" style="background:#fff"><p class="plan__dir">снаружи</p><p class="plan__name">Внешний срез</p><p class="plan__price">0 ₽</p><p class="plan__meta">3 рабочих дня</p><ul><li>Индекс культуры, слепые зоны, место в отрасли</li><li>2–3 конкурента</li><li>PDF-отчёт и разбор с экспертом 30 минут</li></ul></div>
-      <div class="plan" style="background:#fff"><p class="plan__dir">снаружи</p><p class="plan__name">Мониторинг</p><p class="plan__price"><small>от</small> 110 000 ₽</p><p class="plan__meta">в месяц · отчёт каждый месяц</p><ul><li>Динамика индекса и слепых зон</li><li>Сигнал, если тема резко выросла</li><li>До 5 конкурентов, звонок с экспертом раз в месяц</li></ul></div>
+      <div class="plan" style="background:#fff"><p class="plan__dir">снаружи</p><p class="plan__name">Мониторинг</p><p class="plan__price"><small>от</small> 110 000 ₽</p><p class="plan__meta">в месяц · каждый месяц</p><ul><li>Динамика индекса и слепых зон</li><li>Сигнал, если тема резко выросла</li><li>До 5 конкурентов, звонок с экспертом раз в месяц</li></ul></div>
       <div class="plan plan--in" style="background:#fff"><p class="plan__dir">изнутри</p><p class="plan__name">Диагностика</p><p class="plan__price"><small>от</small> 250 000 ₽</p><p class="plan__meta">около 4 недель</p><ul><li>Опрос, до 12 интервью, сверка с культурным кодом</li><li>10 метрик и разрыв с кодом</li><li>Личный кабинет, отчёт и план на 90 дней</li></ul></div>
       <div class="plan plan--in" style="background:#fff"><p class="plan__dir">изнутри</p><p class="plan__name">Кампания</p><p class="plan__price"><small>от</small> 490 000 ₽</p><p class="plan__meta">3 месяца</p><ul><li>Диагностика уже входит</li><li>Три замера, анонимная обратная связь, решения для сотрудников</li><li>Встречи с руководителями раз в 2 недели</li></ul></div>
     </div>
@@ -627,7 +628,7 @@ body { font-family: var(--sans); color: var(--ink); -webkit-font-smoothing: anti
   <div class="bar"><span>Сервис Mirror</span><b>Контакты</b></div>
   <div class="frame frame--center" style="gap:80px">
     <img class="logo" src="../../prototype/home/assets/logo.svg" alt="Mirror" style="height:72px;width:383px;align-self:center">
-    <p class="statement" style="font-size:52px">Мы не украшаем бренд работодателя. Мы показываем его таким, какой он есть, чтобы вы могли увидеть, принять и изменить <b>то, что действительно важно</b>.</p>
+    <p class="statement" style="font-size:52px">Мы не украшаем бренд работодателя. Мы показываем его таким, какой он есть, чтобы вы могли увидеть, принять и изменить то, что действительно важно.</p>
     <div class="contacts">
       <div><span>Сайт</span><b>mirror-com.ru</b></div>
       <div><span>Почта</span><b>mirrorcom@mail.ru</b></div>
