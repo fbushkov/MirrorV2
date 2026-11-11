@@ -1,11 +1,12 @@
 # Состояние проекта Mirror V2
 
-_Обновлено: 2026-11-01. Ведёт агент `mirror-context-keeper`._
+_Обновлено: 2026-11-11. Ведёт агент `mirror-context-keeper`._
 
 ## Цель
 Новая версия сайта Mirror (mirror-com.ru) под новое позиционирование: бесплатный внешний срез → платная диагностика внешнего и внутреннего бренда с экспертом.
 
 ## Сделано
+- **2026-11-11 — аудит проекта.** Находки с приоритетами — `docs/backlog.md`, раздел 7. Порядок работ: архитектура сайта, технический долг и проработка кабинета, затем почта и юридические тексты. Сразу сделано: удалён неиспользуемый код `src/content` (остались `site.ts`, `demo-report.ts`, `glossary.ts`), шрифты на своём сервере, заголовки безопасности, мобильный тест на 375. Упоминания `pulse.ts`, `bridge.ts`, `demo.ts` ниже относятся к удалённым файлам.
 - **2026-11-01 — схема отчёта (ADR-0009):** `src/lib/schemas/report.ts`, `src/lib/report/methodology.ts`, `src/content/demo-report.ts`, `docs/product/report-data.md`. Описание кабинета готово (`docs/product/cabinet.md`, версия 0.3): кабинет для клиентов диагностики и кампании, снаружи PDF и письма; открытых вопросов нет. ADR-0010 кабинета принят (технические выборы: своя реализация входа, Drizzle — предложено). Прототип кабинета `prototype/cabinet` (dist/cabinet.html) сделан и опубликован (claude.ai/artifact/4YFbgvq5j3dwpqYUQcAMdN, сайт — claude.ai/artifact/AfvcrMxYgbydD36kVthhDu). Критический разбор: пункты 1–4 (ответившие, защита от вычитания, волны, подразделение у шагов и решений) сделаны 2026-11-01; пункты 5–8 (фазы и запуск, ход опроса, вопросы эксперту, словарь) сделаны 2026-11-01, ADR-0011; пункты 9–13 (петля, фильтры, ориентир, сводка, «что нового») сделаны 2026-11-01, ADR-0012. Критический разбор закрыт целиком; пункты 14–19 (отчёт страницей, выгрузка, безопасность владельца, договор и сроки, переключатель компаний, пустые состояния) — позже. Бизнес-правила — `docs/product/business-rules.md`, открытые вопросы в его разделе 7. Админка — `docs/product/admin.md` (проект 0.1, ждёт отзыва). HTML-версии — `docs/html/`. Решено 2026-11-01: парсер вручную, до 3 проектов одновременно, сырые данные удаляются в течение 30 дней после итогового отчёта (проверяет юрист). Было в плане: ADR кабинета (роли руководитель/топ, подразделения, опросы свои и из каналов клиента), прототип `prototype/cabinet`. Агентствам пока PDF под их брендом.
 - **2026-10-30 — сайт на Next = прототип (ADR-0008).** Страницы: `/`, `/pricing`, `/start`, `/hr-brand` (+`/demo`, `/methodology`), `/culture-health` (+`/demo`, `/methodology`), `/docs/*`, 404. Разметка из `prototype/home` через `build.py --next` (`src/site`, `public/site`); сверка с прототипом 0 пикселей разницы; e2e 28/28. «О нас» убрана, `/about` на главную, `/methodology` 308 на методику HR-бренда. Tailwind удалён; `echarts` (devDependencies) нужен для пересборки графиков; Radix и shadcn оставлены для форм и кабинета. Пункты ниже про shadcn-страницы и `src/content/pulse.ts` устарели.
 - Тексты старого сайта собраны: `docs/content/site-texts.md`, юр. документы — `docs/content/legal/`.
@@ -49,8 +50,8 @@ _Обновлено: 2026-11-01. Ведёт агент `mirror-context-keeper`._
 
 ## Важные пути
 - Старый сайт (только чтение): `fbushkov/mirror.service` → `/home/user/mirror.service`.
-- Демо-данные и методика: `src/content/demo.ts`; тексты: `src/content/*.ts`; маршруты: `ROUTES` в `src/content/site.ts`.
-- Тема: `src/app/globals.css`, `src/components/charts/theme.ts`.
+- Методика: `src/lib/report/methodology.ts`; демо-отчёт: `src/content/demo-report.ts`; словарь: `src/content/glossary.ts`; маршруты: `ROUTES` в `src/content/site.ts`.
+- Стили и цвета: `prototype/home/src/styles.css` (выгрузка в `src/site/styles.css`); шрифты: `src/app/fonts.css`, `public/fonts`.
 - Архитектура сайта: `docs/architecture/site.md`; решения: `docs/adr/`; история: `CHANGELOG.md`.
 - Прототип по Figma и дизайн-система: `prototype/home` (`design-system.html`, `build.py`, `qa.js`).
 - Типограф: `src/lib/typograf.ts`; тесты: `src/**/*.test.ts`, `tests/e2e/`; CI: `.github/workflows/ci.yml`.

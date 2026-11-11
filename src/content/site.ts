@@ -1,12 +1,3 @@
-export const CONTACTS = {
-  email: "mirrorcom@mail.ru",
-  phone: "+7 912 702-30-30",
-  phoneHref: "tel:+79127023030",
-  phoneNote: "Макс, Телеграм",
-  telegram: "https://t.me/mirror_diary",
-  telegramLabel: "@mirror_diary",
-}
-
 export type NavLink = { title: string; href: string; note?: string }
 
 /** Два направления Mirror. Снаружи — фиолетовый, изнутри — бирюзовый. */
@@ -15,49 +6,6 @@ export const DIRECTION_NAMES = {
   health: "Дашборд здоровья корпоративной культуры",
 } as const
 
-export type NavGroup = { id: keyof typeof DIRECTION_NAMES; title: string; full: string; items: NavLink[] }
-
-export const NAV_GROUPS: NavGroup[] = [
-  {
-    id: "brand",
-    title: "HR-бренд и индекс",
-    full: DIRECTION_NAMES.brand,
-    items: [
-      { title: "Обзор направления", href: "/hr-brand", note: "Что видят кандидаты и рынок" },
-      { title: "Демо-отчёт", href: "/hr-brand/demo", note: "Индекс, слепые зоны, место в отрасли" },
-      { title: "Как считаем", href: "/hr-brand/methodology", note: "Методика внешней оценки" },
-    ],
-  },
-  {
-    id: "health",
-    title: "Здоровье культуры",
-    full: DIRECTION_NAMES.health,
-    items: [
-      { title: "Обзор направления", href: "/culture-health", note: "Что переживают сотрудники" },
-      { title: "Демо-дашборд", href: "/culture-health/demo", note: "10 метрик, срезы, сигналы" },
-      { title: "Как считаем", href: "/culture-health/methodology", note: "Методика внутреннего замера" },
-    ],
-  },
-]
-
-export const NAV: NavLink[] = [
-  { title: "Цены", href: "/pricing" },
-  { title: "О нас", href: "/about" },
-]
-
-export const FOOTER_COLUMNS: { title: string; items: NavLink[] }[] = [
-  { title: DIRECTION_NAMES.brand, items: NAV_GROUPS[0].items },
-  { title: DIRECTION_NAMES.health, items: NAV_GROUPS[1].items },
-  {
-    title: "Компания",
-    items: [
-      { title: "Цены", href: "/pricing" },
-      { title: "О нас", href: "/about" },
-      { title: "Заявка", href: "/start" },
-    ],
-  },
-]
-
 export const LEGAL_LINKS: NavLink[] = [
   { title: "Политика конфиденциальности", href: "/docs/privacy-policy" },
   { title: "Пользовательское соглашение", href: "/docs/terms-of-use" },
@@ -65,7 +13,7 @@ export const LEGAL_LINKS: NavLink[] = [
 ]
 
 /**
- * Карта публичных страниц — единый источник для sitemap, смоук-тестов, крошек и (после переноса по макету) меню.
+ * Карта публичных страниц — единый источник для sitemap и смоук-тестов. Меню, подвал и контакты — в разметке прототипа (prototype/home/partials).
  * Новая страница сайта = запись здесь. Кабинет (/app) и админка (/admin) сюда не входят. См. ADR-0001.
  */
 export const SITE_URL = "https://mirror-com.ru"

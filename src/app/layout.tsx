@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import "./fonts.css"
 import "@/site/styles.css"
 
 export const metadata: Metadata = {
@@ -18,16 +19,10 @@ export const metadata: Metadata = {
   },
 }
 
-// Оформление и разметка страниц — из прототипа prototype/home (ADR-0008): шрифты Onest и JetBrains Mono, стили src/site/styles.css
+// Оформление и разметка страниц — из прототипа prototype/home (ADR-0008): шрифты Onest и JetBrains Mono лежат у нас (fonts.css, public/fonts), стили src/site/styles.css
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="ru">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-        {/* eslint-disable-next-line @next/next/no-page-custom-font -- шрифты для всех страниц, как в прототипе */}
-        <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
-      </head>
       <body>{children}</body>
     </html>
   )
