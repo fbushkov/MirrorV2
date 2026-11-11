@@ -122,7 +122,8 @@ img, svg { display: block; }
 .btn--primary { background: var(--c-dark); color: var(--c-on-dark); }
 .btn--primary:hover { background: var(--c-violet); }
 .btn--primary:active { background: var(--c-violet-press); }
-.btn:hover svg { transform: rotate(45deg); }
+.btn:hover svg { transform: translate(2px, -2px); }   /* стрелка сдвигается по своему направлению; поворот давал рябь */
+.btn.rmenu__pdf:hover svg { transform: translateY(2px); }
 .btn--white { background: #fff; color: var(--c-dark); }
 .btn--white:hover { background: var(--c-violet); color: #fff; }
 .btn--white:active { background: var(--c-violet-press); color: #fff; }
@@ -134,7 +135,7 @@ img, svg { display: block; }
 .btn-link { display: inline-flex; align-items: center; gap: 4px; height: var(--h-btn-sm); padding: 0 10px; border-radius: var(--r-ctl); font: 500 var(--fs-body)/var(--lh-tight) var(--font-sans); color: #0a0a0a; transition: color .2s; }
 .btn-link svg { width: 20px; height: 20px; transition: transform .25s var(--ease); }
 .btn-link:hover { color: var(--c-violet); }
-.btn-link:hover svg { transform: rotate(45deg); }
+.btn-link:hover svg { transform: translate(2px, -2px); }
 .btn-link:active { color: var(--c-violet-press); }
 
 /* Badge — неинтерактивный, h24, px6+2, текст 14/16 Medium */
@@ -405,11 +406,44 @@ img, svg { display: block; }
 .next ol { padding-left: 25px; display: flex; flex-direction: column; gap: 12px; }
 form.form { display: flex; flex-direction: column; gap: 32px; }
 .form__row { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
-.form__done { display: none; padding: 32px; border-radius: var(--r-card); background: var(--c-surface-3); }
-.form__done h3 { font: 600 var(--fs-h4)/1.2 var(--font-sans); margin-bottom: 8px; }
+/* После отправки на месте формы — подтверждение: что отправлено и что будет дальше; форму можно открыть заново */
+.form { scroll-margin-top: 112px; }   /* при прокрутке к подтверждению заголовок не уходит под шапку */
+.form__done { display: none; flex-direction: column; align-items: flex-start; gap: 24px; padding: 40px; border-radius: var(--r-card); background: var(--c-surface-3); }
 .form__done:focus { outline: none; }
+.form__done-ico { display: grid; place-items: center; width: 56px; height: 56px; border-radius: var(--r-pill); background: var(--c-ok); color: #fff; }
+.form__done-ico svg { width: 28px; height: 28px; stroke-dasharray: 24; stroke-dashoffset: 24; }
+.form__done h3 { font: 600 var(--fs-h3)/var(--lh-h3) var(--font-sans); margin-bottom: 8px; }
+.form__done p { color: var(--c-ink-2); max-width: 46ch; }
+.form__sent { display: grid; grid-template-columns: auto 1fr; gap: 8px 24px; width: 100%; padding: 20px 24px; border-radius: var(--r-inner); background: var(--c-surface); }
+.form__sent dt { color: var(--c-ink-4); }
+.form__sent dd { min-width: 0; overflow-wrap: break-word; }
+@media (max-width: 767px) { .form__done { padding: 24px; } .form__sent { grid-template-columns: 1fr; gap: 2px; padding: 16px; } .form__sent dd { margin-bottom: 10px; } .form__sent dd:last-child { margin-bottom: 0; } }
+.form__note { font: 400 var(--fs-mono)/24px var(--font-mono); color: var(--c-ink-4); }
 .form.is-sent > :not(.form__done) { display: none; }
-.form.is-sent .form__done { display: block; }
+.form.is-sent .form__done { display: flex; animation: rise .45s var(--ease); }
+.form.is-sent .form__done-ico { animation: pop .5s var(--ease) .1s backwards; }
+.form.is-sent .form__done-ico svg { animation: draw .35s ease-out .35s forwards; }
+.form.is-back > * { animation: rise .35s var(--ease); }
+.error:not([hidden]) { animation: rise .25s var(--ease); }
+.btn[aria-busy="true"] { pointer-events: none; opacity: .7; }
+
+/* Движение: общие ключевые кадры. Короткие (до 0,45 с), только прозрачность и сдвиг; при «уменьшить движение» отключаются правилом ниже */
+@keyframes rise { from { opacity: 0; transform: translateY(8px); } }
+@keyframes fade { from { opacity: 0; } }
+@keyframes pop { from { opacity: 0; transform: scale(.6); } }
+@keyframes draw { to { stroke-dashoffset: 0; } }
+/* Переход между страницами: старая растворяется, новая проявляется, шапка стоит на месте */
+@view-transition { navigation: auto; }
+::view-transition-old(root) { animation: fade .18s ease-in reverse both; }
+::view-transition-new(root) { animation: fade .28s ease-out both; }
+.header { view-transition-name: site-header; }
+main { animation: fade .4s ease-out; }   /* только прозрачность: сдвиг сломал бы прилипающие меню внутри страницы */
+/* Смена вкладки, пункта списка, окна и данных после фильтра */
+[role="tabpanel"]:not([hidden]) { animation: rise .35s var(--ease); }
+.csel__list:not([hidden]) { animation: rise .18s var(--ease); }
+dialog[open] { animation: rise .25s var(--ease); }
+dialog[open]::backdrop { animation: fade .25s ease-out; }
+.is-refresh .rkpi__num, .is-refresh .rkpi__cap, .is-refresh tbody tr, .is-refresh .ralert, .is-refresh .mgroup, .is-refresh .rblock__hint, .is-refresh .privacy { animation: rise .35s var(--ease); }
 
 /* 5.7 Внутренние страницы (общие блоки для всех, кроме главной) */
 /* Шапка страницы: крошки → эйброу → заголовок в два тона | лид. Та же сетка, что у hero главной */
@@ -1652,10 +1686,9 @@ button.seg__item.is-active { background: var(--c-surface-2); }
         <div class="badges"><span class="badge badge--soft">методика · версия 1.0</span><span class="badge badge--soft">группы от 5 человек</span></div>
         <div class="dir-hero__actions">
           <a class="btn btn--primary" href="start.html?topic=health" data-topic="health">Обсудить запуск</a>
-          <a class="btn-link" href="culture-health-demo.html">Демо-дашборд <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g>
-<path d="M14.8327 14.1641C14.8327 14.5323 14.5342 14.8307 14.166 14.8307C13.7978 14.8307 13.4993 14.5323 13.4993 14.1641V7.4401L6.30404 14.6354C6.04369 14.8958 5.62168 14.8958 5.36133 14.6354C5.10098 14.3751 5.10098 13.9531 5.36133 13.6927L12.5566 6.4974H5.83268C5.46449 6.4974 5.16602 6.19892 5.16602 5.83073C5.16602 5.46254 5.46449 5.16406 5.83268 5.16406H14.166C14.5342 5.16406 14.8327 5.46254 14.8327 5.83073V14.1641Z" fill="currentColor"/>
-</g>
+          <a class="btn-link" href="culture-health-demo.html">Демо-дашборд <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+<path d="M7 7h10v10"/>
+<path d="M7 17 17 7"/>
 </svg></a>
         </div>
       </div>
@@ -1795,15 +1828,13 @@ button.seg__item.is-active { background: var(--c-surface-2); }
 </svg></span>Сильная сторона</span><p class="xcard__note">Обещание подтверждается и снаружи, и изнутри. Его можно ставить в центр коммуникаций.</p><div class="xcard__pair"><div class="xcard__side"><span class="xcard__lbl">снаружи</span><b>Обещание «Дружный коллектив»</b><span>91% подтверждений</span></div><div class="xcard__side"><span class="xcard__lbl">изнутри</span><b>Принадлежность и инклюзия</b><span>74 · в норме</span></div></div></li>
       </ul>
       <div class="pnext">
-        <a class="pnext__dark dir dir--brand" href="methodology-brand.html" data-shader="brand"><canvas aria-hidden="true"></canvas><span class="dir__fallback" aria-hidden="true"></span><span class="dir__top"><span class="dir__label">направление 01 · снаружи</span><svg aria-hidden="true" focusable="false" class="dir__arrow" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g>
-<path d="M14.8327 14.1641C14.8327 14.5323 14.5342 14.8307 14.166 14.8307C13.7978 14.8307 13.4993 14.5323 13.4993 14.1641V7.4401L6.30404 14.6354C6.04369 14.8958 5.62168 14.8958 5.36133 14.6354C5.10098 14.3751 5.10098 13.9531 5.36133 13.6927L12.5566 6.4974H5.83268C5.46449 6.4974 5.16602 6.19892 5.16602 5.83073C5.16602 5.46254 5.46449 5.16406 5.83268 5.16406H14.166C14.5342 5.16406 14.8327 5.46254 14.8327 5.83073V14.1641Z" fill="currentColor"/>
-</g>
+        <a class="pnext__dark dir dir--brand" href="methodology-brand.html" data-shader="brand"><canvas aria-hidden="true"></canvas><span class="dir__fallback" aria-hidden="true"></span><span class="dir__top"><span class="dir__label">направление 01 · снаружи</span><svg aria-hidden="true" focusable="false" class="dir__arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+<path d="M7 7h10v10"/>
+<path d="M7 17 17 7"/>
 </svg></span><div><h3>Как считаем снаружи</h3><p>Индекс культуры, слепые зоны и место в отрасли. Формула, шесть шагов расчёта и калькулятор.</p></div></a>
-        <article class="pnext__card"><div><h3>Посмотрите на примере</h3><p>Демо-дашборд по условной компании со срезами, 10 метриками, разрывом с кодом и сигналами.</p></div><a class="btn-link" href="culture-health-demo.html">Открыть демо-дашборд <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g>
-<path d="M14.8327 14.1641C14.8327 14.5323 14.5342 14.8307 14.166 14.8307C13.7978 14.8307 13.4993 14.5323 13.4993 14.1641V7.4401L6.30404 14.6354C6.04369 14.8958 5.62168 14.8958 5.36133 14.6354C5.10098 14.3751 5.10098 13.9531 5.36133 13.6927L12.5566 6.4974H5.83268C5.46449 6.4974 5.16602 6.19892 5.16602 5.83073C5.16602 5.46254 5.46449 5.16406 5.83268 5.16406H14.166C14.5342 5.16406 14.8327 5.46254 14.8327 5.83073V14.1641Z" fill="currentColor"/>
-</g>
+        <article class="pnext__card"><div><h3>Посмотрите на примере</h3><p>Демо-дашборд по условной компании со срезами, 10 метриками, разрывом с кодом и сигналами.</p></div><a class="btn-link" href="culture-health-demo.html">Открыть демо-дашборд <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+<path d="M7 7h10v10"/>
+<path d="M7 17 17 7"/>
 </svg></a></article>
       </div>
     </div>
@@ -1848,10 +1879,9 @@ button.seg__item.is-active { background: var(--c-surface-2); }
     <div class="help">
       <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxnIGlkPSJTaGFwZXMiPgo8ZyBpZD0iVmFyaWFudD01OCIgY2xpcC1wYXRoPSJ1cmwoI3NoYXBlLWN0YS1tZXRob2QtaGVhbHRoLWNsaXAwXzBfMSkiPgo8ZyBpZD0iQ2xpcCBwYXRoIGdyb3VwIj4KPG1hc2sgaWQ9InNoYXBlLWN0YS1tZXRob2QtaGVhbHRoLW1hc2swXzBfMSIgc3R5bGU9Im1hc2stdHlwZTpsdW1pbmFuY2UiIG1hc2tVbml0cz0idXNlclNwYWNlT25Vc2UiIHg9IjAiIHk9IjAiIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIj4KPGcgaWQ9InNoYXBlLWN0YS1tZXRob2QtaGVhbHRoLWNsaXAwXzExNl8xMjEiPgo8cGF0aCBpZD0iVmVjdG9yIiBkPSJNMjAwIDBIMFYyMDBIMjAwVjBaIiBmaWxsPSJ3aGl0ZSIvPgo8L2c+CjwvbWFzaz4KPGcgbWFzaz0idXJsKCNzaGFwZS1jdGEtbWV0aG9kLWhlYWx0aC1tYXNrMF8wXzEpIj4KPGcgaWQ9Ikdyb3VwIj4KPHBhdGggaWQ9IlZlY3Rvcl8yIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTE4LjQyOTQgNjYuMjEyM0MxNS42NDU4IDUzLjMxNSAxOS4yNjU4IDM5LjMxMjggMjkuMjg5MyAyOS4yODkzQzM5LjMxMjkgMTkuMjY1OCA1My4zMTUgMTUuNjQ1OCA2Ni4yMTIzIDE4LjQyOTNDNzMuMzYzOCA3LjM0MTMxIDg1LjgyNDYgMCAxMDAgMEMxMTQuMTc1IDAgMTI2LjYzNiA3LjM0MTMzIDEzMy43ODggMTguNDI5NEMxNDYuNjg1IDE1LjY0NTggMTYwLjY4NyAxOS4yNjU4IDE3MC43MTEgMjkuMjg5M0MxODAuNzM0IDM5LjMxMjkgMTg0LjM1NCA1My4zMTUgMTgxLjU3MSA2Ni4yMTIzQzE5Mi42NTkgNzMuMzYzOCAyMDAgODUuODI0NiAyMDAgMTAwQzIwMCAxMTQuMTc1IDE5Mi42NTkgMTI2LjYzNiAxODEuNTcxIDEzMy43ODhDMTg0LjM1NCAxNDYuNjg1IDE4MC43MzQgMTYwLjY4NyAxNzAuNzExIDE3MC43MTFDMTYwLjY4NyAxODAuNzM0IDE0Ni42ODUgMTg0LjM1NCAxMzMuNzg4IDE4MS41NzFDMTI2LjYzNiAxOTIuNjU5IDExNC4xNzUgMjAwIDEwMCAyMDBDODUuODI0NiAyMDAgNzMuMzYzOSAxOTIuNjU5IDY2LjIxMjMgMTgxLjU3MUM1My4zMTUgMTg0LjM1NCAzOS4zMTI5IDE4MC43MzQgMjkuMjg5MyAxNzAuNzExQzE5LjI2NTggMTYwLjY4NyAxNS42NDU4IDE0Ni42ODUgMTguNDI5NCAxMzMuNzg4QzcuMzQxMzIgMTI2LjYzNiAwIDExNC4xNzUgMCAxMDBDMCA4NS44MjQ2IDcuMzQxMzIgNzMuMzYzOCAxOC40Mjk0IDY2LjIxMjNaTTcxLjQ1NTUgMTI4LjQ5NUM4Ny4xNDU0IDE0NC4xODQgMTEyLjU4NCAxNDQuMTg0IDEyOC4yNzQgMTI4LjQ5NUMxNDMuOTY0IDExMi44MDUgMTQzLjk2NCA4Ny4zNjYyIDEyOC4yNzQgNzEuNjc2MkMxMTIuNTg0IDU1Ljk4NjMgODcuMTQ1NCA1NS45ODYzIDcxLjQ1NTUgNzEuNjc2MkM1NS43NjU2IDg3LjM2NjIgNTUuNzY1NiAxMTIuODA1IDcxLjQ1NTUgMTI4LjQ5NVoiIGZpbGw9InVybCgjc2hhcGUtY3RhLW1ldGhvZC1oZWFsdGgtcGFpbnQwX2xpbmVhcl8wXzEpIi8+CjwvZz4KPC9nPgo8L2c+CjwvZz4KPC9nPgo8ZGVmcz4KPGxpbmVhckdyYWRpZW50IGlkPSJzaGFwZS1jdGEtbWV0aG9kLWhlYWx0aC1wYWludDBfbGluZWFyXzBfMSIgeDE9IjI3LjUiIHkxPSIxOSIgeDI9IjE0OSIgeTI9IjE3NC41IiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+CjxzdG9wIHN0b3AtY29sb3I9IiM1RkQwQkYiLz4KPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjMTNBMDhGIi8+CjwvbGluZWFyR3JhZGllbnQ+CjxjbGlwUGF0aCBpZD0ic2hhcGUtY3RhLW1ldGhvZC1oZWFsdGgtY2xpcDBfMF8xIj4KPHJlY3Qgd2lkdGg9IjIwMCIgaGVpZ2h0PSIyMDAiIGZpbGw9IndoaXRlIi8+CjwvY2xpcFBhdGg+CjwvZGVmcz4KPC9zdmc+Cg==" alt="" width="80" height="80">
       <div class="help__text"><h3 id="cta-title">Запустите дашборд в своей компании</h3><p>Начнём с диагностики и первого замера. Расскажите о компании, и мы предложим план кампании.</p></div>
-      <a class="btn btn--primary" href="start.html?topic=health" data-topic="health">Обсудить кампанию <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g>
-<path d="M14.8327 14.1641C14.8327 14.5323 14.5342 14.8307 14.166 14.8307C13.7978 14.8307 13.4993 14.5323 13.4993 14.1641V7.4401L6.30404 14.6354C6.04369 14.8958 5.62168 14.8958 5.36133 14.6354C5.10098 14.3751 5.10098 13.9531 5.36133 13.6927L12.5566 6.4974H5.83268C5.46449 6.4974 5.16602 6.19892 5.16602 5.83073C5.16602 5.46254 5.46449 5.16406 5.83268 5.16406H14.166C14.5342 5.16406 14.8327 5.46254 14.8327 5.83073V14.1641Z" fill="currentColor"/>
-</g>
+      <a class="btn btn--primary" href="start.html?topic=health" data-topic="health">Обсудить кампанию <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+<path d="M7 7h10v10"/>
+<path d="M7 17 17 7"/>
 </svg></a>
     </div>
   </section>
@@ -1899,10 +1929,9 @@ fade(); sync();
   <footer class="footer">
     <div class="footer__cta">
       <p><span class="dim">Хотите увидеть свою компанию в зеркале?</span><br>Обсудим задачу за 30 минут.</p>
-      <a class="btn btn--white" href="start.html">Задать вопрос <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g>
-<path d="M14.8327 14.1641C14.8327 14.5323 14.5342 14.8307 14.166 14.8307C13.7978 14.8307 13.4993 14.5323 13.4993 14.1641V7.4401L6.30404 14.6354C6.04369 14.8958 5.62168 14.8958 5.36133 14.6354C5.10098 14.3751 5.10098 13.9531 5.36133 13.6927L12.5566 6.4974H5.83268C5.46449 6.4974 5.16602 6.19892 5.16602 5.83073C5.16602 5.46254 5.46449 5.16406 5.83268 5.16406H14.166C14.5342 5.16406 14.8327 5.46254 14.8327 5.83073V14.1641Z" fill="currentColor"/>
-</g>
+      <a class="btn btn--white" href="start.html">Задать вопрос <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+<path d="M7 7h10v10"/>
+<path d="M7 17 17 7"/>
 </svg></a>
     </div>
     <div class="footer__brand" aria-hidden="true">
@@ -2000,9 +2029,27 @@ if (form) form.addEventListener("submit", (e) => {
     if (bad && !first) first = inp;
   });
   if (first) { first.focus(); return; }
-  form.classList.add("is-sent");
-  form.querySelector(".form__done").focus();
+  // Подтверждение встаёт на место формы и показывает, что именно отправлено
+  const done = form.querySelector(".form__done"), submit = form.querySelector("[type=submit]");
+  const sent = { topic: form.querySelector("input[name=topic]:checked").parentElement.textContent.trim(), company: form.company.value.trim(), contact: form.contact.value.trim() };
+  done.querySelectorAll("[data-sent]").forEach((dd) => { dd.textContent = sent[dd.dataset.sent]; });
+  submit.setAttribute("aria-busy", "true");
+  setTimeout(() => {   // короткая пауза: видно, что нажатие принято (на сайте здесь будет ожидание ответа сервера)
+    submit.removeAttribute("aria-busy");
+    form.classList.remove("is-back"); form.classList.add("is-sent");
+    done.focus({ preventScroll: true });
+    const top = form.getBoundingClientRect().top;   // подтверждение короче формы: если его начало не на экране, подводим к нему
+    if (top < 96 || top > innerHeight - 200) form.scrollIntoView({ block: "start", behavior: "smooth" });
+  }, 350);
 });
+if (form) form.querySelector("[data-form-again]").addEventListener("click", () => {
+  form.reset(); form.classList.remove("is-sent"); form.classList.add("is-back");
+  form.querySelectorAll("[aria-invalid]").forEach((el) => el.removeAttribute("aria-invalid"));
+  form.querySelector("#f-company").focus();
+});
+
+/* Данные изменились после фильтра или переключателя: блоки внутри root коротко проявляются заново (стили .is-refresh) */
+window.refreshFx = (root = document.querySelector("main")) => { root.classList.remove("is-refresh"); void root.offsetWidth; root.classList.add("is-refresh"); };
 
 /* Шейдерный градиент на карточках направлений (WebGL, без зависимостей)
    Логика как у shadergradient.co: плавная «ткань» из шума, 3 цвета, зерно.

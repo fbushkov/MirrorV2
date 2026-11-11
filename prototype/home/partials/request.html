@@ -35,6 +35,12 @@
         <label class="check"><input type="checkbox" name="consent" required aria-describedby="e-consent"><span><span class="muted">Согласен на</span> <a href="{{href:consent}}">обработку персональных данных</a> <span class="muted">и принимаю</span> <a href="{{href:privacy}}">политику конфиденциальности</a></span></label>
         <span class="error" id="e-consent" hidden>Отметьте согласие, без него заявку не принять</span>
         <button class="btn btn--primary btn--block" type="submit">Отправить заявку {{svgc:arrow-up-right-white.svg|ico-arrow}}</button>
-        <div class="form__done" role="status" tabindex="-1"><h3>Заявка принята</h3><p>Ответим в течение рабочего дня. Это прототип, данные никуда не отправляются.</p></div>
+        <div class="form__done" role="status" tabindex="-1">
+          <span class="form__done-ico">{{svgc:lucide-check.svg}}</span>
+          <div><h3>Заявка принята</h3><p>Ответим в течение рабочего дня и напишем на указанный контакт.</p></div>
+          <dl class="form__sent"><dt>Что нужно</dt><dd data-sent="topic"></dd><dt>Компания</dt><dd data-sent="company"></dd><dt>Контакт</dt><dd data-sent="contact"></dd></dl>
+          <button class="btn-link" type="button" data-form-again style="margin-left:-10px">Отправить ещё одну заявку</button>
+          <p class="form__note">Это прототип, данные никуда не отправляются.</p>
+        </div>
       </form>
     </div>

@@ -72,9 +72,27 @@ if (form) form.addEventListener("submit", (e) => {
     if (bad && !first) first = inp;
   });
   if (first) { first.focus(); return; }
-  form.classList.add("is-sent");
-  form.querySelector(".form__done").focus();
+  // Подтверждение встаёт на место формы и показывает, что именно отправлено
+  const done = form.querySelector(".form__done"), submit = form.querySelector("[type=submit]");
+  const sent = { topic: form.querySelector("input[name=topic]:checked").parentElement.textContent.trim(), company: form.company.value.trim(), contact: form.contact.value.trim() };
+  done.querySelectorAll("[data-sent]").forEach((dd) => { dd.textContent = sent[dd.dataset.sent]; });
+  submit.setAttribute("aria-busy", "true");
+  setTimeout(() => {   // короткая пауза: видно, что нажатие принято (на сайте здесь будет ожидание ответа сервера)
+    submit.removeAttribute("aria-busy");
+    form.classList.remove("is-back"); form.classList.add("is-sent");
+    done.focus({ preventScroll: true });
+    const top = form.getBoundingClientRect().top;   // подтверждение короче формы: если его начало не на экране, подводим к нему
+    if (top < 96 || top > innerHeight - 200) form.scrollIntoView({ block: "start", behavior: "smooth" });
+  }, 350);
 });
+if (form) form.querySelector("[data-form-again]").addEventListener("click", () => {
+  form.reset(); form.classList.remove("is-sent"); form.classList.add("is-back");
+  form.querySelectorAll("[aria-invalid]").forEach((el) => el.removeAttribute("aria-invalid"));
+  form.querySelector("#f-company").focus();
+});
+
+/* Данные изменились после фильтра или переключателя: блоки внутри root коротко проявляются заново (стили .is-refresh) */
+window.refreshFx = (root = document.querySelector("main")) => { root.classList.remove("is-refresh"); void root.offsetWidth; root.classList.add("is-refresh"); };
 
 /* Шейдерный градиент на карточках направлений (WebGL, без зависимостей)
    Логика как у shadergradient.co: плавная «ткань» из шума, 3 цвета, зерно.

@@ -36,6 +36,26 @@ test.describe("форма заявки", () => {
     })
   }
 
+  test("после отправки на месте формы подтверждение с отправленным, форму можно заполнить заново", async ({ page }) => {
+    await page.goto("/start?topic=monitoring")
+    await page.locator("#f-company").fill("Банк N")
+    await page.locator("#f-contact").fill("hr@bank-n.ru")
+    await page.locator("input[name=consent]").check()
+    await page.getByRole("button", { name: "Отправить заявку" }).click()
+    const done = page.locator(".form__done")
+    await expect(done).toBeVisible()
+    await expect(done.locator("[data-sent=topic]")).toHaveText("Мониторинг")
+    await expect(done.locator("[data-sent=company]")).toHaveText("Банк N")
+    await expect(done.locator("[data-sent=contact]")).toHaveText("hr@bank-n.ru")
+    await expect(done.getByRole("heading", { name: "Заявка принята" })).toBeInViewport()
+    const headerBottom = (await page.locator(".header").boundingBox())!.height
+    expect((await done.boundingBox())!.y, "подтверждение не под шапкой").toBeGreaterThanOrEqual(headerBottom)
+    await page.getByRole("button", { name: "Отправить ещё одну заявку" }).click()
+    await expect(done).toBeHidden()
+    await expect(page.locator("#f-company")).toHaveValue("")
+    await expect(page.locator("#f-company")).toBeFocused()
+  })
+
   test("ссылка с тарифа выбирает тему заявки", async ({ page }) => {
     await page.goto("/start?topic=diagnostics")
     await expect(page.locator("input[name=topic][value=diagnostics]")).toBeChecked()
