@@ -10,7 +10,7 @@
 - Источник разметки, стилей и скриптов страниц — `prototype/home`. Правка дизайна или текста: правим прототип, затем
   `python3 prototype/home/build.py` (просмотр, `dist/`) и `python3 prototype/home/build.py --next` (выгрузка в Next).
 - `--next` пишет `src/site/pages/<key>.html`, `manifest.json` (адрес, заголовок, описание), `shell.json` (шапка и подвал для страниц на React),
-  `src/site/styles.css`; скрипты (`app.js`, `content.js`, своя сборка ECharts) копирует в `public/site/`. Выгрузка коммитится: сборке Next Python не нужен.
+  `src/site/styles.css`; скрипты (`app.js`, своя сборка ECharts) копирует в `public/site/`. Выгрузка коммитится: сборке Next Python не нужен.
 - Каждая страница — свой `page.tsx` с `<SitePage name>` и `siteMetadata(key)` (`src/site/page.tsx`); разметка отдаётся сервером целиком,
   поисковики видят готовый текст. Ссылки обычные `<a>`: полная загрузка, чтобы скрипты страницы прототипа запускались.
 - На React остаются страницы, которых нет в прототипе: документы `/docs/*` и 404. Они в той же оболочке (`SiteShell`), текст проходит

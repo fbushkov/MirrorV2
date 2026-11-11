@@ -1,38 +1,16 @@
 /* Общий скрипт всех страниц: меню, форма, шейдер, типограф.
-   Скрипт страницы (например, FAQ на главной) идёт раньше — типограф
+   Скрипт страницы (графики, фильтры демо) идёт раньше — типограф
    запускается последним и обрабатывает уже готовую разметку. */
-/* Вопросы: группы из FAQ_GROUPS (src/content.js), один открытый на группу
-   data-groups="general,brand" — несколько блоков; "payment+plans" — один блок из нескольких групп
-   (название и описание — первой группы или из data-desc). Номер-тег показываем, только если блоков больше одного. */
-const faqRoot = document.getElementById("faq-list");
-if (faqRoot) {
-  const plus = document.getElementById("ico-plus").innerHTML;
-  const blocks = faqRoot.dataset.groups.split(",").map((spec) => {
-    const parts = spec.trim().split("+").map((k) => FAQ_GROUPS[k]);
-    return { ...parts[0], items: parts.flatMap((g) => g.items) };
-  });
-  if (faqRoot.dataset.desc) blocks[0].desc = faqRoot.dataset.desc;
-  blocks.forEach((g, gi) => {
-    const sec = document.createElement("div");
-    sec.className = "faq-group";
-    const tag = blocks.length > 1 ? `<span class="faq-group__tag">${g.tag}</span>` : "";
-    sec.innerHTML = `<div class="faq-group__info">${tag}<div><h3 class="faq-group__title">${g.title}</h3><p class="faq-group__desc">${g.desc}</p></div></div><div class="faq-list"></div>`;
-    const list = sec.querySelector(".faq-list");
-    g.items.forEach(([q, a], i) => {
-      const id = `qa-${gi}-${i}`;
-      const el = document.createElement("div");
-      el.className = "qa";
-      el.innerHTML = `<button class="qa__q" type="button" aria-expanded="false" aria-controls="${id}"><span>${q}</span><i class="qa__icon">${plus}</i></button><div class="qa__a" id="${id}" role="region"><div><p>${a}</p></div></div>`;
-      el.querySelector("button").addEventListener("click", () => {
-        const willOpen = !el.classList.contains("is-open");
-        list.querySelectorAll(".qa").forEach((o) => { o.classList.remove("is-open"); o.querySelector("button").setAttribute("aria-expanded", "false"); });
-        if (willOpen) { el.classList.add("is-open"); el.querySelector("button").setAttribute("aria-expanded", "true"); }
-      });
-      list.appendChild(el);
+/* Вопросы: разметку собирает build.py из src/faq.json, здесь только раскрытие — один открытый на группу */
+document.querySelectorAll("#faq-list .faq-list").forEach((list) => {
+  list.querySelectorAll(".qa").forEach((el) => {
+    el.querySelector("button").addEventListener("click", () => {
+      const willOpen = !el.classList.contains("is-open");
+      list.querySelectorAll(".qa").forEach((o) => { o.classList.remove("is-open"); o.querySelector("button").setAttribute("aria-expanded", "false"); });
+      if (willOpen) { el.classList.add("is-open"); el.querySelector("button").setAttribute("aria-expanded", "true"); }
     });
-    faqRoot.appendChild(sec);
   });
-}
+});
 
 /* Мега-меню: клик, Esc, клик вне, одно открытое */
 const header = document.querySelector(".header");
@@ -45,12 +23,20 @@ function setMenu(id) {
   triggers.forEach((t) => t.setAttribute("aria-expanded", String(t.dataset.panel === id)));
   if (id) mega.querySelectorAll(".mega__panel").forEach((p) => p.classList.toggle("is-active", p.dataset.id === id));
 }
-triggers.forEach((t) => t.addEventListener("click", (e) => { e.stopPropagation(); setMenu(current === t.dataset.panel ? null : t.dataset.panel); }));
+/* Клик по пункту переключает панель. Если панель только что открылась наведением, первый клик её не закрывает:
+   иначе мышью выходит «навёл — открылось, кликнул — закрылось». */
+let byHover = false;
+triggers.forEach((t) => t.addEventListener("click", (e) => {
+  e.stopPropagation();
+  const keep = byHover && current === t.dataset.panel;
+  byHover = false;
+  if (!keep) setMenu(current === t.dataset.panel ? null : t.dataset.panel);
+}));
 /* Наведение на пункт со стрелкой открывает панель; уходим со всей шапки — закрываем с задержкой */
 const canHover = matchMedia("(hover: hover) and (pointer: fine)").matches;
 let closeT = 0;
 if (canHover) {
-  document.querySelectorAll(".nav__item[data-panel]").forEach((t) => t.addEventListener("pointerenter", () => { clearTimeout(closeT); setMenu(t.dataset.panel); }));
+  document.querySelectorAll(".nav__item[data-panel]").forEach((t) => t.addEventListener("pointerenter", () => { clearTimeout(closeT); if (current !== t.dataset.panel) byHover = true; setMenu(t.dataset.panel); }));
   document.querySelectorAll(".nav__item:not([data-panel]), .header__cta, .logo").forEach((el) => el.addEventListener("pointerenter", () => { if (current && current !== "mobile") { clearTimeout(closeT); closeT = setTimeout(() => setMenu(null), 120); } }));
   header.addEventListener("pointerenter", () => clearTimeout(closeT));
   header.addEventListener("pointerleave", () => { if (current && current !== "mobile") closeT = setTimeout(() => setMenu(null), 180); });
@@ -67,18 +53,27 @@ document.querySelectorAll("[data-topic]").forEach((a) => a.addEventListener("cli
 const urlTopic = new URLSearchParams(window.__QS ?? location.search).get("topic"); // __QS — параметры страницы в сборке сайта одним файлом (tools/bundle.py)
 if (urlTopic) pickTopic(urlTopic);
 
-/* Форма: проверка обязательных полей, экран успеха */
+/* Форма: проверка полей, ошибки текстом и для скринридера, фокус на первой ошибке, экран успеха.
+   Контакт — почта, ник или ссылка Телеграма, либо телефон. */
+const CONTACT_OK = /^(\S+@\S+\.\S{2,}|@?[a-z][\w]{4,31}|(https?:\/\/)?t\.me\/\S+|\+?[\d\s()-]{10,18})$/i;
 const form = document.querySelector("form.form");
 if (form) form.addEventListener("submit", (e) => {
   e.preventDefault();
-  let ok = true;
+  let first = null;
   form.querySelectorAll("input[required]").forEach((inp) => {
-    const bad = inp.type === "checkbox" ? !inp.checked : !inp.value.trim();
-    if (inp.type !== "checkbox") { inp.setAttribute("aria-invalid", String(bad)); const err = inp.parentElement.querySelector(".error"); if (err) err.hidden = !bad; }
-    else inp.parentElement.style.color = bad ? "#d92d20" : "";
-    if (bad) ok = false;
+    const err = document.getElementById(inp.getAttribute("aria-describedby"));
+    const value = inp.value.trim();
+    let bad = inp.type === "checkbox" ? !inp.checked : !value;
+    if (!bad && inp.dataset.check === "contact" && !CONTACT_OK.test(value)) { bad = true; err.textContent = err.dataset.format; }
+    else if (err && err.dataset.empty) err.textContent = err.dataset.empty;
+    inp.setAttribute("aria-invalid", String(bad));
+    if (inp.type === "checkbox") inp.closest(".check").toggleAttribute("data-invalid", bad);
+    if (err) err.hidden = !bad;
+    if (bad && !first) first = inp;
   });
-  if (ok) form.classList.add("is-sent");
+  if (first) { first.focus(); return; }
+  form.classList.add("is-sent");
+  form.querySelector(".form__done").focus();
 });
 
 /* Шейдерный градиент на карточках направлений (WebGL, без зависимостей)
@@ -221,7 +216,8 @@ document.querySelectorAll("select.select").forEach((sel, n) => {
   const pick = (i) => { if (i !== sel.selectedIndex) { sel.selectedIndex = i; sel.dispatchEvent(new Event("change", { bubbles: true })); } sync(); close(true); };
   btn.addEventListener("click", () => (list.hidden ? open() : close()));
   btn.addEventListener("keydown", (e) => { if (["ArrowDown", "ArrowUp"].includes(e.key)) { e.preventDefault(); open(); } });
-  list.addEventListener("click", (e) => { const li = e.target.closest("li"); if (li) pick([...list.children].indexOf(li)); });
+  // preventDefault: список лежит внутри label, и без него клик по пункту «нажимал» кнопку ещё раз — список открывался снова
+  list.addEventListener("click", (e) => { e.preventDefault(); const li = e.target.closest("li"); if (li) pick([...list.children].indexOf(li)); });
   list.addEventListener("pointermove", (e) => { const li = e.target.closest("li"); if (li) { active = [...list.children].indexOf(li); mark(); } });
   list.addEventListener("keydown", (e) => {
     const last = list.children.length - 1;

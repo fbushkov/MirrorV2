@@ -5,6 +5,7 @@ import { notFound } from "next/navigation"
 import ReactMarkdown from "react-markdown"
 import { LEGAL_LINKS } from "@/content/site"
 import { typograf } from "@/lib/typograf"
+import { JsonLd, breadcrumbsLd, openGraph } from "@/site/seo"
 import { SiteShell } from "@/site/shell"
 
 // Тексты документов перенесены без изменений из старого сайта (docs/content/legal)
@@ -27,15 +28,18 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps<"/docs/[slug]">): Promise<Metadata> {
   const { slug } = await params
   const doc = await loadDoc(slug)
-  return { title: doc?.title ?? "Документ", alternates: { canonical: `/docs/${slug}` } }
+  const title = doc?.title ?? "Документ"
+  return { title, alternates: { canonical: `/docs/${slug}` }, ...openGraph(`${title} — Mirror`, undefined, `/docs/${slug}`) }
 }
 
 export default async function DocPage({ params }: PageProps<"/docs/[slug]">) {
   const { slug } = await params
   const doc = await loadDoc(slug)
   if (!doc) notFound()
+  const crumbs = breadcrumbsLd(`/docs/${slug}`)
   return (
     <SiteShell>
+      {crumbs && <JsonLd data={crumbs} />}
       <main data-no-typograf>
         <section className="page-hero" aria-labelledby="page-title">
           <ol className="crumbs" aria-label="Хлебные крошки">

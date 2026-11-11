@@ -47,6 +47,8 @@ Mirror — сервис диагностики HR-бренда и независ
 | Прототип кабинета | Один файл, данные из демо-отчёта по схеме, размеры классические shadcn (кнопки 36, текст 14) | `prototype/cabinet`, `decisions.md` 2026-11-01 |
 | Заявки, хостинг | Заявки на почту; REG.RU, сервер ведёт владелец | ADR-0003, ADR-0006 |
 | Стек | Next.js 16, TypeScript; Radix и shadcn оставлены для кабинета; Tailwind убран; ECharts — своя сборка | ADR-0008 |
+| Демо-цифры | Источник — `demo-report.ts`; демо-страницы сайта сверяет с ним тест | `src/content/demo-site.test.ts`, бэклог 7.16 |
+| FAQ и поисковики | Вопросы в `faq.json`, в разметку и FAQPage кладёт сборка; Open Graph, Organization, крошки | `prototype/home/src/faq.json`, `build.py`, `src/site/seo.tsx` |
 | Документы в HTML | Собираются из Markdown скриптом, руками не правятся | `scripts/docs-html.py`, `docs/html/` |
 | Открытые вопросы | Всё нерешённое — одним списком | `docs/backlog.md` |
 

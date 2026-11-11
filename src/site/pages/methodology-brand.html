@@ -1,4 +1,5 @@
 <div class="page">
+  <a class="skip" href="#main">К содержанию</a>
   <header class="header" id="top">
     <div class="header__box">
       <div class="header__bar">
@@ -76,7 +77,8 @@
     </div>
   </header>
 
-  <main>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Откуда вы берёте данные?", "acceptedAnswer": {"@type": "Answer", "text": "Из открытых источников, таких как hh.ru, Dreamjob, VK, Дзен, медиа и ответы нейросетей. Имена авторов отзывов в отчёт не попадают."}}, {"@type": "Question", "name": "Можно поднять индекс, если просто меньше обещать?", "acceptedAnswer": {"@type": "Answer", "text": "Индекс вырастет, но вырастут и слепые зоны. Поэтому мы всегда показываем оба показателя рядом."}}, {"@type": "Question", "name": "Почему не свести всё в одну оценку?", "acceptedAnswer": {"@type": "Answer", "text": "Точки отсчёта у показателей разные, это ваши обещания, разговоры людей и рынок. В одной цифре они смешаются, и станет непонятно, что исправлять."}}, {"@type": "Question", "name": "А если отзывов о нас мало?", "acceptedAnswer": {"@type": "Answer", "text": "Обещание с числом упоминаний меньше 10 получает статус «нет данных» и не входит в индекс. Такие темы можно проверить изнутри."}}]}</script>
+  <main id="main">
   <!-- Первый экран: текст | формула индекса в карточке (как «Проверка обещания» на обзоре) -->
   <section class="page-hero dir-intro" aria-labelledby="page-title">
     <ol class="crumbs" aria-label="Хлебные крошки">
@@ -351,7 +353,30 @@
         <p class="lead">Откуда данные и почему показатели не сводим в одну цифру.</p>
       </div>
     </div>
-    <div class="faq" id="faq-list" data-groups="brand"></div>
+    <div class="faq" id="faq-list">
+<div class="faq-group"><div class="faq-group__info"><div><h3 class="faq-group__title">Оценка HR-бренда и индекс культуры</h3><p class="faq-group__desc">Откуда данные и как считаем индекс, слепые зоны и место в отрасли.</p></div></div><div class="faq-list">
+<div class="qa"><button class="qa__q" type="button" aria-expanded="false" aria-controls="qa-0-0"><span>Откуда вы берёте данные?</span><i class="qa__icon"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g>
+<path d="M5 12H19M12 5V19" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+</g>
+</svg></i></button><div class="qa__a" id="qa-0-0" role="region"><div><p>Из открытых источников, таких как hh.ru, Dreamjob, VK, Дзен, медиа и ответы нейросетей. Имена авторов отзывов в отчёт не попадают.</p></div></div></div>
+<div class="qa"><button class="qa__q" type="button" aria-expanded="false" aria-controls="qa-0-1"><span>Можно поднять индекс, если просто меньше обещать?</span><i class="qa__icon"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g>
+<path d="M5 12H19M12 5V19" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+</g>
+</svg></i></button><div class="qa__a" id="qa-0-1" role="region"><div><p>Индекс вырастет, но вырастут и слепые зоны. Поэтому мы всегда показываем оба показателя рядом.</p></div></div></div>
+<div class="qa"><button class="qa__q" type="button" aria-expanded="false" aria-controls="qa-0-2"><span>Почему не свести всё в одну оценку?</span><i class="qa__icon"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g>
+<path d="M5 12H19M12 5V19" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+</g>
+</svg></i></button><div class="qa__a" id="qa-0-2" role="region"><div><p>Точки отсчёта у показателей разные, это ваши обещания, разговоры людей и рынок. В одной цифре они смешаются, и станет непонятно, что исправлять.</p></div></div></div>
+<div class="qa"><button class="qa__q" type="button" aria-expanded="false" aria-controls="qa-0-3"><span>А если отзывов о нас мало?</span><i class="qa__icon"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g>
+<path d="M5 12H19M12 5V19" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+</g>
+</svg></i></button><div class="qa__a" id="qa-0-3" role="region"><div><p>Обещание с числом упоминаний меньше 10 получает статус «нет данных» и не входит в индекс. Такие темы можно проверить изнутри.</p></div></div></div>
+</div></div>
+</div>
   </section>
 
   <section class="rsec rfull" aria-labelledby="cta-title">
@@ -543,10 +568,10 @@ fade(); sync();
       <div class="footer__nav">
         <p class="footer__about">Сверяем обещания работодателя с тем, что видят кандидаты и что переживают сотрудники. Снаружи и изнутри.</p>
         <div class="footer__cols">
-          <div class="fcol"><h4>Оценка HR-бренда</h4><ul><li><a href="/hr-brand">Обзор направления</a></li><li><a href="/hr-brand/demo">Демо-отчёт</a></li><li><a href="/hr-brand/methodology">Как считаем</a></li></ul></div>
-          <div class="fcol"><h4>Здоровье культуры</h4><ul><li><a href="/culture-health">Обзор направления</a></li><li><a href="/culture-health/demo">Демо-дашборд</a></li><li><a href="/culture-health/methodology">Как считаем</a></li></ul></div>
-          <div class="fcol"><h4>Компания</h4><ul><li><a href="/pricing">Цены</a></li><li><a href="/start">Заявка</a></li></ul></div>
-          <div class="fcol"><h4>Контакты</h4><ul><li><a href="mailto:mirrorcom@mail.ru">mirrorcom@mail.ru</a></li><li><a href="tel:+79127023030">+7 912 702-30-30</a></li><li><a href="https://t.me/mirror_diary" target="_blank" rel="noreferrer">@mirror_diary</a></li></ul></div>
+          <div class="fcol"><h2>Оценка HR-бренда</h2><ul><li><a href="/hr-brand">Обзор направления</a></li><li><a href="/hr-brand/demo">Демо-отчёт</a></li><li><a href="/hr-brand/methodology">Как считаем</a></li></ul></div>
+          <div class="fcol"><h2>Здоровье культуры</h2><ul><li><a href="/culture-health">Обзор направления</a></li><li><a href="/culture-health/demo">Демо-дашборд</a></li><li><a href="/culture-health/methodology">Как считаем</a></li></ul></div>
+          <div class="fcol"><h2>Компания</h2><ul><li><a href="/pricing">Цены</a></li><li><a href="/start">Заявка</a></li></ul></div>
+          <div class="fcol"><h2>Контакты</h2><ul><li><a href="mailto:mirrorcom@mail.ru">mirrorcom@mail.ru</a></li><li><a href="tel:+79127023030">+7 912 702-30-30</a></li><li><a href="https://t.me/mirror_diary" target="_blank" rel="noreferrer">@mirror_diary</a></li></ul></div>
         </div>
       </div>
       <div class="footer__sep"></div>
@@ -556,10 +581,4 @@ fade(); sync();
 
 </div>
 <div id="site-layer"></div>
-<template id="ico-plus"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g>
-<path d="M5 12H19M12 5V19" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
-</g>
-</svg></template>
-<script src="/site/content.js"></script>
 <script src="/site/app.js"></script>

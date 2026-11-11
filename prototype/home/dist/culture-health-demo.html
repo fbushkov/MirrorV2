@@ -47,6 +47,7 @@
   --c-zebra: #faf9fe;         /* чётные строки таблиц (макет «Цена») */
   --c-ok: #3b9952;            /* иконка «входит» в таблицах */
   --c-warn: #d08a1e;           /* «частично», «внимание», тон «по-разному» */
+  --c-error: #d92d20;         /* ошибка поля формы */
   --c-bad: #db4f4f;           /* иконка «не нужно / не предусмотрено» */
   --c-na: #949494;            /* иконка «не входит» (минус) */
   /* Бейджи (переменные из макета) */
@@ -109,6 +110,9 @@ img, svg { display: block; }
 :focus-visible { outline: 2px solid var(--c-violet); outline-offset: 3px; border-radius: 6px; }
 .page { max-width: 1920px; margin: 0 auto; padding: 32px var(--page-x) var(--page-x); display: flex; flex-direction: column; } /* шире 1920 — по центру, не растягиваем */
 .mono { font-family: var(--font-mono); font-weight: 400; }
+/* Ссылка «К содержанию» для клавиатуры: видна только в фокусе */
+.skip { position: fixed; left: 16px; top: -64px; z-index: 100; padding: 10px 16px; border-radius: var(--r-pill); background: var(--c-dark); color: var(--c-on-dark); font: 500 var(--fs-body)/var(--lh-body) var(--font-sans); transition: top .15s; }
+.skip:focus-visible { top: 16px; outline: 2px solid var(--c-violet); outline-offset: 2px; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
 /* 3. Компоненты (кастомизация shadcn/ui под макет) */
@@ -154,8 +158,10 @@ img, svg { display: block; }
 .input::placeholder, .textarea::placeholder { color: var(--c-ink-4); }
 .input:hover, .textarea:hover { border-color: var(--c-line-hover); }
 .input:focus, .textarea:focus { outline: none; border-color: var(--c-violet); background: #fff; box-shadow: 0 0 0 3px rgba(122,47,209,.15); }
-.input[aria-invalid="true"] { border-color: #d92d20; }
-.error { font-size: var(--fs-sm); line-height: var(--lh-sm); color: #d92d20; }
+.input[aria-invalid="true"] { border-color: var(--c-error); }
+.error { font-size: var(--fs-sm); line-height: var(--lh-sm); color: var(--c-error); }
+.check[data-invalid] input { border-color: var(--c-error); }
+.check + .error { margin-top: -8px; }
 
 /* Checkbox — 20×20, радиус 4 */
 .check { display: flex; gap: 8px; align-items: flex-start; cursor: pointer; font: 400 var(--fs-body)/var(--lh-body) var(--font-sans); }
@@ -401,6 +407,7 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 .form__row { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
 .form__done { display: none; padding: 32px; border-radius: var(--r-card); background: var(--c-surface-3); }
 .form__done h3 { font: 600 var(--fs-h4)/1.2 var(--font-sans); margin-bottom: 8px; }
+.form__done:focus { outline: none; }
 .form.is-sent > :not(.form__done) { display: none; }
 .form.is-sent .form__done { display: block; }
 
@@ -615,6 +622,7 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 .mirror__dots { display: flex; gap: 6px; }
 .mirror__dots button { width: 12px; height: 32px; padding: 0; border: 0; background: none; cursor: pointer; position: relative; transition: width .3s var(--ease); }
 .mirror__dots button::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 6px; margin-top: -3px; border-radius: var(--r-pill); background: var(--c-line); transition: background .2s; }
+.mirror__dots button::after { content: ""; position: absolute; inset: -8px -3px; }
 .mirror__dots button:hover::before { background: var(--c-line-hover); }
 .mirror__dots button[aria-selected="true"] { width: 32px; }
 .mirror__dots button[aria-selected="true"]::before { background: var(--c-violet); }
@@ -746,7 +754,7 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 .footer__nav { display: flex; justify-content: space-between; gap: 48px; padding-right: clamp(0px, 5.8vw, 112px); }
 .footer__about { max-width: 378px; padding-top: 8px; color: var(--c-ink-4); }
 .footer__cols { display: grid; grid-template-columns: repeat(4, 163px); gap: clamp(32px, 5.8vw, 112px); }
-.fcol h4 { font: 400 var(--fs-mono)/27px var(--font-mono); color: var(--c-ink-4); margin-bottom: 20px; }
+.fcol h2 { font: 400 var(--fs-mono)/27px var(--font-mono); color: var(--c-ink-4); margin-bottom: 20px; }
 .fcol ul { list-style: none; display: flex; flex-direction: column; gap: 12px; }
 .fcol a { transition: color .2s; }
 .fcol a:hover { color: var(--c-violet-link); text-decoration: underline; text-underline-offset: 4px; }
@@ -786,6 +794,7 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
   .groups { grid-template-columns: 1fr; }
   .faq-group { grid-template-columns: 1fr; }
   .request { grid-template-columns: 1fr; padding-bottom: 48px; }
+  .request .form { order: -1; }   /* на узком экране сначала форма, контакты под ней */
   .footer__nav { flex-direction: column; }
 }
 @media (max-width: 1023px) {
@@ -1283,6 +1292,8 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 .spots--lite .blind__bar { margin-top: 10px; height: 6px; }
 /* Кнопка «i»: пояснение второго плана по наведению или касанию */
 .info { display: inline-grid; place-items: center; width: 24px; height: 24px; margin: -4px 0; border-radius: var(--r-pill); color: var(--c-ink-4); cursor: help; transition: color .2s, background .2s; }
+.info { position: relative; }
+.info::after { content: ""; position: absolute; inset: -10px; }
 .info svg { width: 16px; height: 16px; }
 .info:hover, .info[aria-expanded="true"] { color: var(--c-violet); background: rgba(122,47,209,.08); }
 .info:focus-visible { outline: 2px solid var(--c-violet); outline-offset: 1px; }
@@ -1548,6 +1559,7 @@ button.seg__item.is-active { background: var(--c-surface-2); }
 </head>
 <body>
 <div class="page">
+  <a class="skip" href="#main">К содержанию</a>
   <header class="header" id="top">
     <div class="header__box">
       <div class="header__bar">
@@ -1625,7 +1637,7 @@ button.seg__item.is-active { background: var(--c-surface-2); }
     </div>
   </header>
 
-  <main class="is-health">
+  <main id="main" class="is-health">
   <!-- Первый экран: как у демо-отчёта HR-бренда -->
   <section class="page-hero report-hero" aria-labelledby="page-title">
     <ol class="crumbs" aria-label="Хлебные крошки">
@@ -2063,10 +2075,10 @@ fade(); sync();
       <div class="footer__nav">
         <p class="footer__about">Сверяем обещания работодателя с тем, что видят кандидаты и что переживают сотрудники. Снаружи и изнутри.</p>
         <div class="footer__cols">
-          <div class="fcol"><h4>Оценка HR-бренда</h4><ul><li><a href="hr-brand.html">Обзор направления</a></li><li><a href="hr-brand-demo.html">Демо-отчёт</a></li><li><a href="methodology-brand.html">Как считаем</a></li></ul></div>
-          <div class="fcol"><h4>Здоровье культуры</h4><ul><li><a href="culture-health.html">Обзор направления</a></li><li><a href="culture-health-demo.html">Демо-дашборд</a></li><li><a href="methodology-health.html">Как считаем</a></li></ul></div>
-          <div class="fcol"><h4>Компания</h4><ul><li><a href="pricing.html">Цены</a></li><li><a href="start.html">Заявка</a></li></ul></div>
-          <div class="fcol"><h4>Контакты</h4><ul><li><a href="mailto:mirrorcom@mail.ru">mirrorcom@mail.ru</a></li><li><a href="tel:+79127023030">+7 912 702-30-30</a></li><li><a href="https://t.me/mirror_diary" target="_blank" rel="noreferrer">@mirror_diary</a></li></ul></div>
+          <div class="fcol"><h2>Оценка HR-бренда</h2><ul><li><a href="hr-brand.html">Обзор направления</a></li><li><a href="hr-brand-demo.html">Демо-отчёт</a></li><li><a href="methodology-brand.html">Как считаем</a></li></ul></div>
+          <div class="fcol"><h2>Здоровье культуры</h2><ul><li><a href="culture-health.html">Обзор направления</a></li><li><a href="culture-health-demo.html">Демо-дашборд</a></li><li><a href="methodology-health.html">Как считаем</a></li></ul></div>
+          <div class="fcol"><h2>Компания</h2><ul><li><a href="pricing.html">Цены</a></li><li><a href="start.html">Заявка</a></li></ul></div>
+          <div class="fcol"><h2>Контакты</h2><ul><li><a href="mailto:mirrorcom@mail.ru">mirrorcom@mail.ru</a></li><li><a href="tel:+79127023030">+7 912 702-30-30</a></li><li><a href="https://t.me/mirror_diary" target="_blank" rel="noreferrer">@mirror_diary</a></li></ul></div>
         </div>
       </div>
       <div class="footer__sep"></div>
@@ -2075,94 +2087,20 @@ fade(); sync();
   </footer>
 
 </div>
-<template id="ico-plus"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g>
-<path d="M5 12H19M12 5V19" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
-</g>
-</svg></template>
 <script>
-/* Контент прототипа: вопросы и ответы FAQ, единственное место.
-   Страница выбирает группы через data-groups у #faq-list, поэтому вопросы
-   про цены на главной и на странице «Цены» берутся из одного места. */
-const FAQ_GROUPS = {
-  general: { tag: "01 · Общее", title: "Как начать?", desc: "Что нужно от вас, сколько ждать и чем Mirror отличается от опроса.", items: [
-    ["Нужен доступ к вашим системам?", "Для среза не нужен. Нужны название компании и ссылка на страницу работодателя на hh.ru. Для диагностики вы сами выбираете, какие документы передать."],
-    ["Срез правда бесплатный?", "Да. Внешний срез и 30 минут разбора с экспертом бесплатны и ни к чему не обязывают. Платите, только если решите идти дальше."],
-    ["Сколько ждать результат?", "Срез готовим за 3 рабочих дня, диагностику примерно за 4 недели. Кампания идёт 3 месяца."],
-    ["Чем это отличается от опроса вовлечённости?", "Опрос показывает, что думают сотрудники. Mirror сверяет это с тем, что вы обещаете и что видят люди снаружи. Видно, где слова расходятся с делом."]]},
-  brand: { tag: "02 · Снаружи", title: "Оценка HR-бренда и индекс культуры", desc: "Откуда данные и как считаем индекс, слепые зоны и место в отрасли.", items: [
-    ["Откуда вы берёте данные?", "Из открытых источников, таких как hh.ru, Dreamjob, VK, Дзен, медиа и ответы нейросетей. Имена авторов отзывов в отчёт не попадают."],
-    ["Можно поднять индекс, если просто меньше обещать?", "Индекс вырастет, но вырастут и слепые зоны. Поэтому мы всегда показываем оба показателя рядом."],
-    ["Почему не свести всё в одну оценку?", "Точки отсчёта у показателей разные, это ваши обещания, разговоры людей и рынок. В одной цифре они смешаются, и станет непонятно, что исправлять."],
-    ["А если отзывов о нас мало?", "Обещание с числом упоминаний меньше 10 получает статус «нет данных» и не входит в индекс. Такие темы можно проверить изнутри."]]},
-  health: { tag: "03 · Изнутри", title: "Дашборд здоровья корпоративной культуры", desc: "Приватность сотрудников, кто что видит и как быстро заметны изменения.", items: [
-    ["Это слежка за сотрудниками?", "Нет. Мы показываем только группы от 5 человек, не определяем авторов сообщений и не оцениваем людей. Правила одинаковы для всех ролей."],
-    ["Руководители увидят, кто что написал?", "Нет. Видны только группы от 5 человек и обезличенные темы. Цитаты проверяем на узнаваемые детали."],
-    ["Это оценка руководителей?", "Нет. Дашборд показывает состояние культуры в группах, а не эффективность людей. Для оценки сотрудников он не используется."],
-    ["Как быстро видны изменения?", "Данные обновляются примерно раз в 2 недели. Решения и их результат сотрудники видят на странице «Решения по обратной связи»."]]},
-  payment: { tag: "04 · Оплата", title: "Цены и договор", desc: "Как платить, что разовое, а что помесячно.", items: [
-    ["Как оплатить?", "По счёту и договору. Работу начинаем после оплаты."],
-    ["Это подписка?", "Срез, диагностика и кампания разовые. Помесячно оплачивается только мониторинг HR-бренда, его можно остановить в любой месяц."],
-    ["От чего зависит цена?", "От численности компании и числа подразделений. Цену фиксируем до начала работы."]]},
-  plans: { tag: "05 · Тарифы", title: "Что входит и как выбрать", desc: "Состав тарифов, конкуренты, численность и документы.", items: [
-    ["Почему внешний срез бесплатный?", "Это первый шаг к сотрудничеству. Срез показывает масштаб разрывов, а на разборе эксперт поможет решить, нужен ли следующий шаг. Обязательств он не создаёт."],
-    ["Чем срез отличается от мониторинга?", "Срез показывает один снимок на сегодня. Мониторинг обновляет индекс, слепые зоны и место в отрасли каждый месяц. Так видны просадки и подъёмы, а если тема резко выросла, придёт сигнал."],
-    ["Можно добавить конкурентов?", "В срезе сравниваем с 2–3 конкурентами. В мониторинге список можно расширить, цену назовём до начала работы."],
-    ["Диагностика входит в кампанию?", "Да. Кампания на 3 месяца начинается с диагностики, отдельно платить за неё не нужно."],
-    ["Что если у нас больше 3000 сотрудников?", "Посчитаем отдельно. Цена зависит от числа подразделений и срезов. Напишите, пришлём расчёт."],
-    ["Какие документы вы даёте?", "Договор, счёт и закрывающие документы. Для проверки изнутри добавляем договор на обработку данных сотрудников по 152-ФЗ."],
-    ["Работаете с агентствами и консультантами?", "Да. Делаем внешний аудит HR-бренда для ваших клиентов под вашим логотипом. Первые три отчёта бесплатны."]]},
-  healthPage: { tag: "О дашборде", title: "Вопросы сотрудников", desc: "Приватность, авторы сообщений и как быстро видны изменения.", items: [
-    ["Кто видит мои ответы?", "Никто не видит ответы отдельного человека. Руководители и команда культуры видят только группы от 5 человек и обезличенные темы."],
-    ["Можно ли понять, кто что написал?", "Нет. Мы не определяем авторов, проверяем цитаты на узнаваемые детали и показываем данные с задержкой."],
-    ["Что будет, если сообщение критическое?", "Оно станет сигналом по одной из метрик. Критика даёт данные для решений, а не повод искать автора."],
-    ["Это оценка меня или моего руководителя?", "Нет. Дашборд показывает состояние культуры в группах, а не эффективность людей. Для оценки сотрудников он не используется."],
-    ["Почему здесь нет вопросов про зарплату и безопасность?", "Физическая, юридическая, финансовая и информационная безопасность и размер зарплат не входят в метрики. Ими занимаются отдельные службы."],
-    ["Как быстро появятся изменения после обратной связи?", "Данные обновляются с задержкой, обычно раз в 2 недели. Решения и их результат публикуются на странице «Решения по обратной связи»."]]},
-  brandPage: { tag: "Об оценке", title: "Оценка HR-бренда", desc: "Сроки, доступы и как устроен индекс.", items: [
-    ["Срез правда бесплатный?", "Да. Внешний срез и 30 минут разбора с экспертом бесплатны и ни к чему не обязывают. Платите, только если решите продолжить с диагностикой."],
-    ["Нужен доступ к нашим системам?", "Для среза не нужен. Нужны название компании и ссылка на страницу работодателя на hh.ru. Для диагностики вы сами выбираете, какие документы передать."],
-    ["Сколько ждать результат?", "Срез готовим за 3 рабочих дня, диагностику примерно за 4 недели."],
-    ["Можно поднять индекс, если просто меньше обещать?", "Индекс вырастет, но вырастут и слепые зоны, то есть темы, которые люди обсуждают, а вы молчите. Поэтому мы всегда показываем оба показателя рядом."],
-    ["Почему не свести всё в одну оценку?", "Точки отсчёта у показателей разные, это ваши обещания, разговоры людей и рынок. В одной цифре они смешаются, и станет непонятно, что исправлять."],
-    ["А если отзывов мало?", "Обещание с числом упоминаний меньше 10 получает статус «нет данных» и не входит в индекс. Такие обещания проверяем изнутри, в диагностике."]]},
-};
-
 /* Общий скрипт всех страниц: меню, форма, шейдер, типограф.
-   Скрипт страницы (например, FAQ на главной) идёт раньше — типограф
+   Скрипт страницы (графики, фильтры демо) идёт раньше — типограф
    запускается последним и обрабатывает уже готовую разметку. */
-/* Вопросы: группы из FAQ_GROUPS (src/content.js), один открытый на группу
-   data-groups="general,brand" — несколько блоков; "payment+plans" — один блок из нескольких групп
-   (название и описание — первой группы или из data-desc). Номер-тег показываем, только если блоков больше одного. */
-const faqRoot = document.getElementById("faq-list");
-if (faqRoot) {
-  const plus = document.getElementById("ico-plus").innerHTML;
-  const blocks = faqRoot.dataset.groups.split(",").map((spec) => {
-    const parts = spec.trim().split("+").map((k) => FAQ_GROUPS[k]);
-    return { ...parts[0], items: parts.flatMap((g) => g.items) };
-  });
-  if (faqRoot.dataset.desc) blocks[0].desc = faqRoot.dataset.desc;
-  blocks.forEach((g, gi) => {
-    const sec = document.createElement("div");
-    sec.className = "faq-group";
-    const tag = blocks.length > 1 ? `<span class="faq-group__tag">${g.tag}</span>` : "";
-    sec.innerHTML = `<div class="faq-group__info">${tag}<div><h3 class="faq-group__title">${g.title}</h3><p class="faq-group__desc">${g.desc}</p></div></div><div class="faq-list"></div>`;
-    const list = sec.querySelector(".faq-list");
-    g.items.forEach(([q, a], i) => {
-      const id = `qa-${gi}-${i}`;
-      const el = document.createElement("div");
-      el.className = "qa";
-      el.innerHTML = `<button class="qa__q" type="button" aria-expanded="false" aria-controls="${id}"><span>${q}</span><i class="qa__icon">${plus}</i></button><div class="qa__a" id="${id}" role="region"><div><p>${a}</p></div></div>`;
-      el.querySelector("button").addEventListener("click", () => {
-        const willOpen = !el.classList.contains("is-open");
-        list.querySelectorAll(".qa").forEach((o) => { o.classList.remove("is-open"); o.querySelector("button").setAttribute("aria-expanded", "false"); });
-        if (willOpen) { el.classList.add("is-open"); el.querySelector("button").setAttribute("aria-expanded", "true"); }
-      });
-      list.appendChild(el);
+/* Вопросы: разметку собирает build.py из src/faq.json, здесь только раскрытие — один открытый на группу */
+document.querySelectorAll("#faq-list .faq-list").forEach((list) => {
+  list.querySelectorAll(".qa").forEach((el) => {
+    el.querySelector("button").addEventListener("click", () => {
+      const willOpen = !el.classList.contains("is-open");
+      list.querySelectorAll(".qa").forEach((o) => { o.classList.remove("is-open"); o.querySelector("button").setAttribute("aria-expanded", "false"); });
+      if (willOpen) { el.classList.add("is-open"); el.querySelector("button").setAttribute("aria-expanded", "true"); }
     });
-    faqRoot.appendChild(sec);
   });
-}
+});
 
 /* Мега-меню: клик, Esc, клик вне, одно открытое */
 const header = document.querySelector(".header");
@@ -2175,12 +2113,20 @@ function setMenu(id) {
   triggers.forEach((t) => t.setAttribute("aria-expanded", String(t.dataset.panel === id)));
   if (id) mega.querySelectorAll(".mega__panel").forEach((p) => p.classList.toggle("is-active", p.dataset.id === id));
 }
-triggers.forEach((t) => t.addEventListener("click", (e) => { e.stopPropagation(); setMenu(current === t.dataset.panel ? null : t.dataset.panel); }));
+/* Клик по пункту переключает панель. Если панель только что открылась наведением, первый клик её не закрывает:
+   иначе мышью выходит «навёл — открылось, кликнул — закрылось». */
+let byHover = false;
+triggers.forEach((t) => t.addEventListener("click", (e) => {
+  e.stopPropagation();
+  const keep = byHover && current === t.dataset.panel;
+  byHover = false;
+  if (!keep) setMenu(current === t.dataset.panel ? null : t.dataset.panel);
+}));
 /* Наведение на пункт со стрелкой открывает панель; уходим со всей шапки — закрываем с задержкой */
 const canHover = matchMedia("(hover: hover) and (pointer: fine)").matches;
 let closeT = 0;
 if (canHover) {
-  document.querySelectorAll(".nav__item[data-panel]").forEach((t) => t.addEventListener("pointerenter", () => { clearTimeout(closeT); setMenu(t.dataset.panel); }));
+  document.querySelectorAll(".nav__item[data-panel]").forEach((t) => t.addEventListener("pointerenter", () => { clearTimeout(closeT); if (current !== t.dataset.panel) byHover = true; setMenu(t.dataset.panel); }));
   document.querySelectorAll(".nav__item:not([data-panel]), .header__cta, .logo").forEach((el) => el.addEventListener("pointerenter", () => { if (current && current !== "mobile") { clearTimeout(closeT); closeT = setTimeout(() => setMenu(null), 120); } }));
   header.addEventListener("pointerenter", () => clearTimeout(closeT));
   header.addEventListener("pointerleave", () => { if (current && current !== "mobile") closeT = setTimeout(() => setMenu(null), 180); });
@@ -2197,18 +2143,27 @@ document.querySelectorAll("[data-topic]").forEach((a) => a.addEventListener("cli
 const urlTopic = new URLSearchParams(window.__QS ?? location.search).get("topic"); // __QS — параметры страницы в сборке сайта одним файлом (tools/bundle.py)
 if (urlTopic) pickTopic(urlTopic);
 
-/* Форма: проверка обязательных полей, экран успеха */
+/* Форма: проверка полей, ошибки текстом и для скринридера, фокус на первой ошибке, экран успеха.
+   Контакт — почта, ник или ссылка Телеграма, либо телефон. */
+const CONTACT_OK = /^(\S+@\S+\.\S{2,}|@?[a-z][\w]{4,31}|(https?:\/\/)?t\.me\/\S+|\+?[\d\s()-]{10,18})$/i;
 const form = document.querySelector("form.form");
 if (form) form.addEventListener("submit", (e) => {
   e.preventDefault();
-  let ok = true;
+  let first = null;
   form.querySelectorAll("input[required]").forEach((inp) => {
-    const bad = inp.type === "checkbox" ? !inp.checked : !inp.value.trim();
-    if (inp.type !== "checkbox") { inp.setAttribute("aria-invalid", String(bad)); const err = inp.parentElement.querySelector(".error"); if (err) err.hidden = !bad; }
-    else inp.parentElement.style.color = bad ? "#d92d20" : "";
-    if (bad) ok = false;
+    const err = document.getElementById(inp.getAttribute("aria-describedby"));
+    const value = inp.value.trim();
+    let bad = inp.type === "checkbox" ? !inp.checked : !value;
+    if (!bad && inp.dataset.check === "contact" && !CONTACT_OK.test(value)) { bad = true; err.textContent = err.dataset.format; }
+    else if (err && err.dataset.empty) err.textContent = err.dataset.empty;
+    inp.setAttribute("aria-invalid", String(bad));
+    if (inp.type === "checkbox") inp.closest(".check").toggleAttribute("data-invalid", bad);
+    if (err) err.hidden = !bad;
+    if (bad && !first) first = inp;
   });
-  if (ok) form.classList.add("is-sent");
+  if (first) { first.focus(); return; }
+  form.classList.add("is-sent");
+  form.querySelector(".form__done").focus();
 });
 
 /* Шейдерный градиент на карточках направлений (WebGL, без зависимостей)
@@ -2351,7 +2306,8 @@ document.querySelectorAll("select.select").forEach((sel, n) => {
   const pick = (i) => { if (i !== sel.selectedIndex) { sel.selectedIndex = i; sel.dispatchEvent(new Event("change", { bubbles: true })); } sync(); close(true); };
   btn.addEventListener("click", () => (list.hidden ? open() : close()));
   btn.addEventListener("keydown", (e) => { if (["ArrowDown", "ArrowUp"].includes(e.key)) { e.preventDefault(); open(); } });
-  list.addEventListener("click", (e) => { const li = e.target.closest("li"); if (li) pick([...list.children].indexOf(li)); });
+  // preventDefault: список лежит внутри label, и без него клик по пункту «нажимал» кнопку ещё раз — список открывался снова
+  list.addEventListener("click", (e) => { e.preventDefault(); const li = e.target.closest("li"); if (li) pick([...list.children].indexOf(li)); });
   list.addEventListener("pointermove", (e) => { const li = e.target.closest("li"); if (li) { active = [...list.children].indexOf(li); mark(); } });
   list.addEventListener("keydown", (e) => {
     const last = list.children.length - 1;

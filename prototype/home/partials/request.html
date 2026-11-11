@@ -21,19 +21,20 @@
         </fieldset>
         <div class="form__row">
           <div class="field"><label class="label" for="f-name">Имя</label><input class="input" id="f-name" name="name" placeholder="Как к вам обращаться" autocomplete="given-name"></div>
-          <div class="field"><label class="label" for="f-company">Компания</label><input class="input" id="f-company" name="company" placeholder="Название компании" autocomplete="organization" required><span class="error" hidden>Укажите компанию</span></div>
+          <div class="field"><label class="label" for="f-company">Компания</label><input class="input" id="f-company" name="company" placeholder="Название компании" autocomplete="organization" required aria-describedby="e-company"><span class="error" id="e-company" hidden>Укажите компанию</span></div>
         </div>
         <div class="form__row">
           <div class="field"><label class="label" for="f-hh">Ссылка на hh.ru</label><input class="input" id="f-hh" name="hh" placeholder="hh.ru/employer/…"></div>
-          <div class="field"><label class="label" for="f-contact">Почта или Телеграм</label><input class="input" id="f-contact" name="contact" placeholder="Куда прислать срез" required><span class="error" hidden>Оставьте контакт</span></div>
+          <div class="field"><label class="label" for="f-contact">Почта или Телеграм</label><input class="input" id="f-contact" name="contact" placeholder="Куда прислать срез" required aria-describedby="e-contact" data-check="contact"><span class="error" id="e-contact" hidden data-empty="Оставьте контакт" data-format="Укажите почту, ник в Телеграме или телефон">Оставьте контакт</span></div>
         </div>
         <div class="field">
           <label class="label" for="f-msg">Комментарий</label>
           <p class="hint">Необязательное поле</p>
           <textarea class="textarea" id="f-msg" name="message" placeholder="Что сейчас беспокоит или каких конкурентов добавить в сравнение"></textarea>
         </div>
-        <label class="check"><input type="checkbox" name="consent" required><span><span class="muted">Согласен на</span> <a href="{{href:consent}}">обработку персональных данных</a> <span class="muted">и принимаю</span> <a href="{{href:privacy}}">политику конфиденциальности</a></span></label>
+        <label class="check"><input type="checkbox" name="consent" required aria-describedby="e-consent"><span><span class="muted">Согласен на</span> <a href="{{href:consent}}">обработку персональных данных</a> <span class="muted">и принимаю</span> <a href="{{href:privacy}}">политику конфиденциальности</a></span></label>
+        <span class="error" id="e-consent" hidden>Отметьте согласие, без него заявку не принять</span>
         <button class="btn btn--primary btn--block" type="submit">Отправить заявку {{svgc:arrow-up-right-white.svg|ico-arrow}}</button>
-        <div class="form__done" role="status"><h3>Заявка принята</h3><p>Ответим в течение рабочего дня. Это прототип, данные никуда не отправляются.</p></div>
+        <div class="form__done" role="status" tabindex="-1"><h3>Заявка принята</h3><p>Ответим в течение рабочего дня. Это прототип, данные никуда не отправляются.</p></div>
       </form>
     </div>

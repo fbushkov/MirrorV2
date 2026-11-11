@@ -37,6 +37,7 @@
   --c-zebra: #faf9fe;         /* чётные строки таблиц (макет «Цена») */
   --c-ok: #3b9952;            /* иконка «входит» в таблицах */
   --c-warn: #d08a1e;           /* «частично», «внимание», тон «по-разному» */
+  --c-error: #d92d20;         /* ошибка поля формы */
   --c-bad: #db4f4f;           /* иконка «не нужно / не предусмотрено» */
   --c-na: #949494;            /* иконка «не входит» (минус) */
   /* Бейджи (переменные из макета) */
@@ -99,6 +100,9 @@ img, svg { display: block; }
 :focus-visible { outline: 2px solid var(--c-violet); outline-offset: 3px; border-radius: 6px; }
 .page { max-width: 1920px; margin: 0 auto; padding: 32px var(--page-x) var(--page-x); display: flex; flex-direction: column; } /* шире 1920 — по центру, не растягиваем */
 .mono { font-family: var(--font-mono); font-weight: 400; }
+/* Ссылка «К содержанию» для клавиатуры: видна только в фокусе */
+.skip { position: fixed; left: 16px; top: -64px; z-index: 100; padding: 10px 16px; border-radius: var(--r-pill); background: var(--c-dark); color: var(--c-on-dark); font: 500 var(--fs-body)/var(--lh-body) var(--font-sans); transition: top .15s; }
+.skip:focus-visible { top: 16px; outline: 2px solid var(--c-violet); outline-offset: 2px; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
 /* 3. Компоненты (кастомизация shadcn/ui под макет) */
@@ -144,8 +148,10 @@ img, svg { display: block; }
 .input::placeholder, .textarea::placeholder { color: var(--c-ink-4); }
 .input:hover, .textarea:hover { border-color: var(--c-line-hover); }
 .input:focus, .textarea:focus { outline: none; border-color: var(--c-violet); background: #fff; box-shadow: 0 0 0 3px rgba(122,47,209,.15); }
-.input[aria-invalid="true"] { border-color: #d92d20; }
-.error { font-size: var(--fs-sm); line-height: var(--lh-sm); color: #d92d20; }
+.input[aria-invalid="true"] { border-color: var(--c-error); }
+.error { font-size: var(--fs-sm); line-height: var(--lh-sm); color: var(--c-error); }
+.check[data-invalid] input { border-color: var(--c-error); }
+.check + .error { margin-top: -8px; }
 
 /* Checkbox — 20×20, радиус 4 */
 .check { display: flex; gap: 8px; align-items: flex-start; cursor: pointer; font: 400 var(--fs-body)/var(--lh-body) var(--font-sans); }
@@ -391,6 +397,7 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 .form__row { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
 .form__done { display: none; padding: 32px; border-radius: var(--r-card); background: var(--c-surface-3); }
 .form__done h3 { font: 600 var(--fs-h4)/1.2 var(--font-sans); margin-bottom: 8px; }
+.form__done:focus { outline: none; }
 .form.is-sent > :not(.form__done) { display: none; }
 .form.is-sent .form__done { display: block; }
 
@@ -605,6 +612,7 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 .mirror__dots { display: flex; gap: 6px; }
 .mirror__dots button { width: 12px; height: 32px; padding: 0; border: 0; background: none; cursor: pointer; position: relative; transition: width .3s var(--ease); }
 .mirror__dots button::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 6px; margin-top: -3px; border-radius: var(--r-pill); background: var(--c-line); transition: background .2s; }
+.mirror__dots button::after { content: ""; position: absolute; inset: -8px -3px; }
 .mirror__dots button:hover::before { background: var(--c-line-hover); }
 .mirror__dots button[aria-selected="true"] { width: 32px; }
 .mirror__dots button[aria-selected="true"]::before { background: var(--c-violet); }
@@ -736,7 +744,7 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 .footer__nav { display: flex; justify-content: space-between; gap: 48px; padding-right: clamp(0px, 5.8vw, 112px); }
 .footer__about { max-width: 378px; padding-top: 8px; color: var(--c-ink-4); }
 .footer__cols { display: grid; grid-template-columns: repeat(4, 163px); gap: clamp(32px, 5.8vw, 112px); }
-.fcol h4 { font: 400 var(--fs-mono)/27px var(--font-mono); color: var(--c-ink-4); margin-bottom: 20px; }
+.fcol h2 { font: 400 var(--fs-mono)/27px var(--font-mono); color: var(--c-ink-4); margin-bottom: 20px; }
 .fcol ul { list-style: none; display: flex; flex-direction: column; gap: 12px; }
 .fcol a { transition: color .2s; }
 .fcol a:hover { color: var(--c-violet-link); text-decoration: underline; text-underline-offset: 4px; }
@@ -776,6 +784,7 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
   .groups { grid-template-columns: 1fr; }
   .faq-group { grid-template-columns: 1fr; }
   .request { grid-template-columns: 1fr; padding-bottom: 48px; }
+  .request .form { order: -1; }   /* на узком экране сначала форма, контакты под ней */
   .footer__nav { flex-direction: column; }
 }
 @media (max-width: 1023px) {
@@ -1273,6 +1282,8 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 .spots--lite .blind__bar { margin-top: 10px; height: 6px; }
 /* Кнопка «i»: пояснение второго плана по наведению или касанию */
 .info { display: inline-grid; place-items: center; width: 24px; height: 24px; margin: -4px 0; border-radius: var(--r-pill); color: var(--c-ink-4); cursor: help; transition: color .2s, background .2s; }
+.info { position: relative; }
+.info::after { content: ""; position: absolute; inset: -10px; }
 .info svg { width: 16px; height: 16px; }
 .info:hover, .info[aria-expanded="true"] { color: var(--c-violet); background: rgba(122,47,209,.08); }
 .info:focus-visible { outline: 2px solid var(--c-violet); outline-offset: 1px; }

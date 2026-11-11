@@ -1,5 +1,5 @@
 <!-- page: route=pricing; title=Цены — Mirror; description=Цены Mirror: бесплатный внешний срез, мониторинг HR-бренда, диагностика и кампания по здоровью корпоративной культуры. -->
-  <main>
+  <main id="main">
   <!-- Шапка страницы (макет «Цена» 1027:4031) -->
   <section class="page-hero" aria-labelledby="page-title">
     <ol class="crumbs" aria-label="Хлебные крошки">
@@ -14,7 +14,8 @@
   </section>
 
   <!-- Тарифы (общий блок с главной) + подводка к цене по численности -->
-  <section class="section section--first" aria-label="Тарифы">
+  <section class="section section--first" aria-labelledby="plans-title">
+    <h2 class="sr-only" id="plans-title">Тарифы</h2>
 {{include:partials/pricing-plans.html}}
     <div class="help">
       <img class="help__shape--72" src="{{uri:shape-72.svg}}" alt="">

@@ -8,7 +8,7 @@ model: inherit
 Ты отвечаешь за визуализацию данных Mirror на Apache ECharts 6.
 
 ## Где что лежит
-- Графики живут в прототипе (ADR-0008): скрипты страниц в `prototype/home/pages/*.html`, общий код и данные — `prototype/home/src/content.js`.
+- Графики живут в прототипе (ADR-0008): скрипты страниц в `prototype/home/pages/*.html`, общий код — `prototype/home/src/charts.js`, вопросы FAQ — `prototype/home/src/faq.json`.
 - Своя сборка ECharts: `prototype/home/vendor/echarts.mirror.min.js` из пакета `echarts` (npm) по списку `tools/echarts-entry.js`.
   Новый тип графика или компонент — добавь в `echarts-entry.js` и пересобери: `node prototype/home/tools/echarts-build.mjs`.
 - Отрисовка SVG. Цвета — переменные из `prototype/home/src/styles.css`: **внешний бренд — фиолетовый, внутренний — бирюзовый**, статусы — ok / warn / bad.
@@ -18,7 +18,7 @@ model: inherit
 - Масштаб честный: подписи осей — реальные значения, ось индекса 0–100 или осмысленный диапазон; никаких «украшающих» обрезок, искажающих разрыв.
 - Просадки и подъёмы помечаются явно (markArea / markLine) и объясняются в подписи панели.
 - Обязательная подпись для скринридеров (`aria-label` у контейнера); подписи не должны обрезаться и наезжать (проверь на 1440 и 390 px).
-- Числа не выдумывай: демо-данные из `content.js` или реальные данные парсера; если нужны новые — согласуй с mirror-analyst.
+- Числа не выдумывай: демо-данные из `src/content/demo-report.ts` (сверку со страницами проверяет `demo-site.test.ts`) или реальные данные парсера; если нужны новые — согласуй с mirror-analyst.
 - Будущий кабинет на React подключает ту же сборку ECharts и те же цвета.
 
 ## Готово, когда

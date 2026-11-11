@@ -1,4 +1,5 @@
 <div class="page">
+  <a class="skip" href="#main">К содержанию</a>
   <header class="header" id="top">
     <div class="header__box">
       <div class="header__bar">
@@ -76,7 +77,7 @@
     </div>
   </header>
 
-  <main>
+  <main id="main">
   <section class="page-hero" aria-labelledby="page-title">
     <ol class="crumbs" aria-label="Хлебные крошки">
       <li><a href="/">Главная</a></li>
@@ -87,7 +88,8 @@
       <p class="page-hero__lead">Оставьте компанию и контакт. Конкурентов, сроки и формат уточним сами. Ответим в течение рабочего дня.</p>
     </div>
   </section>
-  <section class="section section--first" id="request" aria-label="Заявка">
+  <section class="section section--first" id="request" aria-labelledby="req-title">
+    <h2 class="sr-only" id="req-title">Форма заявки</h2>
     <!-- Форма заявки с контактами: главная (#request) и страница «Заявка» -->
     <div class="request">
       <div class="contacts">
@@ -111,24 +113,25 @@
         </fieldset>
         <div class="form__row">
           <div class="field"><label class="label" for="f-name">Имя</label><input class="input" id="f-name" name="name" placeholder="Как к вам обращаться" autocomplete="given-name"></div>
-          <div class="field"><label class="label" for="f-company">Компания</label><input class="input" id="f-company" name="company" placeholder="Название компании" autocomplete="organization" required><span class="error" hidden>Укажите компанию</span></div>
+          <div class="field"><label class="label" for="f-company">Компания</label><input class="input" id="f-company" name="company" placeholder="Название компании" autocomplete="organization" required aria-describedby="e-company"><span class="error" id="e-company" hidden>Укажите компанию</span></div>
         </div>
         <div class="form__row">
           <div class="field"><label class="label" for="f-hh">Ссылка на hh.ru</label><input class="input" id="f-hh" name="hh" placeholder="hh.ru/employer/…"></div>
-          <div class="field"><label class="label" for="f-contact">Почта или Телеграм</label><input class="input" id="f-contact" name="contact" placeholder="Куда прислать срез" required><span class="error" hidden>Оставьте контакт</span></div>
+          <div class="field"><label class="label" for="f-contact">Почта или Телеграм</label><input class="input" id="f-contact" name="contact" placeholder="Куда прислать срез" required aria-describedby="e-contact" data-check="contact"><span class="error" id="e-contact" hidden data-empty="Оставьте контакт" data-format="Укажите почту, ник в Телеграме или телефон">Оставьте контакт</span></div>
         </div>
         <div class="field">
           <label class="label" for="f-msg">Комментарий</label>
           <p class="hint">Необязательное поле</p>
           <textarea class="textarea" id="f-msg" name="message" placeholder="Что сейчас беспокоит или каких конкурентов добавить в сравнение"></textarea>
         </div>
-        <label class="check"><input type="checkbox" name="consent" required><span><span class="muted">Согласен на</span> <a href="/docs/data-processing-consent">обработку персональных данных</a> <span class="muted">и принимаю</span> <a href="/docs/privacy-policy">политику конфиденциальности</a></span></label>
+        <label class="check"><input type="checkbox" name="consent" required aria-describedby="e-consent"><span><span class="muted">Согласен на</span> <a href="/docs/data-processing-consent">обработку персональных данных</a> <span class="muted">и принимаю</span> <a href="/docs/privacy-policy">политику конфиденциальности</a></span></label>
+        <span class="error" id="e-consent" hidden>Отметьте согласие, без него заявку не принять</span>
         <button class="btn btn--primary btn--block" type="submit">Отправить заявку <svg aria-hidden="true" focusable="false" class="ico-arrow" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g>
 <path d="M14.8327 14.1641C14.8327 14.5323 14.5342 14.8307 14.166 14.8307C13.7978 14.8307 13.4993 14.5323 13.4993 14.1641V7.4401L6.30404 14.6354C6.04369 14.8958 5.62168 14.8958 5.36133 14.6354C5.10098 14.3751 5.10098 13.9531 5.36133 13.6927L12.5566 6.4974H5.83268C5.46449 6.4974 5.16602 6.19892 5.16602 5.83073C5.16602 5.46254 5.46449 5.16406 5.83268 5.16406H14.166C14.5342 5.16406 14.8327 5.46254 14.8327 5.83073V14.1641Z" fill="currentColor"/>
 </g>
 </svg></button>
-        <div class="form__done" role="status"><h3>Заявка принята</h3><p>Ответим в течение рабочего дня. Это прототип, данные никуда не отправляются.</p></div>
+        <div class="form__done" role="status" tabindex="-1"><h3>Заявка принята</h3><p>Ответим в течение рабочего дня. Это прототип, данные никуда не отправляются.</p></div>
       </form>
     </div>
 
@@ -152,10 +155,10 @@
       <div class="footer__nav">
         <p class="footer__about">Сверяем обещания работодателя с тем, что видят кандидаты и что переживают сотрудники. Снаружи и изнутри.</p>
         <div class="footer__cols">
-          <div class="fcol"><h4>Оценка HR-бренда</h4><ul><li><a href="/hr-brand">Обзор направления</a></li><li><a href="/hr-brand/demo">Демо-отчёт</a></li><li><a href="/hr-brand/methodology">Как считаем</a></li></ul></div>
-          <div class="fcol"><h4>Здоровье культуры</h4><ul><li><a href="/culture-health">Обзор направления</a></li><li><a href="/culture-health/demo">Демо-дашборд</a></li><li><a href="/culture-health/methodology">Как считаем</a></li></ul></div>
-          <div class="fcol"><h4>Компания</h4><ul><li><a href="/pricing">Цены</a></li><li><a href="#request">Заявка</a></li></ul></div>
-          <div class="fcol"><h4>Контакты</h4><ul><li><a href="mailto:mirrorcom@mail.ru">mirrorcom@mail.ru</a></li><li><a href="tel:+79127023030">+7 912 702-30-30</a></li><li><a href="https://t.me/mirror_diary" target="_blank" rel="noreferrer">@mirror_diary</a></li></ul></div>
+          <div class="fcol"><h2>Оценка HR-бренда</h2><ul><li><a href="/hr-brand">Обзор направления</a></li><li><a href="/hr-brand/demo">Демо-отчёт</a></li><li><a href="/hr-brand/methodology">Как считаем</a></li></ul></div>
+          <div class="fcol"><h2>Здоровье культуры</h2><ul><li><a href="/culture-health">Обзор направления</a></li><li><a href="/culture-health/demo">Демо-дашборд</a></li><li><a href="/culture-health/methodology">Как считаем</a></li></ul></div>
+          <div class="fcol"><h2>Компания</h2><ul><li><a href="/pricing">Цены</a></li><li><a href="#request">Заявка</a></li></ul></div>
+          <div class="fcol"><h2>Контакты</h2><ul><li><a href="mailto:mirrorcom@mail.ru">mirrorcom@mail.ru</a></li><li><a href="tel:+79127023030">+7 912 702-30-30</a></li><li><a href="https://t.me/mirror_diary" target="_blank" rel="noreferrer">@mirror_diary</a></li></ul></div>
         </div>
       </div>
       <div class="footer__sep"></div>
@@ -165,10 +168,4 @@
 
 </div>
 <div id="site-layer"></div>
-<template id="ico-plus"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g>
-<path d="M5 12H19M12 5V19" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
-</g>
-</svg></template>
-<script src="/site/content.js"></script>
 <script src="/site/app.js"></script>

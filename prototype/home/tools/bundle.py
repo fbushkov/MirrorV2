@@ -14,7 +14,7 @@ PAGES = ["index.html", "pricing.html", "hr-brand.html", "hr-brand-demo.html", "m
 # Общие куски: подставляются вместо повторов во всех страницах
 CHUNKS = {k: (root / p).read_text() for k, p in {
     "E": "vendor/echarts.mirror.min.js", "S": "src/styles.css", "A": "src/app.js",
-    "C": "src/content.js", "H": "src/charts.js", "M": "src/rmenu.js"}.items()}
+    "H": "src/charts.js", "M": "src/rmenu.js"}.items()}
 
 pages = {}
 for name in PAGES:

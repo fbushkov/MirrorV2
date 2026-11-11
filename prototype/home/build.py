@@ -7,13 +7,15 @@
   partials/layout.html  → оболочка страницы прототипа; partials/layout-next.html — то же для Next
   partials/header.html, footer.html, request.html → общие блоки
   src/styles.css        → src/site/styles.css (подключается в src/app/layout.tsx)
-  src/app.js, content.js → public/site/ (меню, форма, подсказки, FAQ, typograf)
+  src/app.js            → public/site/ (меню, форма, подсказки, typograf)
+  src/faq.json          → вопросы и ответы: при сборке попадают в разметку страницы (faq_html), в Next ещё и в данные FAQPage
   tools/bundle.py       → сайт одним файлом dist/mirror-site.html (запуск после build.py)
   vendor/echarts.mirror.min.js → своя сборка ECharts (tools/echarts-entry.js, пересборка: node tools/echarts-build.mjs)
   ROUTES                → ROUTES в src/content/site.ts (адреса, карта сайта, смоук-тесты)
   pages/*.html          → src/site/pages/*.html → src/app/**/page.tsx (SitePage из src/site/page.tsx)
 """
 import re, base64, json, pathlib, shutil, sys
+from html import escape
 root = pathlib.Path(__file__).parent
 DIST = root / "dist"
 
@@ -49,11 +51,47 @@ def svgc(m):
 def uri(m):
     return "data:image/svg+xml;base64," + base64.b64encode((root / "assets" / m.group(1)).read_bytes()).decode()
 
-NEXT_SCRIPTS = ["vendor/echarts.mirror.min.js", "src/content.js", "src/app.js"]   # → public/site/
+NEXT_SCRIPTS = ["vendor/echarts.mirror.min.js", "src/app.js"]   # → public/site/
+
+FAQ = json.loads((root / "src/faq.json").read_text())
+FAQ_SLOT = re.compile(r'<div class="faq" id="faq-list" data-groups="([^"]+)"(?: data-desc="([^"]*)")?></div>')
+
+def faq_blocks(spec, desc):
+    """data-groups="general,brand" — несколько блоков; "payment+plans" — один блок из нескольких групп
+    (название и описание — первой группы или из data-desc)."""
+    blocks = []
+    for part in spec.split(","):
+        groups = [FAQ[k] for k in part.strip().split("+")]
+        blocks.append({**groups[0], "items": [qa for g in groups for qa in g["items"]]})
+    if desc: blocks[0]["desc"] = desc
+    return blocks
+
+def faq_html(m):
+    """Вопросы и ответы сразу в разметке: их видят поисковики и читалки без скриптов. Раскрытие — в app.js.
+    Номер-тег показываем, только если блоков больше одного."""
+    blocks, esc = faq_blocks(m.group(1), m.group(2)), lambda t: escape(t, quote=False)
+    out = ['<div class="faq" id="faq-list">']
+    for gi, g in enumerate(blocks):
+        tag = f'<span class="faq-group__tag">{esc(g["tag"])}</span>' if len(blocks) > 1 else ""
+        out.append(f'<div class="faq-group"><div class="faq-group__info">{tag}<div><h3 class="faq-group__title">{esc(g["title"])}</h3><p class="faq-group__desc">{esc(g["desc"])}</p></div></div><div class="faq-list">')
+        for i, (q, a) in enumerate(g["items"]):
+            out.append(f'<div class="qa"><button class="qa__q" type="button" aria-expanded="false" aria-controls="qa-{gi}-{i}"><span>{esc(q)}</span><i class="qa__icon">{{{{svgc:plus.svg}}}}</i></button><div class="qa__a" id="qa-{gi}-{i}" role="region"><div><p>{esc(a)}</p></div></div></div>')
+        out.append("</div></div>")
+    return "\n".join(out) + "\n</div>"
+
+def faq_jsonld(content):
+    """Данные FAQPage для поисковиков (только в Next)."""
+    m = FAQ_SLOT.search(content)
+    if not m: return ""
+    items = [qa for g in faq_blocks(m.group(1), m.group(2)) for qa in g["items"]]
+    data = {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in items]}
+    return '<script type="application/ld+json">' + json.dumps(data, ensure_ascii=False).replace("</", "<\\/") + "</script>\n"
 
 def fill(out, route, page_name, target):
     """Подставляет включения, ссылки и иконки. target: "proto" — файлы dist/, "next" — адреса Next."""
     out = re.sub(r'\{\{include:([^}]+)\}\}', lambda m: (root / m.group(1)).read_text(), out)
+    out = FAQ_SLOT.sub(faq_html, out)
     has_form = 'id="request"' in out
     def href(m):
         key, query = m.group(1), m.group(2) or ""   # {{href:start?topic=scan}}
@@ -84,7 +122,7 @@ def render(page, target="proto"):
     meta, content = parse(page)
     if target == "next":   # ECharts — общим файлом, а не внутри каждой страницы
         content = content.replace("<script>\n{{include:vendor/echarts.mirror.min.js}}\n</script>", '<script src="/site/echarts.mirror.min.js"></script>')
-        out = (root / "partials/layout-next.html").read_text().replace("{{content}}", content)
+        out = (root / "partials/layout-next.html").read_text().replace("{{content}}", faq_jsonld(content) + content)
     else:
         out = (root / "partials/layout.html").read_text().replace("{{content}}", content).replace("{{title}}", meta["title"])
     return meta, fill(out, meta["route"], page.name, target)

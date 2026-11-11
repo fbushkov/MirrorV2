@@ -17,6 +17,10 @@ export const LEGAL_LINKS: NavLink[] = [
  * Новая страница сайта = запись здесь. Кабинет (/app) и админка (/admin) сюда не входят. См. ADR-0001.
  */
 export const SITE_URL = "https://mirror-com.ru"
+export const SITE_NAME = "Mirror"
+
+/** Контакты для структурированных данных. На страницах они записаны в разметке прототипа (prototype/home/partials). */
+export const CONTACTS = { email: "mirrorcom@mail.ru", phone: "+7 912 702-30-30" }
 
 export type Route = { path: string; title: string; parent?: string }
 

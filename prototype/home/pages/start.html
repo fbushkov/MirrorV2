@@ -1,5 +1,5 @@
 <!-- page: route=start; title=Заявка на бесплатный срез — Mirror; description=Оставьте компанию и контакт. Пришлём внешний срез HR-бренда за 3 рабочих дня, доступ к вашим системам не нужен. -->
-  <main>
+  <main id="main">
   <section class="page-hero" aria-labelledby="page-title">
     <ol class="crumbs" aria-label="Хлебные крошки">
       <li><a href="{{href:home}}">Главная</a></li>
@@ -10,7 +10,8 @@
       <p class="page-hero__lead">Оставьте компанию и контакт. Конкурентов, сроки и формат уточним сами. Ответим в течение рабочего дня.</p>
     </div>
   </section>
-  <section class="section section--first" id="request" aria-label="Заявка">
+  <section class="section section--first" id="request" aria-labelledby="req-title">
+    <h2 class="sr-only" id="req-title">Форма заявки</h2>
     {{include:partials/request.html}}
   </section>
   </main>
