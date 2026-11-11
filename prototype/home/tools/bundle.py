@@ -33,7 +33,7 @@ shell = """<!doctype html>
 <style>
 html, body { margin: 0; height: 100%; background: #f7f7fb; }
 #site, .site-old { position: fixed; inset: 0; width: 100%; height: 100%; border: 0; background: #f7f7fb; }
-#site { opacity: 0; transition: opacity .28s cubic-bezier(.2,.7,.3,1); }
+#site { opacity: 0; transition: opacity .2s cubic-bezier(.2,.7,.3,1); }
 #site.is-in { opacity: 1; }
 @media (prefers-reduced-motion: reduce) { #site { transition: none; } }
 #wait { position: fixed; inset: 0; display: grid; place-items: center; font: 400 17px/24px system-ui, sans-serif; color: #807c93; }
@@ -71,8 +71,8 @@ function render() {
   frame.addEventListener("load", () => {
     const doc = frame.contentDocument; document.title = doc.title;
     if (anchor) { const el = doc.getElementById(anchor); if (el) el.scrollIntoView(); }
+    if (old) old.remove();   // старая страница убирается сразу, новая проявляется на чистом фоне: тексты не накладываются
     requestAnimationFrame(() => frame.classList.add("is-in"));
-    if (old) setTimeout(() => old.remove(), 320);
   }, { once: true });
   frame.srcdoc = html;
   document.body.appendChild(frame);

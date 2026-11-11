@@ -115,7 +115,7 @@ a { color: inherit; text-decoration: none; }
 button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
 img, svg { display: block; }
 :focus-visible { outline: 2px solid var(--c-violet); outline-offset: 3px; border-radius: 6px; }
-.page { max-width: 1920px; margin: 0 auto; padding: 32px var(--page-x) var(--page-x); display: flex; flex-direction: column; } /* шире 1920 — по центру, не растягиваем */
+.page { max-width: 1920px; margin: 0 auto; padding: 16px var(--page-x) var(--page-x); display: flex; flex-direction: column; } /* шире 1920 — по центру, не растягиваем */
 .mono { font-family: var(--font-mono); font-weight: 400; }
 /* Ссылка «К содержанию» для клавиатуры: видна только в фокусе */
 .skip { position: fixed; left: 16px; top: -64px; z-index: 100; padding: 10px 16px; border-radius: var(--r-pill); background: var(--c-dark); color: var(--c-on-dark); font: 500 var(--fs-body)/var(--lh-body) var(--font-sans); transition: top .15s; }
@@ -125,18 +125,12 @@ img, svg { display: block; }
 /* 3. Компоненты (кастомизация shadcn/ui под макет) */
 /* Button — shadcn по умолчанию h-9; в макете 48px, радиус 10, текст 17 Medium */
 .btn { -webkit-tap-highlight-color: transparent; display: inline-flex; align-items: center; justify-content: center; gap: 4px; height: var(--h-ctl); padding: 0 var(--px-btn); border-radius: var(--r-ctl); font: 500 var(--fs-body)/var(--lh-tight) var(--font-sans); white-space: nowrap; transition: background .2s, color .2s, border-color .2s; }
-.btn svg { display: block; width: 20px; height: 20px; flex: none; transition: transform .25s var(--ease); }
-/* Стрелка: в одной иконке два рисунка Lucide — «вверх-вправо» (.i-a) и «вправо» (.i-b). При наведении первый доворачивается
-   и гаснет, второй доворачивается и проявляется: движение выглядит поворотом, а в покое всегда стоит родной рисунок.
-   Поворот одной иконки на 45° давал искажённую стрелку: у «вверх-вправо» другие длины плеч, чем у «вправо». */
-svg .i-a, svg .i-b { transform-origin: 12px 12px; transition: transform .25s var(--ease), opacity .2s; }
-svg .i-b { opacity: 0; transform: rotate(-45deg); }
-:is(.btn, .btn-link):is(:hover, :focus-visible) svg .i-a { opacity: 0; transform: rotate(45deg); }
-:is(.btn, .btn-link):is(:hover, :focus-visible) svg .i-b { opacity: 1; transform: none; }
+/* Иконка в кнопке и в ссылке-кнопке при наведении не двигается: меняется только цвет (решение 2026-11-11).
+   Движение иконки оставлено только в карточках направлений на главной (.dir__arrow). */
+.btn svg { display: block; width: 20px; height: 20px; flex: none; }
 .btn--primary { background: var(--c-dark); color: var(--c-on-dark); }
 .btn--primary:hover { background: var(--c-violet); }
 .btn--primary:active { background: var(--c-violet-press); }
-.btn.rmenu__pdf:hover svg { transform: translateY(2px); }
 .btn--white { background: #fff; color: var(--c-dark); }
 .btn--white:hover { background: var(--c-violet); color: #fff; }
 .btn--white:active { background: var(--c-violet-press); color: #fff; }
@@ -201,7 +195,7 @@ svg .i-b { opacity: 0; transform: rotate(-45deg); }
 .ico { width: 20px; height: 20px; }
 
 /* 4. Шапка + мега-меню */
-.header { position: sticky; top: 16px; z-index: 50; }
+.header { position: sticky; top: 16px; z-index: 50; }   /* top равен верхнему отступу .page: шапка не «подпрыгивает» при прокрутке */
 .header__box { position: relative; background: var(--c-chrome); border: 1px solid var(--c-line-3); border-radius: var(--r-card); transition: border-radius .2s, box-shadow .2s; }
 .header__box:has(.mega.is-open) { border-radius: var(--r-card) var(--r-card) 0 0; }
 .header.is-stuck .header__box { box-shadow: none; } /* без тени (правка 2026-10-28) */
@@ -216,7 +210,7 @@ svg .i-b { opacity: 0; transform: rotate(-45deg); }
 .nav__item[aria-current="page"] { color: var(--c-violet); }
 .nav__item svg { width: 20px; height: 20px; transition: transform .25s var(--ease); }
 .nav__item[aria-expanded="true"] { color: var(--c-ink-4); }
-.nav__item[aria-expanded="true"] svg { transform: rotate(180deg); }
+.nav__item[aria-expanded="true"] svg { transform: scaleY(-1); }   /* переворот: в середине движения нет шеврона «вбок» */
 .header__burger { display: none; width: 48px; height: 48px; border-radius: var(--r-ctl); align-items: center; justify-content: center; }
 .header__burger:hover { background: rgba(23,20,43,.06); }
 /* Выпадающая панель на всю ширину, выбор по горизонтали */
@@ -224,7 +218,9 @@ svg .i-b { opacity: 0; transform: rotate(-45deg); }
 .mega { position: absolute; left: -1px; right: -1px; top: 100%; border: 1px solid transparent; border-top: 0; display: grid; grid-template-rows: 0fr; background: var(--c-chrome); background-clip: padding-box; border-radius: 0 0 16px 16px; transition: grid-template-rows .3s var(--ease); }
 .mega.is-open { border-color: var(--c-line-3); box-shadow: 0 24px 40px -24px rgba(23,20,43,.35); }
 .mega.is-open { grid-template-rows: 1fr; }
-.mega__inner { overflow: hidden; }
+.mega__inner { overflow: hidden; opacity: 0; transition: opacity .1s; }   /* закрытие: текст гаснет сразу, потом сворачивается панель */
+.mega.is-open .mega__inner { opacity: 1; transition: opacity .2s var(--ease-out) .12s; }   /* открытие: панель растёт, текст проявляется уже целым */
+.mega.is-instant, .mega.is-instant .mega__inner { transition: none; }   /* уходим на другую страницу: меню не сворачивается на глазах */
 /* Прокрутка только у мобильного меню, у десктопной панели — нет */
 .mega__panel[data-id="mobile"] { max-height: calc(100dvh - 120px); overflow-y: auto; overscroll-behavior: contain; }
 /* Обе панели — одна и та же сетка «подпись | карточки». Колонка карточек фиксирована (до 980),
@@ -451,10 +447,10 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 @keyframes drop { from { opacity: 0; transform: translateY(-4px); } }
 @keyframes pop { from { opacity: 0; transform: scale(.6); } }
 @keyframes draw { to { stroke-dashoffset: 0; } }
-/* Страницы: старая растворяется, новая проявляется, шапка стоит на месте. Где браузер так не умеет — страница просто проявляется */
+/* Страницы: старая гаснет, затем новая проявляется, шапка стоит на месте. Где браузер так не умеет — страница просто проявляется */
 @view-transition { navigation: auto; }
-::view-transition-old(root) { animation: fade .18s ease-in reverse both; }
-::view-transition-new(root) { animation: fade var(--t-page) var(--ease-out) both; }
+::view-transition-old(root) { animation: fade .12s ease-in reverse both; }
+::view-transition-new(root) { animation: fade .2s var(--ease-out) .12s both; }   /* по очереди, а не одновременно: иначе тексты двух страниц накладываются */
 .header { view-transition-name: site-header; }
 @supports not (view-transition-name: none) { main { animation: fade var(--t-page) var(--ease-out); } }
 /* Содержимое на месте: вкладка, данные после фильтра, пример в карточке */
@@ -864,7 +860,7 @@ dialog[open]::backdrop { animation: fade var(--t-enter) var(--ease-out); }
 }
 @media (max-width: 767px) {
   :root { --gap-block: 16px; --gap-inner: 12px; --fs-body: 16px; --lh-body: 23px; --fs-title: 18px; --lh-title: 25px; --fs-mono: 13px; }
-  .page { padding-top: 12px; }
+  .page { padding-top: 8px; }   /* как и на широком экране: отступ шапки сверху равен её отступу при прокрутке */
   .header { top: 8px; }
   .header__bar { height: 64px; }
   .logo { width: 110px; height: 21px; }
@@ -1705,8 +1701,8 @@ button.seg__item.is-active { background: var(--c-surface-2); }
         <div class="dir-hero__actions">
           <a class="btn btn--primary" href="start.html?topic=health" data-topic="health">Обсудить запуск</a>
           <a class="btn-link" href="culture-health-demo.html">Демо-дашборд <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
-<g class="i-a"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></g>
-<g class="i-b"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></g>
+<path d="M7 7h10v10"/>
+<path d="M7 17 17 7"/>
 </svg></a>
         </div>
       </div>
@@ -1826,12 +1822,12 @@ button.seg__item.is-active { background: var(--c-surface-2); }
       <!-- Как на обзоре HR-бренда: тёмная карточка ведёт на соседнее направление, светлая — на методику -->
       <div class="pnext">
         <a class="pnext__dark dir dir--brand" href="hr-brand.html" data-shader="brand"><canvas aria-hidden="true"></canvas><span class="dir__fallback" aria-hidden="true"></span><span class="dir__top"><span class="dir__label">направление 01 · снаружи</span><svg aria-hidden="true" focusable="false" class="dir__arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
-<g class="i-a"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></g>
-<g class="i-b"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></g>
+<path d="M7 7h10v10"/>
+<path d="M7 17 17 7"/>
 </svg></span><div><h3>Нужен взгляд снаружи?</h3><p>Оценка HR-бренда и индекс культуры. Совпадает ли то, что вы обещаете, с тем, что видят кандидаты и сотрудники.</p></div></a>
         <article class="pnext__card"><div><h3>Как считаем</h3><p>10 метрик, источники, зоны балла и уверенность данных. Как считаем разрыв с культурным кодом.</p></div><a class="btn-link" href="methodology-health.html">Открыть методику <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
-<g class="i-a"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></g>
-<g class="i-b"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></g>
+<path d="M7 7h10v10"/>
+<path d="M7 17 17 7"/>
 </svg></a></article>
       </div>
     </div>
@@ -1993,8 +1989,8 @@ button.seg__item.is-active { background: var(--c-surface-2); }
 </g>
 </svg>Правило пяти человек на любом срезе</li></ul>
         <a class="btn btn--primary" href="culture-health-demo.html">Открыть демо-дашборд <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
-<g class="i-a"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></g>
-<g class="i-b"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></g>
+<path d="M7 7h10v10"/>
+<path d="M7 17 17 7"/>
 </svg></a>
       </div>
       <div class="well rsplit__vis">
@@ -2109,8 +2105,8 @@ button.seg__item.is-active { background: var(--c-surface-2); }
       <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAiIGhlaWdodD0iODAiIHZpZXdCb3g9IjAgMCA4MCA4MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTQ4IDBIMzJWNDRDMzIgNDguNDE4NCAyOC40MTgzIDUyIDI0IDUyQzE5LjU4MTcgNTIgMTYgNDguNDE4NCAxNiA0NFYwSDBWNDBDMCA2Mi4wOTEyIDE3LjkwODYgODAgNDAgODBDNjIuMDkxMiA4MCA4MCA2Mi4wOTEyIDgwIDQwVjBINjRWNDRDNjQgNDguNDE4NCA2MC40MTg0IDUyIDU2IDUyQzUxLjU4MTYgNTIgNDggNDguNDE4NCA0OCA0NFYwWiIgZmlsbD0idXJsKCNjdGEtZGFzaC1nKSIvPjxkZWZzPjxsaW5lYXJHcmFkaWVudCBpZD0iY3RhLWRhc2gtZyIgeDE9IjQwIiB5MT0iMCIgeDI9IjQwIiB5Mj0iODAiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIj48c3RvcCBzdG9wLWNvbG9yPSIjNzA4N0ZGIi8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjRUE3MEZGIi8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PC9zdmc+Cg==" alt="" width="80" height="80">
       <div class="help__text"><h3 id="cta-title">Запустите дашборд в своей компании</h3><p>Начнём с диагностики и первого замера. Расскажите о компании, и мы предложим план кампании.</p></div>
       <a class="btn btn--primary" href="start.html?topic=health" data-topic="health">Обсудить кампанию <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
-<g class="i-a"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></g>
-<g class="i-b"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></g>
+<path d="M7 7h10v10"/>
+<path d="M7 17 17 7"/>
 </svg></a>
       <a class="btn-link" href="#">Политика обработки данных</a>
     </div>
@@ -2285,8 +2281,8 @@ fade(); sync();
     <div class="footer__cta">
       <p><span class="dim">Хотите увидеть свою компанию в зеркале?</span><br>Обсудим задачу за 30 минут.</p>
       <a class="btn btn--white" href="start.html">Задать вопрос <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
-<g class="i-a"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></g>
-<g class="i-b"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></g>
+<path d="M7 7h10v10"/>
+<path d="M7 17 17 7"/>
 </svg></a>
     </div>
     <div class="footer__brand" aria-hidden="true">
@@ -2353,7 +2349,10 @@ if (canHover) {
   header.addEventListener("pointerenter", () => clearTimeout(closeT));
   header.addEventListener("pointerleave", () => { if (current && current !== "mobile") closeT = setTimeout(() => setMenu(null), 180); });
 }
-mega.addEventListener("click", (e) => { if (e.target.closest("a")) setMenu(null); });
+/* Клик по ссылке в панели. Якорь на этой же странице — закрываем как обычно. Переход на другую страницу — панель не трогаем:
+   страница и так уходит, а сворачивание меню поверх перехода выглядело мусором. При возврате «назад» меню закрыто без анимации. */
+mega.addEventListener("click", (e) => { const a = e.target.closest("a"); if (a && a.getAttribute("href").startsWith("#")) setMenu(null); });
+addEventListener("pageshow", (e) => { if (e.persisted && current) { mega.classList.add("is-instant"); setMenu(null); requestAnimationFrame(() => mega.classList.remove("is-instant")); } });
 document.addEventListener("click", (e) => { if (current && !header.contains(e.target)) setMenu(null); });
 document.addEventListener("keydown", (e) => { if (e.key === "Escape" && current) { const t = triggers.find((x) => x.dataset.panel === current); setMenu(null); t && t.focus(); } });
 addEventListener("scroll", () => header.classList.toggle("is-stuck", scrollY > 40), { passive: true });

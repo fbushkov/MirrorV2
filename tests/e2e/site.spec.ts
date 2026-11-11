@@ -207,3 +207,37 @@ test("смена примера в карточке сверки: карточк
   expect(await card.boundingBox()).toEqual(before)
   expect(await card.evaluate((el) => el.getAnimations().length)).toBe(0)
 })
+
+test("отступ шапки сверху одинаковый вверху страницы и после прокрутки", async ({ page }) => {
+  for (const path of ["/", "/hr-brand/demo", "/pricing"]) {
+    await page.goto(path)
+    const top = () => page.locator(".header").evaluate((el) => Math.round(el.getBoundingClientRect().top))
+    const atTop = await top()
+    await page.mouse.wheel(0, 900)
+    await expect.poll(top).toBe(atTop)
+  }
+})
+
+test("иконка в кнопке и в ссылке при наведении не двигается", async ({ page, isMobile }) => {
+  test.skip(isMobile, "наведения на телефоне нет")
+  await page.goto("/")
+  for (const selector of [".step__more", ".footer__cta .btn"]) {
+    const link = page.locator(selector).first()
+    await link.scrollIntoViewIfNeeded()
+    const icon = link.locator("svg")
+    const before = await icon.boundingBox()
+    await link.hover()
+    await page.waitForTimeout(350)
+    expect(await icon.boundingBox()).toEqual(before)
+    expect(await icon.evaluate((el) => getComputedStyle(el).transform)).toBe("none")
+  }
+})
+
+test("панель меню: текст карточек не показывается обрезанным, пока панель раскрывается", async ({ page, isMobile }) => {
+  test.skip(isMobile, "на телефоне меню открывается кнопкой-гамбургером")
+  await page.goto("/")
+  const inner = page.locator("#mega .mega__inner")
+  await expect(inner).toHaveCSS("opacity", "0")
+  await page.locator(".nav__item[data-panel=brand]").click()
+  await expect(inner).toHaveCSS("opacity", "1")
+})

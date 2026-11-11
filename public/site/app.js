@@ -41,7 +41,10 @@ if (canHover) {
   header.addEventListener("pointerenter", () => clearTimeout(closeT));
   header.addEventListener("pointerleave", () => { if (current && current !== "mobile") closeT = setTimeout(() => setMenu(null), 180); });
 }
-mega.addEventListener("click", (e) => { if (e.target.closest("a")) setMenu(null); });
+/* Клик по ссылке в панели. Якорь на этой же странице — закрываем как обычно. Переход на другую страницу — панель не трогаем:
+   страница и так уходит, а сворачивание меню поверх перехода выглядело мусором. При возврате «назад» меню закрыто без анимации. */
+mega.addEventListener("click", (e) => { const a = e.target.closest("a"); if (a && a.getAttribute("href").startsWith("#")) setMenu(null); });
+addEventListener("pageshow", (e) => { if (e.persisted && current) { mega.classList.add("is-instant"); setMenu(null); requestAnimationFrame(() => mega.classList.remove("is-instant")); } });
 document.addEventListener("click", (e) => { if (current && !header.contains(e.target)) setMenu(null); });
 document.addEventListener("keydown", (e) => { if (e.key === "Escape" && current) { const t = triggers.find((x) => x.dataset.panel === current); setMenu(null); t && t.focus(); } });
 addEventListener("scroll", () => header.classList.toggle("is-stuck", scrollY > 40), { passive: true });
