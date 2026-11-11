@@ -91,8 +91,31 @@ if (form) form.querySelector("[data-form-again]").addEventListener("click", () =
   form.querySelector("#f-company").focus();
 });
 
-/* Данные изменились после фильтра или переключателя: блоки внутри root коротко проявляются заново (стили .is-refresh) */
-window.refreshFx = (root = document.querySelector("main")) => { root.classList.remove("is-refresh"); void root.offsetWidth; root.classList.add("is-refresh"); };
+/* Данные изменились (фильтр, переключатель примера, калькулятор). Блоки и подписи остаются на месте, меняется только содержимое:
+   числа досчитываются от старого значения к новому, изменившийся текст проявляется без сдвига.
+   swapFx(run): run() перерисовывает страницу; сравниваем содержимое до и после по порядку элементов. */
+const FX_NUM = ".rkpi__num > span, .mtile__num";
+const FX_TEXT = "[data-fx], [data-m], .rkpi__num > small, .rkpi__cap, .rblock__hint, tbody td, tbody th, .ralert > *, .mtile__foot, .mtile__body > svg, .privacy";
+const calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
+function countTo(el, from, text) {
+  const m = text.match(/^([+−-]?)(\d+)$/), a = parseInt(String(from).replace("−", "-"), 10);
+  if (!m || Number.isNaN(a)) return;
+  const b = parseInt(text.replace("−", "-"), 10), t0 = performance.now(), ms = 400;
+  const show = (v) => { el.textContent = v === b ? text : (v < 0 ? "−" + -v : (m[1] === "+" ? "+" : "") + v); };
+  const step = (now) => { const k = Math.min(1, (now - t0) / ms), e = 1 - (1 - k) ** 3; show(Math.round(a + (b - a) * e)); if (k < 1) requestAnimationFrame(step); };
+  requestAnimationFrame(step);
+}
+window.swapFx = (run, root = document.querySelector("main")) => {
+  const snap = (sel) => [...root.querySelectorAll(sel)].map((el) => el.innerHTML);
+  const nums = snap(FX_NUM), texts = snap(FX_TEXT);
+  run();
+  if (calm) return;
+  root.querySelectorAll(FX_NUM).forEach((el, i) => { if (nums[i] !== undefined && nums[i] !== el.innerHTML) countTo(el, nums[i], el.textContent); });
+  root.querySelectorAll(FX_TEXT).forEach((el, i) => {
+    if (texts[i] === el.innerHTML) return;
+    el.classList.remove("fx-swap"); void el.offsetWidth; el.classList.add("fx-swap");
+  });
+};
 
 /* Шейдерный градиент на карточках направлений (WebGL, без зависимостей)
    Логика как у shadergradient.co: плавная «ткань» из шума, 3 цвета, зерно.

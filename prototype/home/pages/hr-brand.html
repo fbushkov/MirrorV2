@@ -232,7 +232,9 @@ function showMirror(n) {
   dots.forEach((d, i) => d.setAttribute("aria-selected", i === n));
   if (typeof typograf === "function") typograf(mirrorEl);
 }
-dots.forEach((d, i) => d.addEventListener("click", () => showMirror(i)));
+// Смена примера: карточка на месте, проявляется только новый текст (swapFx из app.js)
+const swapMirror = (i) => (window.swapFx ? swapFx(() => showMirror(i), mirrorEl) : showMirror(i));
+dots.forEach((d, i) => d.addEventListener("click", () => swapMirror(i)));
 /* Карточка не прыгает при смене примера: высота колонок — по самому высокому примеру */
 const mirrorCols = mirrorEl.querySelector(".mirror__cols");
 function lockMirror() {
@@ -243,7 +245,7 @@ function lockMirror() {
 lockMirror(); addEventListener("resize", lockMirror); document.fonts && document.fonts.ready.then(lockMirror);
 mirrorEl.addEventListener("pointerenter", () => (paused = true)); mirrorEl.addEventListener("pointerleave", () => (paused = false));
 mirrorEl.addEventListener("focusin", () => (paused = true)); mirrorEl.addEventListener("focusout", () => (paused = false));
-if (!matchMedia("(prefers-reduced-motion: reduce)").matches) setInterval(() => { if (!paused && !document.hidden) showMirror((mi + 1) % MIRROR.length); }, 5000);
+if (!matchMedia("(prefers-reduced-motion: reduce)").matches) setInterval(() => { if (!paused && !document.hidden) swapMirror((mi + 1) % MIRROR.length); }, 5000);
 
 {{include:src/rmenu.js}}
 </script>

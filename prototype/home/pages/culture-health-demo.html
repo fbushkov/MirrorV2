@@ -148,7 +148,7 @@ const HC = { teal: "#0e9384", tealSoft: "#9fd6cf", tealBg: "rgba(14,147,132,.14)
 const fill = (sel, list) => (sel.innerHTML = list.map((o) => `<option value="${o.id}">${o.name}</option>`).join(""));
 fill($("f-period"), D.periods); fill($("f-dept"), D.depts); fill($("f-stage"), D.life);
 const state = { period: "30", dept: "all", stage: "all", map: "depts" };
-["period", "dept", "stage"].forEach((k) => $("f-" + k).addEventListener("change", (e) => { state[k] = e.target.value; render(); refreshFx(); }));
+["period", "dept", "stage"].forEach((k) => $("f-" + k).addEventListener("change", (e) => { state[k] = e.target.value; swapFx(render); }));
 
 let view = null;
 function compute() {
@@ -258,7 +258,7 @@ function drawMap() {
 document.querySelectorAll("[data-map]").forEach((b) => b.addEventListener("click", () => {
   state.map = b.dataset.map;
   document.querySelectorAll("[data-map]").forEach((x) => { const on = x === b; x.classList.toggle("is-active", on); x.setAttribute("aria-selected", on); });
-  drawMap(); refreshFx($("ch-map").parentElement);
+  drawMap();
 }));
 
 /* 05–07 статичные блоки */

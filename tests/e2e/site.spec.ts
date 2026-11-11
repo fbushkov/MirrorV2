@@ -178,4 +178,32 @@ test.describe("демо-дашборд здоровья культуры", () =>
     await choose(page, "f-dept", "Продажи")
     await expect(page.locator("#privacy-text")).toBeHidden()
   })
+
+  // Правила движения (design-system.html, раздел 12): блоки стоят на месте, меняется только содержимое
+  test("после фильтра блоки и подписи не двигаются: проявляется только изменившееся содержимое", async ({ page }) => {
+    await page.goto("/culture-health/demo")
+    await choose(page, "f-period", "90 дней")
+    const state = await page.evaluate(() => {
+      const names = (el: Element) => el.getAnimations().map((a) => (a as CSSAnimation).animationName).filter(Boolean)
+      const all = [...document.querySelectorAll("main *")]
+      return {
+        cards: [...document.querySelectorAll(".rkpi, .mtile, .ralert, .rblock, .rblock__title")].filter((el) => names(el).length).length,
+        staticHint: names(document.querySelector(".rblock__hint")!).length,
+        shifted: all.filter((el) => !el.closest(".csel") && names(el).some((n) => n !== "fade")).length,
+        swapped: document.querySelectorAll(".fx-swap").length,
+      }
+    })
+    expect(state).toMatchObject({ cards: 0, staticHint: 0, shifted: 0 })
+    expect(state.swapped).toBeGreaterThan(0)
+  })
+})
+
+test("смена примера в карточке сверки: карточка на месте, проявляется текст", async ({ page }) => {
+  await page.goto("/hr-brand")
+  const card = page.locator("#mirror-demo")
+  const before = await card.boundingBox()
+  await card.locator(".mirror__dots button").nth(1).click()
+  await expect(card.locator("[data-m=promise]")).toHaveClass(/fx-swap/)
+  expect(await card.boundingBox()).toEqual(before)
+  expect(await card.evaluate((el) => el.getAnimations().length)).toBe(0)
 })

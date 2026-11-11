@@ -97,6 +97,13 @@
   --h-ctl: 48px;   --px-btn: 20px;  --px-input: 16px;
   --h-badge: 24px; --h-btn-sm: 36px;
   --ease: cubic-bezier(.22,1,.36,1);
+  /* Движение (правила — design-system.html, раздел 12): длительности и кривые только отсюда */
+  --t-state: .2s;      /* цвет, фон, рамка при наведении и фокусе */
+  --t-swap: .3s;       /* смена содержимого на месте: проявление без сдвига */
+  --t-enter: .3s;      /* появление нового элемента: окно, подтверждение */
+  --t-pop: .16s;       /* выпадающий список, подсказка */
+  --t-page: .28s;      /* переход между страницами */
+  --ease-out: cubic-bezier(.2,.7,.3,1);
 }
 
 /* 2. База */
@@ -118,11 +125,11 @@ img, svg { display: block; }
 /* 3. Компоненты (кастомизация shadcn/ui под макет) */
 /* Button — shadcn по умолчанию h-9; в макете 48px, радиус 10, текст 17 Medium */
 .btn { -webkit-tap-highlight-color: transparent; display: inline-flex; align-items: center; justify-content: center; gap: 4px; height: var(--h-ctl); padding: 0 var(--px-btn); border-radius: var(--r-ctl); font: 500 var(--fs-body)/var(--lh-tight) var(--font-sans); white-space: nowrap; transition: background .2s, color .2s, border-color .2s; }
-.btn svg { width: 20px; height: 20px; flex: none; transition: transform .25s var(--ease); }
+.btn svg { display: block; width: 20px; height: 20px; flex: none; transition: transform .25s var(--ease); will-change: transform; backface-visibility: hidden; }
 .btn--primary { background: var(--c-dark); color: var(--c-on-dark); }
 .btn--primary:hover { background: var(--c-violet); }
 .btn--primary:active { background: var(--c-violet-press); }
-.btn:hover svg { transform: translate(2px, -2px); }   /* стрелка сдвигается по своему направлению; поворот давал рябь */
+.btn:hover svg { transform: rotate(45deg); }
 .btn.rmenu__pdf:hover svg { transform: translateY(2px); }
 .btn--white { background: #fff; color: var(--c-dark); }
 .btn--white:hover { background: var(--c-violet); color: #fff; }
@@ -133,9 +140,9 @@ img, svg { display: block; }
 .btn--block { width: 100%; }
 /* Link-кнопка: «Подробнее ↗», «Все условия ↗» — h36, px10 */
 .btn-link { display: inline-flex; align-items: center; gap: 4px; height: var(--h-btn-sm); padding: 0 10px; border-radius: var(--r-ctl); font: 500 var(--fs-body)/var(--lh-tight) var(--font-sans); color: #0a0a0a; transition: color .2s; }
-.btn-link svg { width: 20px; height: 20px; transition: transform .25s var(--ease); }
+.btn-link svg { display: block; flex: none; width: 20px; height: 20px; transition: transform .25s var(--ease); will-change: transform; backface-visibility: hidden; }
 .btn-link:hover { color: var(--c-violet); }
-.btn-link:hover svg { transform: translate(2px, -2px); }
+.btn-link:hover svg { transform: rotate(45deg); }
 .btn-link:active { color: var(--c-violet-press); }
 
 /* Badge — неинтерактивный, h24, px6+2, текст 14/16 Medium */
@@ -420,30 +427,38 @@ form.form { display: flex; flex-direction: column; gap: 32px; }
 @media (max-width: 767px) { .form__done { padding: 24px; } .form__sent { grid-template-columns: 1fr; gap: 2px; padding: 16px; } .form__sent dd { margin-bottom: 10px; } .form__sent dd:last-child { margin-bottom: 0; } }
 .form__note { font: 400 var(--fs-mono)/24px var(--font-mono); color: var(--c-ink-4); }
 .form.is-sent > :not(.form__done) { display: none; }
-.form.is-sent .form__done { display: flex; animation: rise .45s var(--ease); }
-.form.is-sent .form__done-ico { animation: pop .5s var(--ease) .1s backwards; }
-.form.is-sent .form__done-ico svg { animation: draw .35s ease-out .35s forwards; }
-.form.is-back > * { animation: rise .35s var(--ease); }
-.error:not([hidden]) { animation: rise .25s var(--ease); }
+.form.is-sent .form__done { display: flex; animation: rise var(--t-enter) var(--ease-out); }
+.form.is-sent .form__done-ico { animation: pop .3s var(--ease-out) .1s backwards; }
+.form.is-sent .form__done-ico svg { animation: draw .25s ease-out .3s forwards; }
+.form.is-back > * { animation: fade var(--t-swap) var(--ease-out); }
+.error:not([hidden]) { animation: fade var(--t-state) var(--ease-out); }
 .btn[aria-busy="true"] { pointer-events: none; opacity: .7; }
 
-/* Движение: общие ключевые кадры. Короткие (до 0,45 с), только прозрачность и сдвиг; при «уменьшить движение» отключаются правилом ниже */
+/* Движение. Правила (подробно — design-system.html, раздел 12):
+   1. Двигается только то, что появилось или изменилось. Соседние блоки, заголовки и подписи неподвижны, раскладка не прыгает.
+   2. Содержимое меняется на месте — проявление без сдвига (fade). Сдвиг только у того, что появляется поверх или вместо: список, окно, подтверждение.
+   3. Состояния (наведение, фокус, выбор) — переход цвета за --t-state, без движения блока.
+   4. Числа досчитываются от старого значения к новому, а не мигают.
+   5. Одно событие — одна анимация: переход страницы не складывается с проявлением её частей.
+   6. До 0,3 с, вход на ease-out; при «уменьшить движение» всё отключается правилом ниже. */
 @keyframes rise { from { opacity: 0; transform: translateY(8px); } }
 @keyframes fade { from { opacity: 0; } }
+@keyframes drop { from { opacity: 0; transform: translateY(-4px); } }
 @keyframes pop { from { opacity: 0; transform: scale(.6); } }
 @keyframes draw { to { stroke-dashoffset: 0; } }
-/* Переход между страницами: старая растворяется, новая проявляется, шапка стоит на месте */
+/* Страницы: старая растворяется, новая проявляется, шапка стоит на месте. Где браузер так не умеет — страница просто проявляется */
 @view-transition { navigation: auto; }
 ::view-transition-old(root) { animation: fade .18s ease-in reverse both; }
-::view-transition-new(root) { animation: fade .28s ease-out both; }
+::view-transition-new(root) { animation: fade var(--t-page) var(--ease-out) both; }
 .header { view-transition-name: site-header; }
-main { animation: fade .4s ease-out; }   /* только прозрачность: сдвиг сломал бы прилипающие меню внутри страницы */
-/* Смена вкладки, пункта списка, окна и данных после фильтра */
-[role="tabpanel"]:not([hidden]) { animation: rise .35s var(--ease); }
-.csel__list:not([hidden]) { animation: rise .18s var(--ease); }
-dialog[open] { animation: rise .25s var(--ease); }
-dialog[open]::backdrop { animation: fade .25s ease-out; }
-.is-refresh .rkpi__num, .is-refresh .rkpi__cap, .is-refresh tbody tr, .is-refresh .ralert, .is-refresh .mgroup, .is-refresh .rblock__hint, .is-refresh .privacy { animation: rise .35s var(--ease); }
+@supports not (view-transition-name: none) { main { animation: fade var(--t-page) var(--ease-out); } }
+/* Содержимое на месте: вкладка, данные после фильтра, пример в карточке */
+[role="tabpanel"]:not([hidden]) > * { animation: fade var(--t-swap) var(--ease-out); }
+.fx-swap { animation: fade var(--t-swap) var(--ease-out); }
+/* Появляется поверх: список, окно */
+.csel__list:not([hidden]) { animation: drop var(--t-pop) var(--ease-out); }
+dialog[open] { animation: rise var(--t-enter) var(--ease-out); }
+dialog[open]::backdrop { animation: fade var(--t-enter) var(--ease-out); }
 
 /* 5.7 Внутренние страницы (общие блоки для всех, кроме главной) */
 /* Шапка страницы: крошки → эйброу → заголовок в два тона | лид. Та же сетка, что у hero главной */
@@ -1861,8 +1876,31 @@ if (form) form.querySelector("[data-form-again]").addEventListener("click", () =
   form.querySelector("#f-company").focus();
 });
 
-/* Данные изменились после фильтра или переключателя: блоки внутри root коротко проявляются заново (стили .is-refresh) */
-window.refreshFx = (root = document.querySelector("main")) => { root.classList.remove("is-refresh"); void root.offsetWidth; root.classList.add("is-refresh"); };
+/* Данные изменились (фильтр, переключатель примера, калькулятор). Блоки и подписи остаются на месте, меняется только содержимое:
+   числа досчитываются от старого значения к новому, изменившийся текст проявляется без сдвига.
+   swapFx(run): run() перерисовывает страницу; сравниваем содержимое до и после по порядку элементов. */
+const FX_NUM = ".rkpi__num > span, .mtile__num";
+const FX_TEXT = "[data-fx], [data-m], .rkpi__num > small, .rkpi__cap, .rblock__hint, tbody td, tbody th, .ralert > *, .mtile__foot, .mtile__body > svg, .privacy";
+const calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
+function countTo(el, from, text) {
+  const m = text.match(/^([+−-]?)(\d+)$/), a = parseInt(String(from).replace("−", "-"), 10);
+  if (!m || Number.isNaN(a)) return;
+  const b = parseInt(text.replace("−", "-"), 10), t0 = performance.now(), ms = 400;
+  const show = (v) => { el.textContent = v === b ? text : (v < 0 ? "−" + -v : (m[1] === "+" ? "+" : "") + v); };
+  const step = (now) => { const k = Math.min(1, (now - t0) / ms), e = 1 - (1 - k) ** 3; show(Math.round(a + (b - a) * e)); if (k < 1) requestAnimationFrame(step); };
+  requestAnimationFrame(step);
+}
+window.swapFx = (run, root = document.querySelector("main")) => {
+  const snap = (sel) => [...root.querySelectorAll(sel)].map((el) => el.innerHTML);
+  const nums = snap(FX_NUM), texts = snap(FX_TEXT);
+  run();
+  if (calm) return;
+  root.querySelectorAll(FX_NUM).forEach((el, i) => { if (nums[i] !== undefined && nums[i] !== el.innerHTML) countTo(el, nums[i], el.textContent); });
+  root.querySelectorAll(FX_TEXT).forEach((el, i) => {
+    if (texts[i] === el.innerHTML) return;
+    el.classList.remove("fx-swap"); void el.offsetWidth; el.classList.add("fx-swap");
+  });
+};
 
 /* Шейдерный градиент на карточках направлений (WebGL, без зависимостей)
    Логика как у shadergradient.co: плавная «ткань» из шума, 3 цвета, зерно.

@@ -146,7 +146,7 @@
           <aside class="calc__result" aria-live="polite">
             <p class="rkpi__label">Индекс культуры</p>
             <div class="gauge gauge--big" id="g-calc" role="img" aria-label="Индекс культуры"></div>
-            <p class="mcard__cap" id="calc-conf">Подтверждено 5 из 8</p>
+            <p class="mcard__cap" id="calc-conf" data-fx>Подтверждено 5 из 8</p>
             <button class="btn-link calc__reset" type="button" id="calc-reset">Вернуть все обещания</button>
           </aside>
         </div>
@@ -282,8 +282,9 @@ function recalc() {
   gCalc.setOption({ series: [{ data: [{ value: Math.round(idx), name: "индекс культуры" }] }] });
   document.getElementById("calc-conf").textContent = `Подтверждено ${conf} из ${on.length}`;
 }
-calcRows.forEach((r) => r.querySelector("input").addEventListener("change", recalc));
-document.getElementById("calc-reset").addEventListener("click", () => { calcRows.forEach((r) => (r.querySelector("input").checked = true)); recalc(); });
+const recalcFx = () => (window.swapFx ? swapFx(recalc, document.querySelector(".calc")) : recalc());   // строки на месте, меняются значения
+calcRows.forEach((r) => r.querySelector("input").addEventListener("change", recalcFx));
+document.getElementById("calc-reset").addEventListener("click", () => { calcRows.forEach((r) => (r.querySelector("input").checked = true)); recalcFx(); });
 recalc();
 {{include:src/rmenu.js}}
 </script>

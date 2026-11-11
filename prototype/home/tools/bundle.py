@@ -32,7 +32,10 @@ shell = """<!doctype html>
 <title>Mirror — прототип сайта</title>
 <style>
 html, body { margin: 0; height: 100%; background: #f7f7fb; }
-#site { position: fixed; inset: 0; width: 100%; height: 100%; border: 0; }
+#site, .site-old { position: fixed; inset: 0; width: 100%; height: 100%; border: 0; background: #f7f7fb; }
+#site { opacity: 0; transition: opacity .28s cubic-bezier(.2,.7,.3,1); }
+#site.is-in { opacity: 1; }
+@media (prefers-reduced-motion: reduce) { #site { transition: none; } }
 #wait { position: fixed; inset: 0; display: grid; place-items: center; font: 400 17px/24px system-ui, sans-serif; color: #807c93; }
 </style>
 </head>
@@ -63,11 +66,13 @@ function render() {
   let html = site.pages[name].replace(/\\u0001(\\w)\\u0001/g, (_, k) => site.chunks[k]);
   html = html.replace("<head>", `<head><script>window.__QS = ${JSON.stringify(query)};<\\/script>`).replace("</body>", HOOK + "</body>");
   const old = document.getElementById("site"), frame = document.createElement("iframe");
+  if (old) { old.id = ""; old.className = "site-old"; }
   frame.id = "site"; frame.title = "Mirror";
   frame.addEventListener("load", () => {
     const doc = frame.contentDocument; document.title = doc.title;
     if (anchor) { const el = doc.getElementById(anchor); if (el) el.scrollIntoView(); }
-    if (old) old.remove();
+    requestAnimationFrame(() => frame.classList.add("is-in"));
+    if (old) setTimeout(() => old.remove(), 320);
   }, { once: true });
   frame.srcdoc = html;
   document.body.appendChild(frame);
