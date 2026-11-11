@@ -125,11 +125,17 @@ img, svg { display: block; }
 /* 3. Компоненты (кастомизация shadcn/ui под макет) */
 /* Button — shadcn по умолчанию h-9; в макете 48px, радиус 10, текст 17 Medium */
 .btn { -webkit-tap-highlight-color: transparent; display: inline-flex; align-items: center; justify-content: center; gap: 4px; height: var(--h-ctl); padding: 0 var(--px-btn); border-radius: var(--r-ctl); font: 500 var(--fs-body)/var(--lh-tight) var(--font-sans); white-space: nowrap; transition: background .2s, color .2s, border-color .2s; }
-.btn svg { display: block; width: 20px; height: 20px; flex: none; transition: transform .25s var(--ease); will-change: transform; backface-visibility: hidden; }
+.btn svg { display: block; width: 20px; height: 20px; flex: none; transition: transform .25s var(--ease); }
+/* Стрелка: в одной иконке два рисунка Lucide — «вверх-вправо» (.i-a) и «вправо» (.i-b). При наведении первый доворачивается
+   и гаснет, второй доворачивается и проявляется: движение выглядит поворотом, а в покое всегда стоит родной рисунок.
+   Поворот одной иконки на 45° давал искажённую стрелку: у «вверх-вправо» другие длины плеч, чем у «вправо». */
+svg .i-a, svg .i-b { transform-origin: 12px 12px; transition: transform .25s var(--ease), opacity .2s; }
+svg .i-b { opacity: 0; transform: rotate(-45deg); }
+:is(.btn, .btn-link):is(:hover, :focus-visible) svg .i-a { opacity: 0; transform: rotate(45deg); }
+:is(.btn, .btn-link):is(:hover, :focus-visible) svg .i-b { opacity: 1; transform: none; }
 .btn--primary { background: var(--c-dark); color: var(--c-on-dark); }
 .btn--primary:hover { background: var(--c-violet); }
 .btn--primary:active { background: var(--c-violet-press); }
-.btn:hover svg { transform: rotate(45deg); }
 .btn.rmenu__pdf:hover svg { transform: translateY(2px); }
 .btn--white { background: #fff; color: var(--c-dark); }
 .btn--white:hover { background: var(--c-violet); color: #fff; }
@@ -140,9 +146,8 @@ img, svg { display: block; }
 .btn--block { width: 100%; }
 /* Link-кнопка: «Подробнее ↗», «Все условия ↗» — h36, px10 */
 .btn-link { display: inline-flex; align-items: center; gap: 4px; height: var(--h-btn-sm); padding: 0 10px; border-radius: var(--r-ctl); font: 500 var(--fs-body)/var(--lh-tight) var(--font-sans); color: #0a0a0a; transition: color .2s; }
-.btn-link svg { display: block; flex: none; width: 20px; height: 20px; transition: transform .25s var(--ease); will-change: transform; backface-visibility: hidden; }
+.btn-link svg { display: block; flex: none; width: 20px; height: 20px; }
 .btn-link:hover { color: var(--c-violet); }
-.btn-link:hover svg { transform: rotate(45deg); }
 .btn-link:active { color: var(--c-violet-press); }
 
 /* Badge — неинтерактивный, h24, px6+2, текст 14/16 Medium */
@@ -177,7 +182,7 @@ img, svg { display: block; }
 .check input:hover { border-color: var(--c-line-hover); }
 .check input:active { background: var(--c-line); }
 .check input:checked { background: var(--c-dark); border-color: var(--c-dark); }
-.check input:checked::after { content: ""; width: 10px; height: 6px; border: 2px solid #fff; border-top: 0; border-right: 0; transform: translateY(-1px) rotate(-45deg); }
+.check input:checked::after { content: ""; width: 14px; height: 14px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") center / contain no-repeat; }   /* галочка Lucide */
 .check .muted { color: var(--c-ink-4); }
 .check a { color: #0a0a0a; text-decoration: underline; text-decoration-color: var(--c-line); text-underline-offset: 3px; }
 .check a:hover { color: var(--c-violet); }
@@ -771,7 +776,7 @@ dialog[open]::backdrop { animation: fade var(--t-enter) var(--ease-out); }
 .calc__item input { appearance: none; width: 20px; height: 20px; flex: none; border-radius: var(--r-check); background: var(--c-surface-3); border: 1px solid var(--c-line); display: grid; place-items: center; cursor: pointer; transition: background .2s, border-color .2s; }
 .calc__item input:hover { border-color: var(--c-line-hover); }
 .calc__item input:checked { background: var(--c-violet); border-color: var(--c-violet); }
-.calc__item input:checked::after { content: ""; width: 10px; height: 6px; border: 2px solid #fff; border-top: 0; border-right: 0; transform: translateY(-1px) rotate(-45deg); }
+.calc__item input:checked::after { content: ""; width: 14px; height: 14px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") center / contain no-repeat; }   /* галочка Lucide */
 .calc__item input:focus-visible { outline: 2px solid var(--c-violet); outline-offset: 3px; }
 .calc tr.is-off > * { color: var(--c-ink-4); }
 .calc tr.is-off .cmp__ico { opacity: .4; }
@@ -1702,8 +1707,8 @@ button.seg__item.is-active { background: var(--c-surface-2); }
         <div class="dir-hero__actions">
           <a class="btn btn--primary" href="start.html?topic=scan" data-topic="scan">Бесплатный срез</a>
           <a class="btn-link" href="hr-brand-demo.html">Демо-отчёт <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
-<path d="M7 7h10v10"/>
-<path d="M7 17 17 7"/>
+<g class="i-a"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></g>
+<g class="i-b"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></g>
 </svg></a>
         </div>
       </div>
@@ -1756,15 +1761,15 @@ button.seg__item.is-active { background: var(--c-surface-2); }
       </div>
       <div class="qpanel" role="tabpanel" id="mp-index" aria-labelledby="mt-index">
         <div class="qpanel__text"><div><span class="qpanel__eyebrow">Относительно ваших обещаний</span><h3 class="qpanel__title">Совпадают ли слова и дела?</h3><p>Доля обещаний, которые подтверждает опыт людей в отзывах, соцсетях, медиа и ответах нейросетей. Для каждого обещания умножаем вес на долю подтверждений и складываем результаты.</p></div><a class="btn-link" href="#steps">Шесть шагов расчёта <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
-<path d="M7 7h10v10"/>
-<path d="M7 17 17 7"/>
+<g class="i-a"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></g>
+<g class="i-b"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></g>
 </svg></a></div>
         <div class="qpanel__vis"><div class="gauge gauge--big" id="g-index" role="img" aria-label="Индекс культуры 65 из 100"></div><p class="mcard__cap">Подтверждено 5 из 8 обещаний</p></div>
       </div>
       <div class="qpanel" role="tabpanel" id="mp-blind" aria-labelledby="mt-blind" hidden>
         <div class="qpanel__text"><div><span class="qpanel__eyebrow">Относительно того, что обсуждают люди</span><h3 class="qpanel__title">О чём говорят, а вы молчите?</h3><p>Темы, которых нет в ваших текстах, хотя люди обсуждают их постоянно. Закрывают лазейку «пообещать поменьше, чтобы индекс был выше». Долю считаем от всех упоминаний компании, тон определяем по большинству упоминаний.</p></div><a class="btn-link" href="hr-brand-demo.html">Слепые зоны в демо-отчёте <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
-<path d="M7 7h10v10"/>
-<path d="M7 17 17 7"/>
+<g class="i-a"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></g>
+<g class="i-b"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></g>
 </svg></a></div>
         <div class="qpanel__vis"><!-- Слепые зоны демо-компании: карточки с кольцом доли (.rring) — демо-отчёт, обзор и методика HR-бренда -->
 <ul class="rrings"><li class="rring rring--bad"><div class="rring__ring" role="img" aria-label="Переработки: 18% упоминаний"><svg viewBox="0 0 36 36" aria-hidden="true"><circle class="rring__track" cx="18" cy="18" r="15"/><circle class="rring__val" cx="18" cy="18" r="15" stroke-dasharray="16.96 94.25"/></svg><span>18%</span></div><div class="rring__body"><b>Переработки</b><span class="badge badge--bad badge--ico"><span class="cmp__ico cmp__ico--no"><svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1784,8 +1789,8 @@ button.seg__item.is-active { background: var(--c-surface-2); }
       </div>
       <div class="qpanel" role="tabpanel" id="mp-industry" aria-labelledby="mt-industry" hidden>
         <div class="qpanel__text"><div><span class="qpanel__eyebrow">Относительно рынка</span><h3 class="qpanel__title">Насколько хороши условия?</h3><p>Сравниваем зарплату, развитие, руководство и нагрузку с работодателями отрасли и региона. Перцентиль показывает долю работодателей, у которых условия хуже. Считаем, когда в базе отрасли 30 и больше компаний.</p></div><a class="btn-link" href="hr-brand-demo.html">Место в отрасли в демо-отчёте <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
-<path d="M7 7h10v10"/>
-<path d="M7 17 17 7"/>
+<g class="i-a"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></g>
+<g class="i-b"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></g>
 </svg></a></div>
         <div class="qpanel__vis"><ul class="tracks"><li><span>Коллектив</span><div class="tracks__bar"><i style="left:82%"></i></div><b>82</b></li><li><span>Стабильность</span><div class="tracks__bar"><i style="left:77%"></i></div><b>77</b></li><li><span>Развитие</span><div class="tracks__bar"><i style="left:71%"></i></div><b>71</b></li><li><span>Руководство</span><div class="tracks__bar"><i style="left:58%"></i></div><b>58</b></li><li><span>Нагрузка</span><div class="tracks__bar"><i style="left:41%"></i></div><b>41</b></li><li><span>Зарплата</span><div class="tracks__bar"><i style="left:34%"></i></div><b>34</b></li></ul><div class="tracks__scale"><span>хуже рынка</span><span>медиана</span><span>лучше рынка</span></div></div>
       </div>
@@ -1935,12 +1940,12 @@ button.seg__item.is-active { background: var(--c-surface-2); }
       </div>
       <div class="pnext">
         <a class="pnext__dark dir dir--health" href="methodology-health.html" data-shader="health"><canvas aria-hidden="true"></canvas><span class="dir__fallback" aria-hidden="true"></span><span class="dir__top"><span class="dir__label">направление 02 · изнутри</span><svg aria-hidden="true" focusable="false" class="dir__arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
-<path d="M7 7h10v10"/>
-<path d="M7 17 17 7"/>
+<g class="i-a"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></g>
+<g class="i-b"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></g>
 </svg></span><div><h3>Как считаем изнутри</h3><p>10 метрик переживаемой культуры, источники, зоны балла и уверенность данных. Группы от 5 человек.</p></div></a>
         <article class="pnext__card"><div><h3>Посмотрите на примере</h3><p>Демо-отчёт по условной компании с индексом, слепыми зонами, местом в отрасли и первыми шагами.</p></div><a class="btn-link" href="hr-brand-demo.html">Открыть демо-отчёт <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
-<path d="M7 7h10v10"/>
-<path d="M7 17 17 7"/>
+<g class="i-a"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></g>
+<g class="i-b"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></g>
 </svg></a></article>
       </div>
     </div>
@@ -1986,8 +1991,8 @@ button.seg__item.is-active { background: var(--c-surface-2); }
       <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxnIGlkPSJTaGFwZXMiPgo8ZyBpZD0iVmFyaWFudD0zNSIgY2xpcC1wYXRoPSJ1cmwoI3NoYXBlLWN0YS1tZXRob2QtYnJhbmQtY2xpcDBfMF8xKSI+CjxnIGlkPSJDbGlwIHBhdGggZ3JvdXAiPgo8bWFzayBpZD0ic2hhcGUtY3RhLW1ldGhvZC1icmFuZC1tYXNrMF8wXzEiIHN0eWxlPSJtYXNrLXR5cGU6bHVtaW5hbmNlIiBtYXNrVW5pdHM9InVzZXJTcGFjZU9uVXNlIiB4PSIwIiB5PSIwIiB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCI+CjxnIGlkPSJzaGFwZS1jdGEtbWV0aG9kLWJyYW5kLWNsaXAwXzExNl8yIj4KPHBhdGggaWQ9IlZlY3RvciIgZD0iTTIwMCAwSDBWMjAwSDIwMFYwWiIgZmlsbD0id2hpdGUiLz4KPC9nPgo8L21hc2s+CjxnIG1hc2s9InVybCgjc2hhcGUtY3RhLW1ldGhvZC1icmFuZC1tYXNrMF8wXzEpIj4KPGcgaWQ9Ikdyb3VwIj4KPHBhdGggaWQ9IlZlY3Rvcl8yIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTI5LjI4OTMgMjkuMjg5M0MxOS4yNjU4IDM5LjMxMjggMTUuNjQ1OCA1My4zMTUgMTguNDI5NCA2Ni4yMTIzQzcuMzQxMzIgNzMuMzYzOCAwIDg1LjgyNDYgMCAxMDBDLTEuNzQxNTZlLTA2IDExNC4xNzUgNy4zNDEzMiAxMjYuNjM2IDE4LjQyOTQgMTMzLjc4OEMxNS42NDU4IDE0Ni42ODUgMTkuMjY1OCAxNjAuNjg3IDI5LjI4OTMgMTcwLjcxMUMzOS4zMTI5IDE4MC43MzQgNTMuMzE1IDE4NC4zNTQgNjYuMjEyMyAxODEuNTcxQzczLjM2MzkgMTkyLjY1OSA4NS44MjQ2IDIwMCAxMDAgMjAwQzExNC4xNzUgMjAwIDEyNi42MzYgMTkyLjY1OSAxMzMuNzg4IDE4MS41NzFDMTQ2LjY4NSAxODQuMzU0IDE2MC42ODcgMTgwLjczNCAxNzAuNzExIDE3MC43MTFDMTgwLjczNCAxNjAuNjg3IDE4NC4zNTQgMTQ2LjY4NSAxODEuNTcxIDEzMy43ODhDMTkyLjY1OSAxMjYuNjM2IDIwMCAxMTQuMTc1IDIwMCAxMDBDMjAwIDg1LjgyNDYgMTkyLjY1OSA3My4zNjM4IDE4MS41NzEgNjYuMjEyM0MxODQuMzU0IDUzLjMxNSAxODAuNzM0IDM5LjMxMjkgMTcwLjcxMSAyOS4yODkzQzE2MC42ODcgMTkuMjY1OCAxNDYuNjg1IDE1LjY0NTggMTMzLjc4OCAxOC40Mjk0QzEyNi42MzYgNy4zNDEzMyAxMTQuMTc1IDAgMTAwIDBDODUuODI0NiAwIDczLjM2MzggNy4zNDEzMSA2Ni4yMTIzIDE4LjQyOTNDNTMuMzE1IDE1LjY0NTggMzkuMzEyOSAxOS4yNjU4IDI5LjI4OTMgMjkuMjg5M1oiIGZpbGw9InVybCgjc2hhcGUtY3RhLW1ldGhvZC1icmFuZC1wYWludDBfbGluZWFyXzBfMSkiLz4KPC9nPgo8L2c+CjwvZz4KPC9nPgo8L2c+CjxkZWZzPgo8bGluZWFyR3JhZGllbnQgaWQ9InNoYXBlLWN0YS1tZXRob2QtYnJhbmQtcGFpbnQwX2xpbmVhcl8wXzEiIHgxPSIxNzciIHkxPSItMS4wMDI3N2UtMDUiIHgyPSIzOS41IiB5Mj0iMTUyLjUiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIj4KPHN0b3Agc3RvcC1jb2xvcj0iIzcwODBGRiIvPgo8c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiM3MDdDRkYiLz4KPC9saW5lYXJHcmFkaWVudD4KPGNsaXBQYXRoIGlkPSJzaGFwZS1jdGEtbWV0aG9kLWJyYW5kLWNsaXAwXzBfMSI+CjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiBmaWxsPSJ3aGl0ZSIvPgo8L2NsaXBQYXRoPgo8L2RlZnM+Cjwvc3ZnPgo=" alt="" width="80" height="80">
       <div class="help__text"><h3 id="cta-title">Узнайте свой индекс культуры</h3><p>Пришлём внешний срез за 3 рабочих дня. Доступ к вашим системам не нужен.</p></div>
       <a class="btn btn--primary" href="start.html?topic=scan" data-topic="scan">Получить бесплатный срез <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
-<path d="M7 7h10v10"/>
-<path d="M7 17 17 7"/>
+<g class="i-a"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></g>
+<g class="i-b"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></g>
 </svg></a>
     </div>
   </section>
@@ -2177,8 +2182,8 @@ fade(); sync();
     <div class="footer__cta">
       <p><span class="dim">Хотите увидеть свою компанию в зеркале?</span><br>Обсудим задачу за 30 минут.</p>
       <a class="btn btn--white" href="start.html">Задать вопрос <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
-<path d="M7 7h10v10"/>
-<path d="M7 17 17 7"/>
+<g class="i-a"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></g>
+<g class="i-b"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></g>
 </svg></a>
     </div>
     <div class="footer__brand" aria-hidden="true">

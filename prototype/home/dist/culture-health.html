@@ -125,11 +125,17 @@ img, svg { display: block; }
 /* 3. Компоненты (кастомизация shadcn/ui под макет) */
 /* Button — shadcn по умолчанию h-9; в макете 48px, радиус 10, текст 17 Medium */
 .btn { -webkit-tap-highlight-color: transparent; display: inline-flex; align-items: center; justify-content: center; gap: 4px; height: var(--h-ctl); padding: 0 var(--px-btn); border-radius: var(--r-ctl); font: 500 var(--fs-body)/var(--lh-tight) var(--font-sans); white-space: nowrap; transition: background .2s, color .2s, border-color .2s; }
-.btn svg { display: block; width: 20px; height: 20px; flex: none; transition: transform .25s var(--ease); will-change: transform; backface-visibility: hidden; }
+.btn svg { display: block; width: 20px; height: 20px; flex: none; transition: transform .25s var(--ease); }
+/* Стрелка: в одной иконке два рисунка Lucide — «вверх-вправо» (.i-a) и «вправо» (.i-b). При наведении первый доворачивается
+   и гаснет, второй доворачивается и проявляется: движение выглядит поворотом, а в покое всегда стоит родной рисунок.
+   Поворот одной иконки на 45° давал искажённую стрелку: у «вверх-вправо» другие длины плеч, чем у «вправо». */
+svg .i-a, svg .i-b { transform-origin: 12px 12px; transition: transform .25s var(--ease), opacity .2s; }
+svg .i-b { opacity: 0; transform: rotate(-45deg); }
+:is(.btn, .btn-link):is(:hover, :focus-visible) svg .i-a { opacity: 0; transform: rotate(45deg); }
+:is(.btn, .btn-link):is(:hover, :focus-visible) svg .i-b { opacity: 1; transform: none; }
 .btn--primary { background: var(--c-dark); color: var(--c-on-dark); }
 .btn--primary:hover { background: var(--c-violet); }
 .btn--primary:active { background: var(--c-violet-press); }
-.btn:hover svg { transform: rotate(45deg); }
 .btn.rmenu__pdf:hover svg { transform: translateY(2px); }
 .btn--white { background: #fff; color: var(--c-dark); }
 .btn--white:hover { background: var(--c-violet); color: #fff; }
@@ -140,9 +146,8 @@ img, svg { display: block; }
 .btn--block { width: 100%; }
 /* Link-кнопка: «Подробнее ↗», «Все условия ↗» — h36, px10 */
 .btn-link { display: inline-flex; align-items: center; gap: 4px; height: var(--h-btn-sm); padding: 0 10px; border-radius: var(--r-ctl); font: 500 var(--fs-body)/var(--lh-tight) var(--font-sans); color: #0a0a0a; transition: color .2s; }
-.btn-link svg { display: block; flex: none; width: 20px; height: 20px; transition: transform .25s var(--ease); will-change: transform; backface-visibility: hidden; }
+.btn-link svg { display: block; flex: none; width: 20px; height: 20px; }
 .btn-link:hover { color: var(--c-violet); }
-.btn-link:hover svg { transform: rotate(45deg); }
 .btn-link:active { color: var(--c-violet-press); }
 
 /* Badge — неинтерактивный, h24, px6+2, текст 14/16 Medium */
@@ -177,7 +182,7 @@ img, svg { display: block; }
 .check input:hover { border-color: var(--c-line-hover); }
 .check input:active { background: var(--c-line); }
 .check input:checked { background: var(--c-dark); border-color: var(--c-dark); }
-.check input:checked::after { content: ""; width: 10px; height: 6px; border: 2px solid #fff; border-top: 0; border-right: 0; transform: translateY(-1px) rotate(-45deg); }
+.check input:checked::after { content: ""; width: 14px; height: 14px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") center / contain no-repeat; }   /* галочка Lucide */
 .check .muted { color: var(--c-ink-4); }
 .check a { color: #0a0a0a; text-decoration: underline; text-decoration-color: var(--c-line); text-underline-offset: 3px; }
 .check a:hover { color: var(--c-violet); }
@@ -771,7 +776,7 @@ dialog[open]::backdrop { animation: fade var(--t-enter) var(--ease-out); }
 .calc__item input { appearance: none; width: 20px; height: 20px; flex: none; border-radius: var(--r-check); background: var(--c-surface-3); border: 1px solid var(--c-line); display: grid; place-items: center; cursor: pointer; transition: background .2s, border-color .2s; }
 .calc__item input:hover { border-color: var(--c-line-hover); }
 .calc__item input:checked { background: var(--c-violet); border-color: var(--c-violet); }
-.calc__item input:checked::after { content: ""; width: 10px; height: 6px; border: 2px solid #fff; border-top: 0; border-right: 0; transform: translateY(-1px) rotate(-45deg); }
+.calc__item input:checked::after { content: ""; width: 14px; height: 14px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") center / contain no-repeat; }   /* галочка Lucide */
 .calc__item input:focus-visible { outline: 2px solid var(--c-violet); outline-offset: 3px; }
 .calc tr.is-off > * { color: var(--c-ink-4); }
 .calc tr.is-off .cmp__ico { opacity: .4; }
@@ -1700,8 +1705,8 @@ button.seg__item.is-active { background: var(--c-surface-2); }
         <div class="dir-hero__actions">
           <a class="btn btn--primary" href="start.html?topic=health" data-topic="health">Обсудить запуск</a>
           <a class="btn-link" href="culture-health-demo.html">Демо-дашборд <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
-<path d="M7 7h10v10"/>
-<path d="M7 17 17 7"/>
+<g class="i-a"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></g>
+<g class="i-b"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></g>
 </svg></a>
         </div>
       </div>
@@ -1821,12 +1826,12 @@ button.seg__item.is-active { background: var(--c-surface-2); }
       <!-- Как на обзоре HR-бренда: тёмная карточка ведёт на соседнее направление, светлая — на методику -->
       <div class="pnext">
         <a class="pnext__dark dir dir--brand" href="hr-brand.html" data-shader="brand"><canvas aria-hidden="true"></canvas><span class="dir__fallback" aria-hidden="true"></span><span class="dir__top"><span class="dir__label">направление 01 · снаружи</span><svg aria-hidden="true" focusable="false" class="dir__arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
-<path d="M7 7h10v10"/>
-<path d="M7 17 17 7"/>
+<g class="i-a"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></g>
+<g class="i-b"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></g>
 </svg></span><div><h3>Нужен взгляд снаружи?</h3><p>Оценка HR-бренда и индекс культуры. Совпадает ли то, что вы обещаете, с тем, что видят кандидаты и сотрудники.</p></div></a>
         <article class="pnext__card"><div><h3>Как считаем</h3><p>10 метрик, источники, зоны балла и уверенность данных. Как считаем разрыв с культурным кодом.</p></div><a class="btn-link" href="methodology-health.html">Открыть методику <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
-<path d="M7 7h10v10"/>
-<path d="M7 17 17 7"/>
+<g class="i-a"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></g>
+<g class="i-b"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></g>
 </svg></a></article>
       </div>
     </div>
@@ -1988,8 +1993,8 @@ button.seg__item.is-active { background: var(--c-surface-2); }
 </g>
 </svg>Правило пяти человек на любом срезе</li></ul>
         <a class="btn btn--primary" href="culture-health-demo.html">Открыть демо-дашборд <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
-<path d="M7 7h10v10"/>
-<path d="M7 17 17 7"/>
+<g class="i-a"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></g>
+<g class="i-b"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></g>
 </svg></a>
       </div>
       <div class="well rsplit__vis">
@@ -2104,8 +2109,8 @@ button.seg__item.is-active { background: var(--c-surface-2); }
       <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAiIGhlaWdodD0iODAiIHZpZXdCb3g9IjAgMCA4MCA4MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZD0iTTQ4IDBIMzJWNDRDMzIgNDguNDE4NCAyOC40MTgzIDUyIDI0IDUyQzE5LjU4MTcgNTIgMTYgNDguNDE4NCAxNiA0NFYwSDBWNDBDMCA2Mi4wOTEyIDE3LjkwODYgODAgNDAgODBDNjIuMDkxMiA4MCA4MCA2Mi4wOTEyIDgwIDQwVjBINjRWNDRDNjQgNDguNDE4NCA2MC40MTg0IDUyIDU2IDUyQzUxLjU4MTYgNTIgNDggNDguNDE4NCA0OCA0NFYwWiIgZmlsbD0idXJsKCNjdGEtZGFzaC1nKSIvPjxkZWZzPjxsaW5lYXJHcmFkaWVudCBpZD0iY3RhLWRhc2gtZyIgeDE9IjQwIiB5MT0iMCIgeDI9IjQwIiB5Mj0iODAiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIj48c3RvcCBzdG9wLWNvbG9yPSIjNzA4N0ZGIi8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjRUE3MEZGIi8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PC9zdmc+Cg==" alt="" width="80" height="80">
       <div class="help__text"><h3 id="cta-title">Запустите дашборд в своей компании</h3><p>Начнём с диагностики и первого замера. Расскажите о компании, и мы предложим план кампании.</p></div>
       <a class="btn btn--primary" href="start.html?topic=health" data-topic="health">Обсудить кампанию <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
-<path d="M7 7h10v10"/>
-<path d="M7 17 17 7"/>
+<g class="i-a"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></g>
+<g class="i-b"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></g>
 </svg></a>
       <a class="btn-link" href="#">Политика обработки данных</a>
     </div>
@@ -2280,8 +2285,8 @@ fade(); sync();
     <div class="footer__cta">
       <p><span class="dim">Хотите увидеть свою компанию в зеркале?</span><br>Обсудим задачу за 30 минут.</p>
       <a class="btn btn--white" href="start.html">Задать вопрос <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
-<path d="M7 7h10v10"/>
-<path d="M7 17 17 7"/>
+<g class="i-a"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></g>
+<g class="i-b"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></g>
 </svg></a>
     </div>
     <div class="footer__brand" aria-hidden="true">

@@ -125,11 +125,17 @@ img, svg { display: block; }
 /* 3. Компоненты (кастомизация shadcn/ui под макет) */
 /* Button — shadcn по умолчанию h-9; в макете 48px, радиус 10, текст 17 Medium */
 .btn { -webkit-tap-highlight-color: transparent; display: inline-flex; align-items: center; justify-content: center; gap: 4px; height: var(--h-ctl); padding: 0 var(--px-btn); border-radius: var(--r-ctl); font: 500 var(--fs-body)/var(--lh-tight) var(--font-sans); white-space: nowrap; transition: background .2s, color .2s, border-color .2s; }
-.btn svg { display: block; width: 20px; height: 20px; flex: none; transition: transform .25s var(--ease); will-change: transform; backface-visibility: hidden; }
+.btn svg { display: block; width: 20px; height: 20px; flex: none; transition: transform .25s var(--ease); }
+/* Стрелка: в одной иконке два рисунка Lucide — «вверх-вправо» (.i-a) и «вправо» (.i-b). При наведении первый доворачивается
+   и гаснет, второй доворачивается и проявляется: движение выглядит поворотом, а в покое всегда стоит родной рисунок.
+   Поворот одной иконки на 45° давал искажённую стрелку: у «вверх-вправо» другие длины плеч, чем у «вправо». */
+svg .i-a, svg .i-b { transform-origin: 12px 12px; transition: transform .25s var(--ease), opacity .2s; }
+svg .i-b { opacity: 0; transform: rotate(-45deg); }
+:is(.btn, .btn-link):is(:hover, :focus-visible) svg .i-a { opacity: 0; transform: rotate(45deg); }
+:is(.btn, .btn-link):is(:hover, :focus-visible) svg .i-b { opacity: 1; transform: none; }
 .btn--primary { background: var(--c-dark); color: var(--c-on-dark); }
 .btn--primary:hover { background: var(--c-violet); }
 .btn--primary:active { background: var(--c-violet-press); }
-.btn:hover svg { transform: rotate(45deg); }
 .btn.rmenu__pdf:hover svg { transform: translateY(2px); }
 .btn--white { background: #fff; color: var(--c-dark); }
 .btn--white:hover { background: var(--c-violet); color: #fff; }
@@ -140,9 +146,8 @@ img, svg { display: block; }
 .btn--block { width: 100%; }
 /* Link-кнопка: «Подробнее ↗», «Все условия ↗» — h36, px10 */
 .btn-link { display: inline-flex; align-items: center; gap: 4px; height: var(--h-btn-sm); padding: 0 10px; border-radius: var(--r-ctl); font: 500 var(--fs-body)/var(--lh-tight) var(--font-sans); color: #0a0a0a; transition: color .2s; }
-.btn-link svg { display: block; flex: none; width: 20px; height: 20px; transition: transform .25s var(--ease); will-change: transform; backface-visibility: hidden; }
+.btn-link svg { display: block; flex: none; width: 20px; height: 20px; }
 .btn-link:hover { color: var(--c-violet); }
-.btn-link:hover svg { transform: rotate(45deg); }
 .btn-link:active { color: var(--c-violet-press); }
 
 /* Badge — неинтерактивный, h24, px6+2, текст 14/16 Medium */
@@ -177,7 +182,7 @@ img, svg { display: block; }
 .check input:hover { border-color: var(--c-line-hover); }
 .check input:active { background: var(--c-line); }
 .check input:checked { background: var(--c-dark); border-color: var(--c-dark); }
-.check input:checked::after { content: ""; width: 10px; height: 6px; border: 2px solid #fff; border-top: 0; border-right: 0; transform: translateY(-1px) rotate(-45deg); }
+.check input:checked::after { content: ""; width: 14px; height: 14px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") center / contain no-repeat; }   /* галочка Lucide */
 .check .muted { color: var(--c-ink-4); }
 .check a { color: #0a0a0a; text-decoration: underline; text-decoration-color: var(--c-line); text-underline-offset: 3px; }
 .check a:hover { color: var(--c-violet); }
@@ -771,7 +776,7 @@ dialog[open]::backdrop { animation: fade var(--t-enter) var(--ease-out); }
 .calc__item input { appearance: none; width: 20px; height: 20px; flex: none; border-radius: var(--r-check); background: var(--c-surface-3); border: 1px solid var(--c-line); display: grid; place-items: center; cursor: pointer; transition: background .2s, border-color .2s; }
 .calc__item input:hover { border-color: var(--c-line-hover); }
 .calc__item input:checked { background: var(--c-violet); border-color: var(--c-violet); }
-.calc__item input:checked::after { content: ""; width: 10px; height: 6px; border: 2px solid #fff; border-top: 0; border-right: 0; transform: translateY(-1px) rotate(-45deg); }
+.calc__item input:checked::after { content: ""; width: 14px; height: 14px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") center / contain no-repeat; }   /* галочка Lucide */
 .calc__item input:focus-visible { outline: 2px solid var(--c-violet); outline-offset: 3px; }
 .calc tr.is-off > * { color: var(--c-ink-4); }
 .calc tr.is-off .cmp__ico { opacity: .4; }
@@ -2219,12 +2224,12 @@ button.seg__item.is-active { background: var(--c-surface-2); }
     </div>
     <div class="cards cards--2" style="margin-top:24px">
       <article class="card card--white"><div><h3 class="card__title">Агентствам и консультантам</h3><p class="card__text">Делаем внешний аудит HR-бренда для ваших клиентов под вашим логотипом. Первые три отчёта бесплатны.</p></div><a class="btn-link card__more" href="start.html?topic=other" data-topic="other">Обсудить пилот <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
-<path d="M7 7h10v10"/>
-<path d="M7 17 17 7"/>
+<g class="i-a"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></g>
+<g class="i-b"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></g>
 </svg></a></article>
       <article class="card card--white"><div><h3 class="card__title">Больше 3000 сотрудников</h3><p class="card__text">Посчитаем под вашу структуру. Цена зависит от числа подразделений, срезов и встреч с руководителями.</p></div><a class="btn-link card__more" href="start.html?topic=health" data-topic="health">Запросить расчёт <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
-<path d="M7 7h10v10"/>
-<path d="M7 17 17 7"/>
+<g class="i-a"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></g>
+<g class="i-b"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></g>
 </svg></a></article>
     </div>
   </section>
@@ -2298,8 +2303,8 @@ button.seg__item.is-active { background: var(--c-surface-2); }
     <div class="footer__cta">
       <p><span class="dim">Хотите увидеть свою компанию в зеркале?</span><br>Обсудим задачу за 30 минут.</p>
       <a class="btn btn--white" href="start.html">Задать вопрос <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
-<path d="M7 7h10v10"/>
-<path d="M7 17 17 7"/>
+<g class="i-a"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></g>
+<g class="i-b"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></g>
 </svg></a>
     </div>
     <div class="footer__brand" aria-hidden="true">
